@@ -1,6 +1,11 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
+// routers
+const FeedbackRouter = require("./routes/feedbackApi");
+const UserRouter = require("./routes/userApi");
 
 // setup database
 const db_secret = require("./config/keys").MONGO_URI;
@@ -20,6 +25,11 @@ mongoose
 
 // initialize
 const app = express();
+
+// middlewares
+app.use(bodyParser.json());
+app.use("/api/feedback", FeedbackRouter);
+app.use("/api/user", UserRouter);
 
 // rendering static assets
 if (process.env.NODE_ENV === "production") {
