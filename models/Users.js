@@ -19,9 +19,19 @@ const UserSchema = new Schema({
     type: Number,
     default: null
   },
-  city: {
-    type: String,
-    default: null
+  place: {
+    country: {
+      type: String,
+      default: null
+    },
+    region: {
+      type: String,
+      default: null
+    },
+    city: {
+      type: String,
+      default: null
+    }
   },
   school: {
     type: String,
@@ -40,8 +50,18 @@ const UserSchema = new Schema({
     required: true
   },
   rating: {
-    type: Number,
-    default: null
+    average: {
+      type: Number,
+      default: 0
+    },
+    count: {
+      type: Number,
+      default: 0
+    },
+    rawAverage: {
+      type: Number,
+      default: 0
+    }
   },
   bonusPoints: {
     type: Number,

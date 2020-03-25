@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 // routers
 const FeedbackRouter = require("./routes/feedbackApi");
 const UserRouter = require("./routes/userApi");
+const BookRouter = require("./routes/bookApi");
 
 // setup database
 const db_secret = require("./config/keys").MONGO_URI;
@@ -30,6 +31,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use("/api/feedback", FeedbackRouter);
 app.use("/api/user", UserRouter);
+app.use("/api/book", BookRouter);
 
 // rendering static assets
 if (process.env.NODE_ENV === "production") {

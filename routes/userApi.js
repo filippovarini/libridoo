@@ -11,17 +11,22 @@ const router = express.Router();
 const JWT_SECRET = require("../config/keys").JWT_SECRET;
 
 // get user from JWT refresh
-router.get("/refresh", (req, res) => {
+// token
+router.post("/refresh", (req, res) => {
   const token = req.body.token;
   const user = jwt.verify(token, JWT_SECRET);
   User.findById(user._id)
     .then(user => {
       if (user) {
-        const activeUser = user.toJSON();
+        const activeUser = user.toObject();
+        delete activeUser.password;
         const JWT = jwt.sign(activeUser, JWT_SECRET);
         res.json({ code: 0, activeUser, JWT });
       } else {
-        res.json({ code: 2, message: "Nessun account con id del jwt fornito" });
+        res.json({
+          code: 1.5,
+          message: "Nessun account con id del jwt fornito"
+        });
       }
     })
     .catch(error => {
@@ -29,8 +34,11 @@ router.get("/refresh", (req, res) => {
     });
 });
 
+// !!! always PASS EMAIL.toLowerCase() in REQ.BODY
+
 // login
-router.get("/login", (req, res) => {
+// email / password
+router.post("/login", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
@@ -38,7 +46,8 @@ router.get("/login", (req, res) => {
           .compare(req.body.password, user.password)
           .then(response => {
             if (response) {
-              const activeUser = user.toJSON();
+              const activeUser = user.toObject();
+              delete activeUser.password;
               const JWT = jwt.sign(activeUser, JWT_SECRET);
               res.json({ code: 0, activeUser, JWT });
             } else {
@@ -58,7 +67,8 @@ router.get("/login", (req, res) => {
 });
 
 // register
-// bonus updatein here
+// bonus update in here
+// email / password / name / avatarImgURL / invitingUserId
 router.post("/register", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
@@ -80,7 +90,8 @@ router.post("/register", (req, res) => {
             });
             NewUser.save()
               .then(user => {
-                const activeUser = user.toJSON();
+                const activeUser = user.toObject();
+                delete activeUser.password;
                 const JWT = jwt.sign(activeUser, JWT_SECRET);
                 if (req.body.invitingUserId) {
                   // update bonus points if invited
@@ -119,6 +130,7 @@ router.post("/register", (req, res) => {
 });
 
 // update bodyInfo
+// _id / defaultEmail / newBodyInfo : { email / school / phone / schoolLogoUrl } (even if you don't have it, pass default)
 router.put("/bodyInfo", (req, res) => {
   if (req.body.defaultEmail !== req.body.newBodyInfo.email) {
     User.find({ email: req.body.newBodyInfo.email })
@@ -133,7 +145,8 @@ router.put("/bodyInfo", (req, res) => {
             new: true
           })
             .then(user => {
-              const activeUser = user.toJSON();
+              const activeUser = user.toObject();
+              delete activeUser.password;
               const JWT = jwt.sign(activeUser, JWT_SECRET);
               res.json({ code: 0, activeUser, JWT });
             })
@@ -158,11 +171,13 @@ router.put("/bodyInfo", (req, res) => {
   }
 });
 
-// update delivery
-router.put("/delivery", (req, res) => {
-  User.findByIdAndUpdate(req.body._id, req.body.deliveryUpdate, { new: true })
+// update place
+// _id / placeUpdate: {place: {country / region / city}}
+router.put("/place", (req, res) => {
+  User.findByIdAndUpdate(req.body._id, req.body.placeUpdate, { new: true })
     .then(user => {
-      const activeUser = user.toJSON();
+      const activeUser = user.toObject();
+      delete activeUser.password;
       const JWT = jwt.sign(activeUser, JWT_SECRET);
       res.json({ code: 0, activeUser, JWT });
     })
@@ -171,7 +186,129 @@ router.put("/delivery", (req, res) => {
     });
 });
 
+// update delivery
+// _id / deliveryUpdate : {DeliveryInfo: {range / cost / timeToMeet}}
+router.put("/delivery", (req, res) => {
+  User.findByIdAndUpdate(req.body._id, req.body.deliveryUpdate, { new: true })
+    .then(user => {
+      const activeUser = user.toObject();
+      delete activeUser.password;
+      const JWT = jwt.sign(activeUser, JWT_SECRET);
+      res.json({ code: 0, activeUser, JWT });
+    })
+    .catch(error => {
+      res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+    });
+});
+
+// update rating
+// _id (the seller's one)/ rating
+router.put("/ratingUpdate", (req, res) => {
+  User.findById(req.body._id)
+    .then(user => {
+      if (!user) {
+        res.json({ code: 1.5, message: "Nessun account con questo id" });
+      } else {
+        count = user.rating.count + 1;
+        rawAverage =
+          (user.rating.count * user.rating.rawAverage + req.body.rating) /
+          count;
+        average = Math.round(rawAverage);
+        newRating = {
+          average,
+          count,
+          rawAverage
+        };
+        User.findByIdAndUpdate(
+          req.body._id,
+          {
+            rating: newRating
+          },
+          { new: true }
+        )
+          .then(user => {
+            if (!user) {
+              res.json({
+                code: 1.5,
+                message: "nessun account trovato nell'update con questo id"
+              });
+            } else {
+              res.json({
+                code: 0,
+                message: "Valutazione effettuata con successo"
+              });
+            }
+          })
+          .catch(error => {
+            res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+          });
+      }
+    })
+    .catch(error => {
+      res.json({ code: 1, place: ".findById()", error });
+    });
+});
+
+// update password
+// _id / oldPassword / newPassword
+router.put("/passwordUpdate", (req, res) => {
+  if (req.body.oldPassword === req.body.newPassword) {
+    res.json({ code: 2, message: "Password già salvata su questo account" });
+  } else {
+    User.findById(req.body._id)
+      .then(user => {
+        if (!user) {
+          res.json({ code: 1.5, message: "nessun utente con questo id" });
+        } else {
+          bcrypt
+            .compare(req.body.oldPassword, user.password)
+            .then(response => {
+              if (!response) {
+                res.json({ code: 2, message: "Vecchia password errata" });
+              } else {
+                bcrypt
+                  .hash(req.body.newPassword, 10)
+                  .then(hashed => {
+                    User.findByIdAndUpdate(
+                      req.body._id,
+                      {
+                        password: hashed,
+                        passwordLength: req.body.newPassword.length
+                      },
+                      { new: true }
+                    )
+                      .then(user => {
+                        const activeUser = user.toObject();
+                        delete activeUser.password;
+                        const JWT = jwt.sign(activeUser, JWT_SECRET);
+                        res.json({ code: 0, activeUser, JWT });
+                      })
+                      .catch(error => {
+                        res.json({
+                          code: 1,
+                          place: ".findByIdAndUpdate()",
+                          error
+                        });
+                      });
+                  })
+                  .catch(error => {
+                    res.json({ code: 1, place: ".hash()", error });
+                  });
+              }
+            })
+            .catch(error => {
+              res.json({ code: 1, place: ".compare()", error });
+            });
+        }
+      })
+      .catch(error => {
+        res.json({ code: 1, place: ".findById()", error });
+      });
+  }
+});
+
 // reset password
+// email
 router.put("/recover", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
@@ -247,11 +384,12 @@ router.put("/recover", (req, res) => {
 });
 
 // delete account
+// _id
 router.delete("/delete", (req, res) => {
   User.findByIdAndDelete(req.body._id)
     .then(user => {
       if (!user) {
-        res.json({ code: 2, message: "Account già eliminato" });
+        res.json({ code: 1.5, message: "Account già eliminato" });
       } else {
         res.json({ code: 0, message: "Account eliminato con successo" });
       }

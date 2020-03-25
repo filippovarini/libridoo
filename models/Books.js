@@ -4,14 +4,16 @@ mongoose.set("useFindAndModify", false);
 
 const BookSchema = new Schema({
   imageURL: {
-    type: String
+    type: String,
+    default: null
   },
   title: {
     type: String,
     required: true
   },
   isbn: {
-    type: Number
+    type: Number,
+    default: null
   },
   price: {
     type: Number,
@@ -25,50 +27,22 @@ const BookSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  SellerInfo: {
-    SellerId: {
+  sellerId: {
+    type: String,
+    required: true
+  },
+  place: {
+    country: {
       type: String,
       required: true
     },
-    name: {
+    region: {
       type: String,
       required: true
-    },
-    rating: {
-      type: Number
     },
     city: {
       type: String,
       required: true
-    },
-    school: {
-      type: String,
-      required: true
-    },
-    email: {
-      type: String,
-      required: true
-    },
-    phone: {
-      type: Number,
-      required: true
-    },
-    avatarImgURL: {
-      type: String
-    },
-    schoolLogoURL: {
-      type: String
-    },
-    DeliveryInfo: {
-      range: {
-        type: String
-      },
-      cost: {
-        type: Number
-      },
-      timeToMeet: {
-        type: Number
-      }
     }
   }
 });

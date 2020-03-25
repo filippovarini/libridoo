@@ -9,12 +9,12 @@ const SoldBooksClusterSchema = new Schema({
     required: true
   },
   checkoutDate: {
-    type: String,
+    type: Date,
     required: true
   },
   confirmed: {
     type: Boolean,
-    required: true
+    default: false
   },
   sellerId: {
     type: String,
@@ -24,11 +24,11 @@ const SoldBooksClusterSchema = new Schema({
     type: String,
     required: true
   },
-  commonDelivery: {
+  delivery: {
     choosen: {
       type: Boolean
     },
-    price: {
+    cost: {
       type: Number
     },
     range: {
@@ -46,9 +46,19 @@ const SoldBooksClusterSchema = new Schema({
     rating: {
       type: Number
     },
-    city: {
-      type: String,
-      required: true
+    place: {
+      country: {
+        type: String,
+        required: true
+      },
+      region: {
+        type: String,
+        required: true
+      },
+      city: {
+        type: String,
+        required: true
+      }
     },
     school: {
       type: String,
@@ -63,12 +73,10 @@ const SoldBooksClusterSchema = new Schema({
       required: true
     },
     avatarImgURL: {
-      type: String,
-      required: true
+      type: String
     },
     schoolLogoURL: {
-      type: String,
-      required: true
+      type: String
     }
   },
   sellerInfo: {
@@ -79,9 +87,19 @@ const SoldBooksClusterSchema = new Schema({
     rating: {
       type: Number
     },
-    city: {
-      type: String,
-      required: true
+    place: {
+      country: {
+        type: String,
+        required: true
+      },
+      region: {
+        type: String,
+        required: true
+      },
+      city: {
+        type: String,
+        required: true
+      }
     },
     school: {
       type: String,
