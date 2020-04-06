@@ -1,0 +1,111 @@
+#deliveryInfo #container {
+  border: 1px solid black;
+  width: 100%;
+  margin: 10px;
+  position: relative;
+  text-align: center;
+}
+
+#deliveryInfo #header-ico {
+  top: -10px;
+  left: -10px;
+}
+
+#deliveryInfo .body-container {
+  margin: 40px 10%;
+  box-sizing: border-box;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  text-align: center;
+}
+
+#deliveryInfo .body {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+
+#deliveryInfo .info-label {
+  /* font-size: 0.9rem; */
+  font-style: italic;
+  text-align: start;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+#deliveryInfo .info-label-explainer {
+  border: 1px solid black;
+  /* height: 120px; */
+  background: white;
+  padding: 15px;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 15px;
+  border-radius: 5px;
+}
+
+#deliveryInfo .info-label-explainer.editing {
+  bottom: 18px;
+}
+
+#deliveryInfo .info-label:hover {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#deliveryInfo .info {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  height: 30px;
+  line-height: 30px;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+#deliveryInfo .info.input {
+  text-align: center;
+  height: 30px;
+  font-size: 1rem;
+}
+
+#deliveryInfo .input-container {
+  border: 0px;
+  /* border: 1px solid black;
+  border-radius: 5px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#deliveryInfo .contained-input {
+  height: 25px;
+  font-size: 1rem;
+  text-align: center;
+  width: 40%;
+  box-sizing: border-box;
+}
+
+#deliveryInfo #cost.contained-input {
+  width: 70%;
+}
+
+#deliveryInfo .singleEditing {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background: rebeccapurple;
+}
+
+#deliveryInfo #header-text {
+  color: red;
+  border-bottom: 1px solid red;
+  display: inline-block;
+  padding: 0 15px;
+  margin: 20px;
+  margin-bottom: 0px;
+}
+
+.header-container {
+  text-align: center;
+}

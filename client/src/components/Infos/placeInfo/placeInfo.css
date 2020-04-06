@@ -1,0 +1,54 @@
+#placeInfo-gContainer {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+#placeInfo {
+  width: 100%;
+  border: 1px solid black;
+  position: relative;
+  margin: 10px;
+}
+
+#placeInfo #ico {
+  top: -10px;
+  left: -10px;
+}
+
+#placeInfo .placeInfoBody {
+  margin: 20px 10%;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-gap: 0px 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  text-align: center;
+}
+
+#placeInfo #editing-placeInfoBody {
+  margin: 15px 50px;
+}
+
+#placeInfo #header-text {
+  color: red;
+  border-bottom: 1px solid red;
+  margin-bottom: 0;
+  display: inline-block;
+  padding: 0 15px;
+  text-align: center;
+}
+
+#placeInfo .placeInfo {
+  margin: 5px 0 5px 0;
+  padding: 5px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 1rem;
+}
+
+#placeInfo .text {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}

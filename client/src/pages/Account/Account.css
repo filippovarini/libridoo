@@ -1,0 +1,31 @@
+#account-gContainer {
+  text-align: center;
+}
+
+#account-gContainer #avatarImg-container {
+  border: 1px solid black;
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 40px;
+  box-shadow: 0px 0px 5px;
+}
+
+#account-gContainer #avatarImg {
+  /* border: 2px solid black; */
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+#account-gContainer #name {
+  margin-top: 30px;
+  font-size: 2rem;
+}
+
+#account-gContainer #rating {
+  margin-bottom: 80px;
+}
+
+#account-gContainer .fa-star {
+  margin-left: 10px;
+}

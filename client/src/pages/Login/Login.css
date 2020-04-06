@@ -1,0 +1,64 @@
+#login #image {
+  background: lightgoldenrodyellow;
+  height: 200px;
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#image-title {
+  font-size: 4rem;
+  letter-spacing: 2rem;
+}
+
+#login-actions {
+  text-align: center;
+}
+
+#login-prompt {
+  display: block;
+  margin: 40px;
+}
+
+#login-form {
+  border: 1px solid black;
+  display: inline-block;
+}
+
+#login .text {
+  margin: 20px;
+}
+
+.input-text {
+  display: block;
+  height: 20px;
+  width: 200px;
+  text-align: center;
+}
+
+#checkbox {
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+#checbox-label {
+  margin-left: 5px;
+}
+
+#submit-btn {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+#recover-prompt {
+  display: block;
+  margin: 20px;
+}

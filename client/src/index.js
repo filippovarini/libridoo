@@ -2,21 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 // reducers
 import userReducer from "./reducers/userReducer";
+import selectedBooksReducer from "./reducers/selectebBooksReducer";
+import booksResultReducer from "./reducers/booksResultReducer";
+import errorReducer from "./reducers/errorReducer";
 
 const reducers = combineReducers({
-  // user: userReducer
-  // booksResult
-  // editingBookReducer
-  // selectedBooks
+  user: userReducer,
+  selectedBooks: selectedBooksReducer,
+  booksResult: booksResultReducer,
+  error: errorReducer
 });
 
-const store = createStore(reducers);
+const store = createStore(reducers, composeWithDevTools());
 
 ReactDOM.render(
   <React.StrictMode>

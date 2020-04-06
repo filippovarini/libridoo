@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Rating = require("../models/Ratings");
 const Comment = require("../models/Comments");
+const Error = require("../models/Errors");
 
 // get Avg Rating
 router.get("/rating", (req, res) => {
@@ -47,6 +48,28 @@ router.post("/comment", (req, res) => {
     .save()
     .then(comment => {
       res.json({ code: 0, comment });
+    })
+    .catch(error => {
+      res.json({ code: 1, error });
+    });
+});
+
+// post error
+router.post("/error", (req, res) => {
+  const newError = new Error({ error: req.body });
+  newError
+    .save()
+    .then(() => {
+      res.json({ code: 0 });
+    })
+    .catch(error => res.json({ code: 1, place: ".save()", error }));
+});
+
+// delete all errors
+router.delete("/error", (req, res) => {
+  Error.deleteMany({})
+    .then(() => {
+      res.json({ code: 0 });
     })
     .catch(error => {
       res.json({ code: 1, error });

@@ -1,18 +1,24 @@
 const clusterGenerator = (books, state) => {
   let newState = state;
-  books.forEach(book => {
+  books.forEach(stateBook => {
+    // prevent from changing the state
+    const book = Object.assign({}, stateBook);
     // fint existing cluster
     let ownCluster = newState.filter(cluster => {
       return cluster.sellerId === book.sellerId;
     })[0];
     if (!ownCluster) {
       // first book sold by this user
-      let sellerInfo = book.sellerUser;
+      let sellerInfoState = book.sellerUser;
+      // prevent from changing state
+      let sellerInfo = Object.assign({}, sellerInfoState);
       const delivery = book.sellerUser.deliveryInfo;
       sellerInfo.place = book.place;
       delete book.place;
       delete sellerInfo.deliveryInfo;
       delete book.sellerUser;
+      // on SBs refresh, book doesn't have userSellsCount. Still good
+      delete book.userSellsCount;
       newState = [
         ...newState,
         { sellerId: book.sellerId, delivery, sellerInfo, Books: [book] }
@@ -21,6 +27,7 @@ const clusterGenerator = (books, state) => {
       // already a cluster (already stored seller info)
       delete book.place;
       delete book.sellerUser;
+      delete book.userSellsCount;
       const index = newState.indexOf(ownCluster);
       ownCluster.Books.push(book);
       newState[index] = ownCluster;
@@ -29,48 +36,41 @@ const clusterGenerator = (books, state) => {
   return newState;
 };
 
-const clusterDelete = (book, state) => {
-  let newState = state;
-  let ownCluster = newState.filter(cluster => {
-    return cluster.sellerId === book.sellerId;
-  })[0];
-  if (!ownCluster) {
-    return newState;
+const clusterDelete = (clusterIndex, bookIndex, state) => {
+  let newState = [...state];
+  const cluster = newState[clusterIndex];
+  if (cluster.Books.length === 1) {
+    // only one book, remove cluster
+    newState.splice(clusterIndex, 1);
   } else {
-    const clusterIndex = newState.indexOf(ownCluster);
-    if (ownCluster.Books.length === 0) {
-      newState.splice(clusterIndex, 1);
-    } else {
-      delete book.sellerUser;
-      delete book.place;
-      const bookIndex = ownCluster.Books.indexOf(book);
-      ownCluster.Books.splice(bookIndex, 1);
-      newState[clusterIndex] = ownCluster;
-    }
-    return newState;
+    cluster.Books.splice(bookIndex, 1);
   }
+  return newState;
 };
 
 const selectedBooksReducer = (state = [], action) => {
   switch (action.type) {
-    case "PUSH":
+    case "SB-PUSH":
       // push one book
       // book
       return clusterGenerator([action.book], state);
 
-    case "SET":
+    case "SB-SET":
       // set all books after refresh
       // [books]
       return clusterGenerator(action.books, state);
 
-    case "DELETE":
+    case "SB-DELETE":
       // delete one from cart
       // book
-      return clusterDelete(book, state);
+      return clusterDelete(action.clusterIndex, action.bookIndex, state);
 
-    case "DELETE-ALL":
+    case "SB-DELETE-ALL":
       // finished, need to empty
       return [];
+
+    default:
+      return state;
   }
 };
 

@@ -1,0 +1,78 @@
+#cart {
+  position: absolute;
+  border: 1px solid black;
+  width: 300px;
+  left: -200px;
+  background: white;
+  z-index: 999;
+  max-height: 400px;
+  overflow: scroll;
+  top: -10px;
+}
+
+#cart #cart-header {
+  text-align: center;
+}
+
+#cart .cluster-container {
+  margin-top: 20px;
+}
+
+#cart .book-container {
+  border: 1px solid black;
+  position: relative;
+  margin: 10px;
+}
+
+#cart .info {
+  margin: 5px;
+}
+
+#cart .quality {
+  font-size: 0.7rem;
+}
+
+#cart .place {
+  font-size: 0.9rem;
+}
+
+#cart .delete {
+  position: absolute;
+  color: red;
+  border: 1px solid black;
+  background: white;
+  min-width: 15px;
+  min-height: 15px;
+  height: 15px;
+  width: 15px;
+  line-height: 15px;
+  text-align: center;
+  border-radius: 15px;
+  top: -7px;
+  margin: 0px;
+  right: -5px;
+}
+
+#cart .delete:hover {
+  border: 1px solid red;
+  cursor: pointer;
+}
+
+#cart #checkout-prompt {
+  text-decoration: none;
+  color: black;
+  border: 1px solid black;
+  width: 120px;
+  height: 25px;
+  line-height: 25px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+  display: block;
+}
+
+#cart #checkout-prompt:hover {
+  font-weight: bold;
+  padding: 2px 4px;
+}

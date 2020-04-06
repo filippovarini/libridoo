@@ -1,0 +1,7 @@
+#footer-container {
+  border-top: 1px solid black;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

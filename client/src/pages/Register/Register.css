@@ -1,0 +1,107 @@
+#register-avatarImgs {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+#images-container {
+  height: 200px;
+  border: 1px solid black;
+}
+
+#avatar-image-container {
+  border: 1px solid black;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  margin-top: 30px;
+  position: relative;
+}
+
+#image-delete {
+  position: absolute;
+  color: red;
+  border: 1px solid red;
+  right: -10px;
+  font-size: 1.3rem;
+  line-height: 17px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 20px;
+  top: -10px;
+  background: white;
+}
+
+#image-delete:hover {
+  cursor: pointer;
+  border: 2px solid red;
+  font-weight: bold;
+}
+
+#avatar-image {
+  /* border: 1px solid black; */
+  width: 100%;
+}
+
+#register-actions {
+  text-align: center;
+}
+
+#register-form {
+  border: 1px solid black;
+  margin: 40px;
+  display: inline-block;
+  width: 350px;
+}
+
+.text-input {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  height: 20px;
+  width: 300px;
+  margin-top: 20px;
+}
+.password {
+  width: 200px;
+}
+
+#password.password {
+  position: relative;
+  right: 50px;
+}
+
+#passwordConfirm {
+  position: relative;
+  left: 50px;
+}
+
+.checkbox-container {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tcp-container {
+  font-size: 0.8rem;
+}
+
+#register-submit {
+  margin: 30px;
+}
+
+#register-confirm {
+  font-size: 2rem;
+  margin: 30px;
+}
+
+#login-prompt-container {
+  margin: 25px;
+  margin-bottom: 40px;
+}
+
+#login-btn {
+  margin-left: 5px;
+}

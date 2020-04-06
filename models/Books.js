@@ -11,10 +11,10 @@ const BookSchema = new Schema({
     type: String,
     required: true
   },
-  isbn: {
-    type: Number,
-    default: null
-  },
+  // isbn: {
+  //   type: Number,
+  //   default: null
+  // },
   price: {
     type: Number,
     required: true

@@ -1,10 +1,12 @@
 const userReducer = (state = {}, action) => {
-  if (action.type === "SET_USER") {
+  if (action.type === "SET-USER") {
     // is it ok??
     return action.user;
   }
   if (action.type === "LOGOUT") {
-    return action.user;
+    return {};
+  } else {
+    return state;
   }
 };
 

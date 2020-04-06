@@ -1,0 +1,104 @@
+#emailConfirm-gContainer {
+  border: 1px solid black;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#emailConfirm-gContainer.hidden {
+  display: none;
+}
+
+#emailConfirm-container {
+  background: white;
+  height: 400px;
+  width: 500px;
+  border: 2px solid black;
+}
+
+#confirm-prompt-image {
+  width: 95%;
+  height: 100px;
+  background: lightgoldenrodyellow;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#confirm-prompt-header {
+  font-size: 2rem;
+  letter-spacing: 1rem;
+}
+
+#email-address-container {
+  /* border: 0.3px solid black; */
+  display: inline-block;
+}
+
+#email-address-container .email {
+  display: block;
+  padding: 5px 15px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+#email-address-container #email {
+  border: 1px solid black;
+}
+
+#email-address-container #edit {
+  font-size: 0.7rem;
+  color: blue;
+}
+
+#email-address-container #edit:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#emailConfirm-input-actions {
+  margin: 0 auto;
+  margin-top: 20px;
+  border: 1px solid black;
+  text-align: center;
+  width: 95%;
+}
+
+#emailConfirm-input-actions #header {
+  font-size: 0.8rem;
+  display: block;
+  margin: 20px;
+}
+
+#emailConfirm-input-actions .input {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+#emailConfirm-input-actions .text {
+  width: 150px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+#emailConfirm-input-actions #resend {
+  color: blue;
+  font-size: 0.7rem;
+}
+
+#emailConfirm-input-actions #resend:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#emailConfirm-input-actions #submit {
+  margin-bottom: 20px;
+}

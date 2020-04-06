@@ -10,22 +10,78 @@ const router = express.Router();
 // secret
 const JWT_SECRET = require("../config/keys").JWT_SECRET;
 
+// send email to user with emailConfirm code
+router.get("/emailConfirm/:email", (req, res) => {
+  let confirmCode = Math.floor(Math.random() * 1000000);
+  confirmCode = confirmCode.toString();
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "libridoo.contacts@gmail.com",
+      pass: "scoby-doo"
+    },
+    tls: { rejectUnauthorized: false }
+  });
+
+  // send mail with defined transport object
+  transporter.sendMail({
+    from: '"Libridoo" <libridoo.contacts@gmail.com>',
+    to: req.params.email,
+    subject: "Conferma la tua Email",
+    text: "Ciao!",
+    html: `Gentile Utente,
+    <br /><br />
+    Il suo codice per confermare l'email è ${confirmCode}
+    <br /><br /><br />
+    Saluti,
+    <br />
+    <i>Il team di Libridoo</i>`
+  });
+  bcrypt
+    .hash(confirmCode, 10)
+    .then(confirmCode => {
+      res.json({ code: 0, hashedCode: confirmCode });
+    })
+    .catch(error => {
+      res.json({ code: 1, place: ".hash()", error });
+    });
+});
+
+// check hashed code
+// hashed / code
+router.post("/emailConfirm/check", (req, res) => {
+  bcrypt
+    .compare(req.body.code, req.body.hashed)
+    .then(response => res.json({ response }))
+    .catch(error => {
+      res.json({ code: 1, place: ".compeare()", error });
+    });
+});
+
 // get user from JWT refresh
 // token
 router.post("/refresh", (req, res) => {
   const token = req.body.token;
-  const user = jwt.verify(token, JWT_SECRET);
+  let user = {};
+  try {
+    user = jwt.verify(token, JWT_SECRET);
+  } catch {
+    res.json({ code: 4, message: "JWT expired" });
+  }
+
   User.findById(user._id)
     .then(user => {
       if (user) {
         const activeUser = user.toObject();
         delete activeUser.password;
-        const JWT = jwt.sign(activeUser, JWT_SECRET);
+        const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
         res.json({ code: 0, activeUser, JWT });
       } else {
         res.json({
           code: 1.5,
-          message: "Nessun account con id del jwt fornito"
+          message: "Nessun account con id il jwt fornito"
         });
       }
     })
@@ -48,17 +104,17 @@ router.post("/login", (req, res) => {
             if (response) {
               const activeUser = user.toObject();
               delete activeUser.password;
-              const JWT = jwt.sign(activeUser, JWT_SECRET);
+              const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
               res.json({ code: 0, activeUser, JWT });
             } else {
-              res.json({ code: 2, message: "Password errata" });
+              res.json({ code: 2, incorrect: "password" });
             }
           })
           .catch(error => {
-            res.json({ code: 1, place: ".compare()", error });
+            res.json({ code: 1, place: ".compare()", error: "hashing" });
           });
       } else {
-        res.json({ code: 2, message: "Email errata" });
+        res.json({ code: 2, incorrect: "email" });
       }
     })
     .catch(error => {
@@ -66,10 +122,9 @@ router.post("/login", (req, res) => {
     });
 });
 
-// register
-// bonus update in here
-// email / password / name / avatarImgURL / invitingUserId
-router.post("/register", (req, res) => {
+// check email
+// email
+router.post("/register/check", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
@@ -78,50 +133,7 @@ router.post("/register", (req, res) => {
           message: "Email già registrata con un altro account"
         });
       } else {
-        bcrypt
-          .hash(req.body.password, 10)
-          .then(hashed => {
-            const NewUser = new User({
-              avatarImgURL: req.body.avatarImgURL,
-              name: req.body.name,
-              email: req.body.email,
-              password: hashed,
-              passwordLength: req.body.password.length
-            });
-            NewUser.save()
-              .then(user => {
-                const activeUser = user.toObject();
-                delete activeUser.password;
-                const JWT = jwt.sign(activeUser, JWT_SECRET);
-                if (req.body.invitingUserId) {
-                  // update bonus points if invited
-                  // !!!AAA!!! for now, bonusPoints increment is 5, need to specify
-                  User.findByIdAndUpdate(req.body.invitingUserId, {
-                    $inc: { bonusPoints: 5 }
-                  })
-                    .then(() => {
-                      res.json({ code: 0, activeUser, JWT });
-                    })
-                    .catch(error => {
-                      res.json({
-                        code: 3,
-                        activeUser,
-                        JWT,
-                        place: ".findByIdAndUpdate()",
-                        error
-                      });
-                    });
-                } else {
-                  res.json({ code: 0, activeUser, JWT });
-                }
-              })
-              .catch(error => {
-                res.json({ code: 1, place: ".save()", error });
-              });
-          })
-          .catch(error => {
-            res.json({ code: 1, place: ".hash()", error });
-          });
+        res.json({ code: 0 });
       }
     })
     .catch(error => {
@@ -129,8 +141,73 @@ router.post("/register", (req, res) => {
     });
 });
 
+// register
+// bonus update in here
+// email / password / name / avatarImgURL / invitingUserId
+router.post("/register", (req, res) => {
+  // User.findOne({ email: req.body.email })
+  //   .then(user => {
+  //     if (user) {
+  //       res.json({
+  //         code: 2,
+  //         message: "Email già registrata con un altro account"
+  //       });
+  //     } else {
+  bcrypt
+    .hash(req.body.password, 10)
+    .then(hashed => {
+      const NewUser = new User({
+        avatarImgURL: req.body.avatarImgURL,
+        name: req.body.name,
+        email: req.body.email,
+        password: hashed,
+        passwordLength: req.body.password.length
+      });
+      NewUser.save()
+        .then(user => {
+          const activeUser = user.toObject();
+          delete activeUser.password;
+          const JWT = jwt.sign(activeUser, JWT_SECRET, {
+            expiresIn: "7d"
+          });
+          if (req.body.invitingUserId) {
+            // update bonus points if invited
+            // !!!AAA!!! for now, bonusPoints increment is 5, need to specify
+            User.findByIdAndUpdate(req.body.invitingUserId, {
+              $inc: { bonusPoints: 5 }
+            })
+              .then(() => {
+                res.json({ code: 0, activeUser, JWT });
+              })
+              .catch(error => {
+                res.json({
+                  code: 3,
+                  activeUser,
+                  JWT,
+                  place: ".findByIdAndUpdate()",
+                  error
+                });
+              });
+          } else {
+            res.json({ code: 0, activeUser, JWT });
+          }
+        })
+        .catch(error => {
+          res.json({ code: 1, place: ".save()", error });
+        });
+    })
+    .catch(error => {
+      res.json({ code: 1, place: ".hash()", error });
+    });
+  // }
+  // })
+  // .catch(error => {
+  //   res.json({ code: 1, place: ".findOne()", error });
+  // });
+});
+
 // update bodyInfo
-// _id / defaultEmail / newBodyInfo : { email / school / phone / schoolLogoUrl } (even if you don't have it, pass default)
+// _id / defaultEmail / newBodyInfo : { email  / phone / school / schoolLogoUrl } (even if you don't have it, pass default)
 router.put("/bodyInfo", (req, res) => {
   if (req.body.defaultEmail !== req.body.newBodyInfo.email) {
     User.find({ email: req.body.newBodyInfo.email })
@@ -147,7 +224,7 @@ router.put("/bodyInfo", (req, res) => {
             .then(user => {
               const activeUser = user.toObject();
               delete activeUser.password;
-              const JWT = jwt.sign(activeUser, JWT_SECRET);
+              const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
               res.json({ code: 0, activeUser, JWT });
             })
             .catch(error => {
@@ -162,7 +239,7 @@ router.put("/bodyInfo", (req, res) => {
     User.findByIdAndUpdate(req.body._id, req.body.newBodyInfo, { new: true })
       .then(user => {
         const activeUser = user.toJSON();
-        const JWT = jwt.sign(activeUser, JWT_SECRET);
+        const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
         res.json({ code: 0, activeUser, JWT });
       })
       .catch(error => {
@@ -178,7 +255,7 @@ router.put("/place", (req, res) => {
     .then(user => {
       const activeUser = user.toObject();
       delete activeUser.password;
-      const JWT = jwt.sign(activeUser, JWT_SECRET);
+      const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
       res.json({ code: 0, activeUser, JWT });
     })
     .catch(error => {
@@ -193,7 +270,7 @@ router.put("/delivery", (req, res) => {
     .then(user => {
       const activeUser = user.toObject();
       delete activeUser.password;
-      const JWT = jwt.sign(activeUser, JWT_SECRET);
+      const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
       res.json({ code: 0, activeUser, JWT });
     })
     .catch(error => {
@@ -252,59 +329,57 @@ router.put("/ratingUpdate", (req, res) => {
 // update password
 // _id / oldPassword / newPassword
 router.put("/passwordUpdate", (req, res) => {
-  if (req.body.oldPassword === req.body.newPassword) {
-    res.json({ code: 2, message: "Password già salvata su questo account" });
-  } else {
-    User.findById(req.body._id)
-      .then(user => {
-        if (!user) {
-          res.json({ code: 1.5, message: "nessun utente con questo id" });
-        } else {
-          bcrypt
-            .compare(req.body.oldPassword, user.password)
-            .then(response => {
-              if (!response) {
-                res.json({ code: 2, message: "Vecchia password errata" });
-              } else {
-                bcrypt
-                  .hash(req.body.newPassword, 10)
-                  .then(hashed => {
-                    User.findByIdAndUpdate(
-                      req.body._id,
-                      {
-                        password: hashed,
-                        passwordLength: req.body.newPassword.length
-                      },
-                      { new: true }
-                    )
-                      .then(user => {
-                        const activeUser = user.toObject();
-                        delete activeUser.password;
-                        const JWT = jwt.sign(activeUser, JWT_SECRET);
-                        res.json({ code: 0, activeUser, JWT });
-                      })
-                      .catch(error => {
-                        res.json({
-                          code: 1,
-                          place: ".findByIdAndUpdate()",
-                          error
-                        });
+  User.findById(req.body._id)
+    .then(user => {
+      if (!user) {
+        res.json({ code: 1.5, message: "nessun utente con questo id" });
+      } else {
+        bcrypt
+          .compare(req.body.oldPassword, user.password)
+          .then(response => {
+            if (!response) {
+              res.json({ code: 2, message: "Vecchia password errata" });
+            } else {
+              bcrypt
+                .hash(req.body.newPassword, 10)
+                .then(hashed => {
+                  User.findByIdAndUpdate(
+                    req.body._id,
+                    {
+                      password: hashed,
+                      passwordLength: req.body.newPassword.length
+                    },
+                    { new: true }
+                  )
+                    .then(user => {
+                      const activeUser = user.toObject();
+                      delete activeUser.password;
+                      const JWT = jwt.sign(activeUser, JWT_SECRET, {
+                        expiresIn: "7d"
                       });
-                  })
-                  .catch(error => {
-                    res.json({ code: 1, place: ".hash()", error });
-                  });
-              }
-            })
-            .catch(error => {
-              res.json({ code: 1, place: ".compare()", error });
-            });
-        }
-      })
-      .catch(error => {
-        res.json({ code: 1, place: ".findById()", error });
-      });
-  }
+                      res.json({ code: 0, activeUser, JWT });
+                    })
+                    .catch(error => {
+                      res.json({
+                        code: 1,
+                        place: ".findByIdAndUpdate()",
+                        error
+                      });
+                    });
+                })
+                .catch(error => {
+                  res.json({ code: 1, place: ".hash()", error });
+                });
+            }
+          })
+          .catch(error => {
+            res.json({ code: 1, place: ".compare()", error });
+          });
+      }
+    })
+    .catch(error => {
+      res.json({ code: 1, place: ".findById()", error });
+    });
 });
 
 // reset password

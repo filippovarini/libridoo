@@ -14,11 +14,11 @@ const SoldBook = new Schema({
     type: String,
     required: true
   },
-  isbn: Number,
-  price: {
-    type: Number,
-    required: true
-  },
+  // isbn: Number,
+  // price: {
+  //   type: Number,
+  //   required: true
+  // },
   quality: {
     type: String,
     required: true

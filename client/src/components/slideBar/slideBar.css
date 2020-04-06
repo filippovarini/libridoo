@@ -1,0 +1,41 @@
+#slideBar {
+  position: absolute;
+  border: 1px solid black;
+  top: 35px;
+  right: 50px;
+  background: white;
+  z-index: 2;
+}
+
+#slideBar-components-container {
+  height: 85%;
+}
+
+.slideBar-component {
+  height: 30px;
+  margin: 20px;
+  display: block;
+  color: black;
+  text-decoration: none;
+}
+
+.slidebar-footer {
+  width: 90%;
+  margin: 0 auto;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid black;
+  font-size: 1.5rem;
+  color: black;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.hover:hover {
+  font-weight: 600;
+}

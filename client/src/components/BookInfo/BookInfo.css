@@ -1,0 +1,162 @@
+#bookInfo-gContainer {
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+}
+#bookInfo-gContainer #general-delete {
+  font-size: 2rem;
+  margin: 0px;
+  background: white;
+  border: 2px solid black;
+  box-sizing: border-box;
+  color: red;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  line-height: 22px;
+  top: -40px;
+  border-radius: 15px;
+  right: -40px;
+}
+
+#bookInfo-gContainer #general-delete:hover {
+  border: 2px solid red;
+  cursor: pointer;
+}
+
+#bookInfo {
+  border: 3px solid black;
+  position: fixed;
+  left: 50%;
+  margin-left: -250px;
+  width: 500px;
+  text-align: center;
+  background: white;
+  z-index: 1;
+  top: 100px;
+}
+
+#bookInfo #header {
+  border-bottom: 1px solid black;
+  display: inline-block;
+  padding: 10px;
+}
+
+#bookInfo .image-container {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  margin-top: 30px;
+  position: relative;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#bookInfo #label {
+  display: flex;
+  border: 1px solid black;
+  border-radius: 50px;
+  height: 100px;
+  width: 100px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+#bookInfo #label:hover {
+  color: gray;
+  border: 2px solid gray;
+  cursor: pointer;
+}
+
+#bookInfo #notSubmitted-container #image-header {
+  display: inline-block;
+  padding: 0 20px;
+  margin-top: 15px;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+#bookInfo #submitted .normal {
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+#bookInfo #delete {
+  position: absolute;
+  color: red;
+  border: 1px solid red;
+  right: -10px;
+  top: -10px;
+  font-size: 1.3rem;
+  line-height: 17px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 20px;
+  background: white;
+  margin: 0px;
+}
+
+#bookInfo #delete:hover {
+  cursor: pointer;
+  border: 2px solid red;
+  font-weight: bold;
+}
+
+#bookInfo #form-container {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  min-width: 238px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+#bookInfo .input {
+  display: block;
+  height: 20px;
+  text-align: center;
+}
+
+#bookInfo #select-header {
+  margin: 0px;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+  color: gray;
+}
+
+#bookInfo #title {
+  width: 238px;
+}
+
+#bookInfo .info {
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+#bookInfo #price {
+  margin-bottom: 20px;
+}
+
+#bookInfo #submit {
+  padding: 10px;
+  margin-bottom: 30px;
+}
+
+#bookInfo .empty {
+  border: 1px solid red;
+}
+
+#bookInfo .empty-header {
+  color: red;
+}

@@ -64,7 +64,7 @@ router.get("/fetch/bought/:_id", (req, res) => {
 
 // get book with search ui
 // call it also when changing filter
-// searchParams: {ui / place: {type / value} / school / quality}
+// searchParams: {ui / city / school / quality}
 // if first time to type, pass default filters ({quality: null, place: {type: city, value: ''}, school: ''})and save them to Session
 router.post("/fetch/buy", async (req, res) => {
   // reject messages
@@ -74,7 +74,7 @@ router.post("/fetch/buy", async (req, res) => {
   let frozenBooks = [];
   let pointer = "";
   if (parseInt(req.body.searchParams.ui)) {
-    // isbn
+    // isbn (useless because no isbn)
     pointer = "codice isbn";
     frozenBooks = await Book.find({ isbn: req.body.searchParams.ui });
   } else {
@@ -100,40 +100,27 @@ router.post("/fetch/buy", async (req, res) => {
       : booksFetched;
     if (filterResult.length === 0) {
       res.json({
-        code: 2,
+        code: 2.5,
+        wrongFilter: "quality",
         message: "Nessun libro in vendita della qualità selezionata"
       });
     }
     // filter place
-    switch (req.body.searchParams.place.type) {
-      case "country":
-        filterResult = filterResult.filter(
-          book =>
-            book.place.country.toLowerCase() ===
-            req.body.searchParams.place.value.toLowerCase()
-        );
-        break;
-      case "region":
-        filterResult = filterResult.filter(
-          book =>
-            book.place.region.toLowerCase() ===
-            req.body.searchParams.place.value.toLowerCase()
-        );
-        break;
-      case "city":
-        filterResult = filterResult.filter(
+    filterResult = req.body.searchParams.city
+      ? filterResult.filter(
           book =>
             book.place.city.toLowerCase() ===
-            req.body.searchParams.place.value.toLowerCase()
-        );
-        break;
-    }
+            req.body.searchParams.city.toLowerCase()
+        )
+      : filterResult;
     if (filterResult.length === 0) {
       res.json({
-        code: 2,
+        code: 2.5,
+        wrongFilter: "place",
         message: "Nessun libro in vendita nel luogo selezionato"
       });
     }
+
     // attach user
     const forEachPromise = new Promise((resolve, reject) => {
       filterResult.forEach(book => {
@@ -179,7 +166,8 @@ router.post("/fetch/buy", async (req, res) => {
       }
       if (filterResult.length === 0) {
         res.json({
-          code: 2,
+          code: 2.5,
+          wrongFilter: "school",
           message: "Nessun libro in vendità all'Università selezionata"
         });
       } else {
@@ -199,7 +187,8 @@ router.post("/fetch/buy", async (req, res) => {
 });
 
 // general get
-// searchParams : [{ui / place: {type / value} / school / quality}]
+// searchParams : [{ui / city / school / quality}]
+// !! if no filter, don't send it!!
 router.post("/generalFetch/UI", async (req, res) => {
   // reject messages
   let placeMessage = "",
@@ -210,11 +199,13 @@ router.post("/generalFetch/UI", async (req, res) => {
   const generalPromise = new Promise((resolve, reject) => {
     req.body.searchParams.forEach(async param => {
       let message = "";
+      let wrongFilter = "";
+      let wrongCode = null;
       let isEmpty = false;
       let frozenBooks = [];
       let pointer = "";
       if (parseInt(param.ui)) {
-        // isbn
+        // isbn (useless because no isbn)
         pointer = "codice isbn";
         frozenBooks = await Book.find({ isbn: param.ui });
       } else {
@@ -228,7 +219,10 @@ router.post("/generalFetch/UI", async (req, res) => {
       });
       // could be HERE??Q!!!
       if (filterResult.length == 0) {
+        // impossible, because this happens when refresh, and if you refresh with results, already got jsonRes.code!==2
         isEmpty = true;
+        wrongCode = 2;
+        wrongFilter = "pointer";
         message = `Nessun libro trovato. Controlla che il ${pointer} sia corretto`;
       }
       //   filter quality
@@ -240,39 +234,26 @@ router.post("/generalFetch/UI", async (req, res) => {
           : filterResult;
         if (filterResult.length === 0) {
           isEmpty = true;
+          wrongCode = 2.5;
+          wrongFilter = "quality";
           message = "Nessun libro in vendita della qualità selezionata";
         }
       }
       // filter place
       if (!isEmpty) {
-        switch (param.place.type) {
-          case "country":
-            filterResult = filterResult.filter(
-              book =>
-                book.place.country.toLowerCase() ===
-                param.place.value.toLowerCase()
-            );
-            break;
-          case "region":
-            filterResult = filterResult.filter(
-              book =>
-                book.place.region.toLowerCase() ===
-                param.place.value.toLowerCase()
-            );
-            break;
-          case "city":
-            filterResult = filterResult.filter(
-              book =>
-                book.place.city.toLowerCase() ===
-                param.place.value.toLowerCase()
-            );
-            break;
-        }
+        filterResult = param.city
+          ? filterResult.filter(
+              book => book.place.city.toLowerCase() === param.city.toLowerCase()
+            )
+          : filterResult;
         if (filterResult.length === 0) {
           isEmpty = true;
+          wrongCode = 2.5;
+          wrongFilter = "place";
           message = "Nessun libro in vendita nel luogo selezionato";
         }
       }
+
       // attach user and filter by school
       const forEachPromise = new Promise((resolve, reject) => {
         if (isEmpty) {
@@ -321,19 +302,33 @@ router.post("/generalFetch/UI", async (req, res) => {
             );
             if (filterResult.length === 0) {
               isEmpty = true;
+              wrongFilter = "school";
+              wrongCode = 2.5;
               message = "Nessun libro in vendita all'Università selezionata";
             }
           }
-          results.push({
-            searchParams: param,
-            filterResult,
-            index: req.body.searchParams.indexOf(param)
-          });
+          if (!wrongCode) {
+            results.push({
+              searchParams: param,
+              filterResult,
+              index: req.body.searchParams.indexOf(param)
+            });
+          } else {
+            results.push({
+              searchParams: param,
+              filterResult,
+              wrongCode,
+              wrongFilter,
+              message,
+              index: req.body.searchParams.indexOf(param)
+            });
+          }
         } else {
           results.push({
             searchParams: param,
             filterResult,
-            code: 2,
+            wrongCode,
+            wrongFilter,
             message,
             index: req.body.searchParams.indexOf(param)
           });
@@ -407,7 +402,7 @@ router.post("/image", (req, res) => {
 });
 
 // post new book
-// imageURL / title / isbn / quality / price / sellerId / place: {country / region / city}
+// imageURL / title / no isbn / quality / price / sellerId / place: {country / region / city}
 router.post("/insert", (req, res) => {
   const newBook = new Book(req.body);
   newBook
@@ -430,8 +425,8 @@ soldBooksClusters: [
   {
     sellerId / delivery: {choosen (if not choosen, still pass null for cost and range) / cost / range / timeToMeet},
     sellerInfo: {name / rating / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL (got in frontend from book.sellerUser in cluster)
-    Books:[{bookId / imageURL / title / isbn / price / quality / insertionDate}]  }]
-} */
+    Books:[{bookId / imageURL / title / **no isbn** / price / quality / insertionDate}]  }]
+}] */
 // no input mistake
 router.post("/checkedOut", (req, res) => {
   // post deal
@@ -512,7 +507,7 @@ router.post("/checkedOut", (req, res) => {
 
 // edit book
 // bookInfo type edit, already fetched url
-// _id / newInfo: {imageURL / title / isbn / price / quality}
+// _id / newInfo: {imageURL / title / **no isbn** / price / quality}
 router.put("/edit", (req, res) => {
   Book.findByIdAndUpdate(req.body._id, req.body.newInfo, { new: true })
     .then(book => {

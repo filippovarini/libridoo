@@ -1,0 +1,53 @@
+#infoReview {
+  text-align: center;
+  margin: 40px 0;
+}
+
+#infoReview #header-review {
+  text-align: center;
+  font-size: 1.8rem;
+  border-bottom: 1px solid black;
+  display: inline-block;
+  padding: 0px 20px;
+  margin: 0 20px;
+}
+
+#infoReview #info-container {
+  border: 1px solid black;
+  width: 80%;
+  margin: 30px auto;
+  padding-bottom: 40px;
+}
+
+#infoReview #info-container.invalid {
+  border: 1px solid red;
+}
+
+#infoReview #submit {
+  border: 1px solid black;
+  display: inline-block;
+  padding: 8px 20px;
+}
+
+#infoReview #submit:hover {
+  padding: 10px 25px;
+  cursor: pointer;
+}
+
+#infoReview #empty-header {
+  color: red;
+  font-size: 1.2rem;
+  border-bottom: 1px solid red;
+  display: inline-block;
+  padding: 0 15px;
+  margin: 0 15px;
+  margin-top: 20px;
+}
+
+#infoReview #empty-header.hidden {
+  display: none;
+}
+
+#infoReview .inside {
+  margin-top: 50px;
+}

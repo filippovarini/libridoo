@@ -1,0 +1,88 @@
+#header-container {
+  border-bottom: 1px solid black;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#header-container .quick-search {
+  display: flex;
+  align-items: center;
+  width: 20%;
+}
+
+#header-container .quick-search.hidden {
+  display: none;
+}
+
+#header-container .quickSearch.hidden {
+  display: none;
+}
+
+#header-container .searchBar-input {
+  margin: 8px;
+}
+
+#header-container #search-ico:hover {
+  border: 2px solid black;
+  padding: 6px;
+  cursor: pointer;
+}
+
+#header-container .submit {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#header-container #title-input {
+  height: 20px;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+#header-container #loading-input {
+  height: 20px;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+#header-container #searchBar-form {
+  width: 100%;
+}
+
+#header-container #search-prompt {
+  border: 1px solid black;
+  height: 30px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 5px;
+}
+
+#header-container #search-header {
+  margin: 0px;
+  margin-left: 10px;
+}
+
+#header-container #search-prompt:hover {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#header-container .promptIcon {
+  border: 1px solid black;
+  padding: 5px 10px;
+}
+
+#header-container .promptIcon:hover {
+  border: 2px solid black;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+#header-container #cart-gContainer {
+  position: relative;
+}

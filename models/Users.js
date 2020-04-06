@@ -70,7 +70,7 @@ const UserSchema = new Schema({
   DeliveryInfo: {
     range: {
       type: String,
-      default: null
+      default: "NO"
     },
     cost: {
       type: Number,

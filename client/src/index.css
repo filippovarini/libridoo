@@ -1,13 +1,52 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+#app-body {
+  min-height: 90vh;
+  position: relative;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.hidden {
+  display: none;
+}
+
+.invalid-input {
+  border: 1px solid red;
+  border-radius: 1px;
+}
+
+/* don't really like invalid placeholder */
+
+/* .invalid-input::placeholder {
+  color: red;
+} */
+
+.correct-input {
+  border: 1px solid green;
+  border-radius: 1px;
+}
+
+.incorrect-input-label {
+  color: red;
+  font-size: 0.8rem;
+}
+
+.bigger {
+  border: 2px solid black;
+  position: absolute;
+  width: 80vw;
+  max-width: 700px;
+  height: auto;
+  z-index: 1;
 }
