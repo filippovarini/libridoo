@@ -33,4 +33,4 @@ const booksResultReducer = (state = [], action) => {
   }
 };
 
-module.exports = booksResultReducer;
+export default booksResultReducer;

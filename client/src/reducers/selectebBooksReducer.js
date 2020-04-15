@@ -96,4 +96,4 @@ const selectedBooksReducer = (state = [], action) => {
   }
 };
 
-module.exports = selectedBooksReducer;
+export default selectedBooksReducer;

@@ -9,4 +9,4 @@ const errorReducer = (state = {}, action) => {
   }
 };
 
-module.exports = errorReducer;
+export default errorReducer;

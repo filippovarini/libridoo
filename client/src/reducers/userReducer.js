@@ -10,4 +10,4 @@ const userReducer = (state = {}, action) => {
   }
 };
 
-module.exports = userReducer;
+export default userReducer;
