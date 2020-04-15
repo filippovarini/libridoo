@@ -29,4 +29,4 @@ const AL1 = booksResult => {
   return booksResult;
 };
 
-module.exports = AL1;
+export default AL1;
