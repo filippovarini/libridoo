@@ -1,0 +1,53 @@
+#home-image-container {
+  width: 95%;
+  height: 200px;
+  background: lightgoldenrodyellow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+#home-fake-header {
+  font-size: 2.5rem;
+  letter-spacing: 1.5rem;
+  font-weight: 100;
+}
+
+#helloer-container {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+#home-meme-container {
+  width: 100%;
+  padding-top: 100%;
+  margin: 0 auto;
+  margin-top: 30px;
+  background: lightcyan;
+  border: 2px solid black;
+}
+
+#helloer {
+  font-size: 2rem;
+  margin-bottom: 0px;
+}
+
+#helps-container {
+  margin: 50px auto;
+  text-align: center;
+}
+
+#helps-header {
+  margin: 0px;
+  display: inline-block;
+  font-size: 1.5rem;
+  border-bottom: 1px solid black;
+  padding: 0px 30px;
+}
+
+#help-main-gContainer.home-help {
+  margin-top: 20px;
+}

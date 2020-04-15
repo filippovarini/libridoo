@@ -1,4 +1,5 @@
 const express = require("express");
+const nodemailer = require("nodemailer");
 
 // router
 const router = express.Router();
@@ -28,7 +29,7 @@ router.get("/fetch/selling/:_id", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 0, place: ".find()", error });
+      res.json({ code: 1, place: ".find()", error });
     });
 });
 
@@ -43,7 +44,7 @@ router.get("/fetch/sold/:_id", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 0, place: ".find()", error });
+      res.json({ code: 1, place: ".find()", error });
     });
 });
 
@@ -58,7 +59,7 @@ router.get("/fetch/bought/:_id", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 0, place: ".find()", error });
+      res.json({ code: 1, place: ".find()", error });
     });
 });
 
@@ -117,7 +118,7 @@ router.post("/fetch/buy", async (req, res) => {
       res.json({
         code: 2.5,
         wrongFilter: "place",
-        message: "Nessun libro in vendita nel luogo selezionato"
+        message: "Nessun libro in vendita nel tuo luogo"
       });
     }
 
@@ -168,7 +169,7 @@ router.post("/fetch/buy", async (req, res) => {
         res.json({
           code: 2.5,
           wrongFilter: "school",
-          message: "Nessun libro in vendità all'Università selezionata"
+          message: "Nessun libro in vendità nella tua Scuola o Università"
         });
       } else {
         res.json({
@@ -250,7 +251,7 @@ router.post("/generalFetch/UI", async (req, res) => {
           isEmpty = true;
           wrongCode = 2.5;
           wrongFilter = "place";
-          message = "Nessun libro in vendita nel luogo selezionato";
+          message = "Nessun libro in vendita nel tuo luogo";
         }
       }
 
@@ -304,7 +305,7 @@ router.post("/generalFetch/UI", async (req, res) => {
               isEmpty = true;
               wrongFilter = "school";
               wrongCode = 2.5;
-              message = "Nessun libro in vendita all'Università selezionata";
+              message = "Nessun libro in vendita nella tua Scuola o Università";
             }
           }
           if (!wrongCode) {
@@ -372,7 +373,7 @@ router.post("/generalFetch/ID", async (req, res) => {
           phone: user.phone,
           avatarImgURL: user.avatarImgURL,
           schoolLogoURL: user.schoolLogoURL,
-          deliveryInfo: user.deliveryInfo
+          deliveryInfo: user.DeliveryInfo
         };
         book.sellerUser = sellerUser;
       }
@@ -415,99 +416,297 @@ router.post("/insert", (req, res) => {
     });
 });
 
-// post deal (first deal, then to SoldBooksCluster with deal id)
 // send to general problem if code !== 0
 /* {
+  dealId / buyerId / checkoutDate (gotten from posting in deal)
 [_ids (stored in session)]
-deal: {buyerId / [sellerIds] / bill: {delivery / books / commissions / total} },
-buyerInfo: {name / rating / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL
+buyerInfo: { / name / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL
 soldBooksClusters: [
   {
     sellerId / delivery: {choosen (if not choosen, still pass null for cost and range) / cost / range / timeToMeet},
-    sellerInfo: {name / rating / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL (got in frontend from book.sellerUser in cluster)
-    Books:[{bookId / imageURL / title / **no isbn** / price / quality / insertionDate}]  }]
+    sellerInfo: { / name / / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL (got in frontend from book.sellerUser in cluster)
+    Books:[{bookId / imageURL / title  / price / quality / insertionDate}]  }]
 }] */
 // no input mistake
 router.post("/checkedOut", (req, res) => {
   // post deal
-  const newDeal = new Deal(req.body.deal);
-  newDeal
-    .save()
-    .then(deal => {
-      const clusterPromise = new Promise((resolve, reject) => {
-        // post soldbooks cluster
-        req.body.soldBooksClusters.forEach(cluster => {
-          const newCluster = new SoldBooksCluster({
-            dealId: deal._id,
-            checkoutDate: deal.checkoutDate,
-            buyerId: deal.buyerId,
-            sellerId: cluster.sellerId,
-            delivery: cluster.delivery,
-            buyerInfo: req.body.buyerInfo,
-            sellerInfo: cluster.sellerInfo,
-            Books: cluster.Books
+  // const newDeal = new Deal(req.body.deal);
+  // newDeal
+  //   .save()
+  //   .then(deal => {
+  const clusterPromise = new Promise((resolve, reject) => {
+    req.body.soldBooksClusters.forEach(cluster => {
+      // calculate total price
+      let clusterPrice = 0;
+      cluster.Books.forEach(book => (clusterPrice += book.price));
+      // send email to seller
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: "libridoo.contacts@gmail.com",
+          pass: "scoby-doo"
+        },
+        tls: { rejectUnauthorized: false }
+      });
+
+      // send mail with defined transport object
+      transporter.sendMail({
+        from: '"Libridoo" <libridoo.contacts@gmail.com>',
+        to: cluster.sellerInfo.email,
+        subject: "Vendita libri",
+        // text: "Ciao!",
+        html: `Caro ${cluster.sellerInfo.name},
+        <br /><br />
+        Abbiamo buone notizie!!
+        <br />
+        Hai appena venduto ${cluster.Books.length} libr<span>${
+          cluster.Books.length === 1 ? "o" : "i"
+        }</span> a ${req.body.buyerInfo.name}, per un totale di ${clusterPrice}
+        euro. <br />
+        ${
+          cluster.delivery.choosen
+            ? `<span>${req.body.buyerInfo.name} vive in zona ${
+                req.body.buyerInfo.place.city
+              }, ${
+                req.body.buyerInfo.place.region
+              }, ed ha chiesto di riceverli via spedizione,
+        pagandoti un extra di ${
+          cluster.delivery.cost
+        } euro, come da te specificato.<br />
+        Il totale, dunque, ammonta a <b>€ ${clusterPrice +
+          cluster.delivery.cost}</span>`
+            : ""
+        }        
+        </b><br/><br />
+        Adesso,<br />
+        tutto quello che devi fare per ricevere i soldi, è consegnare i libri al
+        compratore. Una volta ricevuti, lui ci confermerà la consegna e tu riceverai
+        i soldi. 
+        <br />Perciò, ti consigliamo vivamente di consegnare i libri il
+        prima possibile, per ricevere subito i soldi.
+        <br/><br/>
+          Ecco le informazioni di ${
+            req.body.buyerInfo.name
+          }, accordati con lui per
+          l'incontro o spedizione.
+        </p>
+        <div style="margin-top: 30px">
+          <p
+            style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
+          >
+            ${req.body.buyerInfo.name}${
+          cluster.delivery.choosen
+            ? `<span style="font-size: 1.2rem">, con spedizione</span>`
+            : ""
+        }
+          </p>
+          <div
+            style="border: 1px solid black; display: flex; justify-content: space-between;"
+          >
+            <div style="border: 1px solid black; width: 50%;">
+              <p
+                style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+              >
+                Libri Comprati
+              </p>
+              <ul>
+                ${cluster.Books.map(book => {
+                  return `<li key=${book._id}>${book.title}</li>`;
+                }).join("")}
+              </ul>
+            </div>
+            <div style="border: 1px solid black; width: 50%; min-width: 50%;">
+              <p
+                style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+              >
+                Contatti
+              </p>
+              <ul>
+                <li>
+                  ${req.body.buyerInfo.email}
+                </li>
+                <li>
+                ${req.body.buyerInfo.phone}
+                </li>
+                <li>
+                ${req.body.buyerInfo.place.city}, ${req.body.buyerInfo.school}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <br/><br/><br/><br/>
+        Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
+      });
+      // post soldbooks cluster
+      const newCluster = new SoldBooksCluster({
+        dealId: req.body.dealId,
+        checkoutDate: req.body.checkoutDate,
+        buyerId: req.body.buyerId,
+        sellerId: cluster.sellerId,
+        delivery: cluster.delivery,
+        buyerInfo: req.body.buyerInfo,
+        sellerInfo: cluster.sellerInfo,
+        Books: cluster.Books
+      });
+      newCluster
+        .save()
+        .then(() => {
+          // if everything goes well, check if it was the last cluster
+          if (
+            req.body.soldBooksClusters.indexOf(cluster) ===
+            req.body.soldBooksClusters.length - 1
+          ) {
+            resolve();
+          }
+        })
+        .catch(error => {
+          // if error, call reject with cluster identifier\
+          console.log(".save cluster", error);
+          reject({
+            code: 1,
+            place: ".save() cluster",
+            clusterProblem: cluster.sellerId,
+            error
           });
-          newCluster
-            .save()
-            .then(() => {
-              // if everything goes well, check if it was the last cluster
-              if (
-                req.body.soldBooksClusters.indexOf(cluster) ===
-                req.body.soldBooksClusters.length - 1
-              ) {
-                resolve();
-              }
-            })
-            .catch(error => {
-              // if error, call reject with cluster identifier
-              reject({
-                code: 1,
-                place: ".save() cluster",
-                clusterProblem: cluster.sellerId,
-                error
-              });
-            });
         });
-      });
-      clusterPromise.then(() => {
-        // successfully posted all clusters, now delete sold books
-        req.body._ids.forEach(_id => {
-          Book.findByIdAndDelete(_id)
-            .then(book => {
-              if (!book) {
-                res.json({
-                  code: 1.5,
-                  devmessage: "clusters successfully posted",
-                  message: "Nessun libro trovato con questo id",
-                  _id
-                });
-              } else {
-                if (req.body._ids.indexOf(_id) === req.body._ids.length - 1) {
-                  res.json({
-                    code: 0,
-                    devmessage: "clusters successfully posted",
-                    message: "Operazione effettuata con successo"
-                  });
-                }
-              }
-            })
-            .catch(error => {
-              res.json({ code: 1, place: ".findByIdAndDelete()", _id, error });
-            });
-        });
-      });
-      clusterPromise.catch(errorObj => {
-        res.json(errorObj);
-      });
-    })
-    .catch(error => {
-      res.json({ code: 1, error });
     });
+  });
+  clusterPromise.then(() => {
+    console.log("promise successful");
+    // successfully posted all clusters, now delete sold books
+    req.body._ids.forEach(_id => {
+      Book.findByIdAndDelete(_id)
+        .then(book => {
+          if (!book) {
+            res.json({
+              code: 1.5,
+              devmessage: "clusters successfully posted",
+              message: "Nessun libro trovato con questo id",
+              _id
+            });
+          } else {
+            if (req.body._ids.indexOf(_id) === req.body._ids.length - 1) {
+              // success
+              // send mail
+              const transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false,
+                auth: {
+                  user: "libridoo.contacts@gmail.com",
+                  pass: "scoby-doo"
+                },
+                tls: { rejectUnauthorized: false }
+              });
+
+              // send mail with defined transport object
+              transporter.sendMail({
+                from: '"Libridoo" <libridoo.contacts@gmail.com>',
+                to: req.body.buyerInfo.email,
+                subject: "Ordine completato!",
+                // text: "Ciao!", OK WITHOUT TEXT??
+                html: `Caro ${req.body.buyerInfo.name},
+                <br /><br />
+                Ti ringraziamo per aver scelto <i>Libridoo</i> per comprare i libri di cui
+                avevi bisogno, speriamo ti sia trovato bene con noi.
+                <br />
+                Il codice del tuo ordine è <b>${req.body.dealId}</b>. 
+                <br /><br />
+                Per ricevere i libri, adesso, contatta i venditori per farti consegnare i
+                libri attraverso un incontro o spedizione, nel caso tu lo abbia selezionato.
+                Non ti preoccupare, i venditori sono stati informati e seguiranno le
+                istruzioni fino a quando il libro sarà nelle tue mani.
+                <br />
+                Una volta ricevuto i libri da un venditore, ricordati di confermare la
+                consegna, così da permettere al venditore di essere pagato da noi.
+                <br />
+                <p style="font-size: 1.2rem">
+                  Ecco i contatti dei venditori:
+                </p>
+                ${req.body.soldBooksClusters.map(cluster => {
+                  return `<div style="margin-top: 30px" key=${cluster.sellerId}>
+                  <p
+                    style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
+                  >
+                   ${cluster.sellerInfo.name}${
+                    cluster.delivery.choosen
+                      ? "<span style='font-size: 1.2rem'>, con spedizione</span>"
+                      : ""
+                  }
+                  </p>
+                  <div
+                    style="border: 1px solid black; display: flex; justify-content: space-between;"
+                  >
+                    <div style="border: 1px solid black; width: 50%;">
+                      <p
+                        style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+                      >
+                        Libri selezionati
+                      </p>
+                      <ul>
+                      ${cluster.Books.map(book => {
+                        return `<li key=${book._id}>${book.title}</li>`;
+                      }).join("")}
+                      </ul>
+                    </div>
+                    <div style="border: 1px solid black; width: 50%;">
+                      <p
+                        style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+                      >
+                        Contatti
+                      </p>
+                      <ul>
+                        <li>
+                          ${cluster.sellerInfo.email}
+                        </li>
+                        <li>
+                          ${cluster.sellerInfo.phone}
+                        </li>
+                        <li>
+                          ${cluster.sellerInfo.place.city}, ${
+                    cluster.sellerInfo.school
+                  }
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>`;
+                })}
+                <br/><br/><br/><br/>
+                Saluti,
+                <br />
+                Il team di <i>Libridoo</i>`
+              });
+              res.json({
+                code: 0,
+                devmessage: "clusters successfully posted",
+                message: "Operazione effettuata con successo",
+                paymentId: req.body.dealId
+              });
+            }
+          }
+        })
+        .catch(error => {
+          res.json({ code: 1, place: ".findByIdAndDelete()", _id, error });
+        });
+    });
+  });
+  clusterPromise.catch(errorObj => {
+    console.log(error);
+    res.json({ code: 1, place: "clusterPromise.catch()" });
+  });
+  // })
+  // .catch(error => {
+  //   res.json({ code: 1, error });
+  // });
 });
 
 // edit book
 // bookInfo type edit, already fetched url
-// _id / newInfo: {imageURL / title / **no isbn** / price / quality}
+// _id / newInfo: {imageURL / title / price / quality}
 router.put("/edit", (req, res) => {
   Book.findByIdAndUpdate(req.body._id, req.body.newInfo, { new: true })
     .then(book => {
@@ -522,13 +721,13 @@ router.put("/edit", (req, res) => {
     });
 });
 
-// confirm (SKRILL and confirm in the same request)
+// confirm (SKRILL and confirm in the same request) and save date
 // clusterID
 router.put("/confirm", (req, res) => {
   // SKRILL
   SoldBooksCluster.findByIdAndUpdate(
     req.body.clusterID,
-    { confirmed: true },
+    { confirmed: true, confirmationDate: Date.now() },
     { new: true }
   )
     .then(cluster => {
@@ -578,6 +777,24 @@ router.delete("/delete/all", (req, res) => {
     .catch(error => {
       res.json({ code: 1, error });
     });
+});
+
+// delete every book
+router.delete("/books", (req, res) => {
+  Book.deleteMany()
+    .then(() => {
+      res.json({ code: 0, message: "Libri eliminati con successo" });
+    })
+    .catch(erorr => res.json({ code: 1, error }));
+});
+
+// delete evary soldbookscluster
+router.delete("/clusters", (req, res) => {
+  SoldBooksCluster.deleteMany()
+    .then(() => {
+      res.json({ code: 0, message: "Clusters eliminati con successo" });
+    })
+    .catch(erorr => res.json({ code: 1, error }));
 });
 
 module.exports = router;

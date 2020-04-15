@@ -1,0 +1,44 @@
+#orders {
+  position: relative;
+}
+
+#orders-image-container {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 30px;
+  height: 200px;
+  background: lightgoldenrodyellow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#fake-header {
+  font-size: 4rem;
+  letter-spacing: 3rem;
+  font-weight: 100;
+}
+
+#empty-container {
+  text-align: center;
+  margin-top: 100px;
+}
+
+#empty-header {
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+#empty-link {
+  border: 1px solid black;
+  text-decoration: none;
+  color: black;
+  padding: 10px 30px;
+  margin-top: 80px;
+  display: inline-block;
+}
+
+#empty-link:hover {
+  font-weight: bold;
+  border: 2px solid black;
+}

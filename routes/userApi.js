@@ -4,11 +4,29 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
 const User = require("../models/Users");
+const Book = require("../models/Books");
 
 const router = express.Router();
 
 // secret
 const JWT_SECRET = require("../config/keys").JWT_SECRET;
+
+// get average rating
+router.get("/rating/:_id", (req, res) => {
+  User.findById(req.params._id)
+    .then(user => {
+      if (!user) {
+        // has deleted account
+        res.json({ code: 1.5, message: "nessun utente trovato con questo id" });
+      } else {
+        res.json({ code: 0, rating: user.rating.average });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({ code: 1, frontend: ".findById()", error });
+    });
+});
 
 // send email to user with emailConfirm code
 router.get("/emailConfirm/:email", (req, res) => {
@@ -86,6 +104,7 @@ router.post("/refresh", (req, res) => {
       }
     })
     .catch(error => {
+      console.log(error);
       res.json({ code: 1, message: "Errore inaspettato", error });
     });
 });
@@ -466,7 +485,14 @@ router.delete("/delete", (req, res) => {
       if (!user) {
         res.json({ code: 1.5, message: "Account già eliminato" });
       } else {
-        res.json({ code: 0, message: "Account eliminato con successo" });
+        // delete all books sold by user
+        Book.deleteMany({ sellerId: req.body._id })
+          .then(() => {
+            res.json({ code: 0, message: "Account eliminato con successo" });
+          })
+          .catch(error => {
+            res.json({ code: 1, place: ".deleteMany", error });
+          });
       }
     })
     .catch(error => {

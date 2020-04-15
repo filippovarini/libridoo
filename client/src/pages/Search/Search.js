@@ -191,6 +191,7 @@ class Search extends Component {
             this.setState({ inputClass: null });
           } else {
             // error
+            console.log(jsonRes);
             this.props.dispatch({
               type: "E-SET",
               error: {
@@ -207,6 +208,7 @@ class Search extends Component {
         })
         .catch(error => {
           // store and redirect
+          console.log(error);
           this.props.dispatch({
             type: "E-SET",
             error: {

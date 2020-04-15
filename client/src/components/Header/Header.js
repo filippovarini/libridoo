@@ -17,7 +17,8 @@ class Header extends Component {
     quickSearchDisplay: null,
     searChInputClass: null,
     loading: false,
-    cartHidden: true
+    cartHidden: true,
+    searched: false
   };
 
   componentDidMount = () => {
@@ -73,6 +74,28 @@ class Header extends Component {
   };
 
   componentDidUpdate = () => {
+    // remove searchParams
+    const location = this.props.history.location.pathname;
+    if (
+      location !== "/search" &&
+      location !== "/results" &&
+      location !== "/login/buying" &&
+      location !== "register/buying" &&
+      location !== "/checkout" &&
+      location !== "/paymentConfirm"
+    ) {
+      // remove everything
+      sessionStorage.removeItem("searchParams");
+      sessionStorage.removeItem("SBs");
+      sessionStorage.removeItem("__cds_Ids");
+      sessionStorage.removeItem("dealId");
+      if (this.props.selectedBooks.length !== 0) {
+        this.props.dispatch({ type: "SB-DELETE-ALL" });
+      }
+      if (this.props.booksResult.length !== 0) {
+        this.props.dispatch({ type: "R-DELETE-ALL" });
+      }
+    }
     // index in sessionStorage
     if (
       sessionStorage.getItem("index") &&
@@ -91,7 +114,7 @@ class Header extends Component {
     } else if (
       this.state.quickSearchDisplay &&
       this.props.history.location.pathname !== "/results" &&
-        this.props.history.location.pathname !== "/checkout"
+      this.props.history.location.pathname !== "/checkout"
     ) {
       this.setState({ quickSearchDisplay: null });
     }
@@ -173,7 +196,7 @@ class Header extends Component {
         school: schoolfilter,
         quality: null
       };
-      this.setState({ loading: true });
+      this.setState({ loading: true, searchedAway: true });
       fetch("/api/book/fetch/buy", {
         method: "POST",
         headers: {
@@ -190,6 +213,7 @@ class Header extends Component {
             alert(jsonRes.message);
           } else if (jsonRes.code === 0 || jsonRes.code === 2.5) {
             // redirect
+            this.props.history.push("/search");
             // store and redirect
             // store searchParams in sessionStorage
             if (sessionStorage.getItem("searchParams")) {
@@ -230,7 +254,6 @@ class Header extends Component {
                 }
               });
             }
-            this.props.history.push("/search");
           } else {
             // error
             this.props.dispatch({
@@ -371,7 +394,8 @@ class Header extends Component {
 const mapStateToProps = state => {
   return {
     selectedBooks: state.selectedBooks,
-    user: state.user
+    user: state.user,
+    booksResult: state.booksResult
   };
 };
 

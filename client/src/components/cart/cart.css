@@ -66,7 +66,7 @@
   height: 25px;
   line-height: 25px;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 40px;
   margin-bottom: 20px;
   text-align: center;
   display: block;
@@ -75,4 +75,35 @@
 #cart #checkout-prompt:hover {
   font-weight: bold;
   padding: 2px 4px;
+}
+
+#cart #bill {
+  border-bottom: 1px solid black;
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#cart #price-header {
+  margin-left: 5px;
+}
+
+#cart #price {
+  margin-right: 5px;
+}
+
+#cart .book-price {
+  border: 1px solid black;
+  position: absolute;
+  /* width: 20px; */
+  padding: 0px 5px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  background: white;
+  z-index: 1000;
+  margin: 0px;
+  bottom: -3px;
+  right: -3px;
+  font-size: 0.6rem;
 }

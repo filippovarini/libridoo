@@ -111,9 +111,6 @@ class PlaceInfo extends Component {
             }
           }
           this.setState({
-            country: "Italia",
-            region: null,
-            city: null,
             countryClass: null,
             regionClass: null,
             cityClass: null,
@@ -170,7 +167,9 @@ class PlaceInfo extends Component {
     // !!!! implement SELECT !!!
     const editing = (
       <div id="editing-placeInfoBody">
-        <p id="header-text">Fai sapere ai clienti di dove sei</p>
+        <div id="placeInfo-header-container">
+          <p id="header-text">Fai sapere ai clienti di dove sei</p>
+        </div>
         <form className="placeInfoBody form" onSubmit={this.handleSubmit}>
           <input
             autoComplete="off"

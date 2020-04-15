@@ -24,6 +24,10 @@ const booksResultReducer = (state = [], action) => {
       return action.results;
     case "R-DELETE-ALL":
       return [];
+
+    case "GENERAL-DELETE":
+      return [];
+
     default:
       return state;
   }

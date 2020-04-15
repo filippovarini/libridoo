@@ -32,6 +32,10 @@
   margin: 15px 50px;
 }
 
+#placeInfo-header-container {
+  text-align: center;
+}
+
 #placeInfo #header-text {
   color: red;
   border-bottom: 1px solid red;

@@ -27,10 +27,9 @@ class BookInfo extends Component {
   };
 
   componentDidUpdate = () => {
-    if (!this.state.updated && sessionStorage.getItem("BookInfoParams")) {
+    if (!this.state.price && sessionStorage.getItem("BookInfoParams")) {
       const BookInfo = JSON.parse(sessionStorage.getItem("BookInfoParams"));
       this.setState({
-        updated: true,
         imgUrl: BookInfo.imageURL,
         title: BookInfo.title,
         price: BookInfo.price,
@@ -116,13 +115,27 @@ class BookInfo extends Component {
       this.setState({ selectHeaderClass: "hidden" });
     } else if (!e.target.value) {
       this.setState({
-        [`${e.target.id}Class`]: "invalid-input"
+        [`${e.target.id}Class`]: "invalid-input",
+        [e.target.id]: null
       });
     } else {
       this.setState({
         [`${e.target.id}Class`]: "correct-input"
       });
     }
+    if (e.target.id === "price" && e.target.value && e.target.value <= 0) {
+      this.setState({ priceClass: "invalid-input" });
+    }
+  };
+
+  handleToggle = () => {
+    this.setState({
+      imgUrl: "",
+      title: null,
+      price: null,
+      quality: "intatto"
+    });
+    this.props.toggleDisplay();
   };
 
   handleSubmit = e => {
@@ -146,6 +159,9 @@ class BookInfo extends Component {
       if (!this.state.price) {
         this.setState({ priceClass: "invalid-input" });
       }
+    } else if (this.state.price <= 0) {
+      alert("Inserisci un prezzo valido");
+      this.setState({ priceClass: "invalid-input" });
     } else {
       // everything inputted
       const user = this.props.user;
@@ -188,7 +204,26 @@ class BookInfo extends Component {
               // show for a bit "successful", then hide it
               sessionStorage.removeItem("selling");
               this.setState({ generalLoading: false, successful: true });
-              setTimeout(this.props.toggleDisplay, 1000);
+              setTimeout(() => {
+                this.setState({
+                  imgUrl: "",
+                  emptyImageClass: null,
+                  headerClass: null,
+                  imageClass: "normal",
+                  submitting: true,
+                  loading: false,
+                  selectHeaderClass: "hidden",
+                  titleClass: null,
+                  priceClass: null,
+                  title: null,
+                  quality: "intatto",
+                  price: null,
+                  generalLoading: false,
+                  successful: false,
+                  updated: false
+                });
+                this.props.toggleDisplay();
+              }, 1000);
             }
           })
           .catch(error => {
@@ -203,9 +238,117 @@ class BookInfo extends Component {
         // something not inputted yet
         sessionStorage.removeItem("selling");
         sessionStorage.setItem("BookInfoParams", JSON.stringify(body));
+        this.setState({
+          imgUrl: "",
+          emptyImageClass: null,
+          headerClass: null,
+          imageClass: "normal",
+          submitting: true,
+          loading: false,
+          selectHeaderClass: "hidden",
+          titleClass: null,
+          priceClass: null,
+          title: null,
+          quality: "intatto",
+          price: null,
+          generalLoading: false,
+          successful: false,
+          updated: false
+        });
         this.props.toggleDisplay();
         this.props.history.push("/infoReview/sell");
       }
+    }
+  };
+
+  handleEdit = e => {
+    e.preventDefault();
+    if (
+      !this.state.imgUrl ||
+      !this.state.title ||
+      !this.state.quality ||
+      !this.state.price
+    ) {
+      alert("Compila tutti i campi obbligatori");
+      if (!this.state.imgUrl) {
+        this.setState({
+          emptyImageClass: "empty",
+          headerClass: "empty-header"
+        });
+      }
+      if (!this.state.title) {
+        this.setState({ titleClass: "invalid-input" });
+      }
+      if (!this.state.price) {
+        this.setState({ priceClass: "invalid-input" });
+      }
+    } else if (this.state.price <= 0) {
+      alert("Inserisci un prezzo valido");
+      this.setState({ priceClass: "invalid-input" });
+    } else {
+      // everything inputted
+      const body = {
+        _id: this.props.id,
+        newInfo: {
+          imageURL: this.state.imgUrl,
+          title: this.state.title,
+          quality: this.state.quality,
+          price: this.state.price
+        }
+      };
+      // post request
+      this.setState({ generalLoading: true });
+      fetch("/api/book/edit", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(body)
+      })
+        .then(res => res.json())
+        .then(jsonRes => {
+          if (jsonRes.code === 1 || jsonRes.code === 1.5) {
+            // error
+            this.props.dispatch({
+              type: "E-SET",
+              error: { frontendPlace: "BookInfo/handleEdit/code1", jsonRes }
+            });
+            this.props.history.push("/error");
+          } else {
+            // perfect
+            // show for a bit "successful", then hide it
+            this.setState({ generalLoading: false, successful: true });
+            setTimeout(() => {
+              this.setState({
+                imgUrl: "",
+                emptyImageClass: null,
+                headerClass: null,
+                imageClass: "normal",
+                submitting: true,
+                loading: false,
+                selectHeaderClass: "hidden",
+                titleClass: null,
+                priceClass: null,
+                title: null,
+                quality: "intatto",
+                price: null,
+                generalLoading: false,
+                successful: false,
+                updated: false
+              });
+              this.props.toggleDisplay();
+            }, 1000);
+          }
+        })
+        .catch(error => {
+          // store and redirect
+          this.props.dispatch({
+            type: "E-SET",
+            error: { frontendPlace: "BookInfo/handleEdit/catch", error }
+          });
+          this.props.history.push("/error");
+        });
     }
   };
 
@@ -267,7 +410,9 @@ class BookInfo extends Component {
           Compila con chiarezza per vendere con maggior successo
         </p>
         {imageContainer}
-        <form onSubmit={this.handleSubmit}>
+        <form
+          onSubmit={this.props.editing ? this.handleEdit : this.handleSubmit}
+        >
           <div id="form-container">
             <input
               autoComplete="off"
@@ -326,14 +471,23 @@ class BookInfo extends Component {
               defaultValue={this.state.price}
             />
           </div>
-          <input id="submit" type="submit" value="VENDI" className="info" />
+          <input
+            id="submit"
+            type="submit"
+            value={this.props.editing ? "SALVA" : "VENDI"}
+            className="info"
+          />
         </form>
       </div>
     );
 
     const generalLoading = <h1>loading...</h1>;
     const successful = (
-      <h1 className="successful">Libro inserito con successo</h1>
+      <h1 className="successful">
+        {this.props.editing
+          ? "Libro modificato con successo"
+          : "Libro inserito con successo"}
+      </h1>
       // link to help
     );
 
@@ -342,7 +496,12 @@ class BookInfo extends Component {
 
     const deleteIcon =
       !this.state.generalLoading && !this.state.successful ? (
-        <span id="general-delete" onClick={this.props.toggleDisplay}>
+        <span
+          id="general-delete"
+          onClick={
+            this.props.editing ? this.handleToggle : this.props.toggleDisplay
+          }
+        >
           -
         </span>
       ) : null;

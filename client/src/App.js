@@ -13,9 +13,14 @@ import Register from "./pages/Register/Register";
 import Search from "./pages/Search/Search";
 import Results from "./pages/Results/Results";
 import Checkout from "./pages/Checkout/Checkout";
+import PaymentConfirm from "./pages/PaymentConfirm/PaymentConfirm";
 import sellReview from "./pages/InfoReview/sell/sellReview";
 import buyReview from "./pages/InfoReview/buy/buyReview";
 import Account from "./pages/Account//Account";
+import Orders from "./pages/Orders/Orders";
+import Deals from "./pages/Deals/Deals";
+import Invite from "./pages/Invite/Invite";
+import Help from "./pages/Help/Help";
 import ErrorPage from "./pages/Error/Error";
 
 class App extends React.Component {
@@ -71,6 +76,8 @@ class App extends React.Component {
           }
         })
         .catch(error => {
+          alert("errro");
+          console.log(error);
           // store error and redirect
           fetch("/api/feedback/error", {
             method: "POST",
@@ -97,9 +104,14 @@ class App extends React.Component {
             <Route path="/search" component={Search} />
             <Route exact path="/results" component={Results} />
             <Route path="/checkout" component={Checkout} />
+            <Route path="/paymentConfirm" component={PaymentConfirm} />
             <Route path="/infoReview/sell" component={sellReview} />
             <Route path="/infoReview/buy" component={buyReview} />
             <Route path="/account" component={Account} />
+            <Route path="/orders" component={Orders} />
+            <Route path="/deals" component={Deals} />
+            <Route path="/invite" component={Invite} />
+            <Route path="/help" component={Help} />
             <Route path="/error" component={ErrorPage} />
           </div>
           <Footer />

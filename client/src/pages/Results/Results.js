@@ -235,6 +235,7 @@ class Results extends Component {
                   book={book}
                   key={book._id}
                   indexIncrease={this.increaseIndex}
+                  page="results"
                 />
               );
             })
@@ -496,11 +497,11 @@ class Results extends Component {
               this.state.index === 0 ? "hidden" : null
             }`}
           ></i>
-          <p id="nav-ui">{uiList[this.state.index] || null}</p>
+          <p id="nav-ui">{uiList[this.state.index] || "REVIEW"}</p>
           <i
             onClick={this.increaseIndex}
             className={`fas fa-angle-right nav ${
-              uiList.length === this.state.index + 1 ? "hidden" : null
+              uiList.length < this.state.index + 1 ? "hidden" : null
             }`}
           ></i>
         </div>

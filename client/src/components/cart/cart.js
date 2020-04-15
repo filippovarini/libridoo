@@ -5,20 +5,29 @@ import "./cart.css";
 
 class Cart extends Component {
   removeSelectedBook = (clusterIndex, bookIndex, bookId) => {
-    // remove sb from sessionStorage
-    const SBs = JSON.parse(sessionStorage.getItem("SBs"));
-    if (SBs.length === 1) {
-      // just the book that is gonna be deleted
-      sessionStorage.removeItem("SBs");
-    } else {
-      const index = SBs.indexOf(bookId);
-      SBs.splice(index, 1);
-      sessionStorage.setItem("SBs", JSON.stringify(SBs));
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Sei sicuro di voler rimuovere il libro dal carrello?")) {
+      // remove sb from sessionStorage
+      const SBs = JSON.parse(sessionStorage.getItem("SBs"));
+      if (SBs.length === 1) {
+        // just the book that is gonna be deleted
+        sessionStorage.removeItem("SBs");
+      } else {
+        const index = SBs.indexOf(bookId);
+        SBs.splice(index, 1);
+        sessionStorage.setItem("SBs", JSON.stringify(SBs));
+      }
+      this.props.dispatch({ type: "SB-DELETE", clusterIndex, bookIndex });
     }
-    this.props.dispatch({ type: "SB-DELETE", clusterIndex, bookIndex });
   };
 
   render() {
+    let totalPrice = 0;
+    this.props.selectedBooks.forEach(cluster => {
+      cluster.Books.forEach(book => {
+        totalPrice += book.price;
+      });
+    });
     return (
       <div
         id="cart"
@@ -52,12 +61,17 @@ class Cart extends Component {
                       {cluster.sellerInfo.place.city},{" "}
                       {cluster.sellerInfo.school}
                     </p>
+                    <p className="book-price">€ {book.price}</p>
                   </div>
                 );
               })}
             </div>
           );
         })}
+        <div id="bill">
+          <p id="price-header">Totale:</p>
+          <p id="price">{totalPrice}</p>
+        </div>
         <Link to="/checkout" id="checkout-prompt">
           CHECKOUT
         </Link>

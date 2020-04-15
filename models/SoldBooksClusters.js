@@ -12,6 +12,9 @@ const SoldBooksClusterSchema = new Schema({
     type: Date,
     required: true
   },
+  confirmationDate: {
+    type: Date
+  },
   confirmed: {
     type: Boolean,
     default: false
@@ -42,9 +45,6 @@ const SoldBooksClusterSchema = new Schema({
     name: {
       type: String,
       required: true
-    },
-    rating: {
-      type: Number
     },
     place: {
       country: {
@@ -83,9 +83,6 @@ const SoldBooksClusterSchema = new Schema({
     name: {
       type: String,
       required: true
-    },
-    rating: {
-      type: Number
     },
     place: {
       country: {

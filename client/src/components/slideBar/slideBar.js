@@ -42,7 +42,7 @@ class slideBar extends Component {
               I MIEI ORDINI
             </NavLink>
             <NavLink to="/deals" className="slideBar-component hover">
-              AFFARI
+              I MIEI AFFARI
             </NavLink>
             <NavLink to="/invite" className="slideBar-component hover">
               INVITA GLI AMICI E GUADAGNA

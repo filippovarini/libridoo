@@ -12,10 +12,18 @@ const clusterGenerator = (books, state) => {
       let sellerInfoState = book.sellerUser;
       // prevent from changing state
       let sellerInfo = Object.assign({}, sellerInfoState);
-      const delivery = book.sellerUser.deliveryInfo;
+      // see whether it was choosen or not
+      let choosen = false;
+      if (sessionStorage.getItem("__cds_Ids")) {
+        JSON.parse(sessionStorage.getItem("__cds_Ids")).forEach(id => {
+          if (book.sellerId === id) choosen = true;
+        });
+      }
+      const delivery = { ...book.sellerUser.deliveryInfo, choosen };
       sellerInfo.place = book.place;
       delete book.place;
       delete sellerInfo.deliveryInfo;
+      delete sellerInfo.rating;
       delete book.sellerUser;
       // on SBs refresh, book doesn't have userSellsCount. Still good
       delete book.userSellsCount;
@@ -33,6 +41,13 @@ const clusterGenerator = (books, state) => {
       newState[index] = ownCluster;
     }
   });
+  return newState;
+};
+
+const toggleDelivery = (clusterIndex, state) => {
+  const newState = [...state];
+  newState[clusterIndex].delivery.choosen = !newState[clusterIndex].delivery
+    .choosen;
   return newState;
 };
 
@@ -60,6 +75,9 @@ const selectedBooksReducer = (state = [], action) => {
       // [books]
       return clusterGenerator(action.books, state);
 
+    case "TOGGLE-DELIVERY":
+      return toggleDelivery(action.clusterIndex, state);
+
     case "SB-DELETE":
       // delete one from cart
       // book
@@ -67,6 +85,10 @@ const selectedBooksReducer = (state = [], action) => {
 
     case "SB-DELETE-ALL":
       // finished, need to empty
+      return [];
+
+    case "GENERAL-DELETE":
+      // just purchased
       return [];
 
     default:

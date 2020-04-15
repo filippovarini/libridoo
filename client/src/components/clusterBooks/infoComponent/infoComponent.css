@@ -1,0 +1,87 @@
+#infoComponent {
+  margin: 0px 30px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+
+#infoComponent #image-container {
+  min-width: 120px;
+  width: 120px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  height: 150px;
+}
+
+#infoComponent #image-container:hover {
+  cursor: pointer;
+}
+
+/* !!!! media query to always put it in the centre */
+#infoComponent #image-container.book-bigger {
+  /* ok because add filters */
+  position: absolute;
+  width: 80vw;
+  height: 100vw;
+  z-index: 999;
+  border: 3px solid black;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  min-width: 300px;
+  min-height: 200px;
+  max-width: 800px;
+  max-height: 1000px;
+  left: 50%;
+  margin-left: -40vw;
+}
+
+#infoComponent #image-container.book-bigger:hover {
+  cursor: auto;
+}
+
+#infoComponent #image {
+  width: 100%;
+  height: 100%;
+}
+
+#infoComponent #infoContainer {
+  margin: 0px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 150px;
+}
+
+#infoComponent .info-container {
+  display: flex;
+  align-items: center;
+  margin: 3px 0;
+  font-size: 0.8rem;
+}
+
+#infoComponent .info {
+  margin: 0px 10px;
+}
+
+#infoComponent .info-book-ico {
+  border: 1px solid black;
+  min-height: 25px;
+  min-width: 25px;
+  text-align: center;
+  line-height: 25px;
+}
+
+#infoComponent #remove {
+  margin-left: 0px;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+#infoComponent #remove:hover {
+  cursor: pointer;
+  text-decoration: line-through;
+  font-style: italic;
+}

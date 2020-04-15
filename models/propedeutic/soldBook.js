@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.set("useFindAndModify", false);
 
 const SoldBook = new Schema({
-  bookId: {
+  _id: {
     type: String,
     required: true
   },
@@ -14,11 +14,10 @@ const SoldBook = new Schema({
     type: String,
     required: true
   },
-  // isbn: Number,
-  // price: {
-  //   type: Number,
-  //   required: true
-  // },
+  price: {
+    type: Number,
+    required: true
+  },
   quality: {
     type: String,
     required: true

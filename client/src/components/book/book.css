@@ -16,7 +16,8 @@
 }
 
 #book #general-container {
-  margin: 30px 30px;
+  margin: 35px 30px;
+  margin-top: 0px;
   display: flex;
   align-items: center;
 }
@@ -67,6 +68,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 150px;
 }
 
 #book .info-container {
@@ -118,14 +120,15 @@
 #book .upperIcon-container {
   top: -10px;
   left: -10px;
+  position: relative;
 }
 
 #book .lowerIcon-container {
   bottom: -10px;
   right: -10px;
 }
-
-#book .result-icon.lowerIcon-container {
+/* deleted resultIcon */
+#book .lowerIcon-container {
   width: 50px;
   height: 45px;
   display: flex;
@@ -179,4 +182,14 @@
 #book #result-lower-icon-bought {
   border: 2px solid black;
   cursor: auto;
+}
+
+#book #price-icon {
+  font-size: 0.8rem;
+}
+
+#book #checkout-lower-icon:hover {
+  border: 2px solid black;
+  cursor: alias;
+  font-weight: normal;
 }
