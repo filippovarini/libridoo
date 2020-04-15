@@ -89,6 +89,10 @@
   height: 100%;
 }
 
+#bookInfo #submitted .normal:hover {
+  cursor: pointer;
+}
+
 #bookInfo #delete {
   position: absolute;
   color: red;

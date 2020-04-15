@@ -19,7 +19,10 @@ class BookInfo extends Component {
     price: null,
     generalLoading: false,
     successful: false,
-    updated: false
+    updated: false,
+    imageDone: false,
+    timeOut: null,
+    imageDoneSet: false
   };
 
   componentDidMount = () => {
@@ -37,23 +40,43 @@ class BookInfo extends Component {
         submitting: false
       });
     }
+    if (this.props.editing && !this.state.imageDoneSet) {
+      // just updated
+      this.setState({ imageDoneSet: true, imageDone: true });
+    }
   };
 
   handleMouseOver = () => {
-    this.setState({ imageClass: "bigger" });
-  };
-
-  handleMouseLeave = () => {
     this.setState({
-      imageClass: "normal"
+      timeout: setInterval(() => {
+        this.setState({ imageClass: "bigger" });
+      }, 1500)
     });
   };
 
+  handleMouseLeave = () => {
+    clearTimeout(this.state.timeout);
+    this.setState({ imageClass: "normal" });
+  };
+
   handleImageDelete = () => {
-    this.setState({ imgUrl: "", submitting: true });
+    this.setState({ imgUrl: "", submitting: true, imageDone: false });
   };
 
   handleImageChange = e => {
+    // show image
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        this.setState({
+          imgUrl: event.target.result,
+          submitting: false,
+          loading: false
+        });
+      }.bind(this);
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    // post and save
     const formData = new FormData();
     this.setState({ loading: true });
     formData.append("image", e.target.files[0]);
@@ -78,8 +101,7 @@ class BookInfo extends Component {
           // perfect
           this.setState({
             imgUrl: jsonRes.imageURL,
-            submitting: false,
-            loading: false
+            imageDone: true
           });
         }
       })
@@ -474,8 +496,15 @@ class BookInfo extends Component {
           <input
             id="submit"
             type="submit"
-            value={this.props.editing ? "SALVA" : "VENDI"}
+            value={
+              !this.state.imageDone && this.state.imgUrl
+                ? "CARICANDO L'IMMAGINE..."
+                : this.props.editing
+                ? "SALVA"
+                : "VENDI"
+            }
             className="info"
+            disabled={!this.state.imageDone && this.state.imgUrl ? true : false}
           />
         </form>
       </div>
