@@ -10,7 +10,8 @@ class Search extends Component {
     ui: null,
     loading: false,
     ready: false,
-    updated: false
+    updated: false,
+    errorMessage: null
   };
 
   // no access limitation
@@ -86,6 +87,9 @@ class Search extends Component {
       this.setState({ submitDisplay: null });
     }
     this.setState({ ui: e.target.value, inputClass: null });
+    if (this.state.errorMessage) {
+      this.setState({ errorMessage: null });
+    }
   };
 
   handleDelete = e => {
@@ -124,7 +128,7 @@ class Search extends Component {
     }
     if (alreadySearched) {
       this.setState({ inputClass: "invalid-input" });
-      alert("Già hai cercato questo libro");
+      this.setState({ errorMessage: "Già hai cercato questo libro" });
     } else {
       let cityFilter = null;
       let schoolfilter = null;
@@ -158,7 +162,7 @@ class Search extends Component {
           if (jsonRes.code === 2) {
             // wrong title
             this.setState({ inputClass: "invalid-input" });
-            alert(jsonRes.message);
+            this.setState({ errorMessage: jsonRes.message });
           } else if (jsonRes.code === 0 || jsonRes.code === 2.5) {
             // (half) correct
             // store searchParams in sessionStorage
@@ -224,7 +228,32 @@ class Search extends Component {
 
   render() {
     const searchParams = JSON.parse(sessionStorage.getItem("searchParams"));
-    let searchList = null;
+    let searchList = (
+      <div id="search-list-container">
+        <div id="search-list" className="empty">
+          <p id="header">La mia lista</p>
+          {/* {searchParams.map(param => {
+              return (
+                <div
+                  className="list-container"
+                  key={searchParams.indexOf(param)}
+                >
+                  <p className="list">{param.ui}</p>
+                  <p
+                    id={param.ui}
+                    className="list-delete"
+                    title="elimina"
+                    onClick={this.handleDelete}
+                  >
+                    -
+                  </p>
+                </div>
+              );
+            })} */}
+          <p id="search-empty-searchList">La lista della spesa è vuota</p>
+        </div>
+      </div>
+    );
     if (searchParams && searchParams.length !== 0) {
       searchList = (
         <div id="search-list-container">
@@ -270,6 +299,14 @@ class Search extends Component {
       <div id="body-container">
         <div id="input-container">
           <form onSubmit={this.handleSubmit} id="input-form">
+            <label
+              htmlFor="title"
+              className={`incorrect-input-label ${
+                this.state.errorMessage ? "" : "hidden"
+              }`}
+            >
+              {this.state.errorMessage}
+            </label>
             <input
               autoComplete="off"
               id="title"
@@ -292,14 +329,84 @@ class Search extends Component {
       </div>
     );
 
-    const loading = <h1 id="loading">loading</h1>;
+    const loading = (
+      <div id="search-loading">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
     const bodyComponent = this.state.loading ? loading : loaded;
 
     return (
       <div id="search">
         <div id="image">
-          <span id="image-title">CERCA TUTTI I LIBRI CHE TI SERVONO</span>
+          <span id="image-title">SEARCH</span>
+        </div>
+        <div id="searchPage-header-container">
+          <p id="searchPage-header">
+            Inserisci <b>tutti</b> i libri che stati cercando prima di
+            proseguire
+          </p>
         </div>
         {bodyComponent}
       </div>

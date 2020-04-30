@@ -40,22 +40,35 @@
   height: 30px;
   display: flex;
   align-items: center;
+  border: 1px solid black;
 }
 
 #bodyInfo .info-ico {
   width: 25px;
-  border: 1px solid black;
+  border-right: 1px solid black;
   padding: 5px;
   text-align: center;
 }
 
 #bodyInfo .info-text {
   margin-left: 10px;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #bodyInfo .info-input {
   width: 100%;
+  border: 0px solid black;
+  margin-right: 10px;
+}
+
+#bodyInfo .info-input.invalid-input {
+  border: 1px solid red;
+}
+
+#bodyInfo .info-input.correct-input {
+  border: 1px solid green;
 }
 
 .set-ico {
@@ -80,11 +93,27 @@
 }
 
 #bodyInfo #header-text {
-  color: red;
-  border-bottom: 1px solid red;
+  color: black;
+  border-bottom: 1px solid black;
   display: inline-block;
   padding: 0 15px;
   margin: 0 auto;
   margin-bottom: 20px;
   text-align: center;
+}
+
+#editingEmail-label {
+  color: red;
+  font-size: 0.8rem;
+}
+
+.p-icon {
+  font-size: 0.8rem;
+  bottom: -23px;
+  padding: 5px 8px;
+}
+
+.p-icon:hover {
+  font-weight: bold;
+  font-size: 0.8rem;
 }

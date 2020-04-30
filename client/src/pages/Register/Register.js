@@ -23,7 +23,8 @@ class Register extends Component {
     emailPlaceholder: "email",
     passwordPlaceholder: "password",
     passwordConfirmPlaceholder: "conferma password",
-    emailConfirmClass: "hidden"
+    emailConfirmClass: "hidden",
+    errorMessage: null
   };
 
   emailValidation = email => {
@@ -55,16 +56,41 @@ class Register extends Component {
           passwordConfirmEmptyClass: "invalid-input"
         });
       }
+    } else if (e.target.id === "email") {
+      if (this.emailValidation(e.target.value)) {
+        this.setState({
+          emailEmptyClass: "correct-input"
+        });
+      } else {
+        this.setState({
+          emailEmptyClass: null
+        });
+      }
+    } else if (
+      e.target.id === "passwordConfirm" &&
+      e.target.value === this.state.password
+    ) {
+      this.setState({ passwordConfirmEmptyClass: "correct-input" });
     }
     if (!e.target.value) {
       this.setState({
         [`${e.target.id}EmptyClass`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: `*campo obbligatorio`
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "name"
+            ? "*nome*"
+            : e.target.id === "email"
+            ? "*email*"
+            : e.target.id === "password"
+            ? "*password*"
+            : "*conferma password*"
       });
     }
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (this.state.errorMessage) {
+      this.setState({ errorMessage: null });
+    }
   };
 
   //   check not empty
@@ -80,7 +106,14 @@ class Register extends Component {
       // empty
       this.setState({
         [`${e.target.id}EmptyClass`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: `*campo obbligatorio`
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "name"
+            ? "*nome*"
+            : e.target.id === "email"
+            ? "*email*"
+            : e.target.id === "password"
+            ? "*password*"
+            : "*conferma password*"
       });
     } else {
       // not empty and valid
@@ -97,10 +130,9 @@ class Register extends Component {
     });
   };
 
-  setAvatarImg = () => {
+  setAvatarImg = e => {
     this.setState({
-      avatarImgURL:
-        "https://scontent-fco1-1.xx.fbcdn.net/v/t1.0-9/55822168_1355705201259453_1842124246487138304_n.jpg?_nc_cat=100&_nc_sid=85a577&_nc_ohc=r4iDfEzSkZAAX9NUgx7&_nc_ht=scontent-fco1-1.xx&oh=910142c0ef27ba00e78883c66a5fb64a&oe=5EA37D2D"
+      avatarImgURL: e.target.src
     });
   };
 
@@ -112,18 +144,47 @@ class Register extends Component {
       !this.state.password ||
       !this.state.passwordConfirm
     ) {
-      alert("Inserisci tutti i campi obligatori");
+      this.setState({ errorMessage: "Inserisci tutti i campi obbligatori" });
+      if (!this.state.name) {
+        this.setState({
+          nameEmptyClass: "invalid-input",
+          namePlaceholder: "*nome*"
+        });
+      }
+      if (!this.state.email) {
+        this.setState({
+          emailEmptyClass: "invalid-input",
+          emailPlaceholder: "*email*"
+        });
+      }
+      if (!this.state.password) {
+        this.setState({
+          passwordEmptyClass: "invalid-input",
+          passwordPlaceholder: "*password*"
+        });
+      }
+      if (!this.state.passwordConfirm) {
+        this.setState({
+          passwordConfirmEmptyClass: "invalid-input",
+          passwordConfirmPlaceholder: "*conferma password*"
+        });
+      }
     } else if (!this.emailValidation(this.state.email)) {
-      alert("Email non valida");
+      this.setState({ errorMessage: "Email non valida" });
     } else if (this.state.password !== this.state.passwordConfirm) {
-      alert("Le due password non combaciano");
+      this.setState({ errorMessage: "Le due password non coincidono" });
     } else if (
       this.state.password.length < 8 ||
       this.state.password.length > 15
     ) {
-      alert("La password deve essere lunga minimo 8 massimo 15 caratteri");
+      this.setState({
+        errorMessage:
+          "La password deve essere lunga minimo 8 massimo 15 caratteri"
+      });
     } else if (!this.state.tcpClicked) {
-      alert("Accetta i termini e condizioni");
+      this.setState({
+        errorMessage: "Accetta i termini e condizioni"
+      });
     } else {
       fetch("/api/user/register/check", {
         method: "POST",
@@ -145,7 +206,9 @@ class Register extends Component {
             this.setState({
               emailEmptyClass: "invalid-input"
             });
-            alert("Email già registrata con un altro account");
+            this.setState({
+              errorMessage: "Email già registrata con un altro account"
+            });
           } else {
             // everything correct
             const avatarImgURL =
@@ -182,8 +245,91 @@ class Register extends Component {
     const avatarImages = (
       <div id="register-avatarImgs">
         <span id="agatarImg-prompt">Scegli un avatar</span>
-        <div id="images-container" onClick={this.setAvatarImg}>
-          {/* images with onClick={this.setAvatarImg}*/}
+        <div id="images-container">
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981680454"
+            alt="meme"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981687254"
+            alt="uccellino"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981692298"
+            alt="schifomadò"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981699850"
+            alt="morgan e bugo"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981712262"
+            alt="lavoro onesto"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981716946"
+            alt="baby yoda"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981720614"
+            alt="stonks"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981725500"
+            alt="foca coccolosa"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981730904"
+            alt="donna-giraffa"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981735139"
+            alt="disappointed"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981739335"
+            alt="cane carino"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981743022"
+            alt="vecchietto"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981747101"
+            alt="spongebob uccello"
+            className="register-avatarImage"
+          />
+          <img
+            onClick={this.setAvatarImg}
+            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587996448726"
+            alt="fidanzato distratto"
+            className="register-avatarImage"
+          />
         </div>
       </div>
     );
@@ -192,18 +338,30 @@ class Register extends Component {
         <span id="image-delete" onClick={this.deleteImage}>
           -
         </span>
-        <img src={this.state.avatarImgURL} id="avatar-image" alt="avatar" />
+        <img
+          src={this.state.avatarImgURL}
+          id="register-avatar-image"
+          alt="avatar"
+        />
       </div>
     );
     const avatarHeader = this.state.avatarImgURL ? avatarImage : avatarImages;
     return (
       <div id="register-general-container">
-        <div id="image">
-          <span id="image-title">REGISTRATI</span>
+        <div id="register-image-container">
+          <p id="register-fake-header">REGISTRATI</p>
         </div>
         {avatarHeader}
         <div id="register-actions">
           <form onSubmit={this.handleSubmit} id="register-form">
+            <p
+              id="register-error-message"
+              className={`incorrect-input-label ${
+                this.state.errorMessage ? "" : "hidden"
+              }`}
+            >
+              {this.state.errorMessage}
+            </p>
             <input
               autoComplete="off"
               type="text"
@@ -214,6 +372,7 @@ class Register extends Component {
               onChange={this.handleChange}
             />
             <input
+              autoComplete="off"
               type="text"
               id="email"
               placeholder={this.state.emailPlaceholder}
@@ -257,7 +416,10 @@ class Register extends Component {
               />
               <label htmlFor="remember">Resta Collegato</label>
             </div>
-            <input type="submit" id="register-confirm" value="REGISTRATI" />
+            <input type="submit" value="REGISTRATI" className="hidden" />
+            <p id="register-confirm-btn" onClick={this.handleSubmit}>
+              REGISTRATI
+            </p>
           </form>
           <div id="login-prompt-container">
             <span id="login-prompt-link">Già registrato?</span>

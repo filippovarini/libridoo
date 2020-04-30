@@ -21,20 +21,19 @@
 /* !!!! media query to always put it in the centre */
 #infoComponent #image-container.book-bigger {
   /* ok because add filters */
-  position: absolute;
+  position: fixed;
   width: 80vw;
-  height: 100vw;
+  height: 80vh;
   z-index: 999;
   border: 3px solid black;
   padding: 0px;
   display: flex;
   align-items: center;
-  min-width: 300px;
-  min-height: 200px;
-  max-width: 800px;
-  max-height: 1000px;
   left: 50%;
   margin-left: -40vw;
+  top: 50%;
+  margin-top: -40vh;
+  min-width: 300px;
 }
 
 #infoComponent #image-container.book-bigger:hover {
@@ -53,6 +52,7 @@
   flex-direction: column;
   justify-content: space-around;
   height: 150px;
+  width: 70%;
 }
 
 #infoComponent .info-container {
@@ -60,6 +60,7 @@
   align-items: center;
   margin: 3px 0;
   font-size: 0.8rem;
+  border: 1px solid black;
 }
 
 #infoComponent .info {
@@ -67,17 +68,20 @@
 }
 
 #infoComponent .info-book-ico {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   min-height: 25px;
   min-width: 25px;
   text-align: center;
   line-height: 25px;
 }
 
+#infoComponent #remove-container {
+  border: 0px;
+}
+
 #infoComponent #remove {
   margin-left: 0px;
   font-size: 0.8rem;
-  margin-top: 10px;
 }
 
 #infoComponent #remove:hover {

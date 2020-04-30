@@ -37,8 +37,8 @@
 }
 
 #placeInfo #header-text {
-  color: red;
-  border-bottom: 1px solid red;
+  color: black;
+  border-bottom: 1px solid black;
   margin-bottom: 0;
   display: inline-block;
   padding: 0 15px;
@@ -55,4 +55,18 @@
 
 #placeInfo .text {
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+#placeInfo-form.placeInfoBody {
+  margin-top: 0px;
+}
+
+#placeInfo-error-label {
+  color: red;
+  margin: 0px;
+  font-size: 0.8rem;
+}
+
+#placeInfo-form-container {
+  margin-top: 20px;
 }

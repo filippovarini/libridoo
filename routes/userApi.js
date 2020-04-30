@@ -17,14 +17,23 @@ router.get("/rating/:_id", (req, res) => {
     .then(user => {
       if (!user) {
         // has deleted account
-        res.json({ code: 1.5, message: "nessun utente trovato con questo id" });
+        res.json({
+          code: 1.5,
+          message: "Nessun utente trovato con questo id",
+          place: ".findById(), userApi:16"
+        });
       } else {
         res.json({ code: 0, rating: user.rating.average });
       }
     })
     .catch(error => {
       console.log(error);
-      res.json({ code: 1, frontend: ".findById()", error });
+      res.json({
+        code: 1,
+        place: ".findById(), userApi:16",
+        message: "Qualcosa è andato storto nel download del tuo rating",
+        error
+      });
     });
 });
 
@@ -63,7 +72,13 @@ router.get("/emailConfirm/:email", (req, res) => {
       res.json({ code: 0, hashedCode: confirmCode });
     })
     .catch(error => {
-      res.json({ code: 1, place: ".hash()", error });
+      res.json({
+        code: 1,
+        place: ".hash(), userApi:70",
+        message:
+          "Qualcosa è andato storto nella creazione di una nuova password",
+        error
+      });
     });
 });
 
@@ -74,7 +89,7 @@ router.post("/emailConfirm/check", (req, res) => {
     .compare(req.body.code, req.body.hashed)
     .then(response => res.json({ response }))
     .catch(error => {
-      res.json({ code: 1, place: ".compeare()", error });
+      res.json({ code: 1, place: ".compeare(), userApi:89", error });
     });
 });
 
@@ -86,7 +101,11 @@ router.post("/refresh", (req, res) => {
   try {
     user = jwt.verify(token, JWT_SECRET);
   } catch {
-    res.json({ code: 4, message: "JWT expired" });
+    res.json({
+      code: 4,
+      message: "La sessione di login è scaduta",
+      place: ".verify(), userApi:102"
+    });
   }
 
   User.findById(user._id)
@@ -99,13 +118,20 @@ router.post("/refresh", (req, res) => {
       } else {
         res.json({
           code: 1.5,
-          message: "Nessun account con id il jwt fornito"
+          message: "Nessun account registrato nella sessione fornita",
+          devMessage: "No account in this jwt",
+          place: ".findById(), userApi:111"
         });
       }
     })
     .catch(error => {
       console.log(error);
-      res.json({ code: 1, message: "Errore inaspettato", error });
+      res.json({
+        code: 1,
+        message: "Qualcosa è andato storto nella ricarica della pagina",
+        place: ".findById(), userApi:111",
+        error
+      });
     });
 });
 
@@ -130,14 +156,24 @@ router.post("/login", (req, res) => {
             }
           })
           .catch(error => {
-            res.json({ code: 1, place: ".compare()", error: "hashing" });
+            res.json({
+              code: 1,
+              place: ".compare(), userApi:147",
+              message: "Qualcosa è andato storto nel login",
+              error: "hashing"
+            });
           });
       } else {
         res.json({ code: 2, incorrect: "email" });
       }
     })
     .catch(error => {
-      res.json({ code: 1, message: "Errore inaspettato", error });
+      res.json({
+        code: 1,
+        message: "Qualcosa è andato storto nel login",
+        place: ".findOne(), userApi:143",
+        error
+      });
     });
 });
 
@@ -156,7 +192,12 @@ router.post("/register/check", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findOne()", error });
+      res.json({
+        code: 1,
+        place: ".findOne(), userApi:183",
+        message: "Qualcosa è andato storto nel controllo dell'email",
+        error
+      });
     });
 });
 
@@ -203,7 +244,7 @@ router.post("/register", (req, res) => {
                   code: 3,
                   activeUser,
                   JWT,
-                  place: ".findByIdAndUpdate()",
+                  place: ".findByIdAndUpdate(), userApi:236",
                   error
                 });
               });
@@ -212,11 +253,22 @@ router.post("/register", (req, res) => {
           }
         })
         .catch(error => {
-          res.json({ code: 1, place: ".save()", error });
+          res.json({
+            code: 1,
+            place: ".save(), userApi:226",
+            message: "Qualcosa è andato storto nella registrazione",
+            error
+          });
         });
     })
     .catch(error => {
-      res.json({ code: 1, place: ".hash()", error });
+      res.json({
+        code: 1,
+        place: ".hash(), userApi:217",
+        message:
+          "Qualcosa è andato storto nel salvataggio della password nella registrazione",
+        error
+      });
     });
   // }
   // })
@@ -247,12 +299,23 @@ router.put("/bodyInfo", (req, res) => {
               res.json({ code: 0, activeUser, JWT });
             })
             .catch(error => {
-              res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+              res.json({
+                code: 1,
+                place: ".findByIdAndUpdate(), userApi:292",
+                message:
+                  "Qualcosa è andato storto nel salvataggio delle modifiche",
+                error
+              });
             });
         }
       })
       .catch(error => {
-        res.json({ code: 1, place: ".find()", error });
+        res.json({
+          code: 1,
+          place: ".find(), userApi:284",
+          message: "Qualcosaee è andato storto nel salvataggio delle modifiche",
+          error
+        });
       });
   } else {
     User.findByIdAndUpdate(req.body._id, req.body.newBodyInfo, { new: true })
@@ -262,7 +325,12 @@ router.put("/bodyInfo", (req, res) => {
         res.json({ code: 0, activeUser, JWT });
       })
       .catch(error => {
-        res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+        res.json({
+          code: 1,
+          place: ".findByIdAndUpdate(), userApi:321",
+          message: "Qualcosa è andato storto nel salvataggio delle modifiche",
+          error
+        });
       });
   }
 });
@@ -278,7 +346,12 @@ router.put("/place", (req, res) => {
       res.json({ code: 0, activeUser, JWT });
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+      res.json({
+        code: 1,
+        place: ".findByIdAndUpdate(), userApi:341",
+        message: "Qualcosa è andato storto nel salvataggio della luogo",
+        error
+      });
     });
 });
 
@@ -293,7 +366,13 @@ router.put("/delivery", (req, res) => {
       res.json({ code: 0, activeUser, JWT });
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+      res.json({
+        code: 1,
+        place: ".findByIdAndUpdate(), userApi:361",
+        message:
+          "Qualcosa è andato storto nel salvataggio delle informazioni sulla spedizione",
+        error
+      });
     });
 });
 
@@ -303,7 +382,12 @@ router.put("/ratingUpdate", (req, res) => {
   User.findById(req.body._id)
     .then(user => {
       if (!user) {
-        res.json({ code: 1.5, message: "Nessun account con questo id" });
+        res.json({
+          code: 1.5,
+          devMessage: "Nessun account con questo id",
+          message: "Nessun account trovato da valutare",
+          place: ".findById(), userApi:382"
+        });
       } else {
         count = user.rating.count + 1;
         rawAverage =
@@ -326,7 +410,9 @@ router.put("/ratingUpdate", (req, res) => {
             if (!user) {
               res.json({
                 code: 1.5,
-                message: "nessun account trovato nell'update con questo id"
+                devMessage: "nessun account trovato nell'update con questo id",
+                message: "Nessun account trovato da valutare",
+                place: ".findByIdAndUpdate(), userApi: 402"
               });
             } else {
               res.json({
@@ -336,12 +422,24 @@ router.put("/ratingUpdate", (req, res) => {
             }
           })
           .catch(error => {
-            res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+            res.json({
+              code: 1,
+              place: ".findByIdAndUpdate(), userApi:402",
+              message:
+                "Qualcosa è andato storto nel salvataggio della tua valutazione",
+              error
+            });
           });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findById()", error });
+      res.json({
+        code: 1,
+        place: ".findById(), userApi:382",
+        message:
+          "Qualcosa è andato storto nel salvataggio della tua valutazione",
+        error
+      });
     });
 });
 
@@ -351,7 +449,12 @@ router.put("/passwordUpdate", (req, res) => {
   User.findById(req.body._id)
     .then(user => {
       if (!user) {
-        res.json({ code: 1.5, message: "nessun utente con questo id" });
+        res.json({
+          code: 1.5,
+          devMessage: "nessun utente con questo id",
+          message: "Nessun utente trovato",
+          place: ".findById(), userApi:449"
+        });
       } else {
         bcrypt
           .compare(req.body.oldPassword, user.password)
@@ -381,23 +484,43 @@ router.put("/passwordUpdate", (req, res) => {
                     .catch(error => {
                       res.json({
                         code: 1,
-                        place: ".findByIdAndUpdate()",
+                        place: ".findByIdAndUpdate(), userApi:468",
+                        message:
+                          "Qualcosa è andato storto nel salvataggio della nuova password",
                         error
                       });
                     });
                 })
                 .catch(error => {
-                  res.json({ code: 1, place: ".hash()", error });
+                  res.json({
+                    code: 1,
+                    place: ".hash(), userApi:466",
+                    message:
+                      "Qualcosa è andato storto nel salvataggio della nuova password",
+                    error
+                  });
                 });
             }
           })
           .catch(error => {
-            res.json({ code: 1, place: ".compare()", error });
+            res.json({
+              code: 1,
+              place: ".compare(), userAPi:460",
+              message:
+                "Qualcosa è andato storto nel salvataggio della nuova password",
+              error
+            });
           });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findById()", error });
+      res.json({
+        code: 1,
+        place: ".findById(), userApi:449",
+        message:
+          "Qualcosa è andato storto nel salvataggio della nuova password",
+        error
+      });
     });
 });
 
@@ -464,16 +587,34 @@ router.put("/recover", (req, res) => {
                 });
               })
               .catch(error => {
-                res.json({ code: 1, place: "findOneAndUpdate()", error });
+                res.json({
+                  code: 1,
+                  place: "findOneAndUpdate(), userApi:542",
+                  message:
+                    "Qualcosa è andato storto nel recupero della password dimenticata",
+                  error
+                });
               });
           })
           .catch(error => {
-            res.json({ code: 1, place: ".hash()", error });
+            res.json({
+              code: 1,
+              place: ".hash(), userApi:530",
+              message:
+                "Qualcosa è andato storto nel recupero della password dimenticata",
+              error
+            });
           });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findOne()", error });
+      res.json({
+        code: 1,
+        place: ".findOne(), userApi:530",
+        message:
+          "Qualcosa è andato storto nel recupero della password dimenticata",
+        error
+      });
     });
 });
 
@@ -483,7 +624,10 @@ router.delete("/delete", (req, res) => {
   User.findByIdAndDelete(req.body._id)
     .then(user => {
       if (!user) {
-        res.json({ code: 1.5, message: "Account già eliminato" });
+        res.json({
+          code: 1.5,
+          message: "Il tuo account è stato già eliminato"
+        });
       } else {
         // delete all books sold by user
         Book.deleteMany({ sellerId: req.body._id })
@@ -491,12 +635,22 @@ router.delete("/delete", (req, res) => {
             res.json({ code: 0, message: "Account eliminato con successo" });
           })
           .catch(error => {
-            res.json({ code: 1, place: ".deleteMany", error });
+            res.json({
+              code: 1,
+              place: ".deleteMany(), userApi:633",
+              message: "Qualcosa è andato storto nella rimozione dell'account",
+              error
+            });
           });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findByIdAndDelete()", error });
+      res.json({
+        code: 1,
+        place: ".findByIdAndDelete(), userApi:624",
+        message: "Qualcosa è andato storto nella rimozione dell'account",
+        error
+      });
     });
 });
 

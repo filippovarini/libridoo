@@ -1,0 +1,65 @@
+#error-image-container {
+  background: lightgoldenrodyellow;
+  width: 95%;
+  margin: 0 auto;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#error-fake-header {
+  font-size: 4rem;
+  letter-spacing: 3rem;
+}
+
+#error-header {
+  font-family: "New Rocker", cursive;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 3rem;
+}
+
+#error-container {
+  border: 1px solid black;
+  max-width: 500px;
+  width: 50%;
+  min-width: 300px;
+  margin: 0 auto;
+  margin-top: 80px;
+  padding: 30px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#error-container.height-set {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#error-body {
+  font-size: 1.3rem;
+  margin: 0px;
+  margin-bottom: 20px;
+  text-align: start;
+}
+
+#error-retry {
+  margin: 0px;
+  text-align: start;
+}
+
+#error-link {
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+  margin-top: 40px;
+  border: 1px solid black;
+  padding: 3px 10px;
+}
+
+#error-link:hover {
+  box-shadow: 0px 0px 5px black;
+}

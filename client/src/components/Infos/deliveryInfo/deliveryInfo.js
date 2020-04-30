@@ -18,7 +18,10 @@ class DeliveryInfo extends Component {
     costPlaceholder: "prezzo",
     timeToMeetPlaceholder: "numero",
     loading: false,
-    firstUpdated: false
+    firstUpdated: false,
+    errorLabelHidden: true,
+    disable: false,
+    labelClicked: false
   };
 
   componentDidMount = () => {
@@ -57,53 +60,76 @@ class DeliveryInfo extends Component {
     if (!e.target.value) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "***"
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "timeToMeet" ? "*numero*" : "*prezzo*"
       });
+    } else {
+      if (e.target.id === "timeToMeet") {
+        this.setState({ timeToMeetClass: "correct-input" });
+      }
     }
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (!this.state.errorLabelHidden) {
+      this.setState({
+        errorLabelHidden: true
+      });
+    }
   };
 
   handleBlur = e => {
     if (!e.target.value) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "***"
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "timeToMeet" ? "*numero*" : "*prezzo*"
       });
     } else {
       this.setState({
         [`${e.target.id}Class`]: "correct-input",
-        [`${e.target.id}Placeholder`]: `${e.target.id}`
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "timeToMeet" ? "numero" : "prezzo"
       });
+    }
+    if (e.target.id === "timeToMeet") {
+      this.handleOut("third");
+    } else if (e.target.id === "cost" && !this.state.disable) {
+      this.handleOut("second");
     }
   };
 
-  handleOver = e => {
+  handleOver = focused => {
     this.setState({
-      [`${e.target.id}Class`]: null
+      firstLabelClass: "hidden",
+      secondLabelClass: "hidden",
+      thirdLabelClass: "hidden"
+    });
+    this.setState({
+      [`${focused}LabelClass`]: null
     });
   };
 
-  handleOut = e => {
+  handleOut = focused => {
     this.setState({
-      [`${e.target.id}LabelClass`]: "hidden"
+      [`${focused}LabelClass`]: "hidden"
     });
   };
 
   handleSave = e => {
     e.preventDefault();
     if (this.state.range && this.state.range !== "NO" && !this.state.cost) {
-      alert("Compila tutti i campi obbligatori nel modo corretto");
       this.setState({
         costClass: "invalid-input",
-        costPlaceholder: "***"
+        errorLabelHidden: false,
+        costPlaceholder: "*prezzo*"
       });
-    } else if (!this.state.timeToMeet) {
-      alert("Compila tutti i campi obbligatori nel modo corretto");
+    }
+    if (!this.state.timeToMeet) {
       this.setState({
         timeToMeetClass: "invalid-input",
-        timeToMeetPlaceholder: "***"
+        errorLabelHidden: false,
+        timeToMeetPlaceholder: "*numero*"
       });
     } else {
       const DeliveryInfo =
@@ -208,17 +234,12 @@ class DeliveryInfo extends Component {
           <div className="body text single">
             <p
               id="first"
-              onMouseLeave={this.handleOut}
               className={`info-label-explainer editing ${this.state.firstLabelClass}`}
             >
               Se sei disposto a spedire i libri al cliente con un corriere,
               seleziona dove lo faresti.
             </p>
-            <span
-              id="firstLabel"
-              className="info-label"
-              onMouseOver={this.handleOver}
-            >
+            <span id="firstLabel" className="info-label">
               SPEDISCO:
             </span>
             <select
@@ -226,6 +247,8 @@ class DeliveryInfo extends Component {
               onChange={this.handleChange}
               className="info input"
               defaultValue="NO"
+              onFocus={() => this.handleOver("first")}
+              onBlur={() => this.handleOut("first")}
             >
               <option value="NO">NO</option>
               <option value="country">In {country || "nazione"}</option>
@@ -236,17 +259,12 @@ class DeliveryInfo extends Component {
           <div className="body text single">
             <p
               id="third"
-              onMouseLeave={this.handleOut}
               className={`info-label-explainer ${this.state.thirdLabelClass}`}
             >
               I clienti della tua città vogliono sapere entro quanti giorni sei
               disposto ad incontrarti con loro
             </p>
-            <span
-              id="thirdLabel"
-              className="info-label"
-              onMouseOver={this.handleOver}
-            >
+            <span id="thirdLabel" className="info-label">
               INCONTRO:
             </span>
             <div
@@ -257,6 +275,7 @@ class DeliveryInfo extends Component {
                 Entro
               </span>
               <input
+                onFocus={() => this.handleOver("third")}
                 autoComplete="off"
                 type="number"
                 id="timeToMeet"
@@ -271,11 +290,18 @@ class DeliveryInfo extends Component {
               </span>
             </div>
           </div>
-          <i
+          {/* <i
             id="save"
             onClick={this.handleSave}
             className="fas fa-check fa-1x set-ico bottom"
-          ></i>
+          ></i> */}
+          <p
+            id="save"
+            className="set-ico p-icon bottom"
+            onClick={this.handleSave}
+          >
+            SALVA
+          </p>
           <input type="submit" className="hidden" />
         </form>
       </div>
@@ -325,129 +351,269 @@ class DeliveryInfo extends Component {
         <i
           id="edit"
           onClick={this.handleEdit}
-          className="fas fa-edit fa-1x set-ico bottom"
+          className="fas fa-pen fa-1x set-ico bottom"
         ></i>
       </div>
     ) : null;
-    const loading = <h1>loading...</h1>;
+    const loading = (
+      <div id="deliveryInfo-loading-container">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    const generalPrice =
+      this.state.range === "country"
+        ? 15
+        : this.state.range === "city"
+        ? 8
+        : 10;
 
     const editing = this.props.user.DeliveryInfo ? (
       <div className="header-container">
         <p id="header-text">
           Compila informazioni su spedizioni ed incontri per i tuoi clienti
         </p>
-        <form id="form" className="body-container" onSubmit={this.handleSave}>
-          <div className="body text">
-            <p
-              id="first"
-              onMouseLeave={this.handleOut}
-              className={`info-label-explainer editing ${this.state.firstLabelClass}`}
-            >
-              Se sei disposto a spedire i libri al cliente con un corriere,
-              seleziona dove lo faresti.
-            </p>
-            <span
-              id="firstLabel"
-              className="info-label"
-              onMouseOver={this.handleOver}
-            >
-              SPEDISCO:
-            </span>
-            <select
-              id="range"
-              onChange={this.handleChange}
-              className="info input"
-              defaultValue={
-                this.state.range || this.props.user.DeliveryInfo.range
-              }
-            >
-              <option value="NO">NO</option>
-              <option value="country">In {country || "nazione"}</option>
-              <option value="region">Nella mia regione</option>
-              <option value="city">Nella mia città</option>
-            </select>
-          </div>
-          <div className="body text">
-            <p
-              id="second"
-              onMouseLeave={this.handleOut}
-              className={`info-label-explainer ${this.state.secondLabelClass}`}
-            >
-              Seleziona il prezzo aggiuntivo che il cliente dovrà pagarti, dal
-              momento che il corriere è a carico.
-            </p>
-            <span
-              id="secondLabel"
-              className="info-label"
-              onMouseOver={this.handleOver}
-            >
-              PER:
-            </span>
-            <div id="cost-container" className="input-container info input">
-              <input
-                autoComplete="off"
-                type="number"
-                id="cost"
-                defaultValue={this.props.user.DeliveryInfo.cost || null}
-                placeholder={this.state.costPlaceholder}
-                className={`contained-input ${this.state.costClass}`}
+        <div id="deliveryInfo-form-container">
+          <form id="form" className="body-container" onSubmit={this.handleSave}>
+            <div className="body text">
+              <p
+                id="first"
+                className={`info-label-explainer editing ${this.state.firstLabelClass}`}
+              >
+                Se sei disposto a spedire i libri al cliente con un corriere,
+                seleziona dove lo faresti.
+              </p>
+              <span id="firstLabel" className="info-label">
+                SPEDISCO:
+              </span>
+              <select
+                id="range"
                 onChange={this.handleChange}
-                onBlur={this.handleBlur}
-              />
-              <span id="cost-euro" className="input-span">
-                euro
-              </span>
-            </div>
-          </div>
-          <div className="body text">
-            <p
-              id="third"
-              onMouseLeave={this.handleOut}
-              className={`info-label-explainer ${this.state.thirdLabelClass}`}
-            >
-              I clienti della tua città vogliono sapere entro quanti giorni sei
-              disposto ad incontrarti con loro
-            </p>
-            <span
-              id="thirdLabel"
-              className="info-label"
-              onMouseOver={this.handleOver}
-            >
-              INCONTRO:
-            </span>
-            <div
-              id="timeToMeet-container"
-              className="input-container info input"
-            >
-              <span id="timeToMeet-within" className="input-span">
-                Entro
-              </span>
-              <input
-                autoComplete="off"
-                type="number"
-                id="timeToMeet"
+                className="info input"
                 defaultValue={
-                  this.state.timeToMeet ||
-                  this.props.user.DeliveryInfo.timeToMeet ||
-                  null
+                  this.state.range || this.props.user.DeliveryInfo.range
                 }
-                placeholder={this.state.timeToMeetPlaceholder}
-                className={`contained-input ${this.state.timeToMeetClass}`}
-                onChange={this.handleChange}
-                onBlur={this.handleBlur}
-              />
-              <span id="timeToMeet-days" className="input-span">
-                giorni
-              </span>
+                onFocus={() => this.handleOver("first")}
+                onBlur={() => {
+                  this.handleOut("first");
+                }}
+              >
+                <option value="NO">NO</option>
+                <option value="country">In {country || "nazione"}</option>
+                <option value="region">Nella mia regione</option>
+                <option value="city">Nella mia città</option>
+              </select>
             </div>
-          </div>
-          <i
-            id="save"
-            onClick={this.handleSave}
-            className="fas fa-check fa-1x set-ico bottom"
-          ></i>
-          <input type="submit" className="hidden" />
-        </form>
+            <div className="body text">
+              <p
+                id="second"
+                onClick={() => {
+                  this.setState({
+                    labelClicked: true
+                  });
+                }}
+                onMouseOver={() => {
+                  this.setState({ disable: true });
+                }}
+                onTouchStart={() => {
+                  this.setState({ disable: true });
+                }}
+                onMouseLeave={() => {
+                  this.setState({ disable: false });
+                  if (this.state.labelClicked) {
+                    this.setState({
+                      secondLabelClass: "hidden",
+                      labelClicked: false
+                    });
+                  }
+                }}
+                onTouchEnd={() => {
+                  this.setState({ disable: false });
+                  if (this.state.labelClicked) {
+                    this.setState({
+                      secondLabelClass: "hidden",
+                      labelClicked: false
+                    });
+                  }
+                }}
+                className={`info-label-explainer ${this.state.secondLabelClass}`}
+              >
+                In media, la spedizione costa <b>{generalPrice} euro</b>. Per
+                una spedizione economica e sicura, ti consigliamo{" "}
+                <a
+                  href="https://wwwapps.ups.com/ctc/request?loc=it_IT"
+                  target="blank"
+                >
+                  ups
+                </a>
+              </p>
+              <span id="secondLabel" className="info-label">
+                PER:{" "}
+              </span>
+              <div id="cost-container" className="input-container info input">
+                <div id="cost-sub-container">
+                  <input
+                    autoComplete="off"
+                    type="number"
+                    id="cost"
+                    defaultValue={this.props.user.DeliveryInfo.cost || null}
+                    placeholder={this.state.costPlaceholder}
+                    className={`contained-input ${this.state.costClass} ${
+                      this.state.cost
+                        ? this.state.cost >= generalPrice + 5
+                          ? "input-high"
+                          : this.state.cost <= generalPrice
+                          ? "input-low"
+                          : "input-medium"
+                        : null
+                    }`}
+                    onChange={this.handleChange}
+                    onFocus={() => this.handleOver("second")}
+                    onBlur={this.handleBlur}
+                  />
+                  <p
+                    id="delivery-cost-feedback"
+                    className={
+                      this.state.cost >= generalPrice + 5
+                        ? "high"
+                        : this.state.cost <= generalPrice
+                        ? "low"
+                        : "medium"
+                    }
+                  >
+                    {this.state.cost
+                      ? this.state.cost >= generalPrice + 5
+                        ? "prezzo eccessivo"
+                        : this.state.cost <= generalPrice
+                        ? "prezzo perfetto"
+                        : "prezzo alto"
+                      : null}
+                  </p>
+                </div>
+                <span id="cost-euro" className="input-span">
+                  euro
+                </span>
+              </div>
+            </div>
+            <div className="body text">
+              <p
+                id="third"
+                className={`info-label-explainer ${this.state.thirdLabelClass}`}
+              >
+                I clienti della tua città vogliono sapere entro quanti giorni
+                sei disposto ad incontrarti con loro
+              </p>
+              <span id="thirdLabel" className="info-label">
+                INCONTRO:
+              </span>
+              <div
+                id="timeToMeet-container"
+                className="input-container info input"
+              >
+                <span id="timeToMeet-within" className="input-span">
+                  Entro
+                </span>
+                <input
+                  onFocus={() => this.handleOver("third")}
+                  autoComplete="off"
+                  type="number"
+                  id="timeToMeet"
+                  defaultValue={
+                    this.state.timeToMeet ||
+                    this.props.user.DeliveryInfo.timeToMeet ||
+                    null
+                  }
+                  placeholder={this.state.timeToMeetPlaceholder}
+                  className={`contained-input ${this.state.timeToMeetClass}`}
+                  onChange={this.handleChange}
+                  onBlur={this.handleBlur}
+                />
+                <span id="timeToMeet-days" className="input-span">
+                  giorni
+                </span>
+              </div>
+            </div>
+            {/* <i
+              id="save"
+              onClick={this.handleSave}
+              className="fas fa-check fa-1x set-ico bottom"
+            ></i> */}
+            <p
+              id="save"
+              className="set-ico p-icon bottom"
+              onClick={this.handleSave}
+            >
+              SALVA
+            </p>
+            <input type="submit" className="hidden" />
+          </form>
+          <p
+            id="deliveryInfo-error-label"
+            className={this.state.errorLabelHidden ? "hidden" : ""}
+          >
+            Compila tutti i campi obbligatori
+          </p>
+        </div>
       </div>
     ) : null;
 
@@ -516,7 +682,7 @@ class DeliveryInfo extends Component {
         <i
           id="edit"
           onClick={this.handleEdit}
-          className="fas fa-edit fa-1x set-ico bottom"
+          className="fas fa-pen fa-1x set-ico bottom"
         ></i>
       </div>
     ) : null;

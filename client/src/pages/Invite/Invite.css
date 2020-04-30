@@ -46,8 +46,9 @@
   margin: 0px;
   width: 80%;
   text-align: center;
+  font-size: 0.9rem;
   overflow: hidden;
-  overflow-wrap: break-word;
+  text-overflow: ellipsis;
 }
 
 .invite-ico {

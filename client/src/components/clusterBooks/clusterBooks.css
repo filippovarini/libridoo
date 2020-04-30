@@ -97,11 +97,21 @@
   margin-bottom: 50px;
 }
 
+#book-cluster #subHeader-container.confirmation {
+  margin-bottom: 30px;
+}
+
 #book-cluster .sub-header {
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
   padding: 5px;
+}
+
+#book-cluster .sub-header.confirmation {
+  border: 0px solid black;
+  justify-content: center;
+  margin-top: 30px;
 }
 
 #book-cluster .sub-header-text {
@@ -155,4 +165,20 @@
 #deals-lower-icon.icon-container.icon-container.notConfirmed {
   width: 50px;
   border: 2px solid black;
+}
+
+#book-cluster .price-cluster-icon {
+  font-size: 0.7rem;
+  font-weight: normal;
+}
+
+#book-cluster #deals-lower-icon.price-cluster-icon-container.icon-container {
+  width: auto;
+  padding: 10px;
+  height: auto;
+}
+#book-cluster .price-cluster-icon-container.icon-container {
+  width: auto;
+  padding: 10px;
+  height: auto;
 }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import "./infoComponent.css";
 
 // book / page / delivery
@@ -45,6 +46,14 @@ class InfoComponent extends Component {
   };
 
   render() {
+    let price = this.props.book.price;
+    if (String(price).indexOf(".") === -1) {
+      // whole price
+      price = `${price}.00`;
+    } else {
+      // decimal
+      if (String(price).split(".")[1].length === 1) price = `${price}0`;
+    }
     const checkoutBody = (
       <div id="infoContainer">
         <div id="title-container" className="info-container">
@@ -62,7 +71,8 @@ class InfoComponent extends Component {
         <div id="price-container" className="info-container">
           <i className="fas fa-euro-sign info-book-ico"></i>
           <p id="price" className="info">
-            {this.props.book.price}
+            {/* {this.props.book.price} */}
+            {price}
           </p>
         </div>
         <div id="remove-container" className="info-container">
@@ -90,7 +100,8 @@ class InfoComponent extends Component {
         <div id="price-container" className="info-container">
           <i className="fas fa-euro-sign info-book-ico"></i>
           <p id="price" className="info">
-            {this.props.book.price}{" "}
+            {/* {this.props.book.price} */}
+            {price}{" "}
             <span className={this.props.delivery.choosen ? null : "hidden"}>
               (+ {this.props.delivery.cost} euro di spedizione)
             </span>
@@ -121,7 +132,8 @@ class InfoComponent extends Component {
         <div id="price-container" className="info-container">
           <i className="fas fa-euro-sign info-book-ico"></i>
           <p id="price" className="info">
-            {this.props.book.price}
+            {/* {this.props.book.price} */}
+            {price}
           </p>
         </div>
       </div>
@@ -161,4 +173,4 @@ class InfoComponent extends Component {
   }
 }
 
-export default connect()(InfoComponent);
+export default connect()(withRouter(InfoComponent));

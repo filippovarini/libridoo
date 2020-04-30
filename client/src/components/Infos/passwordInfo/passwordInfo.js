@@ -15,7 +15,8 @@ class PasswordInfo extends Component {
     newPswPlaceholder: "nuova password",
     confirmNewPswPlaceholder: "conferma",
     editing: false,
-    loading: false
+    loading: false,
+    errorLabelMessage: null
   };
 
   handleEdit = () => {
@@ -26,7 +27,12 @@ class PasswordInfo extends Component {
     if (!e.target.value) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "*campo obbligatorio"
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "oldPsw"
+            ? "*vecchia password*"
+            : e.target.id === "newPsw"
+            ? "*nuova password*"
+            : "*conferma*"
       });
     } else {
       if (e.target.id === "newPsw" || e.target.id === "confirmNewPsw") {
@@ -40,21 +46,42 @@ class PasswordInfo extends Component {
           });
         } else if (e.target.value.length > 8 && e.target.value.length < 15) {
           this.setState({
-            confirmNewPswClass: "correct-input"
+            [`${e.target.id}Class`]: "correct-input"
           });
+        } else {
+          this.setState({
+            [`${e.target.id}Class`]: null
+          });
+        }
+      } else {
+        // old psw
+        if (e.target.value.length > 8 && e.target.value.length < 15) {
+          this.setState({ oldPswClass: "correct-input" });
+        } else {
+          this.setState({ oldPswClass: null });
         }
       }
     }
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (this.state.errorLabelMessage) {
+      this.setState({
+        errorLabelMessage: null
+      });
+    }
   };
 
   handleBlur = e => {
     if (e.target.value.length < 8 || e.target.value.length > 15) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "*campo obbligatorio"
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "oldPsw"
+            ? "*vecchia password*"
+            : e.target.id === "newPsw"
+            ? "*nuova password*"
+            : "*conferma*"
       });
     } else {
       if (
@@ -74,24 +101,24 @@ class PasswordInfo extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!this.state.oldPsw || !this.state.newPsw || !this.state.confirmNewPsw) {
-      alert("Compila tutti i campi obbligatori");
+      this.setState({ errorLabelMessage: "Compila tutti i campi obbligatori" });
       // think dont have to do it, already done it in blur
       if (!this.state.oldPsw) {
         this.setState({
           oldPswClass: "invalid-input",
-          oldPswPlaceholder: "*campo obbligatorio"
+          oldPswPlaceholder: "*vecchia password*"
         });
       }
       if (!this.state.newPsw) {
         this.setState({
           newPswClass: "invalid-input",
-          newPswPlaceholder: "*campo obbligatorio"
+          newPswPlaceholder: "*nuova password*"
         });
       }
       if (!this.state.confirmNewPsw) {
         this.setState({
           confirmNewPswClass: "invalid-input",
-          confirmNewPswPlaceholder: "*campo obbligatorio"
+          confirmNewPswPlaceholder: "*conferma*"
         });
       }
     } else if (
@@ -102,9 +129,14 @@ class PasswordInfo extends Component {
       this.state.confirmNewPsw.length < 8 ||
       this.state.confirmNewPsw.length > 15
     ) {
-      alert("La password deve essere lunga minimo 8 caratteri e massimo 15");
+      this.setState({
+        errorLabelMessage:
+          "La password deve essere lunga minimo 8 caratteri e massimo 15"
+      });
     } else if (this.state.newPsw !== this.state.confirmNewPsw) {
-      alert("La nuova password è diversa dalla sua conferma");
+      this.setState({
+        errorLabelMessage: "La nuova password è diversa dalla sua conferma"
+      });
     } else {
       // everything correct
       const body = {
@@ -112,6 +144,7 @@ class PasswordInfo extends Component {
         oldPassword: this.state.oldPsw,
         newPassword: this.state.newPsw
       };
+      this.setState({ loading: true });
       // delete loading because of code = 2 (for now, vecchia password errata)
       // this.setState({ loading: true });
       fetch("/api/user/passwordUpdate", {
@@ -135,21 +168,14 @@ class PasswordInfo extends Component {
             });
             this.props.history.push("/error");
           } else if (jsonRes.code === 2) {
-            alert("Vecchia password errata");
-            // this.setState({
-            //   oldPsw: null,
-            //   newPsw: null,
-            //   confirmNewPsw: null,
-            //   oldPswClass: "invalid-input",
-            //   newPswClass: null,
-            //   confirmNewPswClass: null,
-            //   oldPswPlaceholder: "password errata",
-            //   newPswPlaceholder: "nuova password",
-            //   confirmNewPswPlaceholder: "conferma",
-            //   editing: true,
-            //   loading: false
-            // });
-            this.setState({ oldPswClass: "invalid-input" });
+            this.setState({
+              errorLabelMessage: "Vecchia password errata",
+              loading: false,
+              oldPswPlaceholder: "vecchia password",
+              newPswPlaceholder: "nuova password",
+              confirmNewPswPlaceholder: "conferma",
+              oldPswClass: "invalid-input"
+            });
           } else if (jsonRes.code === 0) {
             // correct
             // set user
@@ -192,44 +218,59 @@ class PasswordInfo extends Component {
       <div className="body-gContainer">
         <i className="fas fa-lock-open set-ico top fa-1x"></i>
         <p id="header-text">Modifica la tua password</p>
-        <form
-          className="body-container input-container"
-          onSubmit={this.handleSubmit}
-        >
-          <input
-            autoComplete="off"
-            type="password"
-            id="oldPsw"
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            className={`info input ${this.state.oldPswClass}`}
-            placeholder={this.state.oldPswPlaceholder}
-          />
-          <input
-            autoComplete="off"
-            type="password"
-            id="newPsw"
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            className={`info input ${this.state.newPswClass}`}
-            placeholder={this.state.newPswPlaceholder}
-          />
-          <input
-            autoComplete="off"
-            type="password"
-            id="confirmNewPsw"
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            className={`info input ${this.state.confirmNewPswClass}`}
-            placeholder={this.state.confirmNewPswPlaceholder}
-          />
-          <input type="submit" className="hidden" />
-          <i
-            id="save"
-            onClick={this.handleSubmit}
-            className="fas fa-check fa-1x set-ico bottom"
-          ></i>
-        </form>
+        <div id="passwordInfo-form-container">
+          <p
+            id="passwordInfo-errorLabel"
+            className={this.state.errorLabelMessage ? "" : "hidden"}
+          >
+            {this.state.errorLabelMessage}
+          </p>
+          <form
+            className="body-container input-container"
+            onSubmit={this.handleSubmit}
+          >
+            <input
+              autoComplete="off"
+              type="password"
+              id="oldPsw"
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              className={`info input ${this.state.oldPswClass}`}
+              placeholder={this.state.oldPswPlaceholder}
+            />
+            <input
+              autoComplete="off"
+              type="password"
+              id="newPsw"
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              className={`info input ${this.state.newPswClass}`}
+              placeholder={this.state.newPswPlaceholder}
+            />
+            <input
+              autoComplete="off"
+              type="password"
+              id="confirmNewPsw"
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              className={`info input ${this.state.confirmNewPswClass}`}
+              placeholder={this.state.confirmNewPswPlaceholder}
+            />
+            <input type="submit" className="hidden" />
+            {/* <i
+              id="save"
+              onClick={this.handleSubmit}
+              className="fas fa-check fa-1x set-ico bottom"
+            ></i> */}
+            <p
+              id="save"
+              className="set-ico p-icon bottom"
+              onClick={this.handleSubmit}
+            >
+              SALVA
+            </p>
+          </form>
+        </div>
       </div>
     ) : null;
 
@@ -242,12 +283,76 @@ class PasswordInfo extends Component {
         <i
           id="edit"
           onClick={this.handleEdit}
-          className="fas fa-edit fa-1x set-ico bottom"
+          className="fas fa-pen fa-1x set-ico bottom"
         ></i>
       </div>
     ) : null;
 
-    const loading = <h1>loading...</h1>;
+    const loading = (
+      <div id="passwordInfo-loading">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
     let bodyComponent = this.state.editing ? editing : notEditing;
     if (this.state.loading) bodyComponent = loading;

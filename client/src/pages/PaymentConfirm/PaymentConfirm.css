@@ -56,3 +56,16 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+#paymentConfirm-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -150px;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

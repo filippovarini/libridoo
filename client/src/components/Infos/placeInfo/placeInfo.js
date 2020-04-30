@@ -14,56 +14,129 @@ class PlaceInfo extends Component {
     countryPlaceholder: "stato",
     regionPlaceholder: "regione",
     cityPlaceholder: "città",
-    loading: false
+    loading: false,
+    errorLabelMessage: null
   };
 
   handleChange = e => {
     if (!e.target.value) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "*campo obbligatorio"
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "country"
+            ? "*stato*"
+            : e.target.id === "city"
+            ? "*città*"
+            : "*regione*"
       });
+    } else {
+      this.setState({ [`${e.target.id}Class`]: null });
     }
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (!this.state.errorLabelHidden) {
+      this.setState({ errorLabelHidden: null });
+    }
+    if (e.target.id === "region") {
+      this.setState({ regionClass: null });
+    }
   };
 
   handleBlur = e => {
     if (!e.target.value) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "*campo obbligatorio"
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "country"
+            ? "*stato*"
+            : e.target.id === "city"
+            ? "*città*"
+            : "*regione*"
       });
     } else {
       this.setState({
         [`${e.target.id}Class`]: "correct-input"
       });
     }
+    if (e.target.id === "region") {
+      const regions = [
+        "Abruzzo",
+        "Basilicata",
+        "Calabria",
+        "Campania",
+        "Emilia Romagna",
+        "Friuli Venezia Giulia",
+        "Lazio",
+        "Liguria",
+        "Lombardia",
+        "Marche",
+        "Molise",
+        "Piemonte",
+        "Puglia",
+        "Sardegna",
+        "Sicilia",
+        "Toscana",
+        "Trentino Alto Adige",
+        "Umbria",
+        "Valle d'Aosta",
+        "Veneto"
+      ];
+      if (regions.indexOf(e.target.value) === -1) {
+        this.setState({ regionClass: "invalid-input" });
+      } else {
+        this.setState({ regionClass: "correct-input" });
+      }
+    }
   };
 
   handleSubmit = e => {
     e.preventDefault();
+    const regions = [
+      "Abruzzo",
+      "Basilicata",
+      "Calabria",
+      "Campania",
+      "Emilia Romagna",
+      "Friuli Venezia Giulia",
+      "Lazio",
+      "Liguria",
+      "Lombardia",
+      "Marche",
+      "Molise",
+      "Piemonte",
+      "Puglia",
+      "Sardegna",
+      "Sicilia",
+      "Toscana",
+      "Trentino Alto Adige",
+      "Umbria",
+      "Valle d'Aosta",
+      "Veneto"
+    ];
     if (!this.state.country || !this.state.region || !this.state.city) {
-      alert("Compila tutti i campi obbligatori");
+      this.setState({ errorLabelMessage: "Compila tutti i campi obbligatori" });
       if (!this.state.country) {
         this.setState({
           countryClass: "invalid-input",
-          countryPlaceholder: "*campo obbligatorio"
+          countryPlaceholder: "*stato*"
         });
       }
       if (!this.state.region) {
         this.setState({
           regionClass: "invalid-input",
-          regionPlaceholder: "*campo obbligatorio"
+          regionPlaceholder: "*regione*"
         });
       }
       if (!this.state.city) {
         this.setState({
           cityClass: "invalid-input",
-          cityPlaceholder: "*campo obbligatorio"
+          cityPlaceholder: "*città*"
         });
       }
+    } else if (regions.indexOf(this.state.region) === -1) {
+      // new input
+      this.setState({ errorLabelMessage: "Inserisci una regione valida" });
     } else if (
       // eslint-disable-next-line no-restricted-globals
       confirm(
@@ -170,46 +243,154 @@ class PlaceInfo extends Component {
         <div id="placeInfo-header-container">
           <p id="header-text">Fai sapere ai clienti di dove sei</p>
         </div>
-        <form className="placeInfoBody form" onSubmit={this.handleSubmit}>
-          <input
-            autoComplete="off"
-            id="country"
-            type="text"
-            defaultValue="Italia"
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            className={`placeInfo ${this.state.countryClass}`}
-            placeholder={this.state.countryPlaceholder}
-          />
-          <input
-            autoComplete="off"
-            id="region"
-            type="text"
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            className={`placeInfo ${this.state.regionClass}`}
-            placeholder={this.state.regionPlaceholder}
-          />
-          <input
-            autoComplete="off"
-            id="city"
-            type="text"
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            className={`placeInfo ${this.state.cityClass}`}
-            placeholder={this.state.cityPlaceholder}
-          />
-          <input type="submit" className="hidden" />
-        </form>
-        <i
+        <div id="placeInfo-form-container">
+          <p
+            id="placeInfo-error-label"
+            className={this.state.errorLabelMessage ? "" : "hidden"}
+          >
+            {this.state.errorLabelMessage}
+          </p>
+          <form
+            id="placeInfo-form"
+            className="placeInfoBody form"
+            onSubmit={this.handleSubmit}
+          >
+            <input
+              autoComplete="off"
+              id="country"
+              type="text"
+              defaultValue="Italia"
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              className={`placeInfo ${this.state.countryClass}`}
+              placeholder={this.state.countryPlaceholder}
+            />
+            <input
+              autoComplete="off"
+              id="region"
+              type="text"
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              className={`placeInfo ${this.state.regionClass}`}
+              placeholder={this.state.regionPlaceholder}
+              list="place-region-list"
+            />
+            <datalist id="place-region-list">
+              <option value="Abruzzo">Abruzzo</option>
+              <option value="Basilicata">Basilicata</option>
+              <option value="Calabria">Calabria</option>
+              <option value="Campania">Campania</option>
+              <option value="Emilia Romagna">Emilia Romagna</option>
+              <option value="Friuli Venezia Giulia">
+                Friuli Venezia Giulia
+              </option>
+              <option value="Lazio">Lazio</option>
+              <option value="Liguria">Liguria</option>
+              <option value="Lombardia">Lombardia</option>
+              <option value="Marche">Marche</option>
+              <option value="Molise">Molise</option>
+              <option value="Piemonte">Piemonte</option>
+              <option value="Puglia">Puglia</option>
+              <option value="Sardegna">Sardegna</option>
+              <option value="Sicilia">Sicilia</option>
+              <option value="Toscana">Toscana</option>
+              <option value="Trentino Alto Adige">Trentino Alto Adige</option>
+              <option value="Umbria">Umbria</option>
+              <option value="Valle d'Aosta">Valle d’Aosta</option>
+              <option value="Veneto">Veneto</option>
+            </datalist>
+            <input
+              autoComplete="off"
+              id="city"
+              type="text"
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              className={`placeInfo ${this.state.cityClass}`}
+              placeholder={this.state.cityPlaceholder}
+            />
+            <input type="submit" className="hidden" />
+          </form>
+        </div>
+        {/* <i
           id="save"
           onClick={this.handleSubmit}
           className="fas fa-check fa-1x set-ico bottom"
-        ></i>
+        ></i> */}
+        <p
+          id="save"
+          className="set-ico p-icon bottom"
+          onClick={this.handleSubmit}
+        >
+          SALVA
+        </p>
       </div>
     );
 
-    const loading = <h1>loading...</h1>;
+    const loading = (
+      <div id="placeInfo-loading">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
     let placeInfoBody = notEditing;
     if (this.props.user.place) {

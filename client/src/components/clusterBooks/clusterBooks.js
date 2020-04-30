@@ -190,7 +190,56 @@ class ClusterBooks extends Component {
     ) : null;
 
     let checkoutTotalPrice = 0;
-    this.props.books.forEach(book => (checkoutTotalPrice += book.price));
+    this.props.books.forEach(
+      book =>
+        (checkoutTotalPrice =
+          (book.price * 100 + checkoutTotalPrice * 100) / 100)
+    );
+    if (String(checkoutTotalPrice).indexOf(".") === -1) {
+      // whole price
+      checkoutTotalPrice = `${checkoutTotalPrice}.00`;
+    } else {
+      // decimal
+      if (String(checkoutTotalPrice).split(".")[1].length === 1)
+        checkoutTotalPrice = `${checkoutTotalPrice}0`;
+    }
+
+    const ordersDelivery = this.props.deliveryInfo.choosen ? (
+      <div id="orders-delivery" className="delivery">
+        <p className="delivery-header">SPEDIZIONE SELEZIONATA</p>
+      </div>
+    ) : null;
+
+    const dealsDelivery = this.props.deliveryInfo.choosen ? (
+      <div id="deals-delivery" className="delivery">
+        <p className="delivery-header">DA SPEDIRE</p>
+      </div>
+    ) : null;
+
+    let totalPrice = this.props.deliveryInfo.choosen
+      ? this.props.deliveryInfo.cost
+      : 0;
+    this.props.books.forEach(book => {
+      totalPrice = (book.price * 100 + totalPrice * 100) / 100;
+    });
+
+    if (String(totalPrice).indexOf(".") === -1) {
+      // whole price
+      totalPrice = `${totalPrice}.00`;
+    } else {
+      // decimal
+      if (String(totalPrice).split(".")[1].length === 1)
+        totalPrice = `${totalPrice}0`;
+    }
+
+    const difference = this.props.deliveryInfo.choosen
+      ? null
+      : this.props.date
+      ? Math.round((new Date() - new Date(this.props.date)) / 86400000)
+      : 0;
+    const deadline = this.props.deliveryInfo.choosen
+      ? null
+      : this.props.deliveryInfo.timeToMeet - difference;
 
     const checkout = {
       delivery: checkoutDelivery,
@@ -214,9 +263,12 @@ class ClusterBooks extends Component {
       lowerIcon: (
         <div
           id="checkout-lower-icon"
-          className="lowerIcon-container icon-container"
+          className="lowerIcon-container icon-container price-cluster-icon-container "
         >
-          <span id="price-icon" className="book-icon lower-icon span-icon">
+          <span
+            id="price-icon"
+            className="book-icon lower-icon span-icon price-cluster-icon"
+          >
             € {checkoutTotalPrice}
           </span>
         </div>
@@ -242,12 +294,6 @@ class ClusterBooks extends Component {
         </div>
       )
     };
-
-    const ordersDelivery = this.props.deliveryInfo.choosen ? (
-      <div id="orders-delivery" className="delivery">
-        <p className="delivery-header">SPEDIZIONE SELEZIONATA</p>
-      </div>
-    ) : null;
 
     const orders = {
       delivery: ordersDelivery,
@@ -312,28 +358,6 @@ class ClusterBooks extends Component {
       )
     };
 
-    const dealsDelivery = this.props.deliveryInfo.choosen ? (
-      <div id="deals-delivery" className="delivery">
-        <p className="delivery-header">DA SPEDIRE</p>
-      </div>
-    ) : null;
-
-    let totalPrice = this.props.deliveryInfo.choosen
-      ? this.props.deliveryInfo.cost
-      : 0;
-    this.props.books.forEach(book => {
-      totalPrice += book.price;
-    });
-
-    const difference = this.props.deliveryInfo.choosen
-      ? null
-      : this.props.date
-      ? Math.round((new Date() - new Date(this.props.date)) / 86400000)
-      : 0;
-    const deadline = this.props.deliveryInfo.choosen
-      ? null
-      : this.props.deliveryInfo.timeToMeet - difference;
-
     const deals = {
       delivery: dealsDelivery,
       upperIcon: (
@@ -356,20 +380,23 @@ class ClusterBooks extends Component {
       lowerIcon: (
         <div
           id="deals-lower-icon"
-          className={`lowerIcon-container icon-container orders-icon ${
+          className={`lowerIcon-container icon-container price-cluster-icon-container orders-icon ${
             this.props.confirmed ? "confirmed" : "notConfirmed"
           }`}
           onClick={() => {
             this.props.confirmOrder(this.props.clusterId);
           }}
         >
-          <span id="price-icon" className="book-icon lower-icon span-icon">
-            {totalPrice}
+          <span
+            id="price-icon"
+            className="book-icon lower-icon span-icon price-cluster-icon"
+          >
+            € {totalPrice}
           </span>
         </div>
       ),
       subHeaders: (
-        <div id="subHeader-container">
+        <div id="subHeader-container" className="confirmation">
           <div id="place-subHeader" className="sub-header">
             <i className="fas fa-home fa-1x sub-header-ico"></i>
             <p id="place-sub-header-text" className="sub-header-text">
@@ -400,6 +427,18 @@ class ClusterBooks extends Component {
               </p>
             </div>
           )}
+          <div id="confirmed-subHeader" className="sub-header confirmation">
+            <i
+              className={`fas fa-${
+                this.props.confirmed ? "check" : "spinner"
+              } fa-1x sub-header-ico`}
+            ></i>
+            <p id="place-sub-header-text" className="sub-header-text">
+              {this.props.confirmed
+                ? "Ordine confermato"
+                : "Il cliente deve ancora confermare"}
+            </p>
+          </div>
         </div>
       )
     };

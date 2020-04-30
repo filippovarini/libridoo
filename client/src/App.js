@@ -10,6 +10,7 @@ import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import Recover from "./pages/Recover/Recover";
 import Search from "./pages/Search/Search";
 import Results from "./pages/Results/Results";
 import Checkout from "./pages/Checkout/Checkout";
@@ -20,7 +21,9 @@ import Account from "./pages/Account//Account";
 import Orders from "./pages/Orders/Orders";
 import Deals from "./pages/Deals/Deals";
 import Invite from "./pages/Invite/Invite";
+import Feedback from "./pages/Feedback/Feedback";
 import Help from "./pages/Help/Help";
+import FAQs from "./pages/FAQs/FAQs";
 import ErrorPage from "./pages/Error/Error";
 
 class App extends React.Component {
@@ -68,6 +71,7 @@ class App extends React.Component {
               sessionStorage.setItem("JWT", jsonRes.JWT);
             }
           } else {
+            // expired
             if (storePlace === "localStorage") {
               localStorage.removeItem("JWT");
             } else {
@@ -101,6 +105,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route path="/login/:action?" component={Login} />
             <Route path="/register/:invitingId?" component={Register} />
+            <Route path="/recover" component={Recover} />
             <Route path="/search" component={Search} />
             <Route exact path="/results" component={Results} />
             <Route path="/checkout" component={Checkout} />
@@ -111,7 +116,9 @@ class App extends React.Component {
             <Route path="/orders" component={Orders} />
             <Route path="/deals" component={Deals} />
             <Route path="/invite" component={Invite} />
+            <Route path="/feedback" component={Feedback} />
             <Route path="/help" component={Help} />
+            <Route path="/FAQs" component={FAQs} />
             <Route path="/error" component={ErrorPage} />
           </div>
           <Footer />

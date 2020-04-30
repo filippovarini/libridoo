@@ -22,7 +22,11 @@ class BookInfo extends Component {
     updated: false,
     imageDone: false,
     timeOut: null,
-    imageDoneSet: false
+    imageDoneSet: false,
+    pricePlaceholder: "prezzo",
+    titlePlaceholder: "titolo",
+    priceLabelHidden: true,
+    decimal: "00"
   };
 
   componentDidMount = () => {
@@ -35,15 +39,22 @@ class BookInfo extends Component {
       this.setState({
         imgUrl: BookInfo.imageURL,
         title: BookInfo.title,
-        price: BookInfo.price,
+        price: Number(String(BookInfo.price).split(".")[0]),
         quality: BookInfo.quality,
-        submitting: false
+        submitting: false,
+        decimal: String(BookInfo.price).split(".")[1] || "00"
       });
     }
     if (this.props.editing && !this.state.imageDoneSet) {
       // just updated
       this.setState({ imageDoneSet: true, imageDone: true });
     }
+  };
+
+  handleDecimalChange = e => {
+    this.setState({
+      decimal: e.target.value
+    });
   };
 
   handleMouseOver = () => {
@@ -119,13 +130,28 @@ class BookInfo extends Component {
     if (e.target.id !== "quality") {
       if (!e.target.value) {
         this.setState({
-          [`${e.target.id}Class`]: "invalid-input"
+          [`${e.target.id}Class`]: "invalid-input",
+          [`${e.target.id}Placeholder`]:
+            e.target.id === "title" ? "*titolo*" : "*prezzo*"
         });
       }
+    }
+    if (e.target.value) {
+      this.setState({ [`${e.target.id}Class`]: null });
+    }
+    if (e.target.id === "price" && e.target.value <= 0) {
+      this.setState({ [`${e.target.id}Class`]: "invalid-input" });
     }
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (
+      e.target.id === "price" &&
+      e.target.value > 0 &&
+      !this.state.priceLabelHidden
+    ) {
+      this.setState({ priceLabelHidden: true });
+    }
   };
 
   handleSelectFocus = () => {
@@ -138,7 +164,9 @@ class BookInfo extends Component {
     } else if (!e.target.value) {
       this.setState({
         [`${e.target.id}Class`]: "invalid-input",
-        [e.target.id]: null
+        [e.target.id]: null,
+        [`${e.target.id}Placeholder`]:
+          e.target.id === "title" ? "*titolo*" : "*prezzo*"
       });
     } else {
       this.setState({
@@ -168,7 +196,6 @@ class BookInfo extends Component {
       !this.state.quality ||
       !this.state.price
     ) {
-      alert("Compila tutti i campi obbligatori");
       if (!this.state.imgUrl) {
         this.setState({
           emptyImageClass: "empty",
@@ -176,14 +203,19 @@ class BookInfo extends Component {
         });
       }
       if (!this.state.title) {
-        this.setState({ titleClass: "invalid-input" });
+        this.setState({
+          titleClass: "invalid-input",
+          titlePlaceholder: "*titolo*"
+        });
       }
       if (!this.state.price) {
-        this.setState({ priceClass: "invalid-input" });
+        this.setState({
+          priceClass: "invalid-input",
+          pricePlaceholder: "*prezzo*"
+        });
       }
     } else if (this.state.price <= 0) {
-      alert("Inserisci un prezzo valido");
-      this.setState({ priceClass: "invalid-input" });
+      this.setState({ priceClass: "invalid-input", priceLabelHidden: false });
     } else {
       // everything inputted
       const user = this.props.user;
@@ -191,7 +223,11 @@ class BookInfo extends Component {
         imageURL: this.state.imgUrl,
         title: this.state.title,
         quality: this.state.quality,
-        price: this.state.price,
+        price: this.state.decimal
+          ? this.state.decimal.length === 1
+            ? Number(this.state.price) + Number(this.state.decimal) / 10
+            : Number(this.state.price) + Number(this.state.decimal) / 100
+          : this.state.price,
         sellerId: user._id
         // missing place
       };
@@ -291,7 +327,6 @@ class BookInfo extends Component {
       !this.state.quality ||
       !this.state.price
     ) {
-      alert("Compila tutti i campi obbligatori");
       if (!this.state.imgUrl) {
         this.setState({
           emptyImageClass: "empty",
@@ -299,14 +334,19 @@ class BookInfo extends Component {
         });
       }
       if (!this.state.title) {
-        this.setState({ titleClass: "invalid-input" });
+        this.setState({
+          titleClass: "invalid-input",
+          titlePlaceholder: "*titolo*"
+        });
       }
       if (!this.state.price) {
-        this.setState({ priceClass: "invalid-input" });
+        this.setState({
+          priceClass: "invalid-input",
+          pricePlaceholder: "*prezzo*"
+        });
       }
     } else if (this.state.price <= 0) {
-      alert("Inserisci un prezzo valido");
-      this.setState({ priceClass: "invalid-input" });
+      this.setState({ priceClass: "invalid-input", priceLabelHidden: false });
     } else {
       // everything inputted
       const body = {
@@ -315,7 +355,11 @@ class BookInfo extends Component {
           imageURL: this.state.imgUrl,
           title: this.state.title,
           quality: this.state.quality,
-          price: this.state.price
+          price: this.state.decimal
+            ? this.state.decimal.length === 1
+              ? Number(this.state.price) + Number(this.state.decimal) / 10
+              : Number(this.state.price) + Number(this.state.decimal) / 100
+            : this.state.price
         }
       };
       // post request
@@ -419,7 +463,67 @@ class BookInfo extends Component {
 
     const loading = (
       <div className="image-container">
-        <h1>loading</h1>
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
 
@@ -443,8 +547,8 @@ class BookInfo extends Component {
               onChange={this.handleInputChange}
               onBlur={this.handleBlur}
               className={`input info ${this.state.titleClass}`}
-              placeholder="titolo"
-              defaultValue={this.state.title}
+              placeholder={this.state.titlePlaceholder}
+              defaultValue={this.props.editing ? this.state.title : null}
             />
             <div id="quality-container" className="info">
               <p id="select-header">qualità:</p>
@@ -454,26 +558,28 @@ class BookInfo extends Component {
                 onFocus={this.handleSelectFocus}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur}
-                defaultValue={this.state.quality}
+                defaultValue={
+                  this.props.editing ? this.state.quality : "intatto"
+                }
               >
                 <option value="intatto">intatto</option>
-                <option value="ottimo, sottolineato a matita">
-                  ottimo, sottolineato a matita
+                <option value="buono, non sottolineato">
+                  buono, non sottolineato
                 </option>
-                <option value="ottimo, sottolineato a penna/evidenziatore">
-                  ottimo, sottolineato a penna
+                <option value="buono, sottolineato a matita">
+                  buono, sottolineato a matita
                 </option>
-                <option value="normale, sottolineato a matita">
-                  normale, sottolineato a matita
+                <option value="buono, sottolineato a penna/evidenziatore">
+                  buono, sottolineato a penna
                 </option>
-                <option value="ottimo, sottolineato a penna/evidenziatore">
-                  normale, sottolineato a penna/evidenziatore
+                <option value="usato, non sottolineato">
+                  usato, non sottolineato
                 </option>
-                <option value="ottimo, sottolineato a penna/evidenziatore">
-                  rovinato, sottolineato a matita
+                <option value="usato, sottolineato a penna/evidenziatore">
+                  usato, sottolineato a matita
                 </option>
-                <option value="ottimo, sottolineato a penna/evidenziatore">
-                  rovinato, sottolineato a penna/evidenziatore
+                <option value="usato, sottolineato a penna/evidenziatore">
+                  usato, sottolineato a penna/evidenziatore
                 </option>
                 <option value="distrutto">distrutto</option>
                 <option value="fotocopiato">fotocopiato</option>
@@ -482,20 +588,39 @@ class BookInfo extends Component {
                 Evita dispute con il cliente, sii sincero!
               </p>
             </div>
-            <input
-              autoComplete="off"
-              id="price"
-              type="number"
-              onChange={this.handleInputChange}
-              onBlur={this.handleBlur}
-              className={`input ${this.state.priceClass} info`}
-              placeholder="prezzo"
-              defaultValue={this.state.price}
-            />
+            <div id="bookInfo-priceInput-container">
+              €
+              <input
+                autoComplete="off"
+                id="price"
+                type="number"
+                onChange={this.handleInputChange}
+                onBlur={this.handleBlur}
+                className={`input ${this.state.priceClass} info price-input`}
+                placeholder={this.state.pricePlaceholder}
+                defaultValue={this.props.editing ? this.state.price : null}
+              />
+              ,
+              <input
+                type="number"
+                className="price-input"
+                id="bookInfo-decimal"
+                value={this.state.decimal}
+                placeholder="00"
+                onChange={this.handleDecimalChange}
+              />
+            </div>
+            <label
+              id="bookInfo-price-label"
+              htmlFor="price"
+              className={this.state.priceLabelHidden ? "hidden" : ""}
+            >
+              Inserisci un importo valido
+            </label>
           </div>
           <input
-            id="submit"
             type="submit"
+            className="hidden"
             value={
               !this.state.imageDone && this.state.imgUrl
                 ? "CARICANDO L'IMMAGINE..."
@@ -503,14 +628,119 @@ class BookInfo extends Component {
                 ? "SALVA"
                 : "VENDI"
             }
-            className="info"
             disabled={!this.state.imageDone && this.state.imgUrl ? true : false}
           />
+          <p id="bookInfo-price-suggestion">
+            Vendi a metà del prezzo originale per competere con gli altri
+            venditori
+          </p>
+          <p
+            id="submit"
+            className={`info ${
+              !this.state.imageDone && this.state.imgUrl ? "disabled" : ""
+            }`}
+            onClick={
+              !this.state.imageDone && this.state.imgUrl
+                ? null
+                : this.props.editing
+                ? this.handleEdit
+                : this.handleSubmit
+            }
+          >
+            {!this.state.imageDone && this.state.imgUrl
+              ? "CARICANDO L'IMMAGINE..."
+              : this.props.editing
+              ? "SALVA"
+              : "VENDI"}
+          </p>
         </form>
       </div>
     );
 
-    const generalLoading = <h1>loading...</h1>;
+    const generalLoading = (
+      <div id="bookInfo-generalLoading">
+        <div className="loadingio-spinner-fidget-spinner-udtray956qm">
+          <div className="ldio-sqv79tocehf">
+            <div>
+              <div>
+                <div
+                  style={{ left: "87.435px", top: "14.354999999999999px" }}
+                ></div>
+                <div
+                  style={{
+                    left: "24.794999999999998px",
+                    top: "122.66999999999999px"
+                  }}
+                ></div>
+                <div
+                  style={{ left: "150.075px", top: "122.66999999999999px" }}
+                ></div>
+              </div>
+              <div>
+                <div style={{ left: "113.535px", top: "40.455px" }}></div>
+                <div
+                  style={{
+                    left: "50.894999999999996px",
+                    top: "148.76999999999998px"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "176.17499999999998px",
+                    top: "148.76999999999998px"
+                  }}
+                ></div>
+              </div>
+              <div style={{ left: "87.435px", top: "87.435px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "97.875px",
+                    top: "78.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "150.075px",
+                    top: "78.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "75.69px",
+                    top: "117.44999999999999px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "101.78999999999999px",
+                    top: "160.515px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "172.26px",
+                    top: "117.44999999999999px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "146.16px",
+                    top: "160.515px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
     const successful = (
       <h1 className="successful">
         {this.props.editing
@@ -528,7 +758,12 @@ class BookInfo extends Component {
         <span
           id="general-delete"
           onClick={
-            this.props.editing ? this.handleToggle : this.props.toggleDisplay
+            this.props.editing
+              ? this.handleToggle
+              : () => {
+                  this.handleImageDelete();
+                  this.props.toggleDisplay();
+                }
           }
         >
           -
@@ -537,7 +772,10 @@ class BookInfo extends Component {
 
     return (
       <div id="bookInfo-gContainer" className={this.props.display}>
-        <div id="bookInfo">
+        <div
+          id="bookInfo"
+          className={this.state.generalLoading ? "heigh-set" : ""}
+        >
           {bodyComponent}
           {deleteIcon}
         </div>

@@ -82,7 +82,18 @@
 }
 
 #results #filter-submit {
-  font-size: 1rem;
+  font-size: 0.8rem;
+  border: 1px solid black;
+  display: inline-block;
+  margin: 0px;
+  padding: 3px 8px;
+  box-shadow: 0px 0px 3px gray;
+  cursor: pointer;
+}
+
+#results #filter-submit:hover {
+  box-shadow: 0px 0px 5px black;
+  padding: 4px 10px;
 }
 
 #results #filters #header {
@@ -136,7 +147,8 @@
 #results #list-container {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
+  justify-content: center;
 }
 
 #results .ui-list {
@@ -228,4 +240,29 @@
 .results-review-link:hover {
   cursor: pointer;
   padding: 2px 5px;
+}
+
+#checkout-order-container {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+#checkout-order {
+  width: 200px;
+}
+
+#checkout-order-header {
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#results-loading {
+  text-align: center;
+  position: fixed;
+  top: 450px;
+  width: 200px;
+  left: 50%;
+  margin-left: -100px;
 }

@@ -18,8 +18,10 @@ class sellReview extends Component {
     loading: false,
     successful: false,
     submitted: false,
-    set: false
+    set: false,
+    done: false
   };
+
   componentDidMount = () => {
     if (
       !sessionStorage.getItem("BookInfoParams") ||
@@ -62,6 +64,17 @@ class sellReview extends Component {
       }
     } else {
       this.setState({ updated: true });
+    }
+    if (
+      this.props.user.place &&
+      this.props.user.place.city &&
+      this.props.user.phone &&
+      this.props.user.DeliveryInfo &&
+      this.props.user.DeliveryInfo.timeToMeet &&
+      !this.state.done
+    ) {
+      this.setState({ done: true });
+      this.handleSubmit();
     }
   };
 
@@ -143,11 +156,11 @@ class sellReview extends Component {
 
     if (this.state.successful) bodyComponent = successful;
 
-    const submit = !this.state.submitted ? (
-      <p id="submit" onClick={this.handleSubmit}>
-        VENDI
-      </p>
-    ) : null;
+    // const submit = !this.state.submitted ? (
+    //   <p id="submit" onClick={this.handleSubmit}>
+    //     VENDI
+    //   </p>
+    // ) : null;
 
     return (
       <div id="infoReview">
@@ -157,7 +170,7 @@ class sellReview extends Component {
         <div id="info-container" className={this.state.emptyClass}>
           {bodyComponent}
         </div>
-        {submit}
+        {/* {submit} */}
       </div>
     );
   }

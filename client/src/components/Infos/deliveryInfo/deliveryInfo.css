@@ -43,8 +43,8 @@
   padding: 15px;
   box-sizing: border-box;
   position: absolute;
-  bottom: 15px;
-  border-radius: 5px;
+  bottom: 20px;
+  border-radius: 2px;
 }
 
 #deliveryInfo .info-label-explainer.editing {
@@ -52,8 +52,7 @@
 }
 
 #deliveryInfo .info-label:hover {
-  font-weight: 500;
-  cursor: pointer;
+  cursor: default;
 }
 
 #deliveryInfo .info {
@@ -87,8 +86,13 @@
   box-sizing: border-box;
 }
 
-#deliveryInfo #cost.contained-input {
+#cost-sub-container {
   width: 70%;
+  position: relative;
+}
+
+#deliveryInfo #cost.contained-input {
+  width: 100%;
 }
 
 #deliveryInfo .singleEditing {
@@ -98,8 +102,9 @@
 }
 
 #deliveryInfo #header-text {
-  color: red;
-  border-bottom: 1px solid red;
+  color: black;
+  border-bottom: 1px solid black;
+  font-size: 0.9rem;
   display: inline-block;
   padding: 0 15px;
   margin: 20px;
@@ -108,4 +113,76 @@
 
 .header-container {
   text-align: center;
+}
+
+#deliveryInfo-error-label {
+  color: red;
+  font-size: 0.8rem;
+  margin: 0px;
+  margin-top: 10px;
+}
+
+#deliveryInfo-form-container {
+  margin-bottom: 40px;
+}
+
+#form.body-container {
+  margin-bottom: 0px;
+  border: 1px solid black;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#delivery-cost-feedback {
+  margin: 0px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  position: absolute;
+  top: 23px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#delivery-cost-feedback.low {
+  color: green;
+}
+
+#delivery-cost-feedback.medium {
+  color: rgb(255, 187, 0);
+}
+
+#delivery-cost-feedback.high {
+  color: red;
+}
+
+.input-high {
+  border: 1px solid red;
+}
+
+.input-high:focus {
+  outline-color: red;
+}
+
+.input-medium {
+  border: 1px solid rgb(255, 187, 0);
+}
+
+.input-medium:focus {
+  outline-color: rgb(255, 187, 0);
+}
+
+.input-low {
+  border: 1px solid green;
+}
+
+.input-low:focus {
+  outline-color: green;
+}
+
+#deliveryInfo-loading-container {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

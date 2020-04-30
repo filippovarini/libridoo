@@ -9,6 +9,7 @@
 #book {
   width: 100%;
   border: 1px solid black;
+  max-width: 800px;
   position: relative;
   margin: 8px;
   margin-bottom: 33px;
@@ -37,20 +38,18 @@
 
 #book #image-container.result-bigger {
   /* ok because add filters */
-  position: absolute;
+  position: fixed;
   width: 80vw;
-  height: 100vw;
-  z-index: 999;
+  height: 80vh;
+  z-index: 1001;
   border: 3px solid black;
   padding: 0px;
   display: flex;
   align-items: center;
-  min-width: 300px;
-  min-height: 200px;
-  max-width: 800px;
-  max-height: 1000px;
   left: 50%;
   margin-left: -40vw;
+  top: 50%;
+  margin-top: -40vh;
 }
 
 #book #image-container.result-bigger:hover {
@@ -69,13 +68,14 @@
   flex-direction: column;
   justify-content: space-between;
   height: 150px;
+  width: 70%;
 }
 
 #book .info-container {
   display: flex;
   align-items: center;
   margin: 3px 0;
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 
 #book .info {
@@ -83,7 +83,7 @@
 }
 
 #book .info-book-ico {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   min-height: 30px;
   min-width: 30px;
   text-align: center;
@@ -138,6 +138,10 @@
   right: -15px;
 }
 
+#book #price-icon-container.lowerIcon-container {
+  width: auto;
+}
+
 #book #result-lower-icon-cart {
   width: 55px;
   height: 48px;
@@ -159,7 +163,7 @@
 
 #book #sells-count-container {
   border: 1px solid black;
-  width: 250px;
+  width: 180px;
   position: absolute;
   height: 35px;
   top: -10px;
@@ -185,7 +189,9 @@
 }
 
 #book #price-icon {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: black;
 }
 
 #book #checkout-lower-icon:hover {

@@ -12,9 +12,11 @@ class Login extends Component {
     passwordFeedbackClass: null,
     emailPlaceholder: "email",
     passwordPlaceholder: "password",
-    emailLabelClass: "hidden",
-    passwordLabelClass: "hidden",
-    incorrect: null
+    emailLabelMessage: null,
+    passwordLabelMessage: null,
+    incorrect: null,
+    generalLabelHidden: true,
+    loading: false
   };
 
   emailValidation = email => {
@@ -33,21 +35,28 @@ class Login extends Component {
       // invalid if empty
       if (e.target.id === "email") {
         this.setState({
-          emailPlaceholder: "*campo obbligatorio",
+          emailPlaceholder: "*email*",
           emailFeedbackClass: "invalid-input"
         });
       } else if (e.target.id === "password") {
         this.setState({
-          passwordPlaceholder: "*campo obbligatorio",
+          passwordPlaceholder: "*pasword*",
           passwordFeedbackClass: "invalid-input"
         });
       }
     } else {
       if (e.target.id === "email") {
-        this.setState({
-          emailPlaceholder: "email",
-          emailFeedbackClass: null
-        });
+        if (this.emailValidation(e.target.value)) {
+          this.setState({
+            emailPlaceholder: "email",
+            emailFeedbackClass: "correct-input"
+          });
+        } else {
+          this.setState({
+            emailPlaceholder: "email",
+            emailFeedbackClass: null
+          });
+        }
       } else if (e.target.id === "password") {
         const feedBackClass =
           e.target.value.length > 8 && e.target.value.length < 15
@@ -59,26 +68,30 @@ class Login extends Component {
         });
       }
     }
-    if (this.state.incorrect) {
-      this.setState({
-        [`${this.state.incorrect}LabelClass`]: "hidden"
-      });
-    }
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (this.state.emailLabelMessage) {
+      this.setState({ emailLabelMessage: null });
+    }
+    if (this.state.passwordLabelMessage) {
+      this.setState({ passwordLabelMessage: null });
+    }
+    if (!this.state.generalLabelHidden) {
+      this.setState({ generalLabelHidden: true });
+    }
   };
 
   handleBlur = e => {
     if (!this.state[e.target.id]) {
       if (e.target.id === "email") {
         this.setState({
-          emailPlaceholder: "*campo obbligatorio",
+          emailPlaceholder: "*email*",
           emailFeedbackClass: "invalid-input"
         });
       } else if (e.target.id === "password") {
         this.setState({
-          passwordPlaceholder: "*campo obbligatorio",
+          passwordPlaceholder: "*password*",
           passwordFeedbackClass: "invalid-input"
         });
       }
@@ -100,15 +113,31 @@ class Login extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!this.state.email || !this.state.password) {
-      alert("Compila tutti i campi");
+      this.setState({ generalLabelHidden: false });
+      if (!this.state.email) {
+        this.setState({
+          emailPlaceholder: "*email*",
+          emailFeedbackClass: "invalid-input"
+        });
+      }
+      if (!this.state.password) {
+        this.setState({
+          passwordPlaceholder: "*password*",
+          passwordFeedbackClass: "invalid-input"
+        });
+      }
     } else if (!this.emailValidation(this.state.email)) {
-      alert("Email non valida");
+      this.setState({ emailLabelMessage: "email non valida" });
     } else if (
       this.state.password.length < 8 ||
       this.state.password.length > 15
     ) {
-      alert("La password deve essere lunga minimo 8, massimo 15 caratteri");
+      this.setState({
+        passwordLabelMessage:
+          "La password deve essere lunga minimo 8, massimo 15 caratteri"
+      });
     } else {
+      this.setState({ loading: true });
       fetch("/api/user/login", {
         method: "POST",
         headers: {
@@ -135,15 +164,19 @@ class Login extends Component {
             // wrong credentials
             if (jsonRes.incorrect === "email") {
               this.setState({
-                emailLabelClass: null,
+                emailLabelMessage: "email errata",
                 incorrect: "email",
-                emailFeedbackClass: "invalid-input"
+                emailFeedbackClass: "invalid-input",
+                loading: false,
+                passwordFeedbackClass: null
               });
             } else {
               this.setState({
-                passwordLabelClass: null,
+                passwordLabelMessage: "password errata",
                 incorrect: "password",
-                passwordFeedbackClass: "invalid-input"
+                passwordFeedbackClass: "invalid-input",
+                loading: false,
+                emailFeedbackClass: null
               });
             }
           } else if (jsonRes.code === 0) {
@@ -181,6 +214,135 @@ class Login extends Component {
   };
 
   render() {
+    const body = this.state.loading ? (
+      <div id="login-form" className="height-set">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <form id="login-form" onSubmit={this.handleSubmit}>
+        <p
+          id="login-generalLabel"
+          className={`incorrect-input-label ${
+            this.state.generalLabelHidden ? "hidden" : ""
+          }`}
+        >
+          Compila tutti i campi obbligatori
+        </p>
+        <div className="text">
+          <label
+            htmlFor="email"
+            className={`incorrect-input-label ${
+              this.state.emailLabelMessage ? "" : "hidden"
+            }`}
+          >
+            {this.state.emailLabelMessage}
+          </label>
+          <input
+            id="email"
+            maxLength="320"
+            placeholder={this.state.emailPlaceholder}
+            type="text"
+            onChange={this.handleLoginChange}
+            className={`login-input input-text ${this.state.emailFeedbackClass}`}
+            onBlur={this.handleBlur}
+          />
+        </div>
+        <div className="text">
+          <label
+            htmlFor="password"
+            className={`incorrect-input-label ${
+              this.state.passwordLabelMessage ? "" : "hidden"
+            }`}
+          >
+            {this.state.passwordLabelMessage}
+          </label>
+          <input
+            id="password"
+            placeholder={this.state.passwordPlaceholder}
+            type="password"
+            onChange={this.handleLoginChange}
+            className={`login-input input-text ${this.state.passwordFeedbackClass}`}
+            onBlur={this.handleBlur}
+          />
+        </div>
+        <div id="checkbox" className="login-input">
+          <input
+            type="checkbox"
+            id="remember-me"
+            onChange={this.toggleRememberMe}
+            defaultChecked={true}
+            className="login-input"
+          />
+          <label htmlFor="remember-me" id="checbox-label">
+            Resta Collegato
+          </label>
+        </div>
+        <input type="submit" value="LOGIN" className="hidden" />
+        <p id="login-submit-btn" onClick={this.handleSubmit}>
+          LOGIN
+        </p>
+      </form>
+    );
     return (
       <div id="login">
         <div id="image">
@@ -188,59 +350,12 @@ class Login extends Component {
         </div>
         <div id="login-actions">
           <span id="login-prompt">Effettua il login per continuare</span>
-          <form id="login-form" onSubmit={this.handleSubmit}>
-            <div className="text">
-              <label
-                htmlFor="email"
-                className={`incorrect-input-label ${this.state.emailLabelClass}`}
-              >
-                email incorretta
-              </label>
-              <input
-                id="email"
-                maxLength="320"
-                placeholder={this.state.emailPlaceholder}
-                type="email"
-                onChange={this.handleLoginChange}
-                className={`login-input input-text ${this.state.emailFeedbackClass}`}
-                onBlur={this.handleBlur}
-              />
-            </div>
-            <div className="text">
-              <label
-                htmlFor="password"
-                className={`incorrect-input-label ${this.state.passwordLabelClass}`}
-              >
-                password errata
-              </label>
-              <input
-                id="password"
-                placeholder={this.state.passwordPlaceholder}
-                type="password"
-                onChange={this.handleLoginChange}
-                className={`login-input input-text ${this.state.passwordFeedbackClass}`}
-                onBlur={this.handleBlur}
-              />
-            </div>
-            <div id="checkbox" className="login-input">
-              <input
-                type="checkbox"
-                id="remember-me"
-                onChange={this.toggleRememberMe}
-                defaultChecked={true}
-                className="login-input"
-              />
-              <label htmlFor="remember-me" id="checbox-label">
-                Resta Collegato
-              </label>
-            </div>
-            <input type="submit" value="LOGIN" id="submit-btn" />
-          </form>
+          {body}
           <Link to="/recover" id="recover-prompt">
             Credenziali dimenticate?
           </Link>
           <div id="register-prompt-container">
-            <span id="register-prompt">Sei nuovo?</span>
+            <span id="register-prompt">Sei nuovo? </span>
             <Link
               to={
                 this.props.match.params.action === "buying"
@@ -249,7 +364,7 @@ class Login extends Component {
               }
               id="register-btn"
             >
-              Registrati
+              {"  "}Registrati
             </Link>
           </div>
         </div>

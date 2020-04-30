@@ -13,7 +13,11 @@ class EmailConfirm extends Component {
     newEmail: null,
     newEmailClass: null,
     newEmailPlaceholder: null,
-    canResend: false
+    canResend: false,
+    emailLabelMessage: null,
+    codeLabelHidden: true,
+    emailLoading: false,
+    generalLoading: false
   };
 
   sendEmail = () => {
@@ -66,11 +70,14 @@ class EmailConfirm extends Component {
     if (!e.target.value) {
       this.setState({
         newEmailClass: "invalid-input",
-        newEmailPlaceholder: "*campo obligatorio"
+        newEmailPlaceholder: "*email*"
       });
+    } else if (this.emailValidation(e.target.value)) {
+      this.setState({ newEmailClass: "correct-input" });
     } else {
       this.setState({
-        newEmailClass: null
+        newEmailClass: null,
+        emailLabelMessage: null
       });
     }
     this.setState({
@@ -78,13 +85,15 @@ class EmailConfirm extends Component {
     });
   };
 
-  emailSubmit = () => {
+  emailSubmit = e => {
+    e.preventDefault();
     if (!this.emailValidation(this.state.newEmail)) {
       this.setState({
-        newEmailClass: "invalid-input"
+        newEmailClass: "invalid-input",
+        emailLabelMessage: "Email non valida"
       });
-      alert("Indirizzo email non valido");
     } else {
+      this.setState({ emailLoading: true });
       // check email is not saved to another account
       fetch("/api/user/register/check", {
         method: "POST",
@@ -107,16 +116,17 @@ class EmailConfirm extends Component {
             this.props.history.push("/error");
           } else if (jsonRes.code === 2) {
             this.setState({
-              newEmailClass: "invalid-input"
+              newEmailClass: "invalid-input",
+              emailLabelMessage: "Email già registrata con un altro account",
+              emailLoading: false
             });
-            alert("Email già registrata con un altro account");
           } else {
             // everything correct
             // update registerBody
             let body = JSON.parse(sessionStorage.getItem("registerBody"));
             body.email = this.state.newEmail;
             sessionStorage.setItem("registerBody", JSON.stringify(body));
-            this.setState({ editing: false });
+            this.setState({ editing: false, emailLoading: false });
             this.sendEmail();
           }
         })
@@ -145,7 +155,7 @@ class EmailConfirm extends Component {
     if (!e.target.value) {
       this.setState({
         inputCodeClass: "invalid-input",
-        placeholder: "*campo obbligatorio"
+        placeholder: "*codice*"
       });
     } else {
       this.setState({
@@ -161,7 +171,7 @@ class EmailConfirm extends Component {
     if (!e.target.value) {
       this.setState({
         inputCodeClass: "invalid-input",
-        placeholder: "*campo obbligatorio"
+        placeholder: "*codice*"
       });
     }
   };
@@ -230,6 +240,7 @@ class EmailConfirm extends Component {
   handleSubmit = e => {
     //   submit
     e.preventDefault();
+    this.setState({ generalLoading: true });
     fetch("/api/user/emailConfirm/check", {
       method: "POST",
       headers: {
@@ -252,13 +263,17 @@ class EmailConfirm extends Component {
         } else {
           if (!jsonRes.response) {
             // wrong inputcode
-            alert("Il codice inserito non è corretto");
-            this.setState({ canResend: true });
+            this.setState({
+              canResend: true,
+              codeLabelHidden: false,
+              generalLoading: false
+            });
           } else {
             //   correct inputcode
             this.setState({
               inputCodeClass: "correct-input",
-              placeholder: "codice"
+              placeholder: "codice",
+              generalLoading: false
             });
             this.register();
           }
@@ -275,24 +290,33 @@ class EmailConfirm extends Component {
 
   render() {
     const canShow = this.state.canResend ? null : "hidden";
-
     let address = null;
     if (sessionStorage.getItem("registerBody")) {
       address = this.state.editing ? (
         <div id="email-address-container">
-          <input
-            id="input"
-            type="text"
-            onChange={this.emailChange}
-            className={`email ${this.state.newEmailClass}`}
-            placeholder={
-              this.state.newEmailPlaceholder ||
-              JSON.parse(sessionStorage.getItem("registerBody")).email
-            }
-          />
-          <span id="edit" onClick={this.emailSubmit}>
-            salva
-          </span>
+          <form onSubmit={this.emailSubmit}>
+            <label
+              id="emailConfirm-emailLabel"
+              htmlFor="input"
+              className={this.state.emailLabelMessage ? "" : "hidden"}
+            >
+              {this.state.emailLabelMessage}
+            </label>
+            <input
+              id="emailEdit-input"
+              type="text"
+              onChange={this.emailChange}
+              className={`email ${this.state.newEmailClass}`}
+              placeholder={
+                this.state.newEmailPlaceholder ||
+                JSON.parse(sessionStorage.getItem("registerBody")).email
+              }
+            />
+            <span id="edit" onClick={this.emailSubmit}>
+              salva
+            </span>
+            <input type="submit" className="hidden" />
+          </form>
         </div>
       ) : (
         <div id="email-address-container">
@@ -305,9 +329,119 @@ class EmailConfirm extends Component {
         </div>
       );
     }
+
+    if (this.state.emailLoading) {
+      address = (
+        <div id="email-address-container">
+          <span id="email" className="email">
+            loading...
+          </span>
+        </div>
+      );
+    }
+
     const displayClass = sessionStorage.getItem("emailSent")
       ? null
       : this.props.display;
+
+    const inputActions = !this.state.generalLoading ? (
+      <div id="emailConfirm-input-actions">
+        <span id="header">
+          Inserisci il codice di conferma che ti abbiamo appena inviato
+          all'indirizzo:
+        </span>
+        {address}
+        <form id="inputCode-form" onSubmit={this.handleSubmit}>
+          <label
+            htmlFor="inputCode"
+            id="emailConfirm-inputCode-label"
+            className={this.state.codeLabelHidden ? "hidden" : ""}
+          >
+            codice errato
+          </label>
+          <input
+            autoComplete="off"
+            id="inputCode"
+            type="text"
+            placeholder={this.state.placeholder}
+            className={`input text ${this.state.inputCodeClass}`}
+            onChange={this.handleChange}
+            onBlur={this.handleBlur}
+          />
+          <span className={canShow} onClick={this.handleResend} id="resend">
+            rimanda email
+          </span>
+          <input type="submit" value="CONFERMA" className="hidden" />
+          <p id="code-submit" className="input" onClick={this.handleSubmit}>
+            CONFERMA
+          </p>
+        </form>
+      </div>
+    ) : (
+      <div id="emailConfirm-input-actions" className="height-set">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
     return (
       <div id="emailConfirm-gContainer" className={displayClass}>
@@ -315,33 +449,7 @@ class EmailConfirm extends Component {
           <div id="confirm-prompt-image">
             <span id="confirm-prompt-header">CONFERMA</span>
           </div>
-          <div id="emailConfirm-input-actions">
-            <span id="header">
-              Inserisci il codice di conferma che ti abbiamo appena inviato
-              all'indirizzo:
-            </span>
-            {address}
-            <form id="form" onSubmit={this.handleSubmit}>
-              <input
-                autoComplete="off"
-                id="inputCode"
-                type="text"
-                placeholder={this.state.placeholder}
-                className={`input text ${this.state.inputCodeClass}`}
-                onChange={this.handleChange}
-                onBlur={this.handleBlur}
-              />
-              <span className={canShow} onClick={this.handleResend} id="resend">
-                rimanda email
-              </span>
-              <input
-                type="submit"
-                id="submit"
-                value="CONFERMA"
-                className="input"
-              />
-            </form>
-          </div>
+          {inputActions}
         </div>
       </div>
     );

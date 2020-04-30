@@ -54,43 +54,59 @@ class book extends Component {
   };
 
   handleDelete = () => {
-    fetch("/api/book/delete", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({ _id: this.props.book._id })
-    })
-      .then(res => res.json())
-      .then(jsonRes => {
-        if (jsonRes.code === 1.5) {
-          alert("Libro già eliminato");
-          window.location = "/deals";
-        } else if (jsonRes.code === 1) {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Vuoi eliminare questo libro?")) {
+      fetch("/api/book/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({ _id: this.props.book._id })
+      })
+        .then(res => res.json())
+        .then(jsonRes => {
+          if (jsonRes.code === 1.5) {
+            alert("Libro già eliminato");
+            window.location = "/deals";
+          } else if (jsonRes.code === 1) {
+            // error
+            this.props.dispatch({
+              type: "E-SET",
+              error: {
+                frontendPlace: "Orders/book/handleDelete/code1",
+                jsonRes
+              }
+            });
+            this.props.history.push("/error");
+          } else {
+            // successful
+            window.location = "/deals";
+          }
+        })
+        .catch(error => {
+          console.log(error);
           // error
           this.props.dispatch({
             type: "E-SET",
-            error: { frontendPlace: "Orders/book/handleDelete/code1", jsonRes }
+            error: { frontendPlace: "Orders/book/handleDelete/catch" }
           });
           this.props.history.push("/error");
-        } else {
-          // successful
-          window.location = "/deals";
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        // error
-        this.props.dispatch({
-          type: "E-SET",
-          error: { frontendPlace: "Orders/book/handleDelete/catch" }
         });
-        this.props.history.push("/error");
-      });
+    }
   };
 
   render() {
+    let bookPrice = 0;
+    if (String(this.props.book.price).indexOf(".") === -1) {
+      // whole price
+      bookPrice = `${this.props.book.price}.00`;
+    } else {
+      // decimal
+      if (String(this.props.book.price).split(".")[1].length === 1)
+        bookPrice = bookPrice = `${this.props.book.price}0`;
+      else bookPrice = this.props.book.price;
+    }
     let resultDelivery = null;
     if (this.props.user.place && this.props.user.place.city) {
       let delivers = false;
@@ -165,12 +181,13 @@ class book extends Component {
       </div>
     ) : (
       <div
-        id="result-lower-icon"
+        id="price-icon-container"
         onMouseOver={this.priceHover}
         className="lowerIcon-container result-icon icon-container"
       >
         <span id="price-icon" className="book-icon lower-icon span-icon">
-          €{this.props.book.price}
+          €{bookPrice}
+          {/* {this.props.book.price} */}
         </span>
       </div>
     );
@@ -199,12 +216,12 @@ class book extends Component {
       upperHeader = (
         <div id="sells-count-container">
           <p id="sells-count">
-            VENDE ALTRI{" "}
+            HA ALTRI{" "}
             <span id="number">
               {this.props.book.userSellsCount -
                 1 /*ACTUALLY THIS SHOULD BE COUNTER : SELLS COUNT - ANY SELECTE BOOK SOLD BY HIM*/}{" "}
             </span>{" "}
-            LIBRI CHE STAI CERCANDO
+            LIBRI CHE CERCHI
           </p>
         </div>
       );
@@ -289,7 +306,7 @@ class book extends Component {
           <div id="price-container" className="info-container">
             <i className="fas fa-euro-sign info-book-ico"></i>
             <p id="price" className="info">
-              {this.props.book.price}
+              {bookPrice}
             </p>
           </div>
         </div>
@@ -303,7 +320,7 @@ class book extends Component {
             this.props.toggleBookInfo(true, this.props.book);
           }}
         >
-          <i className="fas fa-edit fa-1x upperIcon book-icon"></i>
+          <i className="fas fa-pen fa-1x upperIcon book-icon"></i>
         </div>
       ),
       lowerIcon: (

@@ -86,11 +86,7 @@ class Account extends Component {
     return (
       <div id="account-gContainer">
         <div id="avatarImg-container">
-          <img
-            id="avatarImg"
-            src="https://scontent-fco1-1.xx.fbcdn.net/v/t1.0-9/55822168_1355705201259453_1842124246487138304_n.jpg?_nc_cat=100&_nc_sid=85a577&_nc_ohc=r4iDfEzSkZAAX9NUgx7&_nc_ht=scontent-fco1-1.xx&oh=910142c0ef27ba00e78883c66a5fb64a&oe=5EA37D2D"
-            alt="avatar"
-          />
+          <img id="avatarImg" src={this.props.user.avatarImgURL} alt="avatar" />
         </div>
         <p id="name">{this.props.user.name}</p>
         <div id="rating" className={this.state.starsDisplay}>

@@ -29,7 +29,13 @@ router.get("/fetch/selling/:_id", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".find()", error });
+      res.json({
+        code: 1,
+        place: ".find(), bookApi:20",
+        error,
+        message:
+          "Qualcosa è andato storto nella ricerca dei tuoi libri in vendita"
+      });
     });
 });
 
@@ -44,7 +50,13 @@ router.get("/fetch/sold/:_id", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".find()", error });
+      res.json({
+        code: 1,
+        place: ".find(), bookApi:44",
+        error,
+        message:
+          "Qualcosa è andato storto nella ricerca dei tuoi libri venduti "
+      });
     });
 });
 
@@ -59,7 +71,13 @@ router.get("/fetch/bought/:_id", (req, res) => {
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".find()", error });
+      res.json({
+        code: 1,
+        place: ".find(), bookApi:65",
+        error,
+        message:
+          "Qualcosa è andato storto nella ricerca dei tuoi libri comprati"
+      });
     });
 });
 
@@ -69,11 +87,11 @@ router.get("/fetch/bought/:_id", (req, res) => {
 // if first time to type, pass default filters ({quality: null, place: {type: city, value: ''}, school: ''})and save them to Session
 router.post("/fetch/buy", async (req, res) => {
   // reject messages
-  let placeMessage = "",
-    code = null;
+  let place = "",
+    message = "";
+  code = null;
   // books
   let frozenBooks = [];
-  let pointer = "";
   if (parseInt(req.body.searchParams.ui)) {
     // isbn (useless because no isbn)
     pointer = "codice isbn";
@@ -90,7 +108,8 @@ router.post("/fetch/buy", async (req, res) => {
   if (booksFetched.length == 0) {
     res.json({
       code: 2,
-      message: `Nessun libro trovato. Controlla che il ${pointer} sia corretto`
+      message: `Nessun libro trovato`,
+      results: { searchParams: req.body.searchParams }
     });
   } else {
     //   filter quality
@@ -103,7 +122,8 @@ router.post("/fetch/buy", async (req, res) => {
       res.json({
         code: 2.5,
         wrongFilter: "quality",
-        message: "Nessun libro in vendita della qualità selezionata"
+        message: "Nessun libro in vendita della qualità selezionata",
+        results: { searchParams: req.body.searchParams }
       });
     }
     // filter place
@@ -118,7 +138,8 @@ router.post("/fetch/buy", async (req, res) => {
       res.json({
         code: 2.5,
         wrongFilter: "place",
-        message: "Nessun libro in vendita nel tuo luogo"
+        message: "Nessun libro in vendita nel tuo luogo",
+        results: { searchParams: req.body.searchParams }
       });
     }
 
@@ -128,8 +149,9 @@ router.post("/fetch/buy", async (req, res) => {
         User.findById(book.sellerId)
           .then(user => {
             if (!user) {
-              placeMessage =
+              message =
                 "Nessun utente trovato con questo id, probabilmente l'utente ha appena eliminato il suo account";
+              place = ".findById(), bookApi:146";
               code = 1.5;
               reject();
             } else {
@@ -150,7 +172,8 @@ router.post("/fetch/buy", async (req, res) => {
           })
           .catch(error => {
             code = 1;
-            placeMessage = ".findById()";
+            message = "Qualcosa è andato storto nella tua ricerca";
+            place = ".findById(), bookApi:146";
             reject(error);
           });
       });
@@ -169,7 +192,8 @@ router.post("/fetch/buy", async (req, res) => {
         res.json({
           code: 2.5,
           wrongFilter: "school",
-          message: "Nessun libro in vendità nella tua Scuola o Università"
+          message: "Nessun libro in vendità nella tua Scuola o Università",
+          results: { searchParams: req.body.searchParams }
         });
       } else {
         res.json({
@@ -182,7 +206,13 @@ router.post("/fetch/buy", async (req, res) => {
       }
     });
     forEachPromise.catch(error => {
-      res.json({ error, code, placeMessage });
+      res.json({
+        error,
+        code,
+        results: { searchParams: req.body.searchParams },
+        place,
+        message
+      });
     });
   }
 });
@@ -192,8 +222,9 @@ router.post("/fetch/buy", async (req, res) => {
 // !! if no filter, don't send it!!
 router.post("/generalFetch/UI", async (req, res) => {
   // reject messages
-  let placeMessage = "",
-    code = null;
+  let message = "",
+    place = "";
+  code = null;
   let results = [];
   let addedItems = 0;
   // async here or above?
@@ -264,7 +295,8 @@ router.post("/generalFetch/UI", async (req, res) => {
             User.findById(book.sellerId)
               .then(user => {
                 if (!user) {
-                  placeMessage = "Nessun utente trovato con questo id";
+                  message = "Nessun utente trovato con questo id";
+                  place = ".findById, BookApi:285";
                   code = 1.5;
                   reject();
                 } else {
@@ -285,7 +317,8 @@ router.post("/generalFetch/UI", async (req, res) => {
                 }
               })
               .catch(error => {
-                placeMessage = ".findById()";
+                place = ".findById(), bookApi:285";
+                message: "Qualcosa è andato storto nella tua ricerca";
                 code = 1;
                 reject(error);
               });
@@ -340,7 +373,7 @@ router.post("/generalFetch/UI", async (req, res) => {
         }
       });
       forEachPromise.catch(error => {
-        reject({ error, placeMessage, code });
+        reject({ error, place, message, code });
       });
     });
   });
@@ -363,7 +396,11 @@ router.post("/generalFetch/ID", async (req, res) => {
       const book = frozenBook.toObject();
       const user = await User.findById(book.sellerId);
       if (!user) {
-        reject(1.5, "Nessun utente registrato con questo id");
+        reject(
+          1.5,
+          "Nessun utente registrato con questo id",
+          ".findById(), bookApi:385"
+        );
       } else {
         const sellerUser = {
           name: user.name,
@@ -386,8 +423,8 @@ router.post("/generalFetch/ID", async (req, res) => {
   generalPromise.then(() => {
     res.json({ code: 0, results });
   });
-  generalPromise.catch((code, message) => {
-    res.json({ code, message });
+  generalPromise.catch((code, message, place) => {
+    res.json({ code, message, place });
   });
 });
 
@@ -395,7 +432,13 @@ router.post("/generalFetch/ID", async (req, res) => {
 router.post("/image", (req, res) => {
   singleUpload(req, res, error => {
     if (error) {
-      return res.json({ code: 1, place: "singleUpload()", error });
+      return res.json({
+        code: 1,
+        place: "singleUpload(), bookApi:423",
+        error,
+        message:
+          "Qualcosa è  andato storto nel caricare la tua immagine di copertina"
+      });
     } else {
       return res.json({ code: 0, imageURL: req.file.location });
     }
@@ -412,7 +455,12 @@ router.post("/insert", (req, res) => {
       res.json({ code: 0, book });
     })
     .catch(error => {
-      res.json({ code: 1, place: ".save()", error });
+      res.json({
+        code: 1,
+        place: ".save(), bookApi:443",
+        error,
+        message: "Qualcosa è andato storto nella pubblicazione dell'annuncio"
+      });
     });
 });
 
@@ -457,7 +505,7 @@ router.post("/checkedOut", (req, res) => {
         to: cluster.sellerInfo.email,
         subject: "Vendita libri",
         // text: "Ciao!",
-        html: `Caro ${cluster.sellerInfo.name},
+        html: `Caro ${cluster.sellerInfo.name.split(" ")[0] || "utente"},
         <br /><br />
         Abbiamo buone notizie!!
         <br />
@@ -567,7 +615,7 @@ router.post("/checkedOut", (req, res) => {
           console.log(".save cluster", error);
           reject({
             code: 1,
-            place: ".save() cluster",
+            place: ".save() cluster bookApi:593",
             clusterProblem: cluster.sellerId,
             error
           });
@@ -575,7 +623,6 @@ router.post("/checkedOut", (req, res) => {
     });
   });
   clusterPromise.then(() => {
-    console.log("promise successful");
     // successfully posted all clusters, now delete sold books
     req.body._ids.forEach(_id => {
       Book.findByIdAndDelete(_id)
@@ -583,6 +630,7 @@ router.post("/checkedOut", (req, res) => {
           if (!book) {
             res.json({
               code: 1.5,
+              place: ".findByIdAndDelete(), bookApi:618",
               devmessage: "clusters successfully posted",
               message: "Nessun libro trovato con questo id",
               _id
@@ -608,7 +656,8 @@ router.post("/checkedOut", (req, res) => {
                 to: req.body.buyerInfo.email,
                 subject: "Ordine completato!",
                 // text: "Ciao!", OK WITHOUT TEXT??
-                html: `Caro ${req.body.buyerInfo.name},
+                html: `Caro ${req.body.buyerInfo.name.split(" ")[0] ||
+                  "utente"},
                 <br /><br />
                 Ti ringraziamo per aver scelto <i>Libridoo</i> per comprare i libri di cui
                 avevi bisogno, speriamo ti sia trovato bene con noi.
@@ -690,13 +739,23 @@ router.post("/checkedOut", (req, res) => {
           }
         })
         .catch(error => {
-          res.json({ code: 1, place: ".findByIdAndDelete()", _id, error });
+          res.json({
+            code: 1,
+            place: ".findByIdAndDelete(), bookApi:618",
+            _id,
+            error,
+            message: "Qualcosa è andato storto nel completameto dell'acquisto"
+          });
         });
     });
   });
   clusterPromise.catch(errorObj => {
     console.log(error);
-    res.json({ code: 1, place: "clusterPromise.catch()" });
+    res.json({
+      code: 1,
+      place: "clusterPromise.catch()",
+      message: "Qualcosa è andato storto nel completamento dell'acquisto"
+    });
   });
   // })
   // .catch(error => {
@@ -711,13 +770,23 @@ router.put("/edit", (req, res) => {
   Book.findByIdAndUpdate(req.body._id, req.body.newInfo, { new: true })
     .then(book => {
       if (!book) {
-        res.json({ code: 1.5, message: "Nessun libro trovato con questo id" });
+        res.json({
+          code: 1.5,
+          message: "Nessun libro trovato con questo id",
+          place: ".findByIdAndUpdate(), bookApi:759"
+        });
       } else {
         res.json({ code: 0, book });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+      res.json({
+        code: 1,
+        place: ".findByIdAndUpdate(), bookApi:759",
+        error,
+        message:
+          "Qualcosa è andato storto nel salvataggio delle modifiche apportate"
+      });
     });
 });
 
@@ -734,14 +803,20 @@ router.put("/confirm", (req, res) => {
       if (!cluster) {
         res.json({
           code: 1.5,
-          message: "Nessun cluster trovato con questo id"
+          message: "Nessun cluster trovato con questo id",
+          place: ".findByIdAndUpdate(), bookApi:786"
         });
       } else {
         res.json({ code: 0, cluster });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findByIdAndUpdate()", error });
+      res.json({
+        code: 1,
+        place: ".findByIdAndUpdate(), bookApi:786",
+        message: "Qualcosa è andato storto nella conferma dell'ordine",
+        error
+      });
     });
 });
 
@@ -753,14 +828,20 @@ router.delete("/delete", (req, res) => {
       if (!book) {
         res.json({
           code: 1.5,
-          message: "Libro non trovato. Forse lo hai già eliminato"
+          message: "Libro non trovato. Forse lo hai già eliminato",
+          place: ".findByIdAndDelete(), bookApi:815"
         });
       } else {
         res.json({ code: 0, message: "Libro eliminato con successo" });
       }
     })
     .catch(error => {
-      res.json({ code: 1, place: ".findByIdAndDelete()", error });
+      res.json({
+        code: 1,
+        place: ".findByIdAndDelete(), bookApi:815",
+        message: "Qualcosa è andato storto nell'eliminazione del libro",
+        error
+      });
     });
 });
 
@@ -788,7 +869,7 @@ router.delete("/books", (req, res) => {
     .catch(erorr => res.json({ code: 1, error }));
 });
 
-// delete evary soldbookscluster
+// delete every soldbookscluster
 router.delete("/clusters", (req, res) => {
   SoldBooksCluster.deleteMany()
     .then(() => {

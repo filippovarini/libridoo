@@ -81,6 +81,14 @@ const UserSchema = new Schema({
       default: null
     }
   },
+  vote: {
+    type: Number,
+    default: null
+  },
+  hasJudged: {
+    type: Boolean,
+    default: false
+  },
   registerDate: {
     type: Date,
     default: Date.now

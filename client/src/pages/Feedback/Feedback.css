@@ -1,0 +1,153 @@
+#feedback-image-container {
+  background: lightgoldenrodyellow;
+  height: 200px;
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+#feedback-fake-header {
+  font-size: 4rem;
+  letter-spacing: 2rem;
+}
+
+#feedback-rating {
+  margin-top: 60px;
+  text-align: center;
+}
+
+#feedback-rating-header {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0px;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  padding: 0px 40px;
+}
+
+#feedback-stars {
+  margin: 0 auto;
+  margin-top: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.feedback-star {
+  font-size: 2rem;
+  margin: 10px;
+  cursor: pointer;
+}
+
+#feedback-comment {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+#feedback-comment-done {
+  font-size: 1.2rem;
+  border: 1px solid lightgray;
+  line-height: 50px;
+  font-style: italic;
+}
+
+#feedback-comment-input {
+  width: 80%;
+  height: 150px;
+  font-size: 1.2rem;
+  display: block;
+  margin: 0 auto;
+  resize: vertical;
+}
+
+#feedback-comment-submit {
+  border: 1px solid black;
+  display: inline-block;
+  padding: 8px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+#feedback-comment-submit:hover {
+  font-size: 1.1rem;
+}
+
+#feedback-comment-submit.hidden {
+  display: none;
+}
+
+#feedback-problems-container {
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+#feedback-problems-header {
+  border: 1px solid black;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  line-height: 50px;
+}
+
+#feedback-problems {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(312px, 1fr));
+}
+
+.feedback-problem-container {
+  border: 1px solid black;
+  height: 200px;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: lightsteelblue;
+  cursor: pointer;
+}
+
+.feedback-problem {
+  border: 1px solid black;
+  margin: 0px;
+  width: 50%;
+  box-sizing: border-box;
+  padding: 20px;
+  background: lightgoldenrodyellow;
+}
+
+#feedback-loading {
+  border: 1px solid black;
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 60px;
+  line-height: 80px;
+}
+
+.feedback-contact-info {
+  color: black;
+  margin-left: 10px;
+}
+
+#feedback-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding: 15px 15px;
+  height: 90px;
+  font-size: 0.8rem;
+}
+
+#feedback-contact-container {
+  cursor: default;
+}

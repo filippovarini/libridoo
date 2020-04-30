@@ -9,14 +9,15 @@ class BodyInfo extends Component {
     editingEmail: null,
     editingSchool: null,
     editingPhone: null,
-    editingEmailClass: "correct-input",
+    editingEmailClass: null,
     editingPhoneClass: null,
     editingSchoolClass: null,
     firstUpdated: false,
     editingEmailPlaceholder: "email",
     editingPhonePlaceholder: "numero",
     editingSchoolPlaceholder: "scuola/università",
-    loading: false
+    loading: false,
+    editingEmailLabelMessage: null
   };
 
   componentDidMount = () => {
@@ -55,8 +56,7 @@ class BodyInfo extends Component {
     }
     if (!e.target.value) {
       this.setState({
-        [`${e.target.id}Class`]: "invalid-input",
-        [`${e.target.id}Placeholder`]: "*campo obbligatorio"
+        [`${e.target.id}Class`]: null
       });
     }
   };
@@ -74,15 +74,43 @@ class BodyInfo extends Component {
     this.setState({
       [e.target.id]: e.target.value
     });
+    if (e.target.id === "editingEmail" && this.state.editingEmailLabelMessage) {
+      this.setState({
+        editingEmailLabelMessage: null
+      });
+    }
+    if (this.emailValidation(e.target.value)) {
+      this.setState({ editingEmailClass: "correct-input" });
+    } else {
+      this.setState({ editingEmailClass: null });
+    }
   };
 
   handleSave = e => {
     e.preventDefault();
-    if (this.state.email && !this.emailValidation(this.state.editingEmail)) {
+    if (
+      this.state.editingEmail &&
+      !this.emailValidation(this.state.editingEmail)
+    ) {
       this.setState({
-        editingEmailClass: "invalid-input"
+        editingEmailClass: "invalid-input",
+        editingEmailLabelMessage: "email non valida"
       });
-      alert("Email non valida");
+    } else if (
+      (!this.state.editingSchool && !this.props.user.school) ||
+      (!this.state.editingPhone && !this.props.user.phone)
+    ) {
+      if (!this.state.editingSchool) {
+        this.setState({
+          editingSchoolClass: "invalid-input"
+        });
+      }
+      if (!this.state.editingPhone) {
+        this.setState({
+          editingPhoneClass: "invalid-input",
+          editingSchoolPlaceholder: "*telefono*"
+        });
+      }
     } else {
       const bodyInfo = {
         email: this.state.editingEmail || this.props.user.email,
@@ -114,8 +142,12 @@ class BodyInfo extends Component {
             });
             this.props.history.push("/error");
           } else if (jsonRes.code === 2) {
-            alert("Email già registrata con un altro account");
-            this.setState({ editingEmailClass: "invalid-input" });
+            this.setState({
+              editingEmailClass: "invalid-input",
+              editingEmailLabelMessage:
+                "email già registrata su un altro account",
+              loading: false
+            });
           } else {
             // code = 0
             // set user
@@ -174,12 +206,11 @@ class BodyInfo extends Component {
         <i
           id="edit"
           onClick={this.handleEdit}
-          className="fas fa-edit fa-1x set-ico bottom"
+          className="fas fa-pen fa-1x set-ico bottom"
         ></i>
       </div>
     );
-
-    const editing = (
+    const editing = !this.state.loading ? (
       <div className="info-gContainer">
         <p id="header-text">Fatti contattare dai clienti</p>
         <form
@@ -187,16 +218,23 @@ class BodyInfo extends Component {
           className="info-container-inter"
           onSubmit={this.handleSave}
         >
+          <label
+            htmlFor="editingEmail"
+            id="editingEmail-label"
+            className={this.state.editingEmailLabelMessage ? "" : "hidden"}
+          >
+            {this.state.editingEmailLabelMessage}
+          </label>
           <div id="email-e-container" className="info-container">
             <i id="email-e-ico" className="fas fa-at info-ico"></i>
+
             <input
               autoComplete="off"
               type="text"
               onChange={this.handleChange}
               onBlur={this.handleEmailBlur}
               id="editingEmail"
-              defaultValue={this.props.user.email}
-              placeholder={this.state.editingEmailPlaceholder}
+              placeholder={this.props.user.email}
               className={`info-text info-input ${this.state.editingEmailClass}`}
             />
           </div>
@@ -208,8 +246,7 @@ class BodyInfo extends Component {
               onChange={this.handleChange}
               onBlur={this.handleEmailBlur}
               id="editingPhone"
-              defaultValue={this.props.user.phone}
-              placeholder={this.state.editingPhonePlaceholder}
+              placeholder={this.props.user.phone || "*telefono*"}
               className={`info-text info-input ${this.state.editingPhoneClass}`}
             />
           </div>
@@ -222,18 +259,88 @@ class BodyInfo extends Component {
               onBlur={this.handleEmailBlur}
               onChange={this.handleChange}
               id="editingSchool"
-              defaultValue={this.props.user.school}
-              placeholder={this.state.editingSchoolPlaceholder}
+              placeholder={this.props.user.school || "*scuola/università*"}
               className={`info-text info-input ${this.state.editingSchoolClass}`}
             />
           </div>
-          <i
+          {/* <i
             id="save"
             onClick={this.handleSave}
             className="fas fa-check fa-1x set-ico bottom"
-          ></i>
+          ></i> */}
+          <p
+            id="save"
+            className="set-ico p-icon bottom"
+            onClick={this.handleSave}
+          >
+            SALVA
+          </p>
           <input type="submit" className="hidden" />
         </form>
+      </div>
+    ) : (
+      <div className="info-gContainer">
+        <div id="alfa" className="loadingio-spinner-fidget-spinner-rpnwi4xirv">
+          <div className="ldio-xj4o7xwbsdb">
+            <div>
+              <div>
+                <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                <div style={{ left: "58.075px", top: "47.47px" }}></div>
+              </div>
+              <div>
+                <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                <div style={{ left: "68.175px", top: "57.57px" }}></div>
+              </div>
+              <div style={{ left: "33.835px", top: "33.835px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "37.875px",
+                    top: "30.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "58.075px",
+                    top: "30.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "29.29px",
+                    top: "45.45px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "39.39px",
+                    top: "62.115px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "66.66px",
+                    top: "45.45px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "56.56px",
+                    top: "62.115px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
 

@@ -42,3 +42,8 @@
   font-weight: bold;
   border: 2px solid black;
 }
+
+#orders-loading {
+  margin-top: 100px;
+  text-align: center;
+}

@@ -1,0 +1,86 @@
+#recover-image-container {
+  width: 95%;
+  margin: 0 auto;
+  height: 200px;
+  background: lightgoldenrodyellow;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#recover-fake-header {
+  font-size: 4rem;
+  letter-spacing: 2.5rem;
+  font-weight: 100;
+}
+
+#recover-subContainer {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 50px;
+  border: 1px solid black;
+  text-align: center;
+  padding: 40px 0px;
+}
+
+#recover-subContainer.success {
+  border: 1px solid black;
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+#recover-success-shower {
+  font-size: 1.3rem;
+  width: 50%;
+  margin: 0 auto;
+}
+
+#recover-header {
+  font-size: 2rem;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  padding: 0px 10px;
+  margin: 0px;
+}
+
+#recover-explainer {
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+#recover-input {
+  width: 80%;
+  height: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+#recover-form {
+  text-align: center;
+  margin-top: 30px;
+}
+
+#recover-confirm {
+  font-size: 0.8rem;
+  border: 1px solid black;
+  display: inline-block;
+  margin-top: 30px;
+  padding: 7px 20px;
+}
+
+#recover-confirm:hover {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#recover-label {
+  font-size: 0.8rem;
+  color: red;
+  font-style: italic;
+}

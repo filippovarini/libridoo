@@ -22,7 +22,14 @@ const AL1 = booksResult => {
   booksResult.forEach(resultObj => {
     //   !!! DOES MAP AFFECT IT?
     resultObj.filterResult.sort((a, b) =>
-      a.userSellsCount < b.userSellsCount ? 1 : -1
+      // a.userSellsCount < b.userSellsCount ? 1 : -1
+      a.userSellsCount < b.userSellsCount
+        ? 1
+        : a.userSellsCount === b.userSellsCount
+        ? Number(a.price) <= Number(b.price)
+          ? -1
+          : 1
+        : -1
     );
   });
 

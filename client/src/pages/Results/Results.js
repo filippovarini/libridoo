@@ -17,7 +17,8 @@ class Results extends Component {
     updated: false,
     city: "",
     school: "",
-    quality: ""
+    quality: "__disabled",
+    order: "1"
   };
 
   componentDidMount = () => {
@@ -56,6 +57,9 @@ class Results extends Component {
             .then(res => res.json())
             .then(jsonRes => {
               if (jsonRes.code === 0) {
+                const index = sessionStorage.getItem("index")
+                  ? Number(sessionStorage.getItem("index"))
+                  : 0;
                 // includes results with 2.5, but at least correct
                 jsonRes.results.forEach(result => {
                   delete result.index;
@@ -64,10 +68,20 @@ class Results extends Component {
                 this.props.dispatch({ type: "R-SET", results: sortedResult });
                 this.setState({
                   loading: false,
-                  index: sessionStorage.getItem("index")
-                    ? Number(sessionStorage.getItem("index"))
-                    : 0
+                  index,
+                  city:
+                    JSON.parse(sessionStorage.getItem("searchParams"))[index]
+                      .city || "__disabled",
+                  school:
+                    JSON.parse(sessionStorage.getItem("searchParams"))[index]
+                      .school || "__disabled",
+                  quality:
+                    JSON.parse(sessionStorage.getItem("searchParams"))[index]
+                      .quality || "__disabled"
                 });
+              } else if (jsonRes.code === 2.5) {
+                // one quality filter error
+                console.log("updateerorr");
               } else {
                 // code 1, code 1.5 ...
                 this.props.dispatch({
@@ -117,9 +131,15 @@ class Results extends Component {
   };
 
   handleFilterChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
+    if (e.target.id === "filter-quality") {
+      this.setState({
+        quality: e.target.value
+      });
+    } else {
+      this.setState({
+        [e.target.id]: e.target.value
+      });
+    }
   };
 
   handleFilterEdit = filter => {
@@ -171,7 +191,7 @@ class Results extends Component {
           let resultsArray = this.props.booksResult;
           resultsArray[this.state.index] = {
             searchParams,
-            filterResult: jsonRes.results ? jsonRes.results.filterResult : [],
+            filterResult: jsonRes.results.filterResult || [],
             wrongCode: jsonRes.code === 2.5 ? 2.5 : null,
             message: jsonRes.code === 2.5 ? jsonRes.message : null
           };
@@ -181,9 +201,9 @@ class Results extends Component {
           this.props.dispatch({ type: "R-SET", results: sortedResult });
           this.setState({
             loading: false,
-            city: "",
-            school: "",
-            quality: ""
+            city: jsonRes.results.searchParams.city || "__disabled",
+            school: jsonRes.results.searchParams.school || "__disabled",
+            quality: jsonRes.results.searchParams.quality || "__disabled"
           });
         } else {
           // error:
@@ -202,6 +222,7 @@ class Results extends Component {
       })
       .catch(error => {
         // store and redirect
+        console.log(error);
         sessionStorage.removeItem("searchParams");
         this.props.dispatch({
           type: "E-SET",
@@ -209,6 +230,47 @@ class Results extends Component {
         });
         this.props.history.push("/error");
       });
+  };
+
+  handleOrderChange = e => {
+    let booksResult = this.props.booksResult;
+    if (e.target.value === "1") {
+      // store sorted in redux
+      booksResult.forEach(resultObj => {
+        //   !!! DOES MAP AFFECT IT?
+        resultObj.filterResult.sort((a, b) =>
+          // a.userSellsCount < b.userSellsCount ? 1 : -1
+          a.userSellsCount < b.userSellsCount
+            ? 1
+            : a.userSellsCount === b.userSellsCount
+            ? Number(a.price) <= Number(b.price)
+              ? -1
+              : 1
+            : -1
+        );
+      });
+    } else if (e.target.value === "2") {
+      booksResult.forEach(resultObj => {
+        //   !!! DOES MAP AFFECT IT?
+        resultObj.filterResult.sort((a, b) =>
+          // a.userSellsCount < b.userSellsCount ? 1 : -1
+          a.price < b.price ? 1 : -1
+        );
+      });
+    } else if (e.target.value === "3") {
+      booksResult.forEach(resultObj => {
+        //   !!! DOES MAP AFFECT IT?
+        resultObj.filterResult.sort((a, b) =>
+          // a.userSellsCount < b.userSellsCount ? 1 : -1
+          a.price < b.price ? -1 : 1
+        );
+      });
+    }
+    this.props.dispatch({ type: "R-SET", results: booksResult });
+    this.setState({
+      index: this.state.index,
+      order: e.target.value
+    });
   };
 
   render() {
@@ -254,7 +316,74 @@ class Results extends Component {
         if (this.props.booksResult[this.state.index].wrongCode)
           resultsBody = wrongFilters;
       }
-      loading = <h1>loading...</h1>;
+      loading = (
+        <div id="results-loading">
+          <div
+            id="alfa"
+            className="loadingio-spinner-fidget-spinner-rpnwi4xirv"
+          >
+            <div className="ldio-xj4o7xwbsdb">
+              <div>
+                <div>
+                  <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                  <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                  <div style={{ left: "58.075px", top: "47.47px" }}></div>
+                </div>
+                <div>
+                  <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                  <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                  <div style={{ left: "68.175px", top: "57.57px" }}></div>
+                </div>
+                <div style={{ left: "33.835px", top: "33.835px" }}></div>
+                <div>
+                  <div
+                    style={{
+                      left: "37.875px",
+                      top: "30.3px",
+                      transform: "rotate(-20deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "58.075px",
+                      top: "30.3px",
+                      transform: "rotate(20deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "29.29px",
+                      top: "45.45px",
+                      transform: "rotate(80deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "39.39px",
+                      top: "62.115px",
+                      transform: "rotate(40deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "66.66px",
+                      top: "45.45px",
+                      transform: "rotate(100deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "56.56px",
+                      top: "62.115px",
+                      transform: "rotate(140deg)"
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
 
       bodyComponent = this.state.loading ? loading : resultsBody;
 
@@ -375,7 +504,7 @@ class Results extends Component {
                   </p>
                 )}
                 <select
-                  id="quality"
+                  id="filter-quality"
                   className="filter input"
                   disabled={this.state.quality === "__disabled" ? true : false}
                   onChange={this.handleFilterChange}
@@ -392,23 +521,23 @@ class Results extends Component {
                     qualità
                   </option>
                   <option value="intatto">intatto</option>
-                  <option value="ottimo, sottolineato a matita">
-                    ottimo, sottolineato a matita
+                  <option value="buono, non sottolineato">
+                    buono, non sottolineato
                   </option>
-                  <option value="ottimo, sottolineato a penna/evidenziatore">
-                    ottimo, sottolineato a penna
+                  <option value="buono, sottolineato a matita">
+                    buono, sottolineato a matita
                   </option>
-                  <option value="normale, sottolineato a matita">
-                    normale, sottolineato a matita
+                  <option value="buono, sottolineato a penna/evidenziatore">
+                    buono, sottolineato a penna
                   </option>
-                  <option value="ottimo, sottolineato a penna/evidenziatore">
-                    normale, sottolineato a penna/evidenziatore
+                  <option value="usato, non sottolineato">
+                    usato, non sottolineato
                   </option>
-                  <option value="ottimo, sottolineato a penna/evidenziatore">
-                    rovinato, sottolineato a matita
+                  <option value="usato, sottolineato a penna/evidenziatore">
+                    usato, sottolineato a matita
                   </option>
-                  <option value="ottimo, sottolineato a penna/evidenziatore">
-                    rovinato, sottolineato a penna/evidenziatore
+                  <option value="usato, sottolineato a penna/evidenziatore">
+                    usato, sottolineato a penna/evidenziatore
                   </option>
                   <option value="distrutto">distrutto</option>
                   <option value="fotocopiato">fotocopiato</option>
@@ -421,12 +550,13 @@ class Results extends Component {
             >
               <input
                 autoComplete="off"
-                id="filter-submit"
                 type="submit"
-                className="filter"
+                className="hidden"
                 value="FILTRA"
-                onClick={this.handleFilterSubmit}
               />
+              <p id="filter-submit" onClick={this.handleFilterSubmit}>
+                FILTRA
+              </p>
             </div>
           </form>
         ) : null;
@@ -463,11 +593,88 @@ class Results extends Component {
         ) : (
           <div>
             {filters}
+            <div id="checkout-order-container">
+              <p id="checkout-order-header">Ordina per:</p>
+              <select
+                id="checkout-order"
+                value={this.state.order}
+                onChange={this.handleOrderChange}
+              >
+                <option value="1">Quanti libri cercati vende</option>
+                <option value="2">Prezzo: discendente</option>
+                <option value="3">Prezzo: ascendente</option>
+              </select>
+            </div>
             <div id="bodyComponent-container">{bodyComponent}</div>
           </div>
         )
       ) : (
-        <h1>loading...</h1>
+        <div id="results-loading">
+          <div
+            id="alfa"
+            className="loadingio-spinner-fidget-spinner-rpnwi4xirv"
+          >
+            <div className="ldio-xj4o7xwbsdb">
+              <div>
+                <div>
+                  <div style={{ left: "33.835px", top: "5.555px" }}></div>
+                  <div style={{ left: "9.595px", top: "47.47px" }}></div>
+                  <div style={{ left: "58.075px", top: "47.47px" }}></div>
+                </div>
+                <div>
+                  <div style={{ left: "43.935px", top: "15.655px" }}></div>
+                  <div style={{ left: "19.695px", top: "57.57px" }}></div>
+                  <div style={{ left: "68.175px", top: "57.57px" }}></div>
+                </div>
+                <div style={{ left: "33.835px", top: "33.835px" }}></div>
+                <div>
+                  <div
+                    style={{
+                      left: "37.875px",
+                      top: "30.3px",
+                      transform: "rotate(-20deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "58.075px",
+                      top: "30.3px",
+                      transform: "rotate(20deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "29.29px",
+                      top: "45.45px",
+                      transform: "rotate(80deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "39.39px",
+                      top: "62.115px",
+                      transform: "rotate(40deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "66.66px",
+                      top: "45.45px",
+                      transform: "rotate(100deg)"
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      left: "56.56px",
+                      top: "62.115px",
+                      transform: "rotate(140deg)"
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       );
 
     return (

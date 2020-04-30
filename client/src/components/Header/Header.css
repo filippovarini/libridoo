@@ -1,15 +1,58 @@
+#header-gContainer {
+  position: fixed;
+  top: 0px;
+  z-index: 1000;
+  width: 100%;
+  background: white;
+}
+
 #header-container {
   border-bottom: 1px solid black;
-  height: 80px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-left: 95px;
+  /* box-shadow: 0px 0px 20px; */
+}
+
+#header-image-logo {
+  width: 100px;
+  height: auto;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px gray;
+  border-bottom-right-radius: 50px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#header-image-logo:hover {
+  box-shadow: 0px 0px 10px black;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+#quick-search-gContainer {
+  width: 20%;
+  border: 1px solid black;
+}
+#quickSearch-label {
+  color: red;
+  display: block;
+  text-align: center;
+  font-size: 0.7rem;
+  margin-bottom: 5px;
+}
+
+#quickSearch-label.hidden {
+  display: none;
 }
 
 #header-container .quick-search {
   display: flex;
-  align-items: center;
-  width: 20%;
+  flex-direction: column;
+  width: 30%;
 }
 
 #header-container .quick-search.hidden {
@@ -20,51 +63,53 @@
   display: none;
 }
 
-#header-container .searchBar-input {
-  margin: 8px;
-}
-
-#header-container #search-ico:hover {
-  border: 2px solid black;
-  padding: 6px;
-  cursor: pointer;
-}
-
-#header-container .submit {
+#header-container #searchBar-form {
   border: 1px solid black;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 2px;
+  width: 100%;
+  height: 30px;
+}
+
+#header-container #quickSearch-ico {
+  color: gray;
+  margin-left: 3px;
 }
 
 #header-container #title-input {
-  height: 20px;
-  width: 100%;
+  box-sizing: border-box;
   font-size: 0.8rem;
+  margin-left: 5px;
+  width: 100%;
+  border: 0px;
+  height: 100%;
+}
+
+#header-container #title-input:focus {
+  outline: none;
 }
 
 #header-container #loading-input {
   height: 20px;
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.5);
   text-align: center;
-}
-
-#header-container #searchBar-form {
-  width: 100%;
 }
 
 #header-container #search-prompt {
   border: 1px solid black;
-  height: 30px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 5px;
+  padding: 5px 10px;
 }
 
 #header-container #search-header {
   margin: 0px;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 #header-container #search-prompt:hover {
@@ -80,9 +125,108 @@
 #header-container .promptIcon:hover {
   border: 2px solid black;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 #header-container #cart-gContainer {
   position: relative;
+}
+
+#header-container #slidebar-prompt {
+  position: relative;
+  cursor: pointer;
+}
+
+#header-container #slidebar-prompt-icon {
+  font-size: 1.6rem;
+}
+
+#header-container #slidebar-prompt:hover {
+  font-size: 1rem;
+}
+
+#header-sell-prompt {
+  margin-right: 5px;
+}
+
+#header-container #cart-container {
+  font-size: 1.6rem;
+  border: 0px;
+}
+
+#header-container #cart-container.clicked {
+  box-shadow: 0px 0px 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  #header-image-logo {
+    width: 80px;
+    border-bottom-right-radius: 40px;
+  }
+
+  #header-container {
+    margin-left: 75px;
+    height: 55px;
+  }
+  #header-container #slidebar-prompt-icon {
+    font-size: 1.5rem;
+  }
+  #header-container #cart-container {
+    font-size: 1.5rem;
+  }
+}
+@media only screen and (max-width: 450px) {
+  #header-image-logo {
+    width: 60px;
+    border-bottom-right-radius: 30px;
+  }
+
+  #header-container {
+    margin-left: 35px;
+    height: 50px;
+    padding-left: 25px;
+  }
+
+  #header-container .promptIcon {
+    font-size: 0.8rem;
+  }
+
+  #header-container #search-prompt {
+    font-size: 0.7rem;
+    padding: 5px;
+  }
+  #header-container #search-header {
+    margin-left: 2px;
+  }
+
+  #header-container #searchBar-form {
+    height: 25px;
+    font-size: 0.9rem;
+  }
+  #header-container #slidebar-prompt-icon {
+    font-size: 1.3rem;
+  }
+  #header-container #cart-container {
+    font-size: 1.3rem;
+  }
+}
+@media only screen and (max-width: 350px) {
+  #header-container .promptIcon {
+    font-size: 0.7rem;
+    padding: 3px;
+  }
+
+  #header-container #search-prompt {
+    font-size: 0.6rem;
+    padding: 3px;
+  }
+  #header-container #searchBar-form {
+    height: 22px;
+  }
+  #header-container #slidebar-prompt-icon {
+    font-size: 1.2rem;
+  }
+  #header-container #cart-container {
+    font-size: 1.2rem;
+  }
 }

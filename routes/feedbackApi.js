@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const User = require("../models/Users");
 const Rating = require("../models/Ratings");
 const Comment = require("../models/Comments");
 const Error = require("../models/Errors");
@@ -22,6 +23,7 @@ router.get("/rating", (req, res) => {
 });
 
 // post Rating
+// rating / _id
 router.post("/rating", (req, res) => {
   const newRating = new Rating({
     rating: req.body.rating
@@ -30,14 +32,40 @@ router.post("/rating", (req, res) => {
   newRating
     .save()
     .then(rating => {
-      res.json({ code: 0, rating });
+      // update user
+      User.findByIdAndUpdate(req.body._id, { vote: req.body.rating })
+        .then(user => {
+          if (!user) {
+            res.json({
+              code: 1.5,
+              message: "Nessun utente trovato con questo id",
+              place: ".findByIdAndUpdate(), feedbackApi:36"
+            });
+          } else {
+            res.json({ code: 0 });
+          }
+        })
+        .catch(error => {
+          res.json({
+            code: 1,
+            place: ".findByIdAndUpdate(), feedbackApi:36",
+            message: "Qualcosa è andato storto nel salvataggio del giudizio",
+            error
+          });
+        });
     })
     .catch(error => {
-      res.json({ code: 1, error });
+      res.json({
+        code: 1,
+        place: ".save(), feedbackApi:33",
+        message: "Qualcosa è andato storto nel salvataggio del giudizio",
+        error
+      });
     });
 });
 
 // post Comment
+// _id / comment
 router.post("/comment", (req, res) => {
   const newComment = new Comment({
     comment: req.body.comment,
@@ -47,10 +75,34 @@ router.post("/comment", (req, res) => {
   newComment
     .save()
     .then(comment => {
-      res.json({ code: 0, comment });
+      User.findByIdAndUpdate(req.body._id, { hasJudged: true })
+        .then(user => {
+          if (!user) {
+            res.json({
+              code: 1.5,
+              message: "Nessun utente trovato con questo id",
+              place: ".findByIdAndUpdate(), feedbackApi:78"
+            });
+          } else {
+            res.json({ code: 0 });
+          }
+        })
+        .catch(error => {
+          res.json({
+            code: 1,
+            place: ".findByIdAndUpdate(), feedbackApi:78",
+            message: "Qualcosa è andato storto nel salvataggio del giudizio",
+            error
+          });
+        });
     })
     .catch(error => {
-      res.json({ code: 1, error });
+      res.json({
+        code: 1,
+        place: ".save(), feedbackApi:76",
+        message: "Qualcosa è andato storto nel salvataggio del giudizio",
+        error
+      });
     });
 });
 

@@ -11,6 +11,7 @@ class Checkout extends Component {
   state = {
     loading: false
   };
+
   componentDidMount = () => {
     if (!sessionStorage.getItem("searchParams")) {
       this.props.history.push("/search");
@@ -37,7 +38,7 @@ class Checkout extends Component {
  */
 
   purchase = (books, delivery, count) => {
-    // this.setState({ loading: true });
+    this.setState({ loading: true });
     const sellerIds = [];
     this.props.selectedBooks.forEach(cluster =>
       sellerIds.push(cluster.sellerId)
@@ -67,7 +68,14 @@ class Checkout extends Component {
           // payment successful
           sessionStorage.setItem("dealId", jsonRes.deal._id);
           this.props.history.push("/paymentConfirm");
+        } else {
+          // this.props.dispatch({
+          //   type: "E-SET",
+          //   error: { frontendPlace: "Checkout/purchase/code1", jsonRes }
+          // });
+          // this.props.history.push("/error");
         }
+        this.setState({ loading: false });
       })
       .catch(error => {
         console.log(error);
@@ -84,12 +92,44 @@ class Checkout extends Component {
     let totalDeliveryPrice = 0;
     let totalBooksNumber = 0;
     this.props.selectedBooks.forEach(cluster => {
-      if (cluster.delivery.choosen) totalDeliveryPrice += cluster.delivery.cost;
+      if (cluster.delivery.choosen)
+        totalDeliveryPrice =
+          (cluster.delivery.cost * 100 + totalDeliveryPrice * 100) / 100;
       cluster.Books.forEach(book => {
-        totalBookPrice += book.price;
+        totalBookPrice = (totalBookPrice * 100 + book.price * 100) / 100;
         totalBooksNumber += 1;
       });
     });
+    let totalPrice =
+      (totalBookPrice * 100 +
+        totalDeliveryPrice * 100 +
+        1.5 * totalBooksNumber * 100) /
+      100;
+    if (String(totalPrice).indexOf(".") === -1) {
+      // whole price
+      totalPrice = `${totalPrice}.00`;
+    } else {
+      // decimal
+      if (String(totalPrice).split(".")[1].length === 1)
+        totalPrice = `${totalPrice}0`;
+    }
+    if (String(totalBookPrice).indexOf(".") === -1) {
+      // whole price
+      totalBookPrice = `${totalBookPrice}.00`;
+    } else {
+      // decimal
+      if (String(totalBookPrice).split(".")[1].length === 1)
+        totalBookPrice = `${totalBookPrice}0`;
+    }
+    if (String(totalDeliveryPrice).indexOf(".") === -1) {
+      // whole price
+      totalDeliveryPrice = `${totalDeliveryPrice}.00`;
+    } else {
+      // decimal
+      if (String(totalDeliveryPrice).split(".")[1].length === 1)
+        totalDeliveryPrice = `${totalDeliveryPrice}0`;
+    }
+
     const checkoutComponent = (
       <div id="checkout">
         <div id="checkout-header-container">
@@ -144,13 +184,11 @@ class Checkout extends Component {
             </div>
             <div className="bill-info-container">
               <p className="bill-info bill-left">Commissioni:</p>
-              <p className="bill-info bill-right">1.5/cad</p>
+              <p className="bill-info bill-right">1.50/cad</p>
             </div>
             <div id="bill-total" className="bill-info-container">
               <p className="bill-info bill-left">Totale:</p>
-              <p className="bill-info bill-right">
-                € {totalDeliveryPrice + totalBookPrice + 1.5 * totalBooksNumber}
-              </p>
+              <p className="bill-info bill-right">€ {totalPrice}</p>
             </div>
           </div>
         </div>
@@ -182,7 +220,90 @@ class Checkout extends Component {
       </div>
     );
 
-    const loading = <h1>loading...</h1>;
+    const loading = (
+      <div id="checkout-loading">
+        <div className="loadingio-spinner-fidget-spinner-udtray956qm">
+          <div className="ldio-sqv79tocehf">
+            <div>
+              <div>
+                <div
+                  style={{ left: "87.435px", top: "14.354999999999999px" }}
+                ></div>
+                <div
+                  style={{
+                    left: "24.794999999999998px",
+                    top: "122.66999999999999px"
+                  }}
+                ></div>
+                <div
+                  style={{ left: "150.075px", top: "122.66999999999999px" }}
+                ></div>
+              </div>
+              <div>
+                <div style={{ left: "113.535px", top: "40.455px" }}></div>
+                <div
+                  style={{
+                    left: "50.894999999999996px",
+                    top: "148.76999999999998px"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "176.17499999999998px",
+                    top: "148.76999999999998px"
+                  }}
+                ></div>
+              </div>
+              <div style={{ left: "87.435px", top: "87.435px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "97.875px",
+                    top: "78.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "150.075px",
+                    top: "78.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "75.69px",
+                    top: "117.44999999999999px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "101.78999999999999px",
+                    top: "160.515px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "172.26px",
+                    top: "117.44999999999999px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "146.16px",
+                    top: "160.515px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
     let bodyComponent =
       this.props.selectedBooks.length === 0 ? loading : checkoutComponent;

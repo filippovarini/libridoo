@@ -1,18 +1,23 @@
 #home-image-container {
   width: 95%;
   height: 200px;
-  background: lightgoldenrodyellow;
+  background: white;
+  justify-content: space-around;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 30px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  margin-top: 30px;
+  box-shadow: 0px 0px 8px grey;
 }
 
-#home-fake-header {
-  font-size: 2.5rem;
-  letter-spacing: 1.5rem;
-  font-weight: 100;
+#home-image-text {
+  margin: 0px;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
 }
 
 #helloer-container {
@@ -36,18 +41,9 @@
 }
 
 #helps-container {
-  margin: 50px auto;
   text-align: center;
-}
-
-#helps-header {
-  margin: 0px;
-  display: inline-block;
-  font-size: 1.5rem;
-  border-bottom: 1px solid black;
-  padding: 0px 30px;
-}
-
-#help-main-gContainer.home-help {
-  margin-top: 20px;
+  border-top: 1px solid black;
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 100px;
 }

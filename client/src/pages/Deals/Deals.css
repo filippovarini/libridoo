@@ -35,6 +35,12 @@
   margin: 80px 0;
 }
 
+#deals-body.deals-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #deals-empty-container {
   border: 1px solid black;
   text-align: center;

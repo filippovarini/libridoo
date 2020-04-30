@@ -5,7 +5,7 @@
   position: fixed;
   top: 0px;
   left: 0px;
-  z-index: 999;
+  z-index: 1001;
 }
 
 #ratingPopUp {
@@ -21,6 +21,12 @@
   text-align: center;
   border: 2px solid black;
   position: relative;
+}
+
+#ratingPopUp.rating-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #ratingPopUp-header {
