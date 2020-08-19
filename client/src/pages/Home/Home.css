@@ -18,6 +18,19 @@
   position: absolute;
   bottom: 10px;
   right: 20px;
+  font-family: "Satisfy", cursive;
+}
+
+#hit-1 {
+  color: purple;
+}
+
+#hit-2 {
+  color: #f79e02;
+}
+
+#hit-3 {
+  color: green;
 }
 
 #helloer-container {
@@ -27,22 +40,63 @@
 }
 
 #home-meme-container {
-  width: 100%;
-  padding-top: 100%;
-  margin: 0 auto;
+  text-align: center;
+  border: 2px solid purple;
   margin-top: 30px;
-  background: lightcyan;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.meme-subpart.inferior {
+  width: 150px;
+}
+
+#meme-subpart-skip {
+  color: white;
+  background: #f79e02;
+  box-shadow: 0px 0px 3px gray;
+  padding-left: 2px;
+  font-size: 2.5rem;
+  height: 70px;
+  width: 70px;
+  line-height: 70px;
+  text-align: center;
+  border-radius: 36px;
+}
+
+#meme-subpart-skip:hover {
+  cursor: pointer;
+  padding: 1px;
+  padding-left: 3px;
+  box-shadow: 0px 0px 5px black;
+}
+
+#meme-subpart-author {
+  font-style: italic;
+}
+
+#meme-author-name {
+  font-size: 1.2rem;
+  color: green;
+  font-style: normal;
+}
+
+#home-meme {
+  width: 300px;
+  margin: 10px;
+  height: 400px;
   border: 2px solid black;
 }
 
-#helloer {
+*/ #helloer {
   font-size: 2rem;
   margin-bottom: 0px;
 }
 
 #helps-container {
   text-align: center;
-  border-top: 1px solid black;
+  border-top: 1px solid #f79e02;
   width: 95%;
   margin: 0 auto;
   margin-top: 100px;

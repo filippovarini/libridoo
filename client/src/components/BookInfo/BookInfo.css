@@ -29,7 +29,7 @@
 }
 
 #bookInfo {
-  border: 3px solid black;
+  border: 3px solid purple;
   position: fixed;
   left: 50%;
   margin-left: -250px;
@@ -144,6 +144,11 @@
   margin-bottom: 5px;
   font-size: 0.8rem;
   color: gray;
+}
+
+.successful {
+  font-weight: 300;
+  font-style: italic;
 }
 
 #bookInfo #title {

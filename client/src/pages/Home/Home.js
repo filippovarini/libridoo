@@ -13,6 +13,10 @@ class Home extends Component {
     });
   };
 
+  handleMemeSkip = () => {
+    alert("handling");
+  };
+
   render() {
     const buyExplainer = (
       <div id="help-buy-explainer" className="help-explainer-container">
@@ -192,7 +196,11 @@ class Home extends Component {
       <div id="home">
         <div id="home-image-container">
           <img id="home-image-logo" src="./images/logo-long.png" alt="logo" />
-          <p id="home-image-text">students 4 students</p>
+          <p id="home-image-text">
+            <span id="hit-1">students </span>
+            <span id="hit-2">4 </span>
+            <span id="hit-3">students</span>
+          </p>
         </div>
         <div id="helloer-container">
           {this.props.user.name ? (
@@ -203,9 +211,32 @@ class Home extends Component {
             <p id="helloer">Ciao!</p>
           )}
           <p id="meme-header">
-            Se gli studi ti affannano troppo, risollevati con questa!
+            Se gli studi ti affannano troppo, risollevati con qualche meme
+            stupido!
           </p>
-          <div id="home-meme-container"></div>
+          <div id="home-meme-container">
+            <div id="meme-subpart-1" className="meme-subpart inferior">
+              <i
+                onClick={this.handleMemeSkip}
+                id="meme-subpart-skip"
+                className="fas fa-forward"
+              ></i>
+            </div>
+            <div id="meme-subpart-2" className="meme-subpart">
+              <img
+                src="https://tbm-studentville.s3.amazonaws.com/app/uploads/sites/2/2018/06/2.jpg"
+                alt="meme"
+                id="home-meme"
+              />
+            </div>
+            <div id="meme-subpart-3" className="meme-subpart inferior">
+              <p id="meme-subpart-author">
+                from:
+                <br />
+                <span id="meme-author-name">StudentiInCrisi</span>
+              </p>
+            </div>
+          </div>
         </div>
         <div id="helps-container">
           <div id="help-nav">

@@ -215,6 +215,12 @@ class Header extends Component {
                 searChInputClass: "invalid-input",
                 quickSearchLabelMessage: jsonRes.message
               });
+              setTimeout(() => {
+                this.setState({
+                  searChInputClass: null,
+                  quickSearchLabelMessage: null
+                });
+              }, 1000);
             } else if (jsonRes.code === 0 || jsonRes.code === 2.5) {
               // redirect
               this.props.history.push("/search");

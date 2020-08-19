@@ -62,7 +62,7 @@
 
 .help-explainer-container {
   margin-top: 50px;
-  border-top: 1px solid black;
+  border-top: 1px solid #f79e02;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -94,7 +94,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 250px;
-  background: lightgoldenrodyellow;
+  border: 2px solid purple;
 }
 
 .exp-ico {

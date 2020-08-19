@@ -55,6 +55,9 @@ class BookInfo extends Component {
     this.setState({
       decimal: e.target.value
     });
+    if (e.target.value.length <= 2 && !this.state.priceLabelHidden) {
+      this.setState({ priceLabelHidden: true });
+    }
   };
 
   handleMouseOver = () => {
@@ -216,6 +219,8 @@ class BookInfo extends Component {
       }
     } else if (this.state.price <= 0) {
       this.setState({ priceClass: "invalid-input", priceLabelHidden: false });
+    } else if (this.state.decimal.length > 2) {
+      this.setState({ priceLabelHidden: false });
     } else {
       // everything inputted
       const user = this.props.user;
@@ -347,6 +352,8 @@ class BookInfo extends Component {
       }
     } else if (this.state.price <= 0) {
       this.setState({ priceClass: "invalid-input", priceLabelHidden: false });
+    } else if (this.state.decimal.length > 2) {
+      this.setState({ priceLabelHidden: false });
     } else {
       // everything inputted
       const body = {
@@ -532,9 +539,9 @@ class BookInfo extends Component {
 
     const loaded = (
       <div>
-        <p id="header">
+        {/* <p id="header">
           Compila con chiarezza per vendere con maggior successo
-        </p>
+        </p> */}
         {imageContainer}
         <form
           onSubmit={this.props.editing ? this.handleEdit : this.handleSubmit}

@@ -226,7 +226,7 @@ class Feedback extends Component {
         <p
           id="feedback-comment-submit"
           onClick={this.handleSubmit}
-          className={this.state.comment.length > 10 ? "" : "hidden"}
+          className={this.state.comment.length > 5 ? "" : "hidden"}
         >
           SALVA
         </p>
@@ -251,7 +251,9 @@ class Feedback extends Component {
 
     const loadingBody = <h1 id="feedback-loading">loading...</h1>;
 
-    const body = this.props.user._id ? loadedBody : loadingBody;
+    // const body = this.props.user._id ? loadedBody : null;
+    // loading seems useless
+    const body = loadedBody;
 
     const contactNotHover = (
       <p id="fpp" className="feedback-problem">
