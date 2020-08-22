@@ -50,17 +50,19 @@
   margin-left: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   height: 150px;
   width: 70%;
+  /* overflow: hidden; */
+  /* border: 1px solid black; */
 }
 
 #infoComponent .info-container {
   display: flex;
   align-items: center;
   margin: 3px 0;
-  font-size: 0.8rem;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  /* font-size: 0.8rem; */
 }
 
 #infoComponent .info {
@@ -82,10 +84,40 @@
 #infoComponent #remove {
   margin-left: 0px;
   font-size: 0.8rem;
+  font-style: italic;
 }
 
 #infoComponent #remove:hover {
   cursor: pointer;
   text-decoration: line-through;
   font-style: italic;
+}
+
+#title-container #title {
+  font-weight: 500;
+}
+
+#quality-container #quality {
+  font-weight: 300;
+}
+
+#price-container #price {
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 550px) {
+  #infoComponent {
+    margin: 0px 10px;
+  }
+
+  #infoComponent #infoContainer {
+    margin-left: 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  #infoComponent .info-book-ico {
+    display: none;
+  }
 }

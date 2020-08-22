@@ -192,7 +192,7 @@ class Recover extends Component {
     return (
       <div id="recover">
         <div id="recover-image-container">
-          <p id="recover-fake-header">RECOVER</p>
+          {/* <p id="recover-fake-header">RECOVER</p> */}
         </div>
         {bodyContainer}
       </div>

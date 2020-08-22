@@ -94,9 +94,9 @@
 
 #register-form {
   border: 1px solid black;
-  margin: 40px;
   display: inline-block;
   width: 350px;
+  margin: 40px 0px;
 }
 
 .text-input {
@@ -167,5 +167,6 @@
 @media only screen and (max-width: 500px) {
   #images-container {
     grid-gap: 10px;
+    grid-template-columns: repeat(5, 19%);
   }
 }

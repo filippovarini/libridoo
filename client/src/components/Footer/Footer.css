@@ -1,7 +1,39 @@
 #footer-container {
   border-top: 1px solid #f79e02;
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-top: 100px;
+  margin-bottom: 30px;
+}
+
+.footer-div {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: space-around;
+}
+
+.footer-div-container {
+  display: flex;
+  align-items: center;
+}
+
+.footer-ico {
+  margin-right: 5px;
+}
+
+.footer-link {
+  color: black;
+}
+
+#footer-mobile {
+  margin-right: 10px;
+}
+
+@media only screen and (max-width: 450px) {
+  .footer-div {
+    font-size: 0.8rem;
+  }
 }

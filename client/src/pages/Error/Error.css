@@ -63,3 +63,11 @@
 #error-link:hover {
   box-shadow: 0px 0px 5px black;
 }
+
+@media only screen and (max-width: 700px) {
+  #error-header {
+    font-size: 2rem;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

@@ -342,7 +342,7 @@ class Deals extends Component {
           id={this.state.BookInfoId}
         />
         <div id="deals-image-container">
-          <p id="fake-header">AFFARI</p>
+          {/* <p id="fake-header">AFFARI</p> */}
         </div>
         <div id="deals-choices">
           <p

@@ -85,6 +85,7 @@
   text-align: center;
   margin-top: 100px;
   margin-bottom: 50px;
+  /* border: 1px solid black; */
 }
 
 #feedback-problems-header {
@@ -101,7 +102,7 @@
   margin-top: 20px;
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(312px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .feedback-problem-container {
@@ -118,7 +119,7 @@
 .feedback-problem {
   border: 1px solid black;
   margin: 0px;
-  width: 50%;
+  width: 85%;
   box-sizing: border-box;
   padding: 20px;
   background: lightgoldenrodyellow;
@@ -150,4 +151,12 @@
 
 #feedback-contact-container {
   cursor: default;
+}
+
+@media only screen and (max-width: 400px) {
+  #feedback-problems-container {
+    width: 100%;
+    border: 1px solid black;
+    align-items: center;
+  }
 }

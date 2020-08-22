@@ -3,7 +3,8 @@
   top: 0px;
   z-index: 1000;
   width: 100%;
-  background: #d4e8c1;
+  /* background: #d4e8c1; */
+  background: white;
 }
 
 #header-container {
@@ -36,9 +37,10 @@
 
 #quick-search-gContainer {
   width: 20%;
-  border: 1px solid black;
+  border: 1px solid green;
   background: white;
 }
+
 #quickSearch-label {
   color: red;
   display: block;
@@ -66,7 +68,7 @@
 }
 
 #header-container #searchBar-form {
-  border: 1px solid black;
+  border: 1px solid purple;
   background: white;
   border-radius: 2px;
   display: flex;
@@ -103,14 +105,21 @@
 }
 
 #header-container #search-prompt {
-  border: 1px solid black;
+  /* border: 1px solid lightgreen; */
+  /* background: #d4e8c1; */
+  background: purple;
+  opacity: 0.8;
+  border-radius: 5px;
   border-radius: 2px;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 10px;
-  background: white;
+  padding: 6px 10px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0px 0px 2px black;
+  /* background: white; */
 }
 
 #header-container #search-header {
@@ -125,11 +134,13 @@
 }
 
 #header-container .promptIcon {
-  border: 1px solid black;
+  /* border: 1px solid ; */
   padding: 5px 10px;
   border-radius: 2px;
   box-shadow: 0px 0px 2px black;
-  background: white;
+  background: green;
+  color: white;
+  font-weight: bold;
 }
 
 #header-container .promptIcon:hover {
@@ -149,18 +160,20 @@
 
 #header-container #slidebar-prompt-icon {
   font-size: 1.6rem;
-  border: 2px solid black;
+  /* border: 2px solid purple; */
+  box-shadow: 0px 0px 2px purple;
   width: 45px;
   text-align: center;
   line-height: 46px;
   border-radius: 45px;
   height: 45px;
   background: white;
+  color: purple;
 }
 
 #header-container #slidebar-prompt-icon:hover {
   /* font-size: 1rem; */
-  box-shadow: 0px 0px 2px black;
+  box-shadow: 0px 0px 4px purple;
 }
 
 #header-sell-prompt {
@@ -176,6 +189,8 @@
   height: 45px;
   text-align: center;
   padding: 0px;
+  background: white;
+  color: black;
 }
 
 #header-container #cart-container.clicked {

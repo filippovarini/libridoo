@@ -25,6 +25,8 @@ import Feedback from "./pages/Feedback/Feedback";
 import Help from "./pages/Help/Help";
 import FAQs from "./pages/FAQs/FAQs";
 import ErrorPage from "./pages/Error/Error";
+import Privacy from "./pages/Pricacy/Privacy";
+import TandC from "./pages/T&C/T&C";
 
 class App extends React.Component {
   componentDidMount = () => {
@@ -120,6 +122,8 @@ class App extends React.Component {
             <Route path="/help" component={Help} />
             <Route path="/FAQs" component={FAQs} />
             <Route path="/error" component={ErrorPage} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/termsAndConditions" component={TandC} />
           </div>
           <Footer />
         </div>

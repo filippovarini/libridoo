@@ -16,6 +16,8 @@
 #placeInfo #ico {
   top: -10px;
   left: -10px;
+  border: none;
+  color: purple;
 }
 
 #placeInfo .placeInfoBody {

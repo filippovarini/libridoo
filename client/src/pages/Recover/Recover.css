@@ -9,12 +9,6 @@
   justify-content: center;
 }
 
-#recover-fake-header {
-  font-size: 4rem;
-  letter-spacing: 2.5rem;
-  font-weight: 100;
-}
-
 #recover-subContainer {
   width: 90%;
   margin: 0 auto;
@@ -83,4 +77,10 @@
   font-size: 0.8rem;
   color: red;
   font-style: italic;
+}
+
+@media only screen and (max-width: 400px) {
+  #recover-header {
+    font-size: 1.7rem;
+  }
 }

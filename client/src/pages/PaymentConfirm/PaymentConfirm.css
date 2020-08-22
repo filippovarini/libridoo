@@ -69,3 +69,13 @@
   align-items: center;
   justify-content: center;
 }
+
+@media only screen and (max-width: 450px) {
+  #paymentConfirm #body-header {
+    font-size: 0.8rem;
+  }
+
+  #paymentConfirm #home-link {
+    margin-top: 60px;
+  }
+}

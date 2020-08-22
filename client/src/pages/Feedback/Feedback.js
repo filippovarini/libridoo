@@ -249,7 +249,7 @@ class Feedback extends Component {
       </div>
     );
 
-    const loadingBody = <h1 id="feedback-loading">loading...</h1>;
+    // const loadingBody = <h1 id="feedback-loading">loading...</h1>;
 
     // const body = this.props.user._id ? loadedBody : null;
     // loading seems useless
@@ -286,7 +286,7 @@ class Feedback extends Component {
     return (
       <div id="feedback">
         <div id="feedback-image-container">
-          <p id="feedback-fake-header">FEEDBACK</p>
+          {/* <p id="feedback-fake-header">FEEDBACK</p> */}
         </div>
         {body}
         <div id="feedback-problems-container">

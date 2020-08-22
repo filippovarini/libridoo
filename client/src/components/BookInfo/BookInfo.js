@@ -576,17 +576,17 @@ class BookInfo extends Component {
                 <option value="buono, sottolineato a matita">
                   buono, sottolineato a matita
                 </option>
-                <option value="buono, sottolineato a penna/evidenziatore">
+                <option value="buono, sottolineato a penna">
                   buono, sottolineato a penna
                 </option>
                 <option value="usato, non sottolineato">
                   usato, non sottolineato
                 </option>
-                <option value="usato, sottolineato a penna/evidenziatore">
+                <option value="usato, sottolineato a matita">
                   usato, sottolineato a matita
                 </option>
-                <option value="usato, sottolineato a penna/evidenziatore">
-                  usato, sottolineato a penna/evidenziatore
+                <option value="usato, sottolineato a penna">
+                  usato, sottolineato a penna
                 </option>
                 <option value="distrutto">distrutto</option>
                 <option value="fotocopiato">fotocopiato</option>

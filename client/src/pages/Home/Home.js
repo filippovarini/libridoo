@@ -219,8 +219,9 @@ class Home extends Component {
               <i
                 onClick={this.handleMemeSkip}
                 id="meme-subpart-skip"
-                className="fas fa-forward"
+                className="fas fa-sync"
               ></i>
+              <span id="meme-subpart-skip-text">refresh</span>
             </div>
             <div id="meme-subpart-2" className="meme-subpart">
               <img

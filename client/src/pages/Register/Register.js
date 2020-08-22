@@ -349,7 +349,7 @@ class Register extends Component {
     return (
       <div id="register-general-container">
         <div id="register-image-container">
-          <p id="register-fake-header">REGISTRATI</p>
+          {/* <p id="register-fake-header">REGISTRATI</p> */}
         </div>
         {avatarHeader}
         <div id="register-actions">
@@ -404,7 +404,9 @@ class Register extends Component {
                 onChange={this.handleCheckboxClick}
               />
               <label htmlFor="tcp">
-                Accetto termini e condizioni e la privacy policy
+                Accetto{" "}
+                <Link to="termsAndConditions">termini e condizioni</Link> e la{" "}
+                <Link to="privacy">privacy policy</Link>
               </label>
             </div>
             <div id="remember-container" className="checkbox-container">

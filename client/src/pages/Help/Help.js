@@ -189,7 +189,7 @@ class Help extends Component {
     return (
       <div id="help">
         <div id="help-image-container">
-          <p id="help-fake-header">AIUTO</p>
+          {/* <p id="help-fake-header">AIUTO</p> */}
         </div>
         <div id="help-nav">
           <p id="help-header">Scopri come:</p>
