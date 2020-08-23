@@ -8,7 +8,9 @@
 
 #book {
   width: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  box-shadow: 0px 0px 2px black;
+  border-radius: 5px;
   max-width: 800px;
   position: relative;
   margin: 8px;
@@ -20,14 +22,15 @@
   margin: 35px 30px;
   margin-top: 0px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 #book #image-container {
   width: 120px;
-  border: 2px solid black;
+  border: 1px solid black;
   box-sizing: border-box;
   height: 150px;
+  border-radius: 3px;
 }
 
 #book #image-container:hover {
@@ -42,7 +45,7 @@
   width: 80vw;
   height: 80vh;
   z-index: 1001;
-  border: 3px solid black;
+  border: 1px solid black;
   padding: 0px;
   display: flex;
   align-items: center;
@@ -63,24 +66,26 @@
 
 #book #info-container {
   margin: 0px;
-  margin-left: 40px;
-  display: flex;
+  margin-left: 20px;
+
+  /* display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 150px;
-  border: 1px solid black;
+  justify-content: space-between; */
+  /* height: 150px; */
+  /* border: 1px solid black; */
   width: 70%;
 }
 
 #book .info-container {
   display: flex;
   align-items: center;
-  margin: 3px 0;
   /* border: 1px solid black; */
 }
 
 #book .info {
-  margin: 0px 10px;
+  margin: 0px;
+  margin-bottom: 5px;
+  /* border: 1px solid black;  */
 }
 
 #book .info-book-ico {
@@ -89,6 +94,8 @@
   min-width: 30px;
   text-align: center;
   line-height: 30px;
+  color: gray;
+  display: none;
 }
 
 #book .delivery {
@@ -113,7 +120,9 @@
 }
 
 #book .icon-container {
-  border: 2px solid black;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px black;
   display: inline-block;
   position: absolute;
   background: white;
@@ -132,13 +141,46 @@
 }
 /* deleted resultIcon */
 #book .lowerIcon-container {
-  width: 50px;
-  height: 45px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  bottom: -15px;
-  right: -15px;
+  bottom: -10px;
+  right: -10px;
+  font-size: 0.8rem;
+  color: gray;
+  border: 1px solid gray;
+}
+
+#book #place-container {
+  /* color: purple; */
+  color: #f79e02;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+#book #timeToMeet-container {
+  color: gray;
+  font-style: italic;
+}
+
+#book #title-container {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+#book #quality-container {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: green;
+  /* font-style: italic; */
+}
+
+#book #price-container {
+  font-weight: bold;
+  color: purple;
+  font-size: 1.2rem;
 }
 
 #book #price-icon-container.lowerIcon-container {
@@ -146,8 +188,10 @@
 }
 
 #book #result-lower-icon-cart {
-  width: 55px;
-  height: 48px;
+  width: 52px;
+  border: 1px solid #f79e02;
+  color: #f79e02;
+  /* height: 48px;  */
 }
 
 #book .span-icon {
@@ -160,16 +204,19 @@
 }
 
 #book .icon-container:hover {
-  border: 3px solid black;
+  box-shadow: 0px 0px 5px black;
+  font-size: 1.1rem;
   cursor: pointer;
 }
 
 #book #sells-count-container {
-  border: 1px solid black;
-  width: 180px;
+  /* border: 1px solid black; */
+  border-radius: 3px;
+  box-shadow: 0px 0px 4px black;
+  width: 160px;
   position: absolute;
-  height: 35px;
-  top: -10px;
+  height: 30px;
+  top: -15px;
   right: -20px;
   background: white;
   display: flex;
@@ -177,24 +224,50 @@
   justify-content: center;
 }
 
+#book #deals-upperIcon {
+  color: #f79e02;
+  border: 1px solid #f79e02;
+}
+
+#book #deals-lowerIcon:hover {
+  font-size: 0.9rem;
+}
+
 #book #sells-count {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
+  font-weight: bold;
+  color: gray;
 }
 
 #book #sells-count-container #number {
   font-weight: bold;
   font-size: 0.9rem;
+  color: purple;
 }
 
 #book #result-lower-icon-bought {
-  border: 2px solid black;
+  border: 1px solid green;
   cursor: auto;
+  color: green;
+}
+
+#book #bought-icon {
+  width: 100px;
+}
+
+#book #price-icon-container {
+  border: 1px solid purple;
 }
 
 #book #price-icon {
   font-size: 0.7rem;
-  font-weight: normal;
-  color: black;
+  font-weight: bold;
+  color: purple;
+}
+
+#book #result-lower-icon-bought:hover {
+  box-shadow: 0px 0px 3px black;
+  font-size: 1rem;
 }
 
 #book #checkout-lower-icon:hover {

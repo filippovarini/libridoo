@@ -9,7 +9,9 @@
 
 #book-cluster {
   width: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  box-shadow: 0px 0px 2px black;
+  border-radius: 5px;
   position: relative;
   margin: 8px;
   margin-bottom: 33px;
@@ -54,6 +56,7 @@
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 5px;
+  box-shadow: 0px 0px 3px black;
 }
 
 #book-cluster .upperIcon-container {
@@ -82,12 +85,13 @@
 }
 
 #book-cluster .icon-container:hover {
-  border: 3px solid black;
+  border: 1px solid black;
   cursor: pointer;
+  box-shadow: 0px 0px 5px black;
 }
 
 #book-cluster #checkout-lower-icon:hover {
-  border: 2px solid black;
+  border: 1px solid black;
   cursor: default;
   font-weight: normal;
 }
@@ -102,7 +106,7 @@
 }
 
 #book-cluster .sub-header {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   padding: 5px;
@@ -122,6 +126,7 @@
 #book-cluster .sub-header-ico {
   /* border: 1px solid black; */
   padding: 5px;
+  color: gray;
 }
 
 #book-cluster .long {
@@ -133,6 +138,7 @@
   align-items: center;
   justify-content: center;
   padding: 0px 10px;
+  box-shadow: 0px 0px 3px black;
 }
 
 #book-cluster #confirm-icon {
@@ -140,36 +146,45 @@
 }
 
 #book-cluster .icon-container.confirmed {
-  border: 2px solid green;
+  border: 1px solid green;
+  color: green;
+  box-shadow: 0px 0px 3px green;
 }
 
-#book-cluster .icon-container.confirmed:hover {
+/* #book-cluster .icon-container.confirmed:hover {
   cursor: default;
   font-weight: normal;
   border: 2px solid black;
-}
+} */
 
 #book-cluster .icon-container.confirmed:hover {
-  border: 2px solid green;
+  border: 1px solid green;
 }
 
-#book-cluster .icon-container.notConfirmed {
+#book-cluster #orders-lower-icon.notConfirmed {
   width: 80px;
+  border: 1px solid #f79e02;
+  /* color: #f79e02; */
+  box-shadow: 0px 0px 4px #f79e02;
+  color: #f79e02;
+  font-weight: bolder;
 }
 
-#book-cluster .icon-container.notConfirmed:hover {
-  border: 3px solid rgb(255, 238, 0);
+#book-cluster #orders-lower-icon.notConfirmed:hover {
+  box-shadow: 0px 0px 5px #f79e02;
   cursor: pointer;
 }
 
 #deals-lower-icon.icon-container.icon-container.notConfirmed {
   width: 50px;
-  border: 2px solid black;
+  border: 1px solid #f79e02;
+  box-shadow: 0px 0px 3px #f79e02;
+  color: #f79e02;
 }
 
 #book-cluster .price-cluster-icon {
   font-size: 0.7rem;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 #book-cluster #deals-lower-icon.price-cluster-icon-container.icon-container {

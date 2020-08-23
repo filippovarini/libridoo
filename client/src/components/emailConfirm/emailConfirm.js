@@ -209,7 +209,6 @@ class EmailConfirm extends Component {
           } else {
             sessionStorage.setItem("JWT", jsonRes.JWT);
           }
-          console.log(this.props.match.params.invitingId);
           const redirection =
             this.props.match.params.invitingId === "buying" ? "/checkout" : "/";
           this.props.history.push(redirection);

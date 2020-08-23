@@ -182,7 +182,7 @@
 
 #header-container #cart-container {
   font-size: 1.5rem;
-  border: 2px solid black;
+  box-shadow: 0px 0px 2px green;
   width: 45px;
   line-height: 46px;
   border-radius: 45px;
@@ -190,7 +190,7 @@
   text-align: center;
   padding: 0px;
   background: white;
-  color: black;
+  color: green;
 }
 
 #header-container #cart-container.clicked {

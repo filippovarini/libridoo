@@ -1,11 +1,10 @@
 #bookInfo-gContainer {
   position: fixed;
-  top: -100;
   background: rgba(0, 0, 0, 0.7);
-  width: 1000vw;
-  height: 1000vh;
+  width: 100vw;
+  height: 100vh;
   z-index: 1001;
-  left: -100px;
+  bottom: 0px;
 }
 #bookInfo-gContainer #general-delete {
   font-size: 2rem;

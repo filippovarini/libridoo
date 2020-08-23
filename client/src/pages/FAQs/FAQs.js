@@ -23,6 +23,11 @@ class FAQs extends Component {
       <div id="faqs">
         <div id="faqs-image-container">
           <p id="faqs-fake-header">FAQs</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         <p id="faqs-header">Domande frequenti</p>
         <div id="faqs-container">

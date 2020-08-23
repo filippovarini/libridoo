@@ -13,6 +13,10 @@
   box-shadow: 0px 0px 8px grey;
 }
 
+#home-image-logo {
+  height: 150px;
+}
+
 #home-image-text {
   margin: 0px;
   position: absolute;
@@ -47,6 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  border-radius: 5px;
 }
 
 .meme-subpart.inferior {

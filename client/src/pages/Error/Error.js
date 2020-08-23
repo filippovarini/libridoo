@@ -151,6 +151,11 @@ class Error extends Component {
       <div id="error">
         <div id="error-image-container">
           {/* <p id="error-fake-header">ERRORE</p> */}
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         <div>
           <p id="error-header">Houston, we got a problem!</p>

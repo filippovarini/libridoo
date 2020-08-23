@@ -297,16 +297,16 @@ class book extends Component {
               {this.props.book.quality}
             </p>
           </div>
-          <div id="date-container" className="info-container">
+          {/* <div id="date-container" className="info-container">
             <i className="fas fa-calendar-alt info-book-ico"></i>
             <p id="date" className="info">
               {this.props.date}
             </p>
-          </div>
+          </div> */}
           <div id="price-container" className="info-container">
             <i className="fas fa-euro-sign info-book-ico"></i>
             <p id="price" className="info">
-              {bookPrice}
+              {bookPrice} €
             </p>
           </div>
         </div>

@@ -147,6 +147,12 @@ class Header extends Component {
     });
   };
 
+  hideSlidebar = () => {
+    this.setState({
+      slideBarHidden: true
+    });
+  };
+
   handleLogout = () => {
     if (sessionStorage.getItem("JWT")) {
       sessionStorage.removeItem("JWT");
@@ -411,6 +417,7 @@ class Header extends Component {
               hidden={this.state.slideBarHidden}
               toggleSlideBar={this.toggleSlideBar}
               handleLogout={this.handleLogout}
+              hideSlidebar={this.hideSlidebar}
             />
           </div>
           <BookInfo

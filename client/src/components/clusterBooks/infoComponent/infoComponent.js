@@ -72,7 +72,7 @@ class InfoComponent extends Component {
           <i className="fas fa-euro-sign info-book-ico"></i>
           <p id="price" className="info">
             {/* {this.props.book.price} */}
-            {price}
+            {price} €
           </p>
         </div>
         <div id="remove-container" className="info-container">
@@ -101,7 +101,7 @@ class InfoComponent extends Component {
           <i className="fas fa-euro-sign info-book-ico"></i>
           <p id="price" className="info">
             {/* {this.props.book.price} */}
-            {price}{" "}
+            {price} €
             <span className={this.props.delivery.choosen ? null : "hidden"}>
               (+ {this.props.delivery.cost} euro di spedizione)
             </span>
@@ -133,7 +133,7 @@ class InfoComponent extends Component {
           <i className="fas fa-euro-sign info-book-ico"></i>
           <p id="price" className="info">
             {/* {this.props.book.price} */}
-            {price}
+            {price} €
           </p>
         </div>
       </div>
