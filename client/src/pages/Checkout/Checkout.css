@@ -2,6 +2,27 @@
   margin-bottom: 100px;
 }
 
+#checkout-image-container {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 30px;
+  height: 200px;
+  box-shadow: 0px 0px 8px grey;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 80px;
+}
+
+#checkout-fake-header {
+  font-size: 4rem;
+  letter-spacing: 1rem;
+  font-family: "Pangolin", cursive;
+  color: #f79e02;
+}
+
 #checkout-header-container {
   width: 95%;
   margin: 0 auto;
@@ -27,7 +48,9 @@
 
 #checkout #infoReview-header {
   text-align: center;
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
+  font-weight: bold;
+  color: gray;
   display: inline-block;
   padding: 3px 10%;
   margin: 0px;
@@ -115,4 +138,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media only screen and (max-width: 500px) {
+  #checkout-fake-header {
+    font-size: 3.5rem;
+    letter-spacing: 0.4rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #checkout-fake-header {
+    letter-spacing: 0.2rem;
+  }
 }

@@ -112,6 +112,7 @@ class BookInfo extends Component {
           });
           this.props.history.push("/error");
         } else {
+          console.log(jsonRes.imageURL);
           // perfect
           this.setState({
             imgUrl: jsonRes.imageURL,
@@ -591,7 +592,7 @@ class BookInfo extends Component {
                 <option value="distrutto">distrutto</option>
                 <option value="fotocopiato">fotocopiato</option>
               </select>
-              <p className={this.state.selectHeaderClass}>
+              <p id="quality-warning" className={this.state.selectHeaderClass}>
                 Evita dispute con il cliente, sii sincero!
               </p>
             </div>

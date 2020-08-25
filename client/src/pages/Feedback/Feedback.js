@@ -285,8 +285,13 @@ class Feedback extends Component {
 
     return (
       <div id="feedback">
-        <div id="feedback-image-container">
-          {/* <p id="feedback-fake-header">FEEDBACK</p> */}
+        <div id="deals-image-container">
+          <p id="checkout-fake-header">FEEDBACK</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         {body}
         <div id="feedback-problems-container">

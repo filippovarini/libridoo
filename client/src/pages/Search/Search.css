@@ -25,8 +25,15 @@
   display: inline-block;
   margin: 0px 20px;
   margin-top: 50px;
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
   padding: 2px 20px;
+  font-weight: bold;
+  font-style: italic;
+  color: gray;
+}
+
+#search-header-bold {
+  color: black;
 }
 
 #searchPage-header-container {
@@ -47,6 +54,9 @@
   padding: 3px 8px;
   border: 1px solid black;
   box-shadow: 0px 0px 3px gray;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  margin-top: 20px;
 }
 
 #search .submit:hover {
@@ -60,7 +70,9 @@
 }
 
 #search #search-list {
-  border: 1px solid black;
+  border: 1px solid purple;
+  /* box-shadow: 0px 0px 3px purple; */
+  border-radius: 3px;
   width: 80%;
   max-width: 900px;
   min-width: 250px;
@@ -80,23 +92,33 @@
   justify-content: center;
   padding-top: 0px;
   font-style: italic;
+  font-weight: bold;
+  color: gray;
 }
 
 #search #search-list #header {
-  border: 1px solid black;
+  border: 1px solid purple;
   display: inline-block;
   position: absolute;
   margin: 0;
   padding: 5px 35px;
   top: -16px;
   background: white;
-  left: 5px;
+  left: -5px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: green;
+  color-interpolation-filters: green;
+  /* box-shadow: 0px 0px 3px purple; */
 }
 
 #search .list-container {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  box-shadow: 0px 0px 2px black;
+  border-radius: 3px;
   display: flex;
   justify-content: space-between;
+  /* font-weight: bold; */
   align-items: center;
   width: 80%;
   margin: 15px auto;
@@ -132,12 +154,14 @@
 #search #search-list-proceed {
   margin: 30px 0;
   text-decoration: none;
-  color: black;
+  color: green;
+  box-shadow: 0px 0px 3px green;
+  border: 1px solid green;
+  font-weight: bold;
 }
 
 #search #search-list-proceed:hover {
-  font-weight: bold;
-  border: 2px solid black;
+  box-shadow: 0px 0px 5px green;
 }
 
 #search-loading {

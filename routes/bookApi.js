@@ -206,6 +206,7 @@ router.post("/fetch/buy", async (req, res) => {
       }
     });
     forEachPromise.catch(error => {
+      console.log(error);
       res.json({
         error,
         code,

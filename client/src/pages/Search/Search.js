@@ -399,13 +399,18 @@ class Search extends Component {
 
     return (
       <div id="search">
-        <div id="image">
-          <span id="image-title">SEARCH</span>
+        <div id="deals-image-container">
+          <p id="fake-header">CERCA</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         <div id="searchPage-header-container">
           <p id="searchPage-header">
-            Inserisci <b>tutti</b> i libri che stati cercando prima di
-            proseguire
+            Inserisci <span id="search-header-bold">tutti</span> i libri che
+            stati cercando prima di proseguire
           </p>
         </div>
         {bodyComponent}

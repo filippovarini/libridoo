@@ -96,7 +96,15 @@ class book extends Component {
     }
   };
 
+  generalClicked = () => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Aggiungere il libro al carrello?")) {
+      this.addCart();
+    }
+  };
+
   render() {
+    console.log(this.props.user);
     let bookPrice = 0;
     if (String(this.props.book.price).indexOf(".") === -1) {
       // whole price
@@ -230,25 +238,41 @@ class book extends Component {
     const results = {
       infoContainer: (
         <div id="info-container" className="sub-container">
-          <div id="title-container" className="info-container">
+          <div
+            id="title-container"
+            className="info-container results"
+            onClick={this.generalClicked}
+          >
             <i className="fas fa-book info-book-ico"></i>
             <p id="title" className="info">
               {this.props.book.title}
             </p>
           </div>
-          <div id="quality-container" className="info-container">
+          <div
+            id="quality-container"
+            className="info-container results"
+            onClick={this.generalClicked}
+          >
             <i className="fas fa-award info-book-ico"></i>
             <p id="quality" className="info">
               {this.props.book.quality}
             </p>
           </div>
-          <div id="place-container" className="info-container">
+          <div
+            id="place-container"
+            className="info-container results"
+            onClick={this.generalClicked}
+          >
             <i className="fas fa-home fa-1x info-book-ico"></i>
             <p id="place" className="info">
               {this.props.book.place.city}, {this.props.book.sellerUser.school}
             </p>
           </div>
-          <div id="timeToMeet-container" className="info-container">
+          <div
+            id="timeToMeet-container"
+            className="info-container results"
+            onClick={this.generalClicked}
+          >
             <i
               id="handshake"
               className="fas fa-handshake info-book-ico fa-1x"

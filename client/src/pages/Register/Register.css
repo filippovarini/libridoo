@@ -1,18 +1,41 @@
 #register-image-container {
-  background: lightgoldenrodyellow;
-  height: 200px;
   width: 95%;
   margin: 0 auto;
   margin-top: 30px;
+  height: 200px;
+  box-shadow: 0px 0px 8px grey;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#register-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -150px;
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+#register-libridoo-logo-image {
+  width: 150px;
+  bottom: 15px;
+  position: absolute;
+  right: 30px;
+}
+
 #register-fake-header {
   font-size: 4rem;
-  letter-spacing: 2rem;
-  font-weight: 200;
+  letter-spacing: 1rem;
+  font-family: "Pangolin", cursive;
+  color: #f79e02;
 }
 
 #register-general-container #register-avatarImgs {
@@ -24,10 +47,15 @@
 #register-general-container #agatarImg-prompt {
   display: block;
   margin-bottom: 10px;
+  font-weight: bold;
+  color: gray;
+  font-size: 1.3rem;
+  font-style: italic;
 }
 
 #images-container {
   box-shadow: 0px 0px 10px gray;
+  border-radius: 5px;
   padding: 20px;
   box-sizing: border-box;
   display: grid;
@@ -37,7 +65,9 @@
 }
 
 .register-avatarImage {
-  border: 2px solid black;
+  /* border: 2px solid black; */
+  box-shadow: 0px 0px 3px black;
+  border-radius: 3px;
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;
@@ -48,8 +78,9 @@
 }
 
 #avatar-image-container {
-  border: 3px solid black;
-  box-shadow: 0px 0px 10px gray;
+  border: 1px solid black;
+  box-shadow: 0px 0px 3px gray;
+  border-radius: 3px;
   width: 250px;
   height: 250px;
   margin: 0 auto;
@@ -65,7 +96,7 @@
 #image-delete {
   position: absolute;
   color: red;
-  border: 1px solid red;
+  border: 1px solid black;
   right: -10px;
   font-size: 1.3rem;
   line-height: 17px;
@@ -93,7 +124,8 @@
 }
 
 #register-form {
-  border: 1px solid black;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 3px;
   display: inline-block;
   width: 350px;
   margin: 40px 0px;
@@ -145,8 +177,24 @@
   margin-bottom: 80px;
 }
 
+#login-prompt-link {
+  font-weight: bold;
+  color: gray;
+}
+
 #login-btn {
   margin-left: 5px;
+  text-decoration: none;
+  color: green;
+  font-weight: bold;
+}
+
+#login-btn:hover {
+  text-decoration: underline;
+}
+
+.reg-link {
+  color: blue;
 }
 
 #register-confirm-btn {
@@ -157,6 +205,12 @@
   margin: 30px auto;
   box-shadow: 0px 0px 3px gray;
   cursor: pointer;
+  border-radius: 3px;
+}
+
+#rememberMe {
+  font-weight: bold;
+  color: gray;
 }
 
 #register-confirm-btn:hover {
@@ -164,9 +218,29 @@
   box-shadow: 0px 0px 5px black;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 650px) {
   #images-container {
     grid-gap: 10px;
     grid-template-columns: repeat(5, 19%);
+  }
+  #register-fake-header {
+    font-size: 3.5rem;
+    letter-spacing: 0.4rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #register-fake-header {
+    letter-spacing: 0.2rem;
+  }
+  #register-libridoo-logo-image {
+    width: 120px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #register-fake-header {
+    font-size: 3rem;
+    letter-spacing: 0.1rem;
   }
 }

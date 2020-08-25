@@ -17,9 +17,9 @@
 
 #libridoo-logo-image {
   width: 150px;
-  bottom: 0px;
+  bottom: 15px;
   position: absolute;
-  right: 10px;
+  right: 30px;
 }
 
 #fake-header {
@@ -57,4 +57,17 @@
 #orders-loading {
   margin-top: 100px;
   text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  #fake-header {
+    letter-spacing: 2rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #fake-header {
+    /* font-size: 3rem; */
+    letter-spacing: 1rem;
+  }
 }

@@ -13,8 +13,9 @@
 }
 
 #userInfo {
-  border: 1px solid black;
+  border: 1px solid purple;
   position: fixed;
+  border-radius: 5px;
   background: white;
   width: 40%;
   height: 420px;
@@ -31,15 +32,15 @@
   font-size: 1.3rem;
   margin: 0px;
   background: white;
-  border: 1px solid black;
+  border: 1px solid purple;
   color: red;
   height: 20px;
   width: 20px;
   position: absolute;
   line-height: 17.5px;
-  top: -30px;
+  top: -10px;
   border-radius: 15px;
-  right: -30px;
+  right: -10px;
 }
 
 #userInfo-delete:hover {
@@ -54,6 +55,7 @@
   width: 150px;
   height: 150px;
   border: 1px solid black;
+  border-radius: 3px;
 }
 
 .userInfo-container {
@@ -75,8 +77,15 @@
 
 #userInfo-info-gContainer {
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 15px;
   width: 80%;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+#userInfo .fa-star {
+  color: green;
 }
 
 #userInfo-info-gContainer.lower {
@@ -84,7 +93,7 @@
 }
 
 .userInfo-info-container {
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  /* border: 1px solid rgba(0, 0, 0, 0.5); */
   display: flex;
   align-items: center;
   margin-top: 8px;

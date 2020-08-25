@@ -160,6 +160,10 @@
   font-size: 1rem;
 }
 
+#book #place-container.results {
+  cursor: pointer;
+}
+
 #book #timeToMeet-container {
   color: gray;
   font-style: italic;
@@ -168,6 +172,11 @@
 #book #title-container {
   font-size: 1.4rem;
   font-weight: 600;
+  color: gray;
+}
+
+#book #title-container.results {
+  cursor: pointer;
 }
 
 #book #quality-container {
@@ -177,10 +186,18 @@
   /* font-style: italic; */
 }
 
+#book #quality-container.results {
+  cursor: pointer;
+}
+
 #book #price-container {
   font-weight: bold;
   color: purple;
   font-size: 1.2rem;
+}
+
+#book #price-container.results {
+  cursor: pointer;
 }
 
 #book #price-icon-container.lowerIcon-container {

@@ -22,7 +22,7 @@ const Footer = () => {
         </div>
         <div id="email-container" className="footer-div-container">
           <i className="far fa-envelope footer-ico"></i>
-          <a href="mailto: libridoo.contacts@gmail.com">
+          <a id="footer-email" href="mailto: libridoo.contacts@gmail.com">
             libridoo.contacts@gmail.com
           </a>
         </div>

@@ -65,7 +65,7 @@ class RatingPopUp extends Component {
           -
         </p>
         <p id="ratingPopUp-header">
-          Come è stato il servizio offerto da{" "}
+          Come valuti il servizio offerto da{" "}
           {this.props.user ? this.props.user.name : "il tuo venditore"}?
         </p>
         <div id="ratingPopUp-stars-container">

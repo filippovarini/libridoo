@@ -271,8 +271,7 @@ class EmailConfirm extends Component {
             //   correct inputcode
             this.setState({
               inputCodeClass: "correct-input",
-              placeholder: "codice",
-              generalLoading: false
+              placeholder: "codice"
             });
             this.register();
           }
@@ -445,8 +444,13 @@ class EmailConfirm extends Component {
     return (
       <div id="emailConfirm-gContainer" className={displayClass}>
         <div id="emailConfirm-container">
-          <div id="confirm-prompt-image">
-            <span id="confirm-prompt-header">CONFERMA</span>
+          <div id="emailConfirm-image-container">
+            <p id="emailConfirm-fake-header">CONFERMA</p>
+            <img
+              id="emailConfirm-libridoo-logo-image"
+              src="./images/logo-long.png"
+              alt="logo"
+            />
           </div>
           {inputActions}
         </div>

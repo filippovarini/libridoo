@@ -188,8 +188,13 @@ class Help extends Component {
     }
     return (
       <div id="help">
-        <div id="help-image-container">
-          {/* <p id="help-fake-header">AIUTO</p> */}
+        <div id="deals-image-container">
+          <p id="fake-header">AIUTO</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         <div id="help-nav">
           <p id="help-header">Scopri come:</p>

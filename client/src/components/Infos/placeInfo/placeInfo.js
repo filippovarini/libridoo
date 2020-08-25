@@ -140,7 +140,7 @@ class PlaceInfo extends Component {
     } else if (
       // eslint-disable-next-line no-restricted-globals
       confirm(
-        "Sei sicuro di aver inserito i dati giusti? Una volta confermato non potrai più cambiarli."
+        "Sicuro che il domicilio sia giusto? Una volta confermato non potrai più cambiarlo."
       )
     ) {
       const place = {

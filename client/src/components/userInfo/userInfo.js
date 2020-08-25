@@ -146,7 +146,10 @@ class UserInfo extends Component {
                 {this.props.user.phone}
               </span>
             </div>
-            <div id="place-container" className="userInfo-info-container">
+            <div
+              id="userInfo-place-container"
+              className="userInfo-info-container"
+            >
               <i id="place-ico" className="fas fa-home userInfo-info-ico"></i>
               <span id="place-text" className="userInfo-info-text">
                 {this.props.user.place

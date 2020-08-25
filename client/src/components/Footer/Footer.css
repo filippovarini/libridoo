@@ -5,6 +5,7 @@
   justify-content: space-around;
   margin-top: 100px;
   margin-bottom: 30px;
+  color: gray;
 }
 
 .footer-div {
@@ -25,7 +26,11 @@
 }
 
 .footer-link {
-  color: black;
+  color: gray;
+}
+
+#footer-email {
+  color: gray;
 }
 
 #footer-mobile {

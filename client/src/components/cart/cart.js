@@ -85,7 +85,7 @@ class Cart extends Component {
                       {cluster.sellerInfo.place.city},{" "}
                       {cluster.sellerInfo.school}
                     </p>
-                    <p className="book-price">€ {bookPrice}</p>
+                    <p className="book-price">{bookPrice} €</p>
                   </div>
                 );
               })}
@@ -94,7 +94,7 @@ class Cart extends Component {
         })}
         <div id="bill">
           <p id="price-header">Totale:</p>
-          <p id="price">{totalPrice}</p>
+          <p id="price">{totalPrice} €</p>
         </div>
         <Link to="/checkout" id="checkout-prompt">
           CHECKOUT

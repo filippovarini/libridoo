@@ -6,16 +6,18 @@
 #infoReview #header-review {
   text-align: center;
   font-size: 1.8rem;
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
   display: inline-block;
   padding: 0px 20px;
   margin: 0 20px;
+  font-weight: bold;
+  color: gray;
 }
 
 #infoReview #info-container {
-  border: 1px solid black;
+  border: 1px solid white;
   width: 80%;
-  margin: 30px auto;
+  margin: 10px auto;
   padding-bottom: 40px;
 }
 

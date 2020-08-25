@@ -2,28 +2,25 @@
   text-align: center;
 }
 
-#paymentConfirm #image {
+#paymentConfirm-image-container {
   width: 95%;
-  border: 1px solid black;
-  height: 200px;
   margin: 0 auto;
-  background: lightgoldenrodyellow;
+  margin-top: 30px;
+  height: 200px;
+  box-shadow: 0px 0px 8px grey;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 50px;
-}
-
-#paymentConfirm #image-header {
-  font-size: 3rem;
-  letter-spacing: 0.8rem;
-  font-weight: 100;
+  position: relative;
+  margin-bottom: 80px;
 }
 
 #paymentConfirm #body-container {
   text-align: start;
-  border: 1px solid black;
+  border: 1px solid purple;
+  box-shadow: 0px 0px 3px purple;
+  border-radius: 5px;
   width: 90%;
   margin: 0 auto;
   position: relative;
@@ -32,7 +29,9 @@
 }
 
 #paymentConfirm #body-header {
-  border: 1px solid black;
+  border: 1px solid purple;
+  font-weight: bold;
+  color: green;
   display: inline-block;
   padding: 5px 20px;
   margin: 0px;
@@ -40,19 +39,46 @@
   top: -10px;
   left: -10px;
   background: white;
+  box-shadow: 0px 0px 3px purple;
+  border-radius: 3px;
+}
+
+#paymentConfirm #firstLine {
+  font-weight: 600;
+  color: gray;
+  font-size: 1.7rem;
+  margin-top: 20px;
+}
+
+#paymentConfirm #thirdLine {
+  /* font-size: 0.8rem; */
+  margin-top: 20px;
+  font-style: italic;
+}
+
+#paymentConfirm #secondLine {
+  color: gray;
+  font-weight: bold;
+}
+
+#paymentConfirm .body-text {
+  margin: 5px;
 }
 
 #paymentConfirm #home-link {
-  color: black;
+  color: #f79e02;
   text-decoration: none;
-  border: 1px solid black;
+  border: 1px solid #f79e02;
+  box-shadow: 0px 0px 3px #f79e02;
+  border-radius: 3px;
+  font-weight: bold;
   padding: 10px 30px;
   display: inline-block;
   margin-top: 100px;
 }
 
 #paymentConfirm #home-link:hover {
-  border: 2px solid black;
+  box-shadow: 0px 0px 5px #f79e02;
   cursor: pointer;
   font-weight: bold;
 }

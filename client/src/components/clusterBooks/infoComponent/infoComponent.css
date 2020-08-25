@@ -101,6 +101,7 @@
 #infoComponent #title-container #title {
   font-weight: bold;
   font-size: 1.4rem;
+  color: gray;
 }
 
 #infoComponent #quality-container #quality {

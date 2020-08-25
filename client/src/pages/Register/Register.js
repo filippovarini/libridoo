@@ -24,7 +24,8 @@ class Register extends Component {
     passwordPlaceholder: "password",
     passwordConfirmPlaceholder: "conferma password",
     emailConfirmClass: "hidden",
-    errorMessage: null
+    errorMessage: null,
+    loading: false
   };
 
   emailValidation = email => {
@@ -186,6 +187,7 @@ class Register extends Component {
         errorMessage: "Accetta i termini e condizioni"
       });
     } else {
+      this.setState({ loading: true });
       fetch("/api/user/register/check", {
         method: "POST",
         headers: {
@@ -204,15 +206,20 @@ class Register extends Component {
             this.props.history.push("/error");
           } else if (jsonRes.code === 2) {
             this.setState({
-              emailEmptyClass: "invalid-input"
+              emailEmptyClass: "invalid-input",
+              nameEmptyClass: "",
+              passwordEmptyClass: "",
+              passwordConfirm: ""
             });
             this.setState({
-              errorMessage: "Email già registrata con un altro account"
+              errorMessage: "Email già registrata con un altro account",
+              loading: false
             });
           } else {
             // everything correct
             const avatarImgURL =
-              this.state.avatarImgURL || /*default image*/ null;
+              this.state.avatarImgURL ||
+              "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598352393512";
             const invitingUserId =
               this.props.match.params.invitingId === "buying"
                 ? null
@@ -227,7 +234,8 @@ class Register extends Component {
             sessionStorage.setItem("registerBody", JSON.stringify(body));
             sessionStorage.setItem("emailSent", "true");
             this.setState({
-              emailConfirmClass: ""
+              emailConfirmClass: "",
+              loading: false
             });
           }
         })
@@ -242,6 +250,91 @@ class Register extends Component {
   };
 
   render() {
+    const loading = (
+      <div id="register-loading">
+        <div className="loadingio-spinner-fidget-spinner-udtray956qm">
+          <div className="ldio-sqv79tocehf">
+            <div>
+              <div>
+                <div
+                  style={{ left: "87.435px", top: "14.354999999999999px" }}
+                ></div>
+                <div
+                  style={{
+                    left: "24.794999999999998px",
+                    top: "122.66999999999999px"
+                  }}
+                ></div>
+                <div
+                  style={{ left: "150.075px", top: "122.66999999999999px" }}
+                ></div>
+              </div>
+              <div>
+                <div style={{ left: "113.535px", top: "40.455px" }}></div>
+                <div
+                  style={{
+                    left: "50.894999999999996px",
+                    top: "148.76999999999998px"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "176.17499999999998px",
+                    top: "148.76999999999998px"
+                  }}
+                ></div>
+              </div>
+              <div style={{ left: "87.435px", top: "87.435px" }}></div>
+              <div>
+                <div
+                  style={{
+                    left: "97.875px",
+                    top: "78.3px",
+                    transform: "rotate(-20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "150.075px",
+                    top: "78.3px",
+                    transform: "rotate(20deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "75.69px",
+                    top: "117.44999999999999px",
+                    transform: "rotate(80deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "101.78999999999999px",
+                    top: "160.515px",
+                    transform: "rotate(40deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "172.26px",
+                    top: "117.44999999999999px",
+                    transform: "rotate(100deg)"
+                  }}
+                ></div>
+                <div
+                  style={{
+                    left: "146.16px",
+                    top: "160.515px",
+                    transform: "rotate(140deg)"
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
     const avatarImages = (
       <div id="register-avatarImgs">
         <span id="agatarImg-prompt">Scegli un avatar</span>
@@ -346,10 +439,16 @@ class Register extends Component {
       </div>
     );
     const avatarHeader = this.state.avatarImgURL ? avatarImage : avatarImages;
-    return (
+
+    const loaded = (
       <div id="register-general-container">
         <div id="register-image-container">
-          {/* <p id="register-fake-header">REGISTRATI</p> */}
+          <p id="register-fake-header">TI VOGLIAMO!</p>
+          <img
+            id="register-libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         {avatarHeader}
         <div id="register-actions">
@@ -405,8 +504,13 @@ class Register extends Component {
               />
               <label htmlFor="tcp">
                 Accetto{" "}
-                <Link to="termsAndConditions">termini e condizioni</Link> e la{" "}
-                <Link to="privacy">privacy policy</Link>
+                <Link className="reg-link" to="termsAndConditions">
+                  termini e condizioni
+                </Link>{" "}
+                e la{" "}
+                <Link className="reg-link" to="privacy">
+                  privacy policy
+                </Link>
               </label>
             </div>
             <div id="remember-container" className="checkbox-container">
@@ -416,7 +520,9 @@ class Register extends Component {
                 onChange={this.handleCheckboxClick}
                 defaultChecked={true}
               />
-              <label htmlFor="remember">Resta Collegato</label>
+              <label id="rememberMe" htmlFor="remember">
+                Resta Collegato
+              </label>
             </div>
             <input type="submit" value="REGISTRATI" className="hidden" />
             <p id="register-confirm-btn" onClick={this.handleSubmit}>
@@ -437,6 +543,9 @@ class Register extends Component {
         />
       </div>
     );
+
+    const body = this.state.loading ? loading : loaded;
+    return body;
   }
 }
 

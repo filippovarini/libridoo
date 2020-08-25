@@ -13,27 +13,40 @@
   display: none;
 }
 
-#emailConfirm-container {
-  background: white;
-  height: 400px;
-  width: 500px;
-  border: 2px solid black;
-}
-
-#confirm-prompt-image {
+#emailConfirm-image-container {
   width: 95%;
   height: 100px;
-  background: lightgoldenrodyellow;
+  background: white;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 3px;
   margin: 0 auto;
   margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-#confirm-prompt-header {
+#emailConfirm-container {
+  background: white;
+  height: 400px;
+  width: 500px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+#emailConfirm-fake-header {
   font-size: 2rem;
   letter-spacing: 1rem;
+  font-family: "Pangolin", cursive;
+  color: #f79e02;
+}
+
+#emailConfirm-libridoo-logo-image {
+  height: 25px;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
 }
 
 #email-address-container {
@@ -53,7 +66,9 @@
 }
 
 #email-address-container #email {
-  border: 1px solid black;
+  border: 1px solid gray;
+  /* box-shadow: 0px 0px 3px black; */
+  border-radius: 3px;
 }
 
 #email-address-container #edit {
@@ -68,8 +83,10 @@
 
 #emailConfirm-input-actions {
   margin: 0 auto;
-  margin-top: 20px;
-  border: 1px solid black;
+  margin-top: 15px;
+  border: 1px solid white;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 3px;
   text-align: center;
   width: 95%;
 }
@@ -85,6 +102,8 @@
   font-size: 0.8rem;
   display: block;
   margin: 20px;
+  font-weight: bold;
+  color: gray;
 }
 
 #emailConfirm-input-actions .input {
@@ -118,6 +137,7 @@
   box-shadow: 0px 0px 3px gray;
   padding: 3px 8px;
   cursor: pointer;
+  border-radius: 3px;
 }
 
 #emailConfirm-input-actions #code-submit:hover {
@@ -157,6 +177,11 @@
 @media only screen and (max-width: 550px) {
   #emailConfirm-container {
     width: 300px;
+  }
+
+  #emailConfirm-fake-header {
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
   }
 
   #confirm-prompt-header {

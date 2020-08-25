@@ -50,12 +50,13 @@
   height: 15px;
   background: white;
   text-align: center;
-  line-height: 13px;
+  line-height: 15px;
   border-radius: 8.5px;
   top: -7.5px;
   left: -7.5px;
   margin: 0px;
   z-index: 10;
+  margin-right: 1px;
 }
 
 #results .input-filter-icon:hover {
@@ -147,8 +148,8 @@
 }
 
 #results #ui-header {
-  /* border: 1px solid black; */
-  box-shadow: 0px 0px 3px black;
+  border: 1px solid purple;
+  box-shadow: 0px 0px 3px purple;
   border-radius: 3px;
   display: inline-block;
   padding: 3px 20px;
@@ -157,6 +158,8 @@
   top: -10px;
   background: white;
   left: -5px;
+  font-weight: bold;
+  color: green;
 }
 
 #results #list-container {
@@ -168,7 +171,7 @@
 
 #results .ui-list {
   border-radius: 5px;
-  border: 1px solid #f79e02;
+  border: 1px solid gray;
   margin: 0px;
   height: 20px;
   line-height: 20px;
@@ -181,8 +184,9 @@
 }
 
 #results .bold {
-  font-weight: bold;
-  border: 2px solid #f79e02;
+  /* font-weight: bold; */
+  border: 1px solid #f79e02;
+  box-shadow: 0px 0px 2px #f79e02;
 }
 
 #results #results-footer {

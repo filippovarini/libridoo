@@ -11,13 +11,10 @@
   position: relative;
 }
 
-#faqs-fake-header {
-  font-size: 4rem;
-  letter-spacing: 3rem;
-}
-
 #faqs-header {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: gray;
   width: 90%;
   margin: 0 auto;
   margin-top: 40px;
@@ -31,7 +28,9 @@
 }
 
 .faq-container {
-  border: 1px solid black;
+  border: 1px solid white;
+  box-shadow: 0px 0px 3px purple;
+  border-radius: 3px;
   padding: 0px 20px;
   margin-top: 20px;
   cursor: default;
@@ -42,10 +41,13 @@
   align-items: center;
   justify-content: space-between;
   font-size: 1.1rem;
+  font-weight: bold;
+  color: gray;
 }
 
 .faq-ico {
   cursor: pointer;
+  color: green;
 }
 
 .faq-ico:hover {
@@ -56,4 +58,5 @@
   margin-top: 0px;
   font-size: 0.9rem;
   margin-right: 20px;
+  color: gray;
 }

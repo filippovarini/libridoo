@@ -70,6 +70,8 @@
   color: red;
   margin: 0px;
   font-size: 0.8rem;
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 #placeInfo-form-container {

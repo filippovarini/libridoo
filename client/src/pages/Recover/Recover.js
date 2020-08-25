@@ -191,8 +191,13 @@ class Recover extends Component {
 
     return (
       <div id="recover">
-        <div id="recover-image-container">
-          {/* <p id="recover-fake-header">RECOVER</p> */}
+        <div id="checkout-image-container">
+          <p id="checkout-fake-header">CREDENZIALI</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         {bodyContainer}
       </div>

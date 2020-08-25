@@ -22,7 +22,7 @@ class FAQs extends Component {
     return (
       <div id="faqs">
         <div id="faqs-image-container">
-          <p id="faqs-fake-header">FAQs</p>
+          <p id="fake-header">FAQs</p>
           <img
             id="libridoo-logo-image"
             src="./images/logo-long.png"

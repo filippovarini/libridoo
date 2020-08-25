@@ -104,7 +104,7 @@ class ClusterBooks extends Component {
           break;
       }
       if (delivers) {
-        text = `SPEDIZIONE per € ${this.props.deliveryInfo.cost}`;
+        text = `SPEDIZIONE per € ${this.props.deliveryInfo.cost}?`;
         clickable = true;
         delivery = true;
       }
@@ -124,7 +124,7 @@ class ClusterBooks extends Component {
           break;
 
         case "city":
-          text = `Spedisce in zona ${this.props.place.city}`;
+          text = `Spedire in zona ${this.props.place.city}?`;
           delivery = true;
           break;
         default:

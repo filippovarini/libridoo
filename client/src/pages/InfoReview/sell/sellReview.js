@@ -164,9 +164,7 @@ class sellReview extends Component {
 
     return (
       <div id="infoReview">
-        <p id="header-review">
-          Compila i dati con cui i clienti copreranno i tuoi libri
-        </p>
+        <p id="header-review">Compila per vendere</p>
         <div id="info-container" className={this.state.emptyClass}>
           {bodyComponent}
         </div>

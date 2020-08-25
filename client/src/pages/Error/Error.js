@@ -150,7 +150,7 @@ class Error extends Component {
     return (
       <div id="error">
         <div id="error-image-container">
-          {/* <p id="error-fake-header">ERRORE</p> */}
+          <p id="fake-header">ERRORE</p>
           <img
             id="libridoo-logo-image"
             src="./images/logo-long.png"

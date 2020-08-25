@@ -333,7 +333,11 @@ class Login extends Component {
             defaultChecked={true}
             className="login-input"
           />
-          <label htmlFor="remember-me" id="checbox-label">
+          <label
+            htmlFor="remember-me"
+            id="checbox-label"
+            className="login-rememberMe"
+          >
             Resta Collegato
           </label>
         </div>
@@ -345,8 +349,13 @@ class Login extends Component {
     );
     return (
       <div id="login">
-        <div id="image">
-          <span id="image-title">LOGIN</span>
+        <div id="deals-image-container">
+          <p id="fake-header">LOGIN</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         <div id="login-actions">
           <span id="login-prompt">Effettua il login per continuare</span>

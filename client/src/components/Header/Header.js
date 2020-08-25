@@ -80,7 +80,7 @@ class Header extends Component {
       location !== "/search" &&
       location !== "/results" &&
       location !== "/login/buying" &&
-      location !== "register/buying" &&
+      location !== "/register/buying" &&
       location !== "/checkout" &&
       location !== "/paymentConfirm"
     ) {
@@ -332,6 +332,8 @@ class Header extends Component {
     );
     let promptIcon = this.props.selectedBooks.length > 0 ? cart : sell;
     if (this.props.history.location.pathname === "/checkout") promptIcon = null;
+    if (this.props.history.location.pathname === "/paymentConfirm")
+      promptIcon = sell;
 
     // search input
     const searchInput = this.state.loading ? (

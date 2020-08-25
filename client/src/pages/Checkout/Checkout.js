@@ -38,6 +38,7 @@ class Checkout extends Component {
  */
 
   purchase = (books, delivery, count) => {
+    console.log("doing");
     this.setState({ loading: true });
     const sellerIds = [];
     this.props.selectedBooks.forEach(cluster =>
@@ -64,6 +65,7 @@ class Checkout extends Component {
     })
       .then(res => res.json())
       .then(jsonRes => {
+        console.log(jsonRes);
         if (jsonRes.code === 0) {
           // payment successful
           sessionStorage.setItem("dealId", jsonRes.deal._id);
@@ -132,8 +134,13 @@ class Checkout extends Component {
 
     const checkoutComponent = (
       <div id="checkout">
-        <div id="checkout-header-container">
-          <p id="checkout-header">REVISIONE ORDINE</p>
+        <div id="checkout-image-container">
+          <p id="checkout-fake-header">CHECKOUT</p>
+          <img
+            id="libridoo-logo-image"
+            src="./images/logo-long.png"
+            alt="logo"
+          />
         </div>
         <div id="selectedBooks-container">
           {this.props.selectedBooks.length !== 0

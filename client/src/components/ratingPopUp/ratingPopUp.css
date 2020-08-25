@@ -1,7 +1,7 @@
 #ratingPopUp-container {
   height: 100vh;
   width: 100vw;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0px;
   left: 0px;
@@ -16,10 +16,12 @@
   left: 50%;
   margin-left: -35%;
   top: 50%;
-  height: 200px;
+  height: 190px;
   margin-top: -100px;
   text-align: center;
-  border: 2px solid black;
+  border: 1px solid purple;
+  box-shadow: 0px 0px 3px purple;
+  border-radius: 5px;
   position: relative;
 }
 
@@ -32,6 +34,10 @@
 #ratingPopUp-header {
   margin-top: 35px;
   font-size: 1.4rem;
+  font-weight: bold;
+  color: gray;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 #ratingPopUp-stars-container {
@@ -42,21 +48,23 @@
 #ratingPopUp .fa-star {
   margin: 0 15px;
   cursor: pointer;
+  color: green;
 }
 
 #ratingPopUp-delete {
+  box-shadow: 0px 0px 3px purple;
   font-size: 1.3rem;
   margin: 0px;
   background: white;
-  border: 1px solid black;
+  border: 1px solid purple;
   color: red;
   height: 20px;
   width: 20px;
   position: absolute;
   line-height: 17.5px;
-  top: -40px;
+  top: -12px;
   border-radius: 15px;
-  right: -40px;
+  right: -12px;
 }
 
 #ratingPopUp-delete:hover {
