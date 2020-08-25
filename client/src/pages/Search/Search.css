@@ -107,8 +107,8 @@
   left: -5px;
   border-radius: 3px;
   font-weight: bold;
-  color: green;
-  color-interpolation-filters: green;
+  color: rgb(32, 165, 32);
+  color-interpolation-filters: rgb(32, 165, 32);
   /* box-shadow: 0px 0px 3px purple; */
 }
 
@@ -154,14 +154,14 @@
 #search #search-list-proceed {
   margin: 30px 0;
   text-decoration: none;
-  color: green;
-  box-shadow: 0px 0px 3px green;
-  border: 1px solid green;
+  color: rgb(32, 165, 32);
+  box-shadow: 0px 0px 3px rgb(32, 165, 32);
+  border: 1px solid rgb(32, 165, 32);
   font-weight: bold;
 }
 
 #search #search-list-proceed:hover {
-  box-shadow: 0px 0px 5px green;
+  box-shadow: 0px 0px 5px rgb(32, 165, 32);
 }
 
 #search-loading {

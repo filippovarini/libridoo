@@ -111,20 +111,20 @@
 }
 
 #checkout #submit {
-  border: 1px solid green;
-  box-shadow: 0px 0px 3px green;
+  border: 1px solid rgb(32, 165, 32);
+  box-shadow: 0px 0px 3px rgb(32, 165, 32);
   display: inline-block;
   margin-top: 50px;
   padding: 8px 20px;
   border-radius: 3px;
-  color: green;
+  color: rgb(32, 165, 32);
   font-size: 0.8rem;
 }
 
 #checkout #submit:hover {
   cursor: pointer;
   font-size: 0.8rem;
-  box-shadow: 0px 0px 5px green;
+  box-shadow: 0px 0px 5px rgb(32, 165, 32);
 }
 
 #checkout-loading {

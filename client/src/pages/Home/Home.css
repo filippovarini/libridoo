@@ -34,13 +34,15 @@
 }
 
 #hit-3 {
-  color: green;
+  color: rgb(32, 165, 32);
 }
 
 #helloer-container {
   width: 90%;
   margin: 0 auto;
   margin-top: 50px;
+  font-weight: bold;
+  color: gray;
 }
 
 #home-meme-container {
@@ -73,7 +75,6 @@
   margin-bottom: 10px;
   box-shadow: 0px 0px 3px purple;
   text-align: center;
-  /* background: green; */
   height: 50px;
   width: 50px;
   color: purple;
@@ -93,7 +94,7 @@
 
 #meme-author-name {
   font-size: 1.2rem;
-  color: green;
+  color: rgb(32, 165, 32);
   font-style: normal;
 }
 
@@ -111,7 +112,7 @@
 
 #helps-container {
   text-align: center;
-  border-top: 1px solid green;
+  border-top: 1px solid rgb(32, 165, 32);
   width: 95%;
   margin: 0 auto;
   margin-top: 100px;

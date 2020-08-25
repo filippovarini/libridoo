@@ -234,7 +234,9 @@ class Home extends Component {
               <p id="meme-subpart-author">
                 from:
                 <br />
-                <span id="meme-author-name">StudentiInCrisi</span>
+                <a href="https://www.google.com" id="meme-author-name">
+                  Meme-Uni
+                </a>
               </p>
             </div>
           </div>

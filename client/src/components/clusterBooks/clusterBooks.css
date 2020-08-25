@@ -97,6 +97,8 @@
 
 #book-cluster #checkout-lower-icon {
   box-shadow: 0px 0px 0px;
+  color: rgb(32, 165, 32);
+  border: 1px solid rgb(32, 165, 32);
 }
 
 #book-cluster #checkout-lower-icon:hover {
@@ -156,9 +158,9 @@
 }
 
 #book-cluster .icon-container.confirmed {
-  border: 1px solid green;
-  color: green;
-  box-shadow: 0px 0px 3px green;
+  border: 1px solid rgb(32, 165, 32);
+  color: rgb(32, 165, 32);
+  box-shadow: 0px 0px 3px rgb(32, 165, 32);
 }
 
 /* #book-cluster .icon-container.confirmed:hover {
@@ -168,7 +170,7 @@
 } */
 
 #book-cluster .icon-container.confirmed:hover {
-  border: 1px solid green;
+  border: 1px solid rgb(32, 165, 32);
 }
 
 #book-cluster #orders-lower-icon.notConfirmed {

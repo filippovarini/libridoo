@@ -62,18 +62,18 @@
 
 #error-link {
   display: inline-block;
-  color: green;
+  color: rgb(32, 165, 32);
   text-decoration: none;
   margin-top: 40px;
-  border: 1px solid green;
+  border: 1px solid rgb(32, 165, 32);
   padding: 3px 10px;
-  box-shadow: 0px 0px 3px green;
+  box-shadow: 0px 0px 3px rgb(32, 165, 32);
   border-radius: 3px;
   font-weight: bold;
 }
 
 #error-link:hover {
-  box-shadow: 0px 0px 5px green;
+  box-shadow: 0px 0px 5px rgb(32, 165, 32);
 }
 
 @media only screen and (max-width: 700px) {

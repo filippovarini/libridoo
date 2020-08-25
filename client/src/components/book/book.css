@@ -182,7 +182,7 @@
 #book #quality-container {
   font-size: 0.9rem;
   font-weight: bold;
-  color: green;
+  color: rgb(32, 165, 32);
   /* font-style: italic; */
 }
 
@@ -263,9 +263,9 @@
 }
 
 #book #result-lower-icon-bought {
-  border: 1px solid green;
+  border: 1px solid rgb(32, 165, 32);
   cursor: auto;
-  color: green;
+  color: rgb(32, 165, 32);
 }
 
 #book #bought-icon {

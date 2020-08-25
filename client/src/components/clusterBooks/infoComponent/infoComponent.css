@@ -107,7 +107,7 @@
 #infoComponent #quality-container #quality {
   font-size: 0.9rem;
   font-weight: bold;
-  color: green;
+  color: rgb(32, 165, 32);
 }
 
 #infoComponent #price-container #price {

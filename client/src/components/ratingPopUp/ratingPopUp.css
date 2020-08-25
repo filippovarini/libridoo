@@ -48,7 +48,7 @@
 #ratingPopUp .fa-star {
   margin: 0 15px;
   cursor: pointer;
-  color: green;
+  color: rgb(32, 165, 32);
 }
 
 #ratingPopUp-delete {
