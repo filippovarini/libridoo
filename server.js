@@ -8,7 +8,7 @@ const FeedbackRouter = require("./routes/feedbackApi");
 const UserRouter = require("./routes/userApi");
 const BookRouter = require("./routes/bookApi");
 const PaymentsRouter = require("./routes/paymentsApi");
-// var redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
+var redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
 
 // setup database
 const db_secret = require("./config/keys").MONGO_URI;
@@ -30,7 +30,7 @@ mongoose
 const app = express();
 
 // middlewares
-// app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/]));
+app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/]));
 app.use(bodyParser.json());
 app.use("/api/feedback", FeedbackRouter);
 app.use("/api/user", UserRouter);
