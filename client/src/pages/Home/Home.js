@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import mainLogo from "../../images/logo-long.png";
 import "./Home.css";
 
 class Home extends Component {
@@ -195,7 +196,7 @@ class Home extends Component {
     return (
       <div id="home">
         <div id="home-image-container">
-          <img id="home-image-logo" src="./images/logo-long.png" alt="logo" />
+          <img id="home-image-logo" src={mainLogo} alt="logo" />
           <p id="home-image-text">
             <span id="hit-1">students </span>
             <span id="hit-2">4 </span>
@@ -211,8 +212,7 @@ class Home extends Component {
             <p id="helloer">Ciao!</p>
           )}
           <p id="meme-header">
-            Se gli studi ti affannano troppo, risollevati con qualche meme
-            stupido!
+            Se gli studi ti affannano troppo, risollevati con qualche meme!
           </p>
           <div id="home-meme-container">
             <div id="meme-subpart-1" className="meme-subpart inferior">

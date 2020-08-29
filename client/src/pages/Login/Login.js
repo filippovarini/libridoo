@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import HeaderPart from "../../components/headerPart";
 import "./Login.css";
 
 class Login extends Component {
@@ -349,14 +350,12 @@ class Login extends Component {
     );
     return (
       <div id="login">
-        <div id="deals-image-container">
-          <p id="fake-header">LOGIN</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"LOGIN"}
+          mainClass={"deals"}
+          imageId="libridoo-logo-image"
+          headerClass=""
+        />
         <div id="login-actions">
           <span id="login-prompt">Effettua il login per continuare</span>
           {body}

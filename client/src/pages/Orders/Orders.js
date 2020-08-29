@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import HeaderPart from "../../components/headerPart";
 import "./Orders.css";
 
 // components
@@ -230,14 +231,12 @@ class Orders extends Component {
           toggleDisplay={this.toggleDisplay}
           display={this.state.ratingPopUpHidden ? "hidden" : null}
         />
-        <div id="orders-image-container">
-          <p id="fake-header">ORDINI</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"ORDINI"}
+          mainClass={"orders"}
+          imageId="libridoo-logo-image"
+          headerClass=""
+        />
         {bodyComponent}
       </div>
     );

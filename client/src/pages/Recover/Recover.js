@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import HeaderPart from "../../components/headerPart";
 import "./Recover.css";
 
 class Recover extends Component {
@@ -191,14 +192,12 @@ class Recover extends Component {
 
     return (
       <div id="recover">
-        <div id="checkout-image-container">
-          <p id="checkout-fake-header">CREDENZIALI</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"RECOVER"}
+          mainClass={"checkout"}
+          imageId="libridoo-logo-image"
+          headerClass="checkout-"
+        />
         {bodyContainer}
       </div>
     );

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import HeaderPart from "../../components/headerPart";
 import "./Feedback.css";
 
 class Feedback extends Component {
@@ -285,14 +286,12 @@ class Feedback extends Component {
 
     return (
       <div id="feedback">
-        <div id="deals-image-container">
-          <p id="checkout-fake-header">FEEDBACK</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"FEEDBACK"}
+          mainClass={"deals"}
+          imageId="libridoo-logo-image"
+          headerClass="checkout-"
+        />
         {body}
         <div id="feedback-problems-container">
           <p id="feedback-problems-header">PROBLEMI TECNICI?</p>

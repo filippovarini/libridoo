@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import HeaderPart from "../../components/headerPart";
 import "./FAQs.css";
 
 class FAQs extends Component {
@@ -21,14 +22,12 @@ class FAQs extends Component {
   render() {
     return (
       <div id="faqs">
-        <div id="faqs-image-container">
-          <p id="fake-header">FAQs</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"FAQs"}
+          mainClass={"faqs"}
+          imageId="libridoo-logo-image"
+          headerClass=""
+        />
         <p id="faqs-header">Domande frequenti</p>
         <div id="faqs-container">
           <div

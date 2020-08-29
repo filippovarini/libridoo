@@ -66,10 +66,12 @@ class ClusterBooks extends Component {
     });
     this.setState({ choosen: !this.state.choosen, justClicked: true });
   };
-
-  toggleDisplay = () => {
+  //changed this method
+  toggleDisplay = event => {
+    event.preventDefault();
+    const { userInfoHidden } = this.state;
     this.setState({
-      userInfoHidden: !this.state.userInfoHidden
+      userInfoHidden: !userInfoHidden
     });
   };
 
@@ -168,9 +170,7 @@ class ClusterBooks extends Component {
           id="checkout-delivery"
           className="delivery clickable"
           onMouseOver={this.deliveryHover}
-          onTouchStart={this.deliveryHover}
           onMouseLeave={this.deliveryLeave}
-          onTouchEnd={this.deliveryLeave}
           onClick={this.deliveryClicked}
         >
           <p className="delivery-header">{activeText}</p>
@@ -180,9 +180,7 @@ class ClusterBooks extends Component {
           id="checkout-delivery"
           className="delivery"
           onMouseOver={this.deliveryHover}
-          onTouchStart={this.deliveryHover}
           onMouseLeave={this.deliveryLeave}
-          onTouchEnd={this.deliveryLeave}
         >
           {unactivePrompt}
         </div>
@@ -205,7 +203,7 @@ class ClusterBooks extends Component {
     }
 
     const ordersDelivery = this.props.deliveryInfo.choosen ? (
-      <div id="orders-delivery" className="delivery">
+      <div id="orders-delivery" className="delivery choosen">
         <p className="delivery-header">SPEDIZIONE SELEZIONATA</p>
       </div>
     ) : null;

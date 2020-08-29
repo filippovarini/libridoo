@@ -454,9 +454,7 @@ class BookInfo extends Component {
     const submitted = (
       <div id="submitted" className="image-container">
         <img
-          onTouchStart={this.handleMouseOver}
           onMouseOver={this.handleMouseOver}
-          onTouchEnd={this.handleMouseLeave}
           onMouseLeave={this.handleMouseLeave}
           id="image"
           src={this.state.imgUrl}

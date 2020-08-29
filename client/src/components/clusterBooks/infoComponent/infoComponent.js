@@ -162,9 +162,7 @@ class InfoComponent extends Component {
             id="image"
             alt="book cover"
             onMouseOver={this.imageBigger}
-            onTouchStart={this.imageBigger}
             onMouseLeave={this.imageSmaller}
-            onTouchEnd={this.imageSmaller}
           />
         </div>
         {infoBody}

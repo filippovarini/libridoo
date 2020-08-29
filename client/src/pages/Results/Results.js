@@ -15,10 +15,24 @@ class Results extends Component {
     index: 0,
     ready: false,
     updated: false,
-    city: "",
-    school: "",
+    city: this.props.user.place
+      ? this.props.user.place.city || "__disabled"
+      : "__disabled",
+    school: this.props.user.school
+      ? this.props.user.school === "Non frequento un'università"
+        ? "__disabled"
+        : ""
+      : "__disabled",
     quality: "__disabled",
-    order: "1"
+    order: "1",
+    filterHidden: true,
+    indexFilterUpdated: null
+  };
+
+  toggleFilter = () => {
+    this.setState({
+      filterHidden: !this.state.filterHidden
+    });
   };
 
   componentDidMount = () => {
@@ -32,6 +46,16 @@ class Results extends Component {
       loading: false
     });
   };
+
+  // wrongFilter = () => {
+  //   if (this.state.index !== this.state.indexFilterUpdated) {
+  //     this.setState({
+  //       filterHidden: false,
+  //       indexFilterUpdated: this.state.index
+  //     });
+  //   }
+  //   console.log("updatingf");
+  // };
 
   componentDidUpdate = () => {
     if (this.state.ready && !this.state.updated) {
@@ -72,9 +96,16 @@ class Results extends Component {
                   city:
                     JSON.parse(sessionStorage.getItem("searchParams"))[index]
                       .city || "__disabled",
-                  school:
-                    JSON.parse(sessionStorage.getItem("searchParams"))[index]
-                      .school || "__disabled",
+                  school: JSON.parse(sessionStorage.getItem("searchParams"))[
+                    index
+                  ].school
+                    ? JSON.parse(sessionStorage.getItem("searchParams"))[index]
+                        .school === "Non frequento un'università"
+                      ? "__disabled"
+                      : JSON.parse(sessionStorage.getItem("searchParams"))[
+                          index
+                        ].school
+                    : "__disabled",
                   quality:
                     JSON.parse(sessionStorage.getItem("searchParams"))[index]
                       .quality || "__disabled"
@@ -121,13 +152,36 @@ class Results extends Component {
 
   increaseIndex = () => {
     sessionStorage.setItem("index", this.state.index + 1);
-    this.setState({ index: this.state.index + 1 });
+    // reset original configuration
+    this.setState({
+      index: this.state.index + 1,
+      city: this.props.user.place
+        ? this.props.user.place.city || "__disabled"
+        : "__disabled",
+      school: this.props.user.school
+        ? this.props.user.school === "Non frequento un'università"
+          ? "__disabled"
+          : ""
+        : "__disabled",
+      quality: "__disabled"
+    });
     // }
   };
 
   decreaseIndex = () => {
     sessionStorage.setItem("index", this.state.index - 1);
-    this.setState({ index: this.state.index - 1 });
+    this.setState({
+      index: this.state.index - 1,
+      city: this.props.user.place
+        ? this.props.user.place.city || "__disabled"
+        : "__disabled",
+      school: this.props.user.school
+        ? this.props.user.school === "Non frequento un'università"
+          ? "__disabled"
+          : ""
+        : "__disabled",
+      quality: "__disabled"
+    });
   };
 
   handleFilterChange = e => {
@@ -202,7 +256,12 @@ class Results extends Component {
           this.setState({
             loading: false,
             city: jsonRes.results.searchParams.city || "__disabled",
-            school: jsonRes.results.searchParams.school || "__disabled",
+            school: jsonRes.results.searchParams.school
+              ? jsonRes.results.searchParams.school ===
+                "Non frequento un'università"
+                ? "__disabled"
+                : jsonRes.results.searchParams.school
+              : "__disabled",
             quality: jsonRes.results.searchParams.quality || "__disabled"
           });
         } else {
@@ -288,6 +347,10 @@ class Results extends Component {
       filterSubmitClass,
       filters = null;
 
+    const maxUserSellsCount = this.props.booksResult[this.state.index]
+      ? this.props.booksResult[this.state.index].filterResult[0].userSellsCount
+      : null;
+
     if (this.state.index !== uiList.length) {
       booksComponent =
         this.props.booksResult.length !== 0
@@ -298,6 +361,7 @@ class Results extends Component {
                   key={book._id}
                   indexIncrease={this.increaseIndex}
                   page="results"
+                  maxUserSellsCount={maxUserSellsCount}
                 />
               );
             })
@@ -307,7 +371,8 @@ class Results extends Component {
         this.props.booksResult.length !== 0 ? (
           <div id="wrongFilters">
             <p id="header">
-              {this.props.booksResult[this.state.index].message}
+              {this.props.booksResult[this.state.index].message}, cambia i
+              filtri per trovare i libri
             </p>
           </div>
         ) : null;
@@ -394,173 +459,262 @@ class Results extends Component {
 
       filters =
         this.props.booksResult.length !== 0 ? (
-          <form id="filters" onSubmit={this.handleFilterSubmit}>
-            {/* <p id="header">FILTRI</p> */}
-            <div className="input-container" id="inputs-container">
-              <div className="input-container text">
-                {this.state.city === "__disabled" ? (
-                  <p
-                    id="cityDelete"
-                    onClick={() => {
-                      this.handleFilterEdit("city");
-                    }}
-                    className="input-filter-icon edit"
+          <div id="filter-general-container">
+            <form id="filters" onSubmit={this.handleFilterSubmit}>
+              {/* <p id="header">FILTRI</p> */}
+              <div className="input-container" id="inputs-container">
+                <div className="input-container text">
+                  {this.state.city === "__disabled" ? (
+                    <i
+                      id="cityAdd"
+                      onClick={() => {
+                        this.handleFilterEdit("city");
+                      }}
+                      className="input-filter-icon edit filter-fa fas fa-plus-circle"
+                    ></i>
+                  ) : (
+                    <i
+                      id="cityDelete"
+                      className="input-filter-icon delete fas filter-fa fa-minus-circle"
+                      onClick={() => {
+                        this.handleFilterDisable("city");
+                      }}
+                    ></i>
+                  )}
+                  <input
+                    autoComplete="off"
+                    type="text"
+                    className={`filter input ${
+                      this.state.city !== "__disabled" ? "active" : null
+                    }`}
+                    id="city"
+                    placeholder={
+                      this.props.booksResult[this.state.index]
+                        ? this.props.booksResult[this.state.index].searchParams
+                            .city || "città"
+                        : "città"
+                    }
+                    disabled={this.state.city === "__disabled" ? true : false}
+                    onChange={this.handleFilterChange}
+                    value={
+                      this.state.city === "__disabled"
+                        ? "città"
+                        : this.state.city
+                    }
+                  />
+                </div>
+                <div className="input-container text">
+                  {this.state.school === "__disabled" ? (
+                    <i
+                      id="schoolDelete"
+                      onClick={() => {
+                        this.handleFilterEdit("school");
+                      }}
+                      className="input-filter-icon edit filter-fa fas fa-plus-circle"
+                    ></i>
+                  ) : (
+                    <i
+                      id="schoolDelete"
+                      className="input-filter-icon delete fas filter-fa fa-minus-circle"
+                      onClick={() => {
+                        this.handleFilterDisable("school");
+                      }}
+                    ></i>
+                  )}
+                  <input
+                    disabled={this.state.school === "__disabled" ? true : false}
+                    autoComplete="off"
+                    // type="text"
+                    className={`filter input ${
+                      this.state.school !== "__disabled" ? "active" : null
+                    }`}
+                    id="school"
+                    onChange={this.handleFilterChange}
+                    placeholder={
+                      this.props.booksResult[this.state.index]
+                        ? this.props.booksResult[this.state.index].searchParams
+                            .school
+                        : "città"
+                    }
+                    list="universities"
+                    value={
+                      this.state.school === "__disabled"
+                        ? "scuola/università"
+                        : this.state.school
+                    }
+                  />
+                  <datalist id="universities">
+                    <option value="Università degli Studi di Verona" />
+                    <option value="Università degli Studi di Padova" />
+                    <option value="Università Ca Foscari di Venezia" />
+                    <option value="Università Iuav di Venezia" />
+                    <option value="Università della Valle d'Aosta - Université de la Vallée D'Aoste" />
+                    <option value="Università per Stranieri di Perugia" />
+                    <option value="Università degli Studi di Perugia" />
+                    <option value="Università degli Studi di Trento" />
+                    <option value="Libera Università di Bolzano" />
+                    <option value="Università per Stranieri di Siena" />
+                    <option value="Università degli Studi di Siena" />
+                    <option value="Università degli Studi di Pisa" />
+                    <option value="Università degli Studi di Firenze" />
+                    <option value="Scuola Superiore di Studi Universitari e di Perfezionamento Sant'Anna - Pisa" />
+                    <option value="Scuola Normale Superiore - Pisa" />
+                    <option value="Università degli Studi di Palermo" />
+                    <option value="Università degli Studi di Messina" />
+                    <option value="Università degli Studi di Catania" />
+                    <option value="Università degli Studi di Sassari" />
+                    <option value="Università degli Studi di Cagliari" />
+                    <option value="Università degli Studi del Salento" />
+                    <option value="Università degli Studi di Foggia" />
+                    <option value="Università degli Studi di Bari" />
+                    <option value="Politecnico di Bari" />
+                    <option value="LUM - Libera Università Mediterranea Jean Monnet" />
+                    <option value="Università di Scienze Gastronomiche" />
+                    <option value="Università degli Studi di Torino" />
+                    <option value="Università degli Studi del Piemonte Orientale Amedeo Avogadro" />
+                    <option value="Politecnico di Torino" />
+                    <option value="Università degli Studi del Molise" />
+                    <option value="Università degli Studi di Urbino Carlo Bo" />
+                    <option value="Università degli Studi di Macerata" />
+                    <option value="Università degli Studi di Camerino" />
+                    <option value="Università Politecnica delle Marche" />
+                    <option value="Università Vita-Salute San Raffaele" />
+                    <option value="Università degli Studi di Pavia" />
+                    <option value="Università degli Studi di Milano-Bicocca" />
+                    <option value="Università degli Studi di Milano" />
+                    <option value="Università degli Studi di Brescia" />
+                    <option value="Università degli Studi di Bergamo" />
+                    <option value="Università degli Studi dell'Insubria Varese-Como" />
+                    <option value="Università Commerciale Luigi Bocconi" />
+                    <option value="Università Cattolica del Sacro Cuore" />
+                    <option value="Università Carlo Cattaneo - LIUC" />
+                    <option value="Politecnico di Milano" />
+                    <option value="IULM - Libera Università di Lingue e Comunicazione" />
+                    <option value="Università degli Studi di Genova" />
+                    <option value="Università degli Studi Roma Tre" />
+                    <option value="Università degli Studi Europea di Roma" />
+                    <option value="Università degli Studi di Roma Tor Vergata" />
+                    <option value="Università degli Studi di Roma La Sapienza" />
+                    <option value="Università degli Studi di Cassino" />
+                    <option value="Università degli Studi della Tuscia" />
+                    <option value="Università Campus Bio-Medico di Roma" />
+                    <option value="LUMSA - Libera Università Maria Ss. Assunta" />
+                    <option value="LUISS - Libera Università Internazionale degli Studi Sociali Guido Carli" />
+                    <option value="Libera Università degli Studi San Pio V" />
+                    <option value="IUSM - Università degli Studi di Roma Foro Italico" />
+                    <option value="Università degli Studi di Udine" />
+                    <option value="Università degli Studi di Trieste" />
+                    <option value="SISSA - Scuola Internazionale Superiore di Studi Avanzati" />
+                    <option value="Università degli Studi di Parma" />
+                    <option value="Università degli Studi di Modena e Reggio Emilia" />
+                    <option value="Università degli Studi di Ferrara" />
+                    <option value="Università degli Studi di Bologna" />
+                    <option value="Università degli Studi di Salerno" />
+                    <option value="Università degli Studi di Napoli Partenophe" />
+                    <option value="Università degli Studi di Napoli L'Orientale" />
+                    <option value="Università degli Studi di Napoli Federico II" />
+                    <option value="Università degli Studi del Sannio" />
+                    <option value="Seconda Università degli Studi di Napoli" />
+                    <option value="Istituto Universitario Suor Orsola Benincasa" />
+                    <option value="Università della Calabria" />
+                    <option value="Università degli Studi Mediterranea di Reggio Calabria" />
+                    <option value="Università degli Studi Magna Graecia di Catanzaro" />
+                    <option value="Università degli Studi della Basilicata" />
+                    <option value="Università degli Studi di Teramo" />
+                    <option value="Università degli Studi di L'Aquila" />
+                    <option value="Università degli Studi Gabriele D'Annunzio" />
+                  </datalist>
+                </div>
+                <div id="qualityDelete" className="input-container select">
+                  {this.state.quality === "__disabled" ? (
+                    <i
+                      id="qualityAdd"
+                      onClick={() => {
+                        this.handleFilterEdit("quality");
+                      }}
+                      className="input-filter-icon edit filter-fa fas fa-plus-circle"
+                    ></i>
+                  ) : (
+                    <i
+                      id="qualityDelete"
+                      className="input-filter-icon delete fas filter-fa fa-minus-circle"
+                      onClick={() => {
+                        this.handleFilterDisable("quality");
+                      }}
+                    ></i>
+                  )}
+                  <select
+                    id="filter-quality"
+                    className="filter input"
+                    disabled={
+                      this.state.quality === "__disabled" ? true : false
+                    }
+                    onChange={this.handleFilterChange}
+                    value={
+                      this.state.quality === "__disabled"
+                        ? "quality"
+                        : this.state.quality ||
+                          this.props.booksResult[this.state.index].searchParams
+                            .quality ||
+                          "quality"
+                    }
                   >
-                    +
-                  </p>
-                ) : (
-                  <p
-                    id="cityDelete"
-                    className="input-filter-icon delete"
-                    onClick={() => {
-                      this.handleFilterDisable("city");
-                    }}
-                  >
-                    -
-                  </p>
-                )}
+                    <option value="quality" defaultChecked hidden>
+                      qualità
+                    </option>
+                    <option value="intatto">intatto</option>
+                    <option value="buono, non sottolineato">
+                      buono, non sottolineato
+                    </option>
+                    <option value="buono, sottolineato a matita">
+                      buono, sottolineato a matita
+                    </option>
+                    <option value="buono, sottolineato a penna">
+                      buono, sottolineato a penna
+                    </option>
+                    <option value="usato, non sottolineato">
+                      usato, non sottolineato
+                    </option>
+                    <option value="usato, sottolineato a matita">
+                      usato, sottolineato a matita
+                    </option>
+                    <option value="usato, sottolineato a penna">
+                      usato, sottolineato a penna
+                    </option>
+                    <option value="distrutto">distrutto</option>
+                    <option value="fotocopiato">fotocopiato</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                className={`input-container ${filterSubmitClass}`}
+                id="submit-container"
+              >
                 <input
                   autoComplete="off"
-                  type="text"
-                  className={`filter input ${
-                    this.state.city !== "__disabled" ? "active" : null
-                  }`}
-                  id="city"
-                  placeholder={
-                    this.props.booksResult[this.state.index]
-                      ? this.props.booksResult[this.state.index].searchParams
-                          .city || "città"
-                      : "città"
-                  }
-                  disabled={this.state.city === "__disabled" ? true : false}
-                  onChange={this.handleFilterChange}
-                  value={
-                    this.state.city === "__disabled" ? "città" : this.state.city
-                  }
+                  type="submit"
+                  className="hidden"
+                  value="FILTRA"
                 />
+                <p id="filter-submit" onClick={this.handleFilterSubmit}>
+                  FILTRA
+                </p>
               </div>
-              <div className="input-container text">
-                {this.state.school === "__disabled" ? (
-                  <p
-                    id="schoolDelete"
-                    onClick={() => {
-                      this.handleFilterEdit("school");
-                    }}
-                    className="input-filter-icon edit"
-                  >
-                    +
-                  </p>
-                ) : (
-                  <p
-                    id="schoolDelete"
-                    className="input-filter-icon delete"
-                    onClick={() => {
-                      this.handleFilterDisable("school");
-                    }}
-                  >
-                    -
-                  </p>
-                )}
-                <input
-                  disabled={this.state.school === "__disabled" ? true : false}
-                  autoComplete="off"
-                  type="text"
-                  className={`filter input ${
-                    this.state.school !== "__disabled" ? "active" : null
-                  }`}
-                  id="school"
-                  onChange={this.handleFilterChange}
-                  placeholder={
-                    this.props.booksResult[this.state.index].searchParams
-                      .school || "scuola/università"
-                  }
-                  value={
-                    this.state.school === "__disabled"
-                      ? "scuola/università"
-                      : this.state.school
-                  }
-                />
-              </div>
-              <div id="qualityDelete" className="input-container select">
-                {this.state.quality === "__disabled" ? (
-                  <p
-                    id="qualityDelete"
-                    onClick={() => {
-                      this.handleFilterEdit("quality");
-                    }}
-                    className="input-filter-icon edit"
-                  >
-                    +
-                  </p>
-                ) : (
-                  <p
-                    id="qualityDelete"
-                    className="input-filter-icon delete"
-                    onClick={() => {
-                      this.handleFilterDisable("quality");
-                    }}
-                  >
-                    -
-                  </p>
-                )}
-                <select
-                  id="filter-quality"
-                  className="filter input"
-                  disabled={this.state.quality === "__disabled" ? true : false}
-                  onChange={this.handleFilterChange}
-                  value={
-                    this.state.quality === "__disabled"
-                      ? "quality"
-                      : this.state.quality ||
-                        this.props.booksResult[this.state.index].searchParams
-                          .quality ||
-                        "quality"
-                  }
-                >
-                  <option value="quality" defaultChecked hidden>
-                    qualità
-                  </option>
-                  <option value="intatto">intatto</option>
-                  <option value="buono, non sottolineato">
-                    buono, non sottolineato
-                  </option>
-                  <option value="buono, sottolineato a matita">
-                    buono, sottolineato a matita
-                  </option>
-                  <option value="buono, sottolineato a penna">
-                    buono, sottolineato a penna
-                  </option>
-                  <option value="usato, non sottolineato">
-                    usato, non sottolineato
-                  </option>
-                  <option value="usato, sottolineato a matita">
-                    usato, sottolineato a matita
-                  </option>
-                  <option value="usato, sottolineato a penna">
-                    usato, sottolineato a penna
-                  </option>
-                  <option value="distrutto">distrutto</option>
-                  <option value="fotocopiato">fotocopiato</option>
-                </select>
-              </div>
+            </form>
+            <div id="filter-suggester" onClick={this.toggleFilter}>
+              <i id="filter-suggester-ico" className="fas fa-chevron-up"></i>
+              <p id="filter-suggester-text">HIDE</p>
             </div>
-            <div
-              className={`input-container ${filterSubmitClass}`}
-              id="submit-container"
-            >
-              <input
-                autoComplete="off"
-                type="submit"
-                className="hidden"
-                value="FILTRA"
-              />
-              <p id="filter-submit" onClick={this.handleFilterSubmit}>
-                FILTRA
-              </p>
-            </div>
-          </form>
+          </div>
         ) : null;
     }
+
+    const filterSuggestion = (
+      <div id="filter-suggester" onClick={this.toggleFilter}>
+        <p id="filter-suggester-text">FILTRA</p>
+        <i id="filter-suggester-ico" className="fas fa-chevron-down"></i>
+      </div>
+    );
 
     const resultReview = (
       <div id="resultsReview">
@@ -586,13 +740,21 @@ class Results extends Component {
       </div>
     );
 
+    const reverse = bodyComponent === wrongFilters ? true : false;
+
     const bodyContainer =
       this.props.booksResult.length !== 0 ? (
         this.state.index === this.props.booksResult.length ? (
           resultReview
         ) : (
           <div>
-            {filters}
+            {reverse
+              ? !this.state.filterHidden
+                ? filterSuggestion
+                : filters
+              : this.state.filterHidden
+              ? filterSuggestion
+              : filters}
             <div id="checkout-order-container">
               <p id="checkout-order-header">Ordina per:</p>
               <select

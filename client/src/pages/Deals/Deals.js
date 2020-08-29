@@ -6,7 +6,7 @@ import "./Deals.css";
 import Book from "../../components/book/book";
 import ClusterBooks from "../../components/clusterBooks/clusterBooks";
 import BookInfo from "../../components/BookInfo/BookInfo";
-
+import HeaderPart from "../../components/headerPart";
 class Deals extends Component {
   state = {
     navigator: "selling",
@@ -341,14 +341,12 @@ class Deals extends Component {
           editing={this.state.bookInfoBookEditing}
           id={this.state.BookInfoId}
         />
-        <div id="deals-image-container">
-          <p id="fake-header">AFFARI</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title="AFFARI"
+          mainClass={"deals"}
+          imageId="libridoo-logo-image"
+          headerClass=""
+        />
         <div id="deals-choices">
           <p
             id="selling"

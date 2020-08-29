@@ -206,7 +206,6 @@ router.post("/fetch/buy", async (req, res) => {
       }
     });
     forEachPromise.catch(error => {
-      console.log(error);
       res.json({
         error,
         code,
@@ -504,7 +503,7 @@ router.post("/checkedOut", (req, res) => {
       transporter.sendMail({
         from: '"Libridoo" <libridoo.contacts@gmail.com>',
         to: cluster.sellerInfo.email,
-        subject: "Vendita libri",
+        subject: "Libri Venduti",
         // text: "Ciao!",
         html: `Caro ${cluster.sellerInfo.name.split(" ")[0] || "utente"},
         <br /><br />
@@ -513,7 +512,7 @@ router.post("/checkedOut", (req, res) => {
         Hai appena venduto ${cluster.Books.length} libr<span>${
           cluster.Books.length === 1 ? "o" : "i"
         }</span> a ${req.body.buyerInfo.name}, per un totale di ${clusterPrice}
-        euro. <br />
+        euro${cluster.delivery.choosen ? "" : "*"}.<br />
         ${
           cluster.delivery.choosen
             ? `<span>${req.body.buyerInfo.name} vive in zona ${
@@ -525,16 +524,13 @@ router.post("/checkedOut", (req, res) => {
           cluster.delivery.cost
         } euro, come da te specificato.<br />
         Il totale, dunque, ammonta a <b>€ ${clusterPrice +
-          cluster.delivery.cost}</span>`
+          cluster.delivery.cost}*</span>`
             : ""
         }        
         </b><br/><br />
         Adesso,<br />
-        tutto quello che devi fare per ricevere i soldi, è consegnare i libri al
-        compratore. Una volta ricevuti, lui ci confermerà la consegna e tu riceverai
-        i soldi. 
-        <br />Perciò, ti consigliamo vivamente di consegnare i libri il
-        prima possibile, per ricevere subito i soldi.
+        tutto quello che devi fare per <b>ricevere i soldi</b>, è consegnare i libri al
+        compratore. Una volta fatto, ricordagli di confermare la consegna per ricevere il pagamento.
         <br/><br/>
           Ecco le informazioni di ${
             req.body.buyerInfo.name
@@ -547,7 +543,7 @@ router.post("/checkedOut", (req, res) => {
           >
             ${req.body.buyerInfo.name}${
           cluster.delivery.choosen
-            ? `<span style="font-size: 1.2rem">, con spedizione</span>`
+            ? `<span style="font-size: 1.2rem">, da spedire (già pagata)</span>`
             : ""
         }
           </p>
@@ -586,7 +582,9 @@ router.post("/checkedOut", (req, res) => {
             </div>
           </div>
         </div>
-        <br/><br/><br/><br/>
+        <br/>
+        <p style="margin:20px; font-size: .7rem">* Conforme ai termini e condizioni di www.libridoo.it, esposti su https://www.libridoo.it/T&C, libridoo trattiene il 10% (10 per cento) dell'incasso del venditore  
+        <br/><br/><br/>
         Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
       });
       // post soldbooks cluster
@@ -666,13 +664,15 @@ router.post("/checkedOut", (req, res) => {
                 Il codice del tuo ordine è <b>${req.body.dealId}</b>. 
                 <br /><br />
                 Per ricevere i libri, adesso, contatta i venditori per farti consegnare i
-                libri attraverso un incontro o spedizione, nel caso tu lo abbia selezionato.
+                libri.
                 Non ti preoccupare, i venditori sono stati informati e seguiranno le
                 istruzioni fino a quando il libro sarà nelle tue mani.
                 <br />
-                Una volta ricevuto i libri da un venditore, ricordati di confermare la
-                consegna, così da permettere al venditore di essere pagato da noi.
+                Una volta ricevuti i libri da un venditore, ricordati di <b>confermare la
+                consegna</b>, così da permettere al venditore di ricevere i soldi.
                 <br />
+                Per farlo vai su: <span style="font-weight: bold; color: gray">Libridoo > Ordini</span> e clicca il pulsante "CONFERMA" in basso a destra
+                <br/>
                 <p style="font-size: 1.2rem">
                   Ecco i contatti dei venditori:
                 </p>

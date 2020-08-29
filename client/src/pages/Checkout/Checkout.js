@@ -6,7 +6,7 @@ import "./Checkout.css";
 import ClusterBooks from "../../components/clusterBooks/clusterBooks";
 import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
 import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
-
+import HeaderPart from "../../components/headerPart";
 class Checkout extends Component {
   state = {
     loading: false
@@ -38,12 +38,11 @@ class Checkout extends Component {
  */
 
   purchase = (books, delivery, count) => {
-    console.log("doing");
+    //destructuring books.
+    const { history, dispatch, selectedBooks } = this.props;
     this.setState({ loading: true });
     const sellerIds = [];
-    this.props.selectedBooks.forEach(cluster =>
-      sellerIds.push(cluster.sellerId)
-    );
+    selectedBooks.forEach(cluster => sellerIds.push(cluster.sellerId));
     const buyerId = this.props.user._id;
     const bill = {
       books,
@@ -66,10 +65,11 @@ class Checkout extends Component {
       .then(res => res.json())
       .then(jsonRes => {
         console.log(jsonRes);
+        let sucessfulOrder = false;
         if (jsonRes.code === 0) {
           // payment successful
           sessionStorage.setItem("dealId", jsonRes.deal._id);
-          this.props.history.push("/paymentConfirm");
+          sucessfulOrder = true;
         } else {
           // this.props.dispatch({
           //   type: "E-SET",
@@ -77,11 +77,16 @@ class Checkout extends Component {
           // });
           // this.props.history.push("/error");
         }
-        this.setState({ loading: false });
+        //Changed this function calling state and on completion moving to next page
+        this.setState({ loading: false }, () => {
+          if (sucessfulOrder) {
+            history.push("/paymentConfirm");
+          }
+        });
       })
       .catch(error => {
         console.log(error);
-        this.props.dispatch({
+        dispatch({
           type: "E-SET",
           error: { frontendPlace: "Checkout/purchase/catch" }
         });
@@ -134,14 +139,12 @@ class Checkout extends Component {
 
     const checkoutComponent = (
       <div id="checkout">
-        <div id="checkout-image-container">
-          <p id="checkout-fake-header">CHECKOUT</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title="CHECKOUT"
+          mainClass={"checkout"}
+          imageId="libridoo-logo-image"
+          headerClass="checkout-"
+        />
         <div id="selectedBooks-container">
           {this.props.selectedBooks.length !== 0
             ? this.props.selectedBooks.map(cluster => {

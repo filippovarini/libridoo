@@ -104,7 +104,6 @@ class book extends Component {
   };
 
   render() {
-    console.log(this.props.user);
     let bookPrice = 0;
     if (String(this.props.book.price).indexOf(".") === -1) {
       // whole price
@@ -222,8 +221,27 @@ class book extends Component {
     let upperHeader = null;
     if (this.props.book.userSellsCount > 1) {
       upperHeader = (
-        <div id="sells-count-container">
-          <p id="sells-count">
+        <div
+          id="sells-count-container"
+          className={
+            this.props.maxUserSellsCount
+              ? this.props.book.userSellsCount === this.props.maxUserSellsCount
+                ? "maxUserSellsCount"
+                : null
+              : null
+          }
+        >
+          <p
+            id="sells-count"
+            className={
+              this.props.maxUserSellsCount
+                ? this.props.book.userSellsCount ===
+                  this.props.maxUserSellsCount
+                  ? "maxUserSellsCount-text"
+                  : null
+                : null
+            }
+          >
             HA ALTRI{" "}
             <span id="number">
               {this.props.book.userSellsCount -
@@ -265,7 +283,13 @@ class book extends Component {
           >
             <i className="fas fa-home fa-1x info-book-ico"></i>
             <p id="place" className="info">
-              {this.props.book.place.city}, {this.props.book.sellerUser.school}
+              {this.props.book.place.city}{" "}
+              {this.props.book.sellerUser.school
+                ? this.props.book.sellerUser.school ===
+                  "Non frequento un'università"
+                  ? null
+                  : `,${this.props.book.sellerUser.school}`
+                : null}
             </p>
           </div>
           <div
@@ -321,12 +345,6 @@ class book extends Component {
               {this.props.book.quality}
             </p>
           </div>
-          {/* <div id="date-container" className="info-container">
-            <i className="fas fa-calendar-alt info-book-ico"></i>
-            <p id="date" className="info">
-              {this.props.date}
-            </p>
-          </div> */}
           <div id="price-container" className="info-container">
             <i className="fas fa-euro-sign info-book-ico"></i>
             <p id="price" className="info">
@@ -387,9 +405,7 @@ class book extends Component {
                 id="image"
                 alt="book cover"
                 onMouseOver={this.imageBigger}
-                onTouchStart={this.imageBigger}
                 onMouseLeave={this.imageSmaller}
-                onTouchEnd={this.imageSmaller}
               />
             </div>
             {page.infoContainer}

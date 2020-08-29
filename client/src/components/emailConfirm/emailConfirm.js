@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import "./emailConfirm.css";
-
+import mainLogo from "../../images/logo-long.png"; //import to fix the book error
 class EmailConfirm extends Component {
   state = {
     inputCode: null,
@@ -448,7 +448,7 @@ class EmailConfirm extends Component {
             <p id="emailConfirm-fake-header">CONFERMA</p>
             <img
               id="emailConfirm-libridoo-logo-image"
-              src="./images/logo-long.png"
+              src={mainLogo} //import to fix book error
               alt="logo"
             />
           </div>

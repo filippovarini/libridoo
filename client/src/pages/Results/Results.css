@@ -9,6 +9,8 @@
   padding-top: 20px;
   border-top: 0px;
   padding-bottom: 5px;
+  background: white;
+  z-index: 1;
 }
 
 #results #submit-container {
@@ -36,12 +38,12 @@
 }
 #results .input-filter-icon.delete {
   color: red;
-  border: 1px solid red;
+
+  /* border: 1px solid red; */
 }
 
 #results .input-filter-icon.edit {
   color: rgb(32, 165, 32);
-  border: 1px solid rgb(32, 165, 32);
 }
 
 #results .input-filter-icon {
@@ -60,9 +62,8 @@
 }
 
 #results .input-filter-icon:hover {
+  font-size: 1.1rem;
   cursor: pointer;
-  font-weight: bold;
-  border: 2px solid;
 }
 
 #results .input {
@@ -84,6 +85,7 @@
   height: 20px;
   font-size: 0.8rem;
   text-align: center;
+  /* background: white */
 }
 
 #results #filter-submit {
@@ -118,12 +120,18 @@
 }
 
 #results #wrongFilters {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   text-align: center;
   margin: 0 auto;
   width: 80%;
   padding: 50px 0;
   margin-top: 150px;
+  background: #f79e02;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  box-sizing: border-box;
+  padding: 20px;
 }
 
 #results .active {
@@ -291,4 +299,29 @@
   width: 200px;
   left: 50%;
   margin-left: -100px;
+}
+
+#filter-suggester {
+  /* border: 1px solid black; */
+  box-shadow: 0px 0px 2px black;
+  border-radius: 3px;
+  width: 60px;
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 8px;
+  padding-bottom: 3px;
+  position: relative;
+  top: -5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: gray;
+}
+
+#filter-suggester-text {
+  margin: 0px;
+  font-weight: bold;
+}
+
+#filter-suggester:hover {
+  box-shadow: 0px 0px 3px black;
 }

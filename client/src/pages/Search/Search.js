@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import HeaderPart from "../../components/headerPart";
 import "./Search.css";
 
 class Search extends Component {
@@ -399,14 +400,12 @@ class Search extends Component {
 
     return (
       <div id="search">
-        <div id="deals-image-container">
-          <p id="fake-header">CERCA</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"CERCA"}
+          mainClass={"deals"}
+          imageId={"libridoo-logo-image"}
+          headerClass=""
+        />
         <div id="searchPage-header-container">
           <p id="searchPage-header">
             Inserisci <span id="search-header-bold">tutti</span> i libri che

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import HeaderPart from "../../components/headerPart";
 import "./Help.css";
 
 class Help extends Component {
@@ -188,14 +189,12 @@ class Help extends Component {
     }
     return (
       <div id="help">
-        <div id="deals-image-container">
-          <p id="fake-header">AIUTO</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"AIUTO"}
+          mainClass={"deals"}
+          imageId="libridoo-logo-image"
+          headerClass=""
+        />
         <div id="help-nav">
           <p id="help-header">Scopri come:</p>
           <div id="help-container">

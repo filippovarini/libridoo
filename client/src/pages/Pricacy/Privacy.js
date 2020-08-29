@@ -1,18 +1,17 @@
 import React, { Component } from "react";
+import HeaderPart from "../../components/headerPart";
 import "./Privacy.css";
 
 class Privacy extends Component {
   render() {
     return (
       <div id="privacy-container">
-        <div id="deals-image-container">
-          <p id="fake-header">PRIVACY</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"PRIVACY"}
+          mainClass={"deals"}
+          imageId="libridoo-logo-image"
+          headerClass="checkout-"
+        />
         <div id="privacy">
           <h1>Privacy Policy for libridoo</h1>
 

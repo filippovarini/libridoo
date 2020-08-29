@@ -17,7 +17,8 @@ class BodyInfo extends Component {
     editingPhonePlaceholder: "numero",
     editingSchoolPlaceholder: "scuola/università",
     loading: false,
-    editingEmailLabelMessage: null
+    editingEmailLabelMessage: null,
+    noSchool: false
   };
 
   componentDidMount = () => {
@@ -36,6 +37,10 @@ class BodyInfo extends Component {
   emailValidation = email => {
     var re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  };
+
+  toggleNoSchool = e => {
+    this.setState({ noSchool: !this.state.noSchool });
   };
 
   handleEmailBlur = e => {
@@ -65,6 +70,11 @@ class BodyInfo extends Component {
     this.setState({
       editing: true
     });
+    if (this.props.user.school === "Non frequento un'università") {
+      this.setState({
+        noSchool: true
+      });
+    }
   };
 
   handleChange = e => {
@@ -97,20 +107,19 @@ class BodyInfo extends Component {
         editingEmailLabelMessage: "email non valida"
       });
     } else if (
-      (!this.state.editingSchool && !this.props.user.school) ||
-      (!this.state.editingPhone && !this.props.user.phone)
+      !this.state.editingSchool &&
+      (!this.props.user.school ||
+        this.props.user.school === "Non frequento un'università") &&
+      !this.state.noSchool
     ) {
-      if (!this.state.editingSchool) {
-        this.setState({
-          editingSchoolClass: "invalid-input"
-        });
-      }
-      if (!this.state.editingPhone) {
-        this.setState({
-          editingPhoneClass: "invalid-input",
-          editingSchoolPlaceholder: "*telefono*"
-        });
-      }
+      this.setState({
+        editingSchoolClass: "invalid-input"
+      });
+    } else if (!this.state.editingPhone && !this.props.user.phone) {
+      this.setState({
+        editingPhoneClass: "invalid-input",
+        editingSchoolPlaceholder: "*telefono*"
+      });
     } else {
       const bodyInfo = {
         email: this.state.editingEmail || this.props.user.email,
@@ -118,6 +127,9 @@ class BodyInfo extends Component {
         school: this.state.editingSchool || this.props.user.school
         // also schoolLogoURL associated with it
       };
+      if (this.state.noSchool && !this.state.editingSchool) {
+        bodyInfo.school = "Non frequento un'università";
+      }
       const body = {
         _id: this.props.user._id,
         defaultEmail: this.props.user.email,
@@ -183,6 +195,8 @@ class BodyInfo extends Component {
   };
 
   render() {
+    const schoolContainerHiddenClass = this.state.noSchool ? "hidden" : null;
+
     const notEditing = (
       <div id="notEditing-container" className="info-gContainer">
         <div id="email-container" className="info-container">
@@ -250,18 +264,122 @@ class BodyInfo extends Component {
               className={`info-text info-input ${this.state.editingPhoneClass}`}
             />
           </div>
-          <div id="school-container" className="info-container">
+          <div
+            id="school-container"
+            className={`info-container  ${schoolContainerHiddenClass}`}
+          >
             <i id="school-ico" className="fas fa-graduation-cap info-ico"></i>
             <input
               // in future, make it type select
-              type="text"
+              // type="text"
               autoComplete="off"
               onBlur={this.handleEmailBlur}
               onChange={this.handleChange}
               id="editingSchool"
-              placeholder={this.props.user.school || "*scuola/università*"}
+              list="universities"
+              placeholder={
+                this.props.user.school
+                  ? this.props.user.school === "Non frequento un'università"
+                    ? "*università*"
+                    : this.props.user.school
+                  : "università"
+              }
               className={`info-text info-input ${this.state.editingSchoolClass}`}
             />
+            <datalist id="universities">
+              <option value="Università degli Studi di Verona" />
+              <option value="Università degli Studi di Padova" />
+              <option value="Università Ca Foscari di Venezia" />
+              <option value="Università Iuav di Venezia" />
+              <option value="Università della Valle d'Aosta - Université de la Vallée D'Aoste" />
+              <option value="Università per Stranieri di Perugia" />
+              <option value="Università degli Studi di Perugia" />
+              <option value="Università degli Studi di Trento" />
+              <option value="Libera Università di Bolzano" />
+              <option value="Università per Stranieri di Siena" />
+              <option value="Università degli Studi di Siena" />
+              <option value="Università degli Studi di Pisa" />
+              <option value="Università degli Studi di Firenze" />
+              <option value="Scuola Superiore di Studi Universitari e di Perfezionamento Sant'Anna - Pisa" />
+              <option value="Scuola Normale Superiore - Pisa" />
+              <option value="Università degli Studi di Palermo" />
+              <option value="Università degli Studi di Messina" />
+              <option value="Università degli Studi di Catania" />
+              <option value="Università degli Studi di Sassari" />
+              <option value="Università degli Studi di Cagliari" />
+              <option value="Università degli Studi del Salento" />
+              <option value="Università degli Studi di Foggia" />
+              <option value="Università degli Studi di Bari" />
+              <option value="Politecnico di Bari" />
+              <option value="LUM - Libera Università Mediterranea Jean Monnet" />
+              <option value="Università di Scienze Gastronomiche" />
+              <option value="Università degli Studi di Torino" />
+              <option value="Università degli Studi del Piemonte Orientale Amedeo Avogadro" />
+              <option value="Politecnico di Torino" />
+              <option value="Università degli Studi del Molise" />
+              <option value="Università degli Studi di Urbino Carlo Bo" />
+              <option value="Università degli Studi di Macerata" />
+              <option value="Università degli Studi di Camerino" />
+              <option value="Università Politecnica delle Marche" />
+              <option value="Università Vita-Salute San Raffaele" />
+              <option value="Università degli Studi di Pavia" />
+              <option value="Università degli Studi di Milano-Bicocca" />
+              <option value="Università degli Studi di Milano" />
+              <option value="Università degli Studi di Brescia" />
+              <option value="Università degli Studi di Bergamo" />
+              <option value="Università degli Studi dell'Insubria Varese-Como" />
+              <option value="Università Commerciale Luigi Bocconi" />
+              <option value="Università Cattolica del Sacro Cuore" />
+              <option value="Università Carlo Cattaneo - LIUC" />
+              <option value="Politecnico di Milano" />
+              <option value="IULM - Libera Università di Lingue e Comunicazione" />
+              <option value="Università degli Studi di Genova" />
+              <option value="Università degli Studi Roma Tre" />
+              <option value="Università degli Studi Europea di Roma" />
+              <option value="Università degli Studi di Roma Tor Vergata" />
+              <option value="Università degli Studi di Roma La Sapienza" />
+              <option value="Università degli Studi di Cassino" />
+              <option value="Università degli Studi della Tuscia" />
+              <option value="Università Campus Bio-Medico di Roma" />
+              <option value="LUMSA - Libera Università Maria Ss. Assunta" />
+              <option value="LUISS - Libera Università Internazionale degli Studi Sociali Guido Carli" />
+              <option value="Libera Università degli Studi San Pio V" />
+              <option value="IUSM - Università degli Studi di Roma Foro Italico" />
+              <option value="Università degli Studi di Udine" />
+              <option value="Università degli Studi di Trieste" />
+              <option value="SISSA - Scuola Internazionale Superiore di Studi Avanzati" />
+              <option value="Università degli Studi di Parma" />
+              <option value="Università degli Studi di Modena e Reggio Emilia" />
+              <option value="Università degli Studi di Ferrara" />
+              <option value="Università degli Studi di Bologna" />
+              <option value="Università degli Studi di Salerno" />
+              <option value="Università degli Studi di Napoli Partenophe" />
+              <option value="Università degli Studi di Napoli L'Orientale" />
+              <option value="Università degli Studi di Napoli Federico II" />
+              <option value="Università degli Studi del Sannio" />
+              <option value="Seconda Università degli Studi di Napoli" />
+              <option value="Istituto Universitario Suor Orsola Benincasa" />
+              <option value="Università della Calabria" />
+              <option value="Università degli Studi Mediterranea di Reggio Calabria" />
+              <option value="Università degli Studi Magna Graecia di Catanzaro" />
+              <option value="Università degli Studi della Basilicata" />
+              <option value="Università degli Studi di Teramo" />
+              <option value="Università degli Studi di L'Aquila" />
+              <option value="Università degli Studi Gabriele D'Annunzio" />
+            </datalist>
+          </div>
+          <div id="noSchool-container">
+            <input
+              type="checkbox"
+              onChange={this.toggleNoSchool}
+              id="noSchool-input"
+              defaultChecked={
+                this.props.user.school === "Non frequento un'università"
+              }
+            />
+            <label htmlFor="noSchool-input" id="noSchool-label">
+              Non frequento un'università
+            </label>
           </div>
           {/* <i
             id="save"

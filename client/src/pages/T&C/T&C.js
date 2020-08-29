@@ -1,18 +1,17 @@
 import React, { Component } from "react";
+import HeaderPart from "../../components/headerPart";
 import "./T&C.css";
 
 class TandC extends Component {
   render() {
     return (
       <div id="terms-container">
-        <div id="deals-image-container">
-          <p id="fake-header">T&C</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"T&C"}
+          mainClass={"deals"}
+          imageId={"libridoo-logo-image"}
+          headerClass=""
+        />
         <div id="terms">
           <h2 className="terms-title">I nostri termini e condizioni</h2>
           <h4 className="terms-header">1. Contenuto del Servizio</h4>

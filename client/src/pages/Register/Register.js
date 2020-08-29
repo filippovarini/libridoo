@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import HeaderPart from "../../components/headerPart";
 import "./Register.css";
 
 // components
@@ -442,14 +443,12 @@ class Register extends Component {
 
     const loaded = (
       <div id="register-general-container">
-        <div id="register-image-container">
-          <p id="register-fake-header">TI VOGLIAMO!</p>
-          <img
-            id="register-libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"TI VOGLIAMO!"}
+          mainClass={"register"}
+          imageId={"register-libridoo-logo-image"}
+          headerClass="register-"
+        />
         {avatarHeader}
         <div id="register-actions">
           <form onSubmit={this.handleSubmit} id="register-form">

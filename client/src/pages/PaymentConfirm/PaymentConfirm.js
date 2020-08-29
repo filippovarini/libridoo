@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import HeaderPart from "../../components/headerPart";
 import "./PaymentConfirm.css";
 
 class PaymentConfirm extends Component {
@@ -206,14 +207,12 @@ class PaymentConfirm extends Component {
     );
     const loaded = (
       <div id="paymentConfirm">
-        <div id="paymentConfirm-image-container">
-          <p id="checkout-fake-header">ORDINATO!</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"ORDINATO"}
+          mainClass={"paymentConfirm"}
+          imageId="libridoo-logo-image"
+          headerClass="checkout-"
+        />
         <div id="body-container">
           <p id="body-header">ORDINE EFFETTUATO CON SUCCESSO</p>
           <div id="body">

@@ -9,7 +9,7 @@
 
 #book-cluster #checkout-delivery {
   font-weight: bold;
-  border: 1px solid black;
+  border: 1px solid gray;
 }
 
 #book-cluster {
@@ -26,18 +26,25 @@
 
 #book-cluster .delivery {
   /* border: 1px solid black; */
-  box-shadow: 0px 0px 5px black;
+  box-shadow: 0px 0px 2px black;
   box-sizing: border-box;
   display: inline-block;
-  height: 40px;
-  width: 200px;
+  height: 30px;
+  width: 180px;
   position: absolute;
-  bottom: -25px;
+  bottom: -20px;
   left: 50%;
   margin-left: -100px;
   background: white;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  color: gray;
+  font-weight: bold;
   border-radius: 10px;
+}
+
+#book-cluster #orders-delivery.choosen {
+  box-shadow: 0px 0px 2px rgb(32, 165, 32);
+  color: rgb(32, 165, 32);
 }
 
 #book-cluster .delivery:hover {
@@ -49,7 +56,7 @@
 }
 
 #book-cluster .delivery-header {
-  line-height: 40px;
+  line-height: 30px;
   text-align: center;
   margin: 0px;
 }
@@ -98,11 +105,11 @@
 #book-cluster #checkout-lower-icon {
   box-shadow: 0px 0px 0px;
   color: rgb(32, 165, 32);
-  border: 1px solid rgb(32, 165, 32);
+  border: 1px solid;
 }
 
 #book-cluster #checkout-lower-icon:hover {
-  border: 1px solid black;
+  /* border: 1px solid green; */
   cursor: default;
   font-weight: normal;
   box-shadow: 0px 0px 0px;
@@ -177,9 +184,27 @@
   width: 80px;
   border: 1px solid #f79e02;
   /* color: #f79e02; */
-  box-shadow: 0px 0px 4px #f79e02;
+  box-shadow: 0px 0px 1px #f79e02;
   color: #f79e02;
   font-weight: bolder;
+  animation-name: notConfirmed;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  font-size: 0.7rem;
+}
+
+@keyframes notConfirmed {
+  0% {
+    box-shadow: 0px 0px 1px #f79e02;
+  }
+
+  50% {
+    box-shadow: 0px 0px 5px #f79e02;
+  }
+
+  0% {
+    box-shadow: 0px 0px 1px #f79e02;
+  }
 }
 
 #book-cluster #orders-lower-icon.notConfirmed:hover {

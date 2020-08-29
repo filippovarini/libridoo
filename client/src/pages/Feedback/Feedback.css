@@ -172,7 +172,6 @@
 @media only screen and (max-width: 400px) {
   #feedback-problems-container {
     width: 100%;
-    border: 1px solid black;
     align-items: center;
   }
 }

@@ -108,8 +108,9 @@
 }
 
 #deliveryInfo #header-text {
-  color: black;
-  border-bottom: 1px solid black;
+  color: gray;
+  /* border-bottom: 1px solid black; */
+  font-weight: bold;
   font-size: 0.9rem;
   display: inline-block;
   padding: 0 15px;

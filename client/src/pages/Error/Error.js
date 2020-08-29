@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import HeaderPart from "../../components/headerPart";
 import "./Error.css";
 
 class Error extends Component {
@@ -149,14 +150,12 @@ class Error extends Component {
     const errorComponent = this.state.loading ? loading : display;
     return (
       <div id="error">
-        <div id="error-image-container">
-          <p id="fake-header">ERRORE</p>
-          <img
-            id="libridoo-logo-image"
-            src="./images/logo-long.png"
-            alt="logo"
-          />
-        </div>
+        <HeaderPart
+          title={"ERRORE"}
+          mainClass={"error"}
+          imageId="libridoo-logo-image"
+          headerClass=""
+        />
         <div>
           <p id="error-header">Houston, we got a problem!</p>
         </div>

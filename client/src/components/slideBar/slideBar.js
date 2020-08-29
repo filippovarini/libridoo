@@ -18,9 +18,9 @@ class slideBar extends Component {
           <NavLink to="/help" className="slideBar-component hover">
             COME FUNZIONA
           </NavLink>
-          <NavLink to="/feedback" className="slideBar-component hover">
+          {/* <NavLink to="/feedback" className="slideBar-component hover">
             DICCI COSA PENSI
-          </NavLink>
+          </NavLink> */}
         </div>
         <Link to="/login" className="slidebar-footer hover">
           Login
@@ -50,9 +50,9 @@ class slideBar extends Component {
             <NavLink to="/help" className="slideBar-component hover">
               COME FUNZIONA
             </NavLink>
-            <NavLink to="/feedback" className="slideBar-component hover">
+            {/* <NavLink to="/feedback" className="slideBar-component hover">
               DICCI COSA PENSI
-            </NavLink>
+            </NavLink> */}
             <span
               className="slideBar-component hover"
               onClick={this.props.handleLogout}

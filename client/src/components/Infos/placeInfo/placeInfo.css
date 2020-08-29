@@ -41,8 +41,9 @@
 }
 
 #placeInfo #header-text {
-  color: black;
-  border-bottom: 1px solid black;
+  color: gray;
+  font-weight: bold;
+  /* border-bottom: 1px solid black; */
   margin-bottom: 0;
   display: inline-block;
   padding: 0 15px;
