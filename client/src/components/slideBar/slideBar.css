@@ -43,3 +43,22 @@
 .hover:hover {
   font-weight: 600;
 }
+
+#earn-suggester {
+  color: #f79e02;
+  /* border: 1px solid black; */
+  font-size: 0.4rem;
+  margin-left: 5px;
+}
+
+#earn-suggester-link {
+  line-height: 30px;
+  margin: 0px;
+}
+
+#earn-suggester-container {
+  display: flex;
+  margin: 0px;
+  margin-left: 20px;
+  align-items: center;
+}

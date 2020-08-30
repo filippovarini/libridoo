@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import "./Invite.css";
+import HeaderPart from "../../components/headerPart";
+import adOne from "../../images/ad-1.png";
+import adTwo from "../../images/ad-2.png";
+import adThree from "../../images/ad-3.png";
 
 class Invite extends Component {
   state = {
@@ -34,6 +39,7 @@ class Invite extends Component {
   copy = () => {
     const result = this.copyText(document.getElementById("invite-link-real"));
     if (result === 0) {
+      alert("link copiato");
       this.setState({ linkCopied: true });
       setTimeout(() => {
         this.setState({ linkCopied: false });
@@ -46,91 +52,125 @@ class Invite extends Component {
     }
   };
 
+  imageBigger = number => {
+    this.setState({ imageBigger: number });
+  };
+
+  imageSmaller = () => {
+    this.setState({ imageBigger: null });
+  };
+
   render() {
     const emptyBody = (
       <div id="empty-body" className="invite-body">
-        <div className="invite-list-container">
-          <p className="invite-list">
-            1. Manda questo link agli amici e falli registrare
-          </p>
-          <div className="invite-link-container">
-            <p id="invite-link" className="invite-link">
-              EFFETTUA PRIMA IL LOGIN
-            </p>
-            <i
-              id="invite-redirection"
-              onClick={() => {
-                this.props.history.push("/login");
-              }}
-              className="fas fa-directions invite-ico"
-            ></i>
-          </div>
-        </div>
-        <div className="invite-list-container">
-          <p className="invite-list">
-            2. Ottieni 5 punti bonus per amico registrato
-          </p>
-        </div>
-        <div className="invite-list-container">
-          <p className="invite-list">
-            3. Usa i punti bonus per avere sconti sui libri
-          </p>
-        </div>
+        <p id="earn-login-header">Effettua il login prima di continuare</p>
+        <Link id="earn-login-link" to="./login">
+          LOGIN
+        </Link>
       </div>
     );
 
     const notEmptyBody = (
-      <div id="notEmpty-body" className="invite-body">
-        <div className="invite-list-container">
-          <p className="invite-list">
-            1. Manda questo link agli amici e falli registrare
+      <div id="notEmptyBody-container" className="earn-container">
+        <p className="invite-count-points">
+          Punti :{" "}
+          <span id="earn-count">{this.props.user.bonusPoints || 0}</span>
+        </p>
+        <div id="firstEarn" className="earn-tool">
+          <i className="fas earn-ico fa-users"></i>
+          <p className="earn-title">Invita gli Amici</p>
+          <p className="earn-description">
+            <span className="earn-highlight">1 punto</span> per ogni amico
+            registrato con il tuo{" "}
+            <span id="link-copy" onClick={this.copy}>
+              link
+            </span>
+            .
           </p>
-          <p
-            id="invite-link-copied"
-            className={this.state.linkCopied ? "" : "hidden"}
+          <p id="invite-link-real" className="invite-link">
+            http://localhost:3000/register/{this.props.user._id}
+          </p>
+          <a
+            id="earn-whatsapp-link"
+            href={`whatsapp://send?text=https://www.libridoo.it/register/${this.props.user._id}`}
+            data-action="share/whatsapp/share"
+            data-text="Take a look at this awesome website:"
           >
-            link copiato
-          </p>
-          <div className="invite-link-container">
-            <p id="invite-link-real" className="invite-link">
-              http://localhost:3000/register/{this.props.user._id}
-            </p>
-            <i
-              id="invite-copy"
-              onClick={this.copy}
-              className="fas fa-copy invite-ico"
-            ></i>
-          </div>
+            <i className="fab fa-whatsapp-square"></i>
+          </a>
         </div>
-        <div className="invite-list-container">
-          <p className="invite-list">
-            2. Ottieni 5 punti bonus per amico registrato
+        <div className="earn-tool">
+          <i className="fas earn-ico fa-user-plus"></i>
+          <p className="earn-title">Seguici su Insta</p>
+          <p className="earn-description">
+            <span className="earn-highlight"> 1 punto</span>: seguici e scrivici
+            in direct l'email associata con libridoo.
           </p>
-          <div className="invite-count-container">
-            <p className="invite-count">BONUS ACCUMULATO:</p>
-            <p className="invite-count-points">
-              {this.props.user.bonusPoints} pt
-              {this.props.user.bonusPoints
-                ? this.props.user.bonusPoints > 1
-                  ? "s"
-                  : ""
-                : null}
-            </p>
-          </div>
+          <p id="earn-insta-warning">punto eliminato se unfollowi</p>
+          <a
+            id="earn-instagram-link"
+            href="https://www.instagram.com/libridoo_uni/"
+          >
+            <i className="fab fa-instagram-square"></i>
+          </a>
         </div>
-        <div className="invite-list-container">
-          <p className="invite-list">
-            3. Usa i punti bonus per avere sconti sui libri
+        <div className="earn-tool">
+          <i className="fab earn-ico fa-instagram"></i>
+          <p className="earn-title">Insta Story</p>
+          <p className="earn-description">
+            <span className="earn-highlight">1 punto</span> se posti sulla
+            storia per <b>24 ore</b> una di queste tre foto, taggando
+            @libridoo_uni*:
           </p>
+          <p id="invite-link-real" className="invite-link">
+            http://localhost:3000/register/{this.props.user._id}
+          </p>
+          <div id="ad-container">
+            <img
+              src={adOne}
+              alt="advertising"
+              className={`ad-earn ${
+                this.state.imageBigger === 1 ? "bigger" : null
+              }`}
+              onClick={() => this.props.history.push("./adImageOne")}
+            />
+            <img
+              src={adTwo}
+              alt="advertising"
+              className={`ad-earn ${
+                this.state.imageBigger === 2 ? "bigger" : null
+              }`}
+              onClick={() => this.props.history.push("./adImageTwo")}
+            />
+
+            <img
+              src={adThree}
+              alt="advertising"
+              className={`ad-earn ${
+                this.state.imageBigger === 3 ? "bigger" : null
+              }`}
+              onClick={() => this.props.history.push("./adImageThree")}
+            />
+          </div>
         </div>
       </div>
     );
     const body = !this.props.user._id ? emptyBody : notEmptyBody;
     return (
       <div id="invite">
-        <div id="invite-image-container">
-          <p id="invite-fake-header">INVITA AMICI E GUADAGNA</p>
-        </div>
+        <HeaderPart
+          title={"GUADAGNA"}
+          mainClass={"deals"}
+          imageId={"libridoo-logo-image"}
+          headerClass="checkout-"
+        />
+        <p id="earn-explainer">Ottieni sconti guadagnando punti</p>
+        <p id="earn-subExplainer">
+          <span id="subExp1">10 punti</span>
+          <span id="subExp2"> = </span>
+          <span id="subExp3">10 euro</span>
+        </p>
+
         {body}
       </div>
     );

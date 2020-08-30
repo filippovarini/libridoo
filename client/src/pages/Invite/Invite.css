@@ -1,54 +1,35 @@
-#invite-image-container {
-  width: 95%;
-  height: 200px;
-  background: lightgoldenrodyellow;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 30px;
+#invite-link-real {
+  /* visibility: hidden; */
+  position: absolute;
+  /* color: white; */
+  opacity: 0;
 }
 
-#invite-fake-header {
-  font-size: 2rem;
-  font-weight: 100;
-  letter-spacing: 0.8rem;
-  margin: 0;
+#empty-body {
+  text-align: center;
 }
 
-.invite-body {
-  margin: 0 auto;
-  margin-top: 50px;
-  width: 80%;
-  border: 1px solid black;
-  padding: 30px 50px;
-  box-sizing: border-box;
+#earn-login-header {
+  color: purple;
+  font-weight: bold;
+  opacity: 0.6;
+  margin-bottom: 40px;
+  margin-top: 80px;
 }
 
-.invite-list {
-  font-size: 1.3rem;
+#earn-login-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  background: #f79e02;
+  box-shadow: 0px 0px 2px gray;
+  padding: 5px 15px;
+  border-radius: 5px;
   margin-top: 40px;
 }
 
-.invite-link-container {
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 20px;
-  box-sizing: border-box;
-  width: 85%;
-  margin: 0 auto;
-  position: relative;
-}
-
-.invite-link {
-  margin: 0px;
-  width: 80%;
-  text-align: center;
-  font-size: 0.9rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#earn-login-link:hover {
+  font-size: 1.1rem;
 }
 
 .invite-ico {
@@ -69,18 +50,150 @@
   color: rgb(32, 165, 32);
 }
 
+#firstEarn {
+  margin-top: 20px;
+}
+
 .invite-count-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.invite-count {
-  margin-right: 20px;
+.invite-count-points {
+  padding: 10px;
+  text-align: center;
+  /* color: rgb(32, 165, 32); */
+  font-weight: bold;
+  margin: 0px;
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: gray;
 }
 
-.invite-count-points {
-  border: 1px solid black;
-  padding: 10px;
-  margin-left: 20px;
+#earn-count {
+  color: #f79e02;
+}
+
+#earn-explainer {
+  font-size: 1.5rem;
+  margin-top: 40px;
+  font-weight: bold;
+  color: gray;
+  text-align: center;
+}
+
+#earn-subExplainer {
+  text-align: center;
+  font-weight: bold;
+  color: rgb(32, 165, 32);
+  box-shadow: 0px 0px 2px rgb(32, 165, 32);
+  width: 200px;
+  margin: 0 auto;
+  padding: 10px 0;
+  border-radius: 3px;
+}
+
+.earn-tool {
+  width: 300px;
+  height: 220px;
+  margin: 0 auto;
+  margin-top: 50px;
+  display: flex;
+  padding: 50px;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 2px solid purple;
+  color: gray;
+}
+
+.earn-ico {
+  font-size: 2.5rem;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+.earn-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.earn-description {
+  font-size: 0.9rem;
+  /* width: 150px; */
+  text-align: center;
+  margin: 0px;
+  margin-top: 10px;
+}
+
+#earn-whatsapp-link {
+  margin-top: 30px;
+  color: rgb(32, 165, 32);
+  font-size: 2rem;
+}
+
+#earn-instagram-link {
+  font-size: 1.8rem;
+  margin-top: 10px;
+  color: purple;
+}
+
+#earn-insta-warning {
+  /* color: red; */
+  font-weight: bold;
+  font-size: 0.6rem;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+#link-copy {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#link-copy:hover {
+  font-size: 1rem;
+}
+
+.earn-highlight {
+  color: rgb(32, 165, 32);
+}
+
+#ad-container {
+  width: 180px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ad-earn {
+  width: 45px;
+  height: 45px;
+  box-shadow: 0px 0px 2px black;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 600px) {
+  #earn-whatsapp-link {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #earn-explainer {
+    font-size: 1.3rem;
+    margin-top: 30px;
+  }
+
+  #earn-subExplainer {
+    font-size: 0.8rem;
+    padding: 5px 0;
+    width: 180px;
+  }
 }

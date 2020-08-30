@@ -808,6 +808,15 @@ router.put("/confirm", (req, res) => {
           place: ".findByIdAndUpdate(), bookApi:786"
         });
       } else {
+        // payment transition
+        let totalPrice = 0;
+        cluster.Books.forEach(book => {
+          totalPrice += book.price;
+        });
+        if (cluster.delivery.choosen) totalPrice += cluster.delivery.cost;
+        // from here, payment trnsition, holding 10%
+        totalPrice -= totalPrice / 10;
+        console.log(totalPrice);
         res.json({ code: 0, cluster });
       }
     })

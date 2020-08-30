@@ -189,9 +189,17 @@ class Orders extends Component {
       </div>
     );
     const empty = (
-      <div id="empty-container">
-        <p id="empty-header">Non hai comprato nessun libro, ancora...</p>
-        <Link id="empty-link" to="/search">
+      <div id="orders-empty-container">
+        <p id="orders-empty-header">Non hai comprato nessun libro, ancora...</p>
+        <p id="empty-subHeader">
+          Su libridoo i libri vengono solitamente venduti al 50%. Sfrutta la
+          nostra polici ed{" "}
+          <span id="orders-offer">
+            inizia subito a risparmiare, per te il 10% di sconto sul primo
+            ordine!
+          </span>
+        </p>
+        <Link id="orders-empty-link" to="/search">
           COMPRA SUBITO
         </Link>
       </div>

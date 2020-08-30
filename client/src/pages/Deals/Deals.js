@@ -222,7 +222,7 @@ class Deals extends Component {
     );
 
     const sellingBody = this.state.noBooksSelling ? (
-      <div id="deals-empty-container">
+      <div id="deals-empty-container" className="selling">
         <p id="deals-empty-header">Non hai venduto nessun libro, ancora...</p>
         <p
           id="deals-empty-link"
@@ -301,7 +301,8 @@ class Deals extends Component {
     const soldBody = this.state.noBooksSold ? (
       <div id="deals-empty-container">
         <p id="deals-empty-header" className="deals-noBooksSold">
-          Nessun utente ha comprato, ancora...
+          Nessun utente ha comprato,{" "}
+          <span id="deals-empty-hope">ancora...</span>
         </p>
       </div>
     ) : (

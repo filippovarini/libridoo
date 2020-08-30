@@ -103,6 +103,7 @@ class InfoComponent extends Component {
             {/* {this.props.book.price} */}
             {price} €
             <span className={this.props.delivery.choosen ? null : "hidden"}>
+              {" "}
               (+ {this.props.delivery.cost} euro di spedizione)
             </span>
           </p>

@@ -37,7 +37,7 @@ class Checkout extends Component {
         JUST USER
  */
 
-  purchase = (books, delivery, count) => {
+  purchase = (books, delivery, count, discount) => {
     //destructuring books.
     const { history, dispatch, selectedBooks } = this.props;
     this.setState({ loading: true });
@@ -47,7 +47,8 @@ class Checkout extends Component {
     const bill = {
       books,
       delivery,
-      count
+      count,
+      discount
     };
     const body = {
       buyerId,
@@ -137,6 +138,13 @@ class Checkout extends Component {
         totalDeliveryPrice = `${totalDeliveryPrice}0`;
     }
 
+    let discountAvailable = this.props.user.bonusPoints
+      ? Math.floor(this.props.user.bonusPoints / 10) * 10
+      : null;
+    if (discountAvailable > totalPrice) {
+      discountAvailable = Math.floor(totalPrice / 10) * 10;
+    }
+
     const checkoutComponent = (
       <div id="checkout">
         <HeaderPart
@@ -196,9 +204,17 @@ class Checkout extends Component {
               <p className="bill-info bill-left">Commissioni:</p>
               <p className="bill-info bill-right">1.50/cad</p>
             </div>
+            {discountAvailable ? (
+              <div id="bill-discount" className="bill-info-container">
+                <p className="bill-info bill-left">Sconto:</p>
+                <p className="bill-info bill-right">-{discountAvailable}.00</p>
+              </div>
+            ) : null}
             <div id="bill-total" className="bill-info-container">
               <p className="bill-info bill-left">Totale:</p>
-              <p className="bill-info bill-right">€ {totalPrice}</p>
+              <p className="bill-info bill-right">
+                € {totalPrice - discountAvailable}
+              </p>
             </div>
           </div>
         </div>
@@ -219,7 +235,8 @@ class Checkout extends Component {
                 this.purchase(
                   totalBookPrice,
                   totalDeliveryPrice,
-                  totalBooksNumber
+                  totalBooksNumber,
+                  discountAvailable
                 );
               }}
             >

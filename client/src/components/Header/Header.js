@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import mainLogo from "../../images/logo-short-small.png";
 import "./Header.css";
 
 // components
@@ -364,14 +365,10 @@ class Header extends Component {
     );
 
     const quickSearchBarInner = (
-      <div className="header-component quick-search">
-        <label
-          htmlFor="text"
-          id="quickSearch-label"
-          className={this.state.quickSearchLabelMessage ? "" : "hidden"}
-        >
-          {this.state.quickSearchLabelMessage}
-        </label>
+      <div
+        id="quickSearch-general-container"
+        className="header-component quick-search"
+      >
         <form
           id="searchBar-form"
           className="searchBar-input input-real"
@@ -387,6 +384,13 @@ class Header extends Component {
           {searchInput}
           <input type="submit" className="hidden" />
         </form>
+        <label
+          htmlFor="text"
+          id="quickSearch-label"
+          className={this.state.quickSearchLabelMessage ? "" : "hidden"}
+        >
+          {this.state.quickSearchLabelMessage}
+        </label>
       </div>
     );
 
@@ -399,7 +403,7 @@ class Header extends Component {
       <div id="header-gContainer">
         <div id="header-container">
           <img
-            src="./images/logo-short-small.png"
+            src={mainLogo}
             alt="header logo"
             id="header-image-logo"
             onClick={() => this.props.history.push("/")}

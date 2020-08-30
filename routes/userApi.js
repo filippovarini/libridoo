@@ -234,7 +234,7 @@ router.post("/register", (req, res) => {
             // update bonus points if invited
             // !!!AAA!!! for now, bonusPoints increment is 5, need to specify
             User.findByIdAndUpdate(req.body.invitingUserId, {
-              $inc: { bonusPoints: 5 }
+              $inc: { bonusPoints: 1 }
             })
               .then(() => {
                 res.json({ code: 0, activeUser, JWT });

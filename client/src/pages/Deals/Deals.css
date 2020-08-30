@@ -19,19 +19,25 @@
   margin: 0 auto;
   margin-top: 30px;
   min-width: 250px;
+  color: rgb(32, 165, 32, 0.6);
 }
 
 .deals-choice:hover {
   cursor: pointer;
-  border-bottom: 1px solid black;
-  padding: 0 5px;
+  /* padding: 0 5px; */
   box-sizing: border-box;
+  color: rgb(32, 165, 32, 1);
+  /* font-weight: bold; */
 }
 
 .deals-choice.active:hover {
   cursor: default;
   border: none;
   padding: 0;
+}
+
+.deals-choice.active {
+  color: green;
 }
 
 #deals-body {
@@ -45,8 +51,13 @@
 }
 
 #deals-empty-container {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  box-shadow: 0px 0px 2px rgb(32, 165, 32);
+  border-radius: 3px;
   text-align: center;
+  color: rgb(32, 165, 32);
+  /* font-weight: bold; */
+  /* color: purple; */
   width: 80%;
   margin: 0 auto;
   margin-top: 100px;
@@ -54,9 +65,14 @@
   padding: 20px 40px;
 }
 
+#deals-empty-container.selling {
+  box-shadow: 0px 0px 2px purple;
+  color: purple;
+}
+
 #deals-empty-header {
   font-size: 1.6rem;
-  font-weight: 200;
+  /* font-weight: 200; */
   margin-top: 40px;
 }
 
@@ -65,16 +81,20 @@
 }
 
 #deals-empty-link {
-  border: 1px solid black;
+  background: rgb(32, 165, 32);
+  box-shadow: 0px 0px 3px rgb(32, 165, 32);
+  border-radius: 3px;
   text-decoration: none;
-  color: black;
+  color: white;
+  font-weight: bold;
   padding: 10px 30px;
   margin: 40px auto;
   display: inline-block;
 }
 
 #deals-empty-link:hover {
-  font-weight: bold;
-  border: 2px solid black;
+  box-shadow: 0px 0px 5px rgb(32, 165, 32);
+  font-size: 1.01rem;
+
   cursor: pointer;
 }

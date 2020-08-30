@@ -30,33 +30,74 @@
   color: #f79e02;
 }
 
-#empty-container {
+#orders-empty-container {
   text-align: center;
+  /* width: 350px; */
+  margin: 0 auto;
   margin-top: 100px;
 }
 
-#empty-header {
+#orders-empty-header {
   font-size: 2rem;
   font-weight: 200;
+  font-weight: bold;
+  color: gray;
+  /* margin: 0px; */
+  margin-bottom: 10px;
 }
 
-#empty-link {
-  border: 1px solid black;
+#empty-subHeader {
+  color: gray;
+  font-weight: bold;
+  width: 650px;
+  /* border: 1px solid black; */
+  margin: 0 auto;
+  margin-top: 0px;
+}
+
+#orders-offer {
+  color: rgb(32, 165, 32);
+}
+
+#orders-empty-link {
+  background: rgb(32, 165, 32);
+  box-shadow: 0px 0px 3px rgb(32, 165, 32);
+  border-radius: 3px;
   text-decoration: none;
-  color: black;
-  padding: 10px 30px;
-  margin-top: 80px;
+  color: white;
+  font-weight: bold;
+  padding: 8px 25px;
+  margin: 40px auto;
   display: inline-block;
 }
-
-#empty-link:hover {
-  font-weight: bold;
-  border: 2px solid black;
+#orders-empty-link:hover {
+  box-shadow: 0px 0px 5px rgb(32, 165, 32);
+  font-size: 1.1rem;
+  cursor: pointer;
 }
 
 #orders-loading {
   margin-top: 100px;
   text-align: center;
+}
+
+@media only screen and (max-width: 700px) {
+  #orders-empty-header {
+    font-size: 1.5rem;
+  }
+
+  #empty-subHeader {
+    font-size: 0.8rem;
+    width: 450px;
+  }
+
+  #orders-empty-link {
+    font-size: 0.9rem;
+  }
+
+  #orders-empty-link:hover {
+    font-size: 9.1rem;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -65,9 +106,52 @@
   }
 }
 
+@media only screen and (max-width: 500px) {
+  #orders-empty-container {
+    margin-top: 80px;
+  }
+
+  #orders-empty-header {
+    font-size: 1.2rem;
+  }
+
+  #empty-subHeader {
+    font-size: 0.7rem;
+    width: 350px;
+  }
+
+  #orders-empty-link {
+    font-size: 0.5rem;
+  }
+
+  #orders-empty-link:hover {
+    font-size: 0.51rem;
+  }
+}
+
 @media only screen and (max-width: 450px) {
   #fake-header {
     /* font-size: 3rem; */
     letter-spacing: 1rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #orders-empty-header {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+
+  #empty-subHeader {
+    font-size: 0.6rem;
+    width: 350px;
+  }
+
+  #orders-empty-link {
+    font-size: 0.5rem;
+  }
+
+  #orders-empty-link:hover {
+    font-size: 0.51rem;
   }
 }

@@ -13,7 +13,7 @@ class slideBar extends Component {
       >
         <div id="slideBar-components-container">
           <NavLink to="/invite" className="slideBar-component hover">
-            INVITA GLI AMICI E GUADAGNA
+            GUADAGNA CON NOI
           </NavLink>
           <NavLink to="/help" className="slideBar-component hover">
             COME FUNZIONA
@@ -44,9 +44,16 @@ class slideBar extends Component {
             <NavLink to="/deals" className="slideBar-component hover">
               I MIEI AFFARI
             </NavLink>
-            <NavLink to="/invite" className="slideBar-component hover">
-              INVITA GLI AMICI E GUADAGNA
-            </NavLink>
+            <div id="earn-suggester-container">
+              <NavLink
+                id="earn-suggester-link"
+                to="/invite"
+                className="slideBar-component hover"
+              >
+                GUADAGNA CON NOI{" "}
+              </NavLink>
+              <i id="earn-suggester" className="fas fa-circle"></i>
+            </div>
             <NavLink to="/help" className="slideBar-component hover">
               COME FUNZIONA
             </NavLink>

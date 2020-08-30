@@ -45,7 +45,7 @@
   width: 80vw;
   height: 80vh;
   z-index: 1001;
-  border: 1px solid black;
+  box-shadow: 0px 0px 50px black;
   padding: 0px;
   display: flex;
   align-items: center;
