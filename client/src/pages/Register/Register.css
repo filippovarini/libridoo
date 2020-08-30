@@ -48,9 +48,9 @@
   display: block;
   margin-bottom: 10px;
   font-weight: bold;
+  text-align: center;
   color: gray;
   font-size: 1.3rem;
-  font-style: italic;
 }
 
 #images-container {
@@ -59,9 +59,21 @@
   padding: 20px;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(7, 12%);
+  grid-template-columns: repeat(6, 13%);
   justify-content: center;
   grid-gap: 15px;
+  margin: 0 auto;
+}
+
+.image-register-container {
+  text-align: center;
+}
+
+.image-register-header {
+  margin: 0px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: gray;
 }
 
 .register-avatarImage {
@@ -221,7 +233,10 @@
 @media only screen and (max-width: 650px) {
   #images-container {
     grid-gap: 10px;
-    grid-template-columns: repeat(5, 19%);
+    grid-template-columns: repeat(4, 20%);
+  }
+  .image-register-header {
+    font-size: 0.6rem;
   }
   #register-fake-header {
     font-size: 3.5rem;

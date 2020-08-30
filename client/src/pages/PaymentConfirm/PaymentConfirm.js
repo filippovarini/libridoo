@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import HeaderPart from "../../components/headerPart";
 import "./PaymentConfirm.css";
 
@@ -234,9 +233,9 @@ class PaymentConfirm extends Component {
             </p>
           </div>
         </div>
-        <Link to="/" id="home-link">
+        <a href="./" id="home-link">
           HOME
-        </Link>
+        </a>
       </div>
     );
     const bodyComponent = this.state.loading ? loading : loaded;

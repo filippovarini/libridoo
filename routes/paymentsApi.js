@@ -34,11 +34,15 @@ router.get("/check/:_id", (req, res) => {
 // sent from checkout. 1) Do transition 2) Post newDeal 3) PaymentConfirm
 router.post("/buy", (req, res) => {
   const totalCommission = 1.5 * Number(req.body.bill.count);
-  const total =
+  let total =
     Number(req.body.bill.books) +
     Number(req.body.bill.delivery) +
     totalCommission -
-    discount;
+    req.body.bill.discount;
+  // virgin discount
+  if (req.body.bill.virgin) {
+    total -= total / 10;
+  }
   const NewDeal = new Deal({
     buyerId: req.body.buyerId,
     sellerIds: req.body.sellerIds,
@@ -54,19 +58,40 @@ router.post("/buy", (req, res) => {
     .then(deal => {
       if (req.body.bill.discount) {
         User.findByIdAndUpdate(req.body.buyerId, {
-          $inc: { bonusPoints: -req.body.bill.discount }
-        }).then(user => {
-          if (user) {
-            res.json({ code: 0, deal });
-          } else {
+          $inc: { bonusPoints: -req.body.bill.discount },
+          virgin: false
+        })
+          .then(user => {
+            if (user) {
+              res.json({ code: 0, deal });
+            } else {
+              res.json({
+                code: 1,
+                place: ".findByIdAndUpdate()",
+                message:
+                  "Qualcosa è andato storto nel salvataggio del tuo pagamento"
+              });
+            }
+          })
+          .catch(erorr =>
             res.json({
               code: 1,
               place: ".findByIdAndUpdate()",
               message:
                 "Qualcosa è andato storto nel salvataggio del tuo pagamento"
-            });
-          }
-        });
+            })
+          );
+      } else if (req.body.bill.virgin) {
+        User.findByIdAndUpdate(req.body.buyerId, { virgin: false })
+          .then(user => res.json({ code: 0, deal }))
+          .catch(erorr =>
+            res.json({
+              code: 1,
+              place: ".findByIdAndUpdate()",
+              message:
+                "Qualcosa è andato storto nel salvataggio del tuo pagamento"
+            })
+          );
       } else {
         res.json({ code: 0, deal });
       }

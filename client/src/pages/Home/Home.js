@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import mainLogo from "../../images/logo-long.png";
 import "./Home.css";
 
@@ -192,7 +193,71 @@ class Home extends Component {
       default:
         break;
     }
+    const virginContainer = (
+      <div id="virgin-container">
+        {this.props.user.name ? (
+          <p id="helloer" className="virgin">
+            Ciao {this.props.user.name.split(" ")[0]}!
+          </p>
+        ) : (
+          <p id="helloer">Ciao!</p>
+        )}
+        <p id="virgin-sub">
+          Su libridoo i libri vengono solitamente venduti a{" "}
+          <span id="virgin-emphasize">metà prezzo.</span> Inizia subito a
+          risparmiare sfruttando la nostra policy.
+        </p>
+        <p id="virgin-discount">Per te, subito 10% di sconto</p>
+        <Link to="./search" id="virgin-link">
+          COMPRA (-10%)
+        </Link>
+      </div>
+    );
 
+    const nonVirginContainer = (
+      <div id="helloer-container">
+        {this.props.user.name ? (
+          <p id="helloer">
+            Ciao {this.props.user.name.split(" ")[0]}, come stai?
+          </p>
+        ) : (
+          <p id="helloer">Ciao!</p>
+        )}
+        <p id="meme-header">
+          Se gli studi ti affannano troppo, risollevati con qualche meme!
+        </p>
+        <div id="home-meme-container">
+          <div id="meme-subpart-1" className="meme-subpart inferior">
+            <i
+              onClick={this.handleMemeSkip}
+              id="meme-subpart-skip"
+              className="fas fa-sync"
+            ></i>
+            <span id="meme-subpart-skip-text">refresh</span>
+          </div>
+          <div id="meme-subpart-2" className="meme-subpart">
+            <img
+              src="https://tbm-studentville.s3.amazonaws.com/app/uploads/sites/2/2018/06/2.jpg"
+              alt="meme"
+              id="home-meme"
+            />
+          </div>
+          <div id="meme-subpart-3" className="meme-subpart inferior">
+            <p id="meme-subpart-author">
+              from:
+              <br />
+              <a href="https://www.google.com" id="meme-author-name">
+                Meme-Uni
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+
+    const headerContainer = this.props.user.virgin
+      ? virginContainer
+      : nonVirginContainer;
     return (
       <div id="home">
         <div id="home-image-container">
@@ -203,44 +268,7 @@ class Home extends Component {
             <span id="hit-3">students</span>
           </p>
         </div>
-        <div id="helloer-container">
-          {this.props.user.name ? (
-            <p id="helloer">
-              Ciao {this.props.user.name.split(" ")[0]}, come stai?
-            </p>
-          ) : (
-            <p id="helloer">Ciao!</p>
-          )}
-          <p id="meme-header">
-            Se gli studi ti affannano troppo, risollevati con qualche meme!
-          </p>
-          <div id="home-meme-container">
-            <div id="meme-subpart-1" className="meme-subpart inferior">
-              <i
-                onClick={this.handleMemeSkip}
-                id="meme-subpart-skip"
-                className="fas fa-sync"
-              ></i>
-              <span id="meme-subpart-skip-text">refresh</span>
-            </div>
-            <div id="meme-subpart-2" className="meme-subpart">
-              <img
-                src="https://tbm-studentville.s3.amazonaws.com/app/uploads/sites/2/2018/06/2.jpg"
-                alt="meme"
-                id="home-meme"
-              />
-            </div>
-            <div id="meme-subpart-3" className="meme-subpart inferior">
-              <p id="meme-subpart-author">
-                from:
-                <br />
-                <a href="https://www.google.com" id="meme-author-name">
-                  Meme-Uni
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
+        {headerContainer}
         <div id="helps-container">
           <div id="help-nav">
             <p id="help-header">Scopri come:</p>

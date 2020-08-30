@@ -345,11 +345,23 @@ class Results extends Component {
       loading,
       bodyComponent,
       filterSubmitClass,
-      filters = null;
+      filters = null,
+      maxUserSellsCount,
+      set = false;
 
-    const maxUserSellsCount = this.props.booksResult[this.state.index]
-      ? this.props.booksResult[this.state.index].filterResult[0].userSellsCount
-      : null;
+    if (this.props.booksResult[this.state.index]) {
+      if (!("userSellsCount" in this.props.booksResult[this.state.index])) {
+        maxUserSellsCount = null;
+        set = true;
+      }
+    }
+
+    if (!set) {
+      maxUserSellsCount = this.props.booksResult[this.state.index]
+        ? this.props.booksResult[this.state.index].filterResult[0]
+            .userSellsCount
+        : null;
+    }
 
     if (this.state.index !== uiList.length) {
       booksComponent =

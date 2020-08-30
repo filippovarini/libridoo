@@ -39,6 +39,7 @@ router.get("/rating/:_id", (req, res) => {
 
 // send email to user with emailConfirm code
 router.get("/emailConfirm/:email", (req, res) => {
+  console.log("doing");
   let confirmCode = Math.floor(Math.random() * 1000000);
   confirmCode = confirmCode.toString();
   const transporter = nodemailer.createTransport({

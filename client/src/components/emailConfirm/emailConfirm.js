@@ -21,7 +21,6 @@ class EmailConfirm extends Component {
   };
 
   sendEmail = () => {
-    console.log("doing");
     fetch(
       `/api/user/emailConfirm/${
         JSON.parse(sessionStorage.getItem("registerBody")).email
@@ -29,7 +28,6 @@ class EmailConfirm extends Component {
     )
       .then(res => res.json())
       .then(jsonRes => {
-        console.log(jsonRes);
         if (jsonRes.code === 1) {
           // store error in redux and redirect
           this.props.dispatch({

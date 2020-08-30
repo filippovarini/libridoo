@@ -48,7 +48,8 @@ class Checkout extends Component {
       books,
       delivery,
       count,
-      discount
+      discount,
+      virgin: this.props.user.virgin
     };
     const body = {
       buyerId,
@@ -113,6 +114,15 @@ class Checkout extends Component {
         totalDeliveryPrice * 100 +
         1.5 * totalBooksNumber * 100) /
       100;
+    if (this.props.user.virgin) {
+      totalPrice -= totalPrice / 10;
+    }
+    let discountAvailable = this.props.user.bonusPoints
+      ? Math.floor(this.props.user.bonusPoints / 10) * 10
+      : null;
+    if (discountAvailable > totalPrice) {
+      discountAvailable = Math.floor(totalPrice / 10) * 10;
+    }
     if (String(totalPrice).indexOf(".") === -1) {
       // whole price
       totalPrice = `${totalPrice}.00`;
@@ -136,13 +146,6 @@ class Checkout extends Component {
       // decimal
       if (String(totalDeliveryPrice).split(".")[1].length === 1)
         totalDeliveryPrice = `${totalDeliveryPrice}0`;
-    }
-
-    let discountAvailable = this.props.user.bonusPoints
-      ? Math.floor(this.props.user.bonusPoints / 10) * 10
-      : null;
-    if (discountAvailable > totalPrice) {
-      discountAvailable = Math.floor(totalPrice / 10) * 10;
     }
 
     const checkoutComponent = (
@@ -206,8 +209,14 @@ class Checkout extends Component {
             </div>
             {discountAvailable ? (
               <div id="bill-discount" className="bill-info-container">
-                <p className="bill-info bill-left">Sconto:</p>
+                <p className="bill-info bill-left">Sconto bonus:</p>
                 <p className="bill-info bill-right">-{discountAvailable}.00</p>
+              </div>
+            ) : null}
+            {this.props.user.virgin ? (
+              <div id="bill-discount" className="bill-info-container">
+                <p className="bill-info bill-left">Sconto benvenuto:</p>
+                <p className="bill-info bill-right">-10%</p>
               </div>
             ) : null}
             <div id="bill-total" className="bill-info-container">

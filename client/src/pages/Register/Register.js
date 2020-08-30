@@ -340,90 +340,115 @@ class Register extends Component {
       <div id="register-avatarImgs">
         <span id="agatarImg-prompt">Scegli un avatar</span>
         <div id="images-container">
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981680454"
-            alt="meme"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981687254"
-            alt="uccellino"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981692298"
-            alt="schifomadò"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981699850"
-            alt="morgan e bugo"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981712262"
-            alt="lavoro onesto"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981716946"
-            alt="baby yoda"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981720614"
-            alt="stonks"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981725500"
-            alt="foca coccolosa"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981730904"
-            alt="donna-giraffa"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981735139"
-            alt="disappointed"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981739335"
-            alt="cane carino"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981743022"
-            alt="vecchietto"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981747101"
-            alt="spongebob uccello"
-            className="register-avatarImage"
-          />
-          <img
-            onClick={this.setAvatarImg}
-            src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587996448726"
-            alt="fidanzato distratto"
-            className="register-avatarImage"
-          />
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981692298"
+              alt="schifomadò"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Il professore</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981699850"
+              alt="morgan e bugo"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">L'appello</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981735139"
+              alt="disappointed"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Il 18</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981716946"
+              alt="baby yoda"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Pausa caffè</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981730904"
+              alt="donna-giraffa"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Il copione</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981720614"
+              alt="stonks"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">L'economista</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598765298832"
+              alt="matematica"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">L'ingegnere</p>
+          </div>
+
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780677065"
+              alt="the wolf of wall street leonardo di caprio"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Il legale</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780236639"
+              alt="de luca il medico"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Il medico</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981712262"
+              alt="lavoro onesto"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">L'agronomo</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598781381406"
+              alt="alberto angela"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Storia</p>
+          </div>
+          <div className="image-register-container">
+            <img
+              onClick={this.setAvatarImg}
+              src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780483720"
+              alt="ragazzo che si sforza"
+              className="register-avatarImage"
+            />
+            <p className="image-register-header">Psicologia</p>
+          </div>
         </div>
       </div>
     );
