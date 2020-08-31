@@ -97,7 +97,6 @@ class UserInfo extends Component {
               {this.props.hidden
                 ? this.props.user.name.split(" ")[0]
                 : this.props.user.name}
-              docnono
             </p>
           </div>
           <div

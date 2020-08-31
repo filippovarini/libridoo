@@ -79,12 +79,12 @@ class Cart extends Component {
                       -
                     </p>
                     <p className="title info">{book.title}</p>
-                    <p className="quality info">{book.quality}</p>
                     <p className="place info">
                       {" "}
                       {cluster.sellerInfo.place.city},{" "}
-                      {cluster.sellerInfo.school}
+                      <span id="uni-cart">{cluster.sellerInfo.school}</span>
                     </p>
+                    <p className="quality info">{book.quality}</p>
                     <p className="book-price">{bookPrice} €</p>
                   </div>
                 );

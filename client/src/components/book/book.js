@@ -217,7 +217,7 @@ class book extends Component {
     });
 
     const lowerIcon = bought ? boughtResultLowerIcon : notBoughtResultLowerIcon;
-
+    console.log(this.props.maxUserSellsCount, this.props.book.userSellsCount);
     let upperHeader = null;
     if (this.props.book.userSellsCount > 1) {
       upperHeader = (

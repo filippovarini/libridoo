@@ -211,6 +211,12 @@
   /* background: white; */
 }
 
+#results #results-nav-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #results #nav-ui {
   text-overflow: ellipsis;
   white-space: nowrap;

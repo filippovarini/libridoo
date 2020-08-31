@@ -119,8 +119,8 @@ class Invite extends Component {
           <p className="earn-title">Insta Story</p>
           <p className="earn-description">
             <span className="earn-highlight">1 punto</span> se posti sulla
-            storia per <b>24 ore</b> una di queste tre foto, taggando
-            @libridoo_uni*:
+            storia per <b>24 ore</b>* una di queste tre foto, taggando
+            @libridoo_uni:
           </p>
           <p id="invite-link-real" className="invite-link">
             http://localhost:3000/register/{this.props.user._id}

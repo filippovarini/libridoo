@@ -350,8 +350,9 @@ class Results extends Component {
       set = false;
 
     if (this.props.booksResult[this.state.index]) {
-      if (!("userSellsCount" in this.props.booksResult[this.state.index])) {
+      if (this.props.booksResult[this.state.index].wrongCode === 2.5) {
         maxUserSellsCount = null;
+        console.log("hello");
         set = true;
       }
     }
@@ -778,6 +779,21 @@ class Results extends Component {
                 <option value="2">Prezzo: discendente</option>
                 <option value="3">Prezzo: ascendente</option>
               </select>
+            </div>
+            <div id="results-nav-top" className="normal-footer">
+              <i
+                onClick={this.decreaseIndex}
+                className={`fas fa-angle-left nav ${
+                  this.state.index === 0 ? "hidden" : null
+                }`}
+              ></i>
+              <p id="nav-ui">{uiList[this.state.index] || "REVIEW"}</p>
+              <i
+                onClick={this.increaseIndex}
+                className={`fas fa-angle-right nav ${
+                  uiList.length < this.state.index + 1 ? "hidden" : null
+                }`}
+              ></i>
             </div>
             <div id="bodyComponent-container">{bodyComponent}</div>
           </div>
