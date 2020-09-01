@@ -139,10 +139,6 @@
   display: none;
 }
 
-#bodyInfo #school-text {
-  overflow: hidden;
-}
-
 @media only screen and (max-width: 450px) {
   #noSchool-container {
     font-size: 0.7rem;
