@@ -42,7 +42,7 @@ class Cart extends Component {
         className={this.props.hidden ? "hidden" : null}
         onMouseLeave={this.props.toggleDisplay}
       >
-        <p id="cart-header">Carrello</p>
+        {/* <p id="cart-header">Carrello</p> */}
 
         {this.props.selectedBooks.map(cluster => {
           return (

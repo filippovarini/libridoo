@@ -182,11 +182,12 @@ router.post("/fetch/buy", async (req, res) => {
     forEachPromise.then(() => {
       // filter school
       if (req.body.searchParams.school) {
-        filterResult = filterResult.filter(
-          book =>
+        filterResult = filterResult.filter(book => {
+          return (
             book.sellerUser.school.toLowerCase() ===
             req.body.searchParams.school.toLowerCase()
-        );
+          );
+        });
       }
       if (filterResult.length === 0) {
         res.json({
@@ -329,11 +330,12 @@ router.post("/generalFetch/UI", async (req, res) => {
       forEachPromise.then(skipped => {
         if (!skipped) {
           if (param.school) {
-            filterResult = filterResult.filter(
-              book =>
+            filterResult = filterResult.filter(book => {
+              return (
                 book.sellerUser.school.toLowerCase() ===
                 param.school.toLowerCase()
-            );
+              );
+            });
             if (filterResult.length === 0) {
               isEmpty = true;
               wrongFilter = "school";

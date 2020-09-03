@@ -300,11 +300,11 @@
 
 #results-loading {
   text-align: center;
-  position: fixed;
-  top: 450px;
-  width: 200px;
-  left: 50%;
-  margin-left: -100px;
+  /* position: fixed; */
+  /* border: 1px solid black; */
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 200px;
 }
 
 #filter-suggester {

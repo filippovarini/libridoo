@@ -80,6 +80,7 @@ class Header extends Component {
     if (
       location !== "/search" &&
       location !== "/results" &&
+      location !== "/checkoutReview" &&
       location !== "/login/buying" &&
       location !== "/register/buying" &&
       location !== "/checkout" &&
@@ -249,6 +250,8 @@ class Header extends Component {
                   JSON.stringify([searchParams])
                 );
               }
+              // !!!!!!! IN CASE GENERAL LOADING DOESN'T WORK, JUST UNCOMMENT THIS!
+              // this.props.history.push("/results");
               if (jsonRes.code === 2.5) {
                 // wrong filter
                 this.props.dispatch({

@@ -42,20 +42,29 @@ router.get("/emailConfirm/:email", (req, res) => {
   console.log("doing");
   let confirmCode = Math.floor(Math.random() * 1000000);
   confirmCode = confirmCode.toString();
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+  var transporter = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    secureConnection: true,
     port: 587,
-    secure: false,
     auth: {
-      user: "libridoo.contacts@gmail.com",
+      user: "info@libridoo.it",
       pass: "scoby-doo"
-    },
-    tls: { rejectUnauthorized: false }
+    }
   });
+  // const transporter = nodemailer.createTransport({
+  //   host: "smtp.gmail.com",
+  //   port: 587,
+  //   secure: false,
+  //   auth: {
+  //     user: "libridoo.contacts@gmail.com",
+  //     pass: "scoby-doo"
+  //   },
+  //   tls: { rejectUnauthorized: false }
+  // });
 
   // send mail with defined transport object
   transporter.sendMail({
-    from: '"Libridoo" <libridoo.contacts@gmail.com>',
+    from: '"Libridoo" <info@libridoo.it>',
     to: req.params.email,
     subject: "Conferma la tua Email",
     text: "Ciao!",

@@ -206,6 +206,7 @@ class Orders extends Component {
     );
     const loaded = (
       <div id="orders-body-container">
+        <p id="orders-header-suggester">Conferma</p>
         {this.state.clusters.map(cluster => {
           return (
             <ClusterBooks

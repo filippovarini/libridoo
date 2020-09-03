@@ -13,6 +13,7 @@ import Register from "./pages/Register/Register";
 import Recover from "./pages/Recover/Recover";
 import Search from "./pages/Search/Search";
 import Results from "./pages/Results/Results";
+import CheckoutReview from "./pages/CheckoutReview/CheckoutReview";
 import Checkout from "./pages/Checkout/Checkout";
 import PaymentConfirm from "./pages/PaymentConfirm/PaymentConfirm";
 import sellReview from "./pages/InfoReview/sell/sellReview";
@@ -114,7 +115,8 @@ class App extends React.Component {
             <Route path="/recover" component={Recover} />
             <Route path="/search" component={Search} />
             <Route exact path="/results" component={Results} />
-            <Route path="/checkout" component={Checkout} />
+            <Route path="/checkoutReview" component={CheckoutReview} />
+            <Route exact path="/checkout" component={Checkout} />
             <Route path="/paymentConfirm" component={PaymentConfirm} />
             <Route path="/infoReview/sell" component={sellReview} />
             <Route path="/infoReview/buy" component={buyReview} />

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import "./Results.css";
 
@@ -46,16 +45,6 @@ class Results extends Component {
       loading: false
     });
   };
-
-  // wrongFilter = () => {
-  //   if (this.state.index !== this.state.indexFilterUpdated) {
-  //     this.setState({
-  //       filterHidden: false,
-  //       indexFilterUpdated: this.state.index
-  //     });
-  //   }
-  //   console.log("updatingf");
-  // };
 
   componentDidUpdate = () => {
     if (this.state.ready && !this.state.updated) {
@@ -166,6 +155,9 @@ class Results extends Component {
       quality: "__disabled"
     });
     // }
+    if (this.state.index + 1 === this.props.booksResult.length) {
+      this.props.history.push("/checkoutReview");
+    }
   };
 
   decreaseIndex = () => {
@@ -729,76 +721,49 @@ class Results extends Component {
       </div>
     );
 
-    const resultReview = (
-      <div id="resultsReview">
-        <p id="results-review-header">
-          {this.props.selectedBooks.length !== 0
-            ? "Hai finito la spesa"
-            : "Non hai selezionato nessun libro"}
-        </p>
-        <div id="choices-container">
-          <p onClick={this.handleReviewSearch} className="results-review-link">
-            CERCA ALTRI LIBRI
-          </p>
-          <Link
-            to="/checkout"
-            className={`results-review-link ${
-              this.props.selectedBooks.length !== 0 ? null : "hidden"
-            }`}
-          >
-            {" "}
-            VAI AL CHECKOUT
-          </Link>
-        </div>
-      </div>
-    );
-
     const reverse = bodyComponent === wrongFilters ? true : false;
 
     const bodyContainer =
       this.props.booksResult.length !== 0 ? (
-        this.state.index === this.props.booksResult.length ? (
-          resultReview
-        ) : (
-          <div>
-            {reverse
-              ? !this.state.filterHidden
-                ? filterSuggestion
-                : filters
-              : this.state.filterHidden
+        <div>
+          {reverse
+            ? !this.state.filterHidden
               ? filterSuggestion
-              : filters}
-            <div id="checkout-order-container">
-              <p id="checkout-order-header">Ordina per:</p>
-              <select
-                id="checkout-order"
-                value={this.state.order}
-                onChange={this.handleOrderChange}
-              >
-                <option value="1">Quanti libri cercati vende</option>
-                <option value="2">Prezzo: discendente</option>
-                <option value="3">Prezzo: ascendente</option>
-              </select>
-            </div>
-            <div id="results-nav-top" className="normal-footer">
-              <i
-                onClick={this.decreaseIndex}
-                className={`fas fa-angle-left nav ${
-                  this.state.index === 0 ? "hidden" : null
-                }`}
-              ></i>
-              <p id="nav-ui">{uiList[this.state.index] || "REVIEW"}</p>
-              <i
-                onClick={this.increaseIndex}
-                className={`fas fa-angle-right nav ${
-                  uiList.length < this.state.index + 1 ? "hidden" : null
-                }`}
-              ></i>
-            </div>
-            <div id="bodyComponent-container">{bodyComponent}</div>
+              : filters
+            : this.state.filterHidden
+            ? filterSuggestion
+            : filters}
+          <div id="checkout-order-container">
+            <p id="checkout-order-header">Ordina per:</p>
+            <select
+              id="checkout-order"
+              value={this.state.order}
+              onChange={this.handleOrderChange}
+            >
+              <option value="1">Quanti libri cercati vende</option>
+              <option value="2">Prezzo: discendente</option>
+              <option value="3">Prezzo: ascendente</option>
+            </select>
           </div>
-        )
+          <div id="results-nav-top" className="normal-footer">
+            <i
+              onClick={this.decreaseIndex}
+              className={`fas fa-angle-left nav ${
+                this.state.index === 0 ? "hidden" : null
+              }`}
+            ></i>
+            <p id="nav-ui">{uiList[this.state.index] || "REVIEW"}</p>
+            <i
+              onClick={this.increaseIndex}
+              className={`fas fa-angle-right nav ${
+                uiList.length < this.state.index + 1 ? "hidden" : null
+              }`}
+            ></i>
+          </div>
+          <div id="bodyComponent-container">{bodyComponent}</div>
+        </div>
       ) : (
+        // )
         <div id="results-loading">
           <div
             id="alfa"
