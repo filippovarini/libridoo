@@ -17,10 +17,23 @@ class EmailConfirm extends Component {
     emailLabelMessage: null,
     codeLabelHidden: true,
     emailLoading: false,
-    generalLoading: false
+    generalLoading: false,
+    displayFake: this.props.display
+  };
+
+  componentDidMount = () => {
+    if (
+      this.props.display !== "hidden" &&
+      !sessionStorage.getItem("requestSent") &&
+      sessionStorage.getItem("emailSent") === "true"
+    ) {
+      sessionStorage.setItem("requestSent", "true");
+      this.sendEmail();
+    }
   };
 
   sendEmail = () => {
+    console.log("sending1");
     fetch(
       `/api/user/emailConfirm/${
         JSON.parse(sessionStorage.getItem("registerBody")).email
@@ -142,7 +155,7 @@ class EmailConfirm extends Component {
 
   componentDidUpdate = () => {
     if (
-      this.props.display !== "hiddem" &&
+      this.props.display !== "hidden" &&
       !sessionStorage.getItem("requestSent") &&
       sessionStorage.getItem("emailSent") === "true"
     ) {
@@ -287,6 +300,7 @@ class EmailConfirm extends Component {
   };
 
   render() {
+    console.log(this.state.displayFake);
     const canShow = this.state.canResend ? null : "hidden";
     let address = null;
     if (sessionStorage.getItem("registerBody")) {

@@ -44,38 +44,37 @@ router.get("/emailConfirm/:email", (req, res) => {
   confirmCode = confirmCode.toString();
   var transporter = nodemailer.createTransport({
     host: "smtp.office365.com",
-    secureConnection: true,
+    secure: false,
     port: 587,
     auth: {
       user: "info@libridoo.it",
-      pass: "scoby-doo"
+      pass: "scoobydoo"
     }
   });
-  // const transporter = nodemailer.createTransport({
-  //   host: "smtp.gmail.com",
-  //   port: 587,
-  //   secure: false,
-  //   auth: {
-  //     user: "libridoo.contacts@gmail.com",
-  //     pass: "scoby-doo"
-  //   },
-  //   tls: { rejectUnauthorized: false }
-  // });
+  // verify connection configuration
 
-  // send mail with defined transport object
-  transporter.sendMail({
-    from: '"Libridoo" <info@libridoo.it>',
-    to: req.params.email,
-    subject: "Conferma la tua Email",
-    text: "Ciao!",
-    html: `Gentile Utente,
+  transporter.sendMail(
+    {
+      from: '"Libridoo" <info@libridoo.it>',
+      to: req.params.email,
+      subject: "Conferma la tua Email",
+      text: "Ciao!",
+      html: `Gentile Utente,
     <br /><br />
     Il suo codice per confermare l'email è ${confirmCode}
     <br /><br /><br />
     Saluti,
     <br />
     <i>Il team di Libridoo</i>`
-  });
+    },
+    (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("emailsent", info);
+      }
+    }
+  );
   bcrypt
     .hash(confirmCode, 10)
     .then(confirmCode => {
