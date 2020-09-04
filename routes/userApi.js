@@ -663,4 +663,11 @@ router.delete("/delete", (req, res) => {
     });
 });
 
+router.post("/ciao", (req, res) => {
+  console.log("doing");
+  res.redirect(
+    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin"
+  );
+});
+
 module.exports = router;

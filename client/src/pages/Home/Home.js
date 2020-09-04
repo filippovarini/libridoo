@@ -19,6 +19,21 @@ class Home extends Component {
     alert("handling");
   };
 
+  send = () => {
+    console.log("sending");
+    fetch("/api/user/ciao", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ciao: "merda"
+      })
+    })
+      .then(() => console.log("ok"))
+      .catch(e => console.log(e));
+  };
+
   render() {
     const buyExplainer = (
       <div id="help-buy-explainer" className="help-explainer-container">
@@ -221,7 +236,9 @@ class Home extends Component {
             Ciao {this.props.user.name.split(" ")[0]}, come stai?
           </p>
         ) : (
-          <p id="helloer">Ciao!</p>
+          <p id="helloer" onClick={this.send}>
+            Ciao!
+          </p>
         )}
         <p id="meme-header">
           Se gli studi ti affannano troppo, risollevati con qualche meme!
