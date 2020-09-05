@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 
 const User = require("../models/Users");
 const Book = require("../models/Books");
+const Error = require("../models/Errors");
 
 const router = express.Router();
 
@@ -39,17 +40,18 @@ router.get("/rating/:_id", (req, res) => {
 
 // send email to user with emailConfirm code
 router.get("/emailConfirm/:email", (req, res) => {
-  console.log("doing");
   let confirmCode = Math.floor(Math.random() * 1000000);
   confirmCode = confirmCode.toString();
-  var transporter = nodemailer.createTransport({
-    host: "smtp.office365.com",
-    secure: false,
-    port: 587,
+  const transporter = nodemailer.createTransport({
+    // host: "smtp.gmail.com",
+    service: "Gmail",
+    // port: 587,
+    // secure: false,
     auth: {
-      user: "info@libridoo.it",
-      pass: "scoobydoo"
+      user: "libridoo0.contacts@gmail.com",
+      pass: "scoby-doo"
     }
+    // tls: { rejectUnauthorized: false }
   });
   // verify connection configuration
 
@@ -67,9 +69,13 @@ router.get("/emailConfirm/:email", (req, res) => {
     <br />
     <i>Il team di Libridoo</i>`
     },
-    (error, info) => {
+    async (error, info) => {
       if (error) {
-        console.log(error);
+        console.log("error", error);
+        const newError = new Error({
+          error: { message: "EMAIL NOT SENT, confirmEmail", error }
+        });
+        await newError.save();
       } else {
         console.log("emailsent", info);
       }
@@ -569,12 +575,13 @@ router.put("/recover", (req, res) => {
                 });
 
                 // send mail with defined transport object
-                transporter.sendMail({
-                  from: '"Libridoo" <libridoo.contacts@gmail.com>',
-                  to: req.body.email,
-                  subject: "Recupero Password",
-                  text: "Ciao!",
-                  html: `Gentile Utente,
+                transporter.sendMail(
+                  {
+                    from: '"Libridoo" <libridoo.contacts@gmail.com>',
+                    to: req.body.email,
+                    subject: "Recupero Password",
+                    text: "Ciao!",
+                    html: `Gentile Utente,
                   <br /><br />
                   Confermiamo che ha appena resettato con successo la password per
                   accedere a:
@@ -589,7 +596,19 @@ router.put("/recover", (req, res) => {
                   Saluti,
                   <br />
                   <i>Il team di Libridoo</i>`
-                });
+                  },
+                  async (error, info) => {
+                    if (error) {
+                      console.log(error);
+                      const newError = new Error({
+                        error: { message: "EMAIL NOT SENT, recover", error }
+                      });
+                      await newError.save();
+                    } else {
+                      console.log("emailsent", info);
+                    }
+                  }
+                );
                 res.json({
                   code: 0,
                   message: "Password resettata con successo!"

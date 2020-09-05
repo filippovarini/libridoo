@@ -98,6 +98,14 @@ class Header extends Component {
         this.props.dispatch({ type: "R-DELETE-ALL" });
       }
     }
+    if (
+      location !== "/checkout" &&
+      location !== "/checkoutReview" &&
+      location !== "/login/buying" &&
+      location !== "/register/buying"
+    ) {
+      sessionStorage.removeItem("coupon");
+    }
     // index in sessionStorage
     if (
       sessionStorage.getItem("index") &&

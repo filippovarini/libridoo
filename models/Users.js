@@ -89,10 +89,6 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false
   },
-  virgin: {
-    type: Boolean,
-    default: true
-  },
   registerDate: {
     type: Date,
     default: Date.now

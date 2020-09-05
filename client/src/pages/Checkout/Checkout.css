@@ -140,9 +140,21 @@
   justify-content: center;
 }
 
-#bill-discount {
+#checkout-discount {
   color: rgb(32, 165, 32);
   font-weight: bold;
+}
+
+#rc-link-container.unactive {
+  font-style: italic;
+  background: #ebebeb;
+  color: gray;
+}
+
+#rc-link.unactive {
+  color: gray;
+  font-weight: normal;
+  font-size: 0.8rem;
 }
 
 @media only screen and (max-width: 500px) {

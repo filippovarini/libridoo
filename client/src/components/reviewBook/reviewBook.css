@@ -1,0 +1,79 @@
+#reviewBook {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+.rb-titles {
+  margin: 0 5px;
+  /* text-align: center; */
+  display: flex;
+  align-items: center;
+}
+
+#rb-subtotal {
+  width: 60px;
+  justify-content: center;
+  color: purple;
+  font-weight: bold;
+}
+
+#rb-quality {
+  width: 20%;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: gray;
+}
+
+#rb-title {
+  width: 40%;
+  font-weight: bold;
+}
+
+#rb-place {
+  width: 30%;
+  font-size: 0.9rem;
+}
+
+#rb-image-contained {
+  /* height: 50px; */
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+#rbs-item {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#rbs-title {
+  font-weight: bold;
+}
+
+#rbs-place {
+  font-size: 0.8rem;
+  /* margin-top: 5px; */
+}
+
+#rbs-quality {
+  font-weight: bold;
+  color: gray;
+  font-size: 0.6rem;
+  margin-top: 3px;
+  /* font-style: italic; */
+}
+
+#rbs-subtotal {
+  color: purple;
+  width: 80px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  justify-content: center;
+}

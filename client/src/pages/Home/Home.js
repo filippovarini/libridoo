@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+
 import mainLogo from "../../images/logo-long.png";
 import "./Home.css";
 
@@ -208,28 +208,8 @@ class Home extends Component {
       default:
         break;
     }
-    const virginContainer = (
-      <div id="virgin-container">
-        {this.props.user.name ? (
-          <p id="helloer" className="virgin">
-            Ciao {this.props.user.name.split(" ")[0]}!
-          </p>
-        ) : (
-          <p id="helloer">Ciao!</p>
-        )}
-        <p id="virgin-sub">
-          Su libridoo i libri vengono solitamente venduti a{" "}
-          <span id="virgin-emphasize">metà prezzo.</span> Inizia subito a
-          risparmiare sfruttando la nostra policy.
-        </p>
-        <p id="virgin-discount">Per te, subito 10% di sconto</p>
-        <Link to="./search" id="virgin-link">
-          COMPRA (-10%)
-        </Link>
-      </div>
-    );
 
-    const nonVirginContainer = (
+    const helloer = (
       <div id="helloer-container">
         {this.props.user.name ? (
           <p id="helloer">
@@ -240,7 +220,7 @@ class Home extends Component {
             Ciao!
           </p>
         )}
-        <p id="meme-header">
+        <p id="meme-header" onClick={this.send}>
           Se gli studi ti affannano troppo, risollevati con qualche meme!
         </p>
         <div id="home-meme-container">
@@ -272,9 +252,6 @@ class Home extends Component {
       </div>
     );
 
-    const headerContainer = this.props.user.virgin
-      ? virginContainer
-      : nonVirginContainer;
     return (
       <div id="home">
         <div id="home-image-container">
@@ -285,7 +262,7 @@ class Home extends Component {
             <span id="hit-3">students</span>
           </p>
         </div>
-        {headerContainer}
+        {helloer}
         <div id="helps-container">
           <div id="help-nav">
             <p id="help-header">Scopri come:</p>

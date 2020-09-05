@@ -267,13 +267,27 @@ class Search extends Component {
                   key={searchParams.indexOf(param)}
                 >
                   <p className="list">{param.ui}</p>
+                  <p id="search-list-counter">
+                    {this.props.booksResult
+                      ? this.props.booksResult[searchParams.indexOf(param)]
+                        ? this.props.booksResult[searchParams.indexOf(param)]
+                            .filterResult.length === 0
+                          ? null
+                          : `${
+                              this.props.booksResult[
+                                searchParams.indexOf(param)
+                              ].filterResult.length
+                            } risultati`
+                        : null
+                      : null}
+                  </p>
                   <p
                     id={param.ui}
                     className="list-delete"
                     title="elimina"
                     onClick={this.handleDelete}
                   >
-                    -
+                    <i id="list-delete-ico" className="fas fa-times"></i>
                   </p>
                 </div>
               );

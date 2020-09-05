@@ -8,6 +8,7 @@ const FeedbackRouter = require("./routes/feedbackApi");
 const UserRouter = require("./routes/userApi");
 const BookRouter = require("./routes/bookApi");
 const PaymentsRouter = require("./routes/paymentsApi");
+const CouponRouter = require("./routes/couponApi");
 var redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
 
 // setup database
@@ -36,6 +37,7 @@ app.use("/api/feedback", FeedbackRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/book", BookRouter);
 app.use("/api/payment", PaymentsRouter);
+app.use("/api/coupon", CouponRouter);
 
 // rendering static assets
 if (process.env.NODE_ENV === "production") {

@@ -23,6 +23,9 @@ const DealSchema = new Schema({
       type: Number,
       required: true
     },
+    discount: {
+      type: Number
+    },
     total: {
       type: Number,
       required: true

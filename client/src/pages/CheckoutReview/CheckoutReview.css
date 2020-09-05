@@ -1,0 +1,230 @@
+#cr-header {
+  background: rgb(32, 165, 32);
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.cr-titles {
+  color: white;
+  font-weight: bold;
+}
+
+#cr-subtotal {
+  width: 60px;
+}
+
+#cr-quality {
+  width: 20%;
+  text-align: center;
+}
+
+#cr-title {
+  width: 30%;
+  text-align: center;
+}
+
+#cr-place {
+  width: 30%;
+  text-align: center;
+}
+
+#cr-image {
+  width: 50px;
+}
+
+#uniCode {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+#uniCode-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: gray;
+
+  /* display: none; */
+}
+
+#uniCode-input {
+  height: 30px;
+  text-align: center;
+  width: 120px;
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+#uniCode-submit {
+  color: #f79e02;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid #f79e02;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  border-radius: 3px;
+  box-shadow: 0px 0px 2px #f79e02;
+  display: none;
+}
+
+#uniCode-submit:hover {
+  font-size: 0.9rem;
+}
+
+/* .obscured {
+  visibility: hidden;
+} */
+
+#review-cart {
+  margin: 0 auto;
+  margin-top: 50px;
+  background: #ededed;
+  width: 80%;
+  max-width: 900px;
+  min-width: 350px;
+  padding-top: 10px;
+  padding-bottom: 60px;
+}
+
+#rc-header {
+  font-weight: bold;
+  font-size: 1.5rem;
+
+  text-align: center;
+}
+
+.rc-cart-div {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  width: 70%;
+  max-width: 800px;
+  min-width: 300px;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.rc-cart-header {
+  font-weight: bold;
+  /* border: 1px solid black; */
+  width: 200px;
+}
+
+#rc-subtotal {
+  margin-top: 15px;
+}
+
+#rc-delivery {
+  font-size: 0.8rem;
+  text-align: right;
+  width: 120px;
+  color: gray;
+}
+
+#rc-info-ico {
+  font-size: 0.65rem;
+  position: relative;
+  top: -6px;
+  right: -3px;
+  cursor: pointer;
+}
+
+#rc-commission-explainer {
+  font-size: 0.8rem;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  width: 200px;
+  padding: 5px;
+  border-radius: 5px;
+  left: 100px;
+  bottom: 30px;
+  color: gray;
+  font-weight: bold;
+}
+
+#rc-commission {
+  position: relative;
+}
+
+#rc-coupon-form {
+  position: relative;
+}
+
+#rc-error {
+  color: red;
+  font-size: 0.7rem;
+  position: absolute;
+  left: 0px;
+  bottom: -15px;
+  left: 25px;
+}
+
+#rc-link-container {
+  background: black;
+  height: 40px;
+  text-align: center;
+  margin-top: 30px;
+  border-radius: 3px;
+}
+#rc-link {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  margin: 0 auto;
+}
+
+#rc-link-container:hover {
+  box-shadow: 0px 0px 3px black;
+  cursor: pointer;
+}
+
+#rc-coupon-ico {
+  color: rgb(32, 165, 32);
+  margin-left: 20px;
+  font-size: 1.3rem;
+}
+
+.noCommission {
+  color: rgb(32, 165, 32);
+  font-weight: bold;
+}
+
+@media screen and (max-width: 850px) {
+  #uniCode-header {
+    font-size: 1.1rem;
+  }
+  #uniCode-input {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #uniCode-header {
+    font-size: 1rem;
+  }
+  #uniCode-input {
+    height: 25px;
+    margin-right: 20px;
+  }
+  #uniCode-submit {
+    font-size: 0.7rem;
+  }
+  #uniCode {
+    padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 435px) {
+  #uniCode-header {
+    width: 150px;
+  }
+}

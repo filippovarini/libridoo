@@ -6,7 +6,7 @@ const router = express.Router();
 
 const Book = require("../models/Books");
 const User = require("../models/Users");
-const Deal = require("../models/Deals");
+const Error = require("../models/Errors");
 const SoldBooksCluster = require("../models/SoldBooksClusters");
 
 // multer upload
@@ -588,7 +588,21 @@ router.post("/checkedOut", (req, res) => {
         <p style="margin:20px; font-size: .7rem">* Conforme ai termini e condizioni di www.libridoo.it, esposti su https://www.libridoo.it/T&C, libridoo trattiene il 10% (10 per cento) dell'incasso del venditore  
         <br/><br/><br/>
         Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
-      });
+      }),
+        async (error, info) => {
+          if (error) {
+            console.log(error);
+            const newError = new Error({
+              error: {
+                message: "EMAIL NOT SENT, checkout, email al venditore",
+                error
+              }
+            });
+            await newError.save();
+          } else {
+            console.log("emailsent", info);
+          }
+        };
       // post soldbooks cluster
       const newCluster = new SoldBooksCluster({
         dealId: req.body.dealId,
@@ -652,13 +666,14 @@ router.post("/checkedOut", (req, res) => {
               });
 
               // send mail with defined transport object
-              transporter.sendMail({
-                from: '"Libridoo" <libridoo.contacts@gmail.com>',
-                to: req.body.buyerInfo.email,
-                subject: "Ordine completato!",
-                // text: "Ciao!", OK WITHOUT TEXT??
-                html: `Caro ${req.body.buyerInfo.name.split(" ")[0] ||
-                  "utente"},
+              transporter.sendMail(
+                {
+                  from: '"Libridoo" <libridoo.contacts@gmail.com>',
+                  to: req.body.buyerInfo.email,
+                  subject: "Ordine completato!",
+                  // text: "Ciao!", OK WITHOUT TEXT??
+                  html: `Caro ${req.body.buyerInfo.name.split(" ")[0] ||
+                    "utente"},
                 <br /><br />
                 Ti ringraziamo per aver scelto <i>Libridoo</i> per comprare i libri di cui
                 avevi bisogno, speriamo ti sia trovato bene con noi.
@@ -731,7 +746,23 @@ router.post("/checkedOut", (req, res) => {
                 Saluti,
                 <br />
                 Il team di <i>Libridoo</i>`
-              });
+                },
+                async (error, info) => {
+                  if (error) {
+                    console.log(error);
+                    const newError = new Error({
+                      error: {
+                        message:
+                          "EMAIL NOT SENT, checkout, email al compratore",
+                        error
+                      }
+                    });
+                    await newError.save();
+                  } else {
+                    console.log("emailsent", info);
+                  }
+                }
+              );
               res.json({
                 code: 0,
                 devmessage: "clusters successfully posted",

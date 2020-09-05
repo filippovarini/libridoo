@@ -30,19 +30,12 @@ router.get("/check/:_id", (req, res) => {
     );
 });
 
-// buyerId / [sellerIds] / bill: {delivery / books / count / discount}
+// buyerId / [sellerIds] / bill: {delivery / books / commission / discount, total}
 // sent from checkout. 1) Do transition 2) Post newDeal 3) PaymentConfirm
 router.post("/buy", (req, res) => {
+  // save this payment only after payment successful!!!!
   const totalCommission = 1.5 * Number(req.body.bill.count);
-  let total =
-    Number(req.body.bill.books) +
-    Number(req.body.bill.delivery) +
-    totalCommission -
-    req.body.bill.discount;
-  // virgin discount
-  if (req.body.bill.virgin) {
-    total -= total / 10;
-  }
+  let total = req.body.total;
   const NewDeal = new Deal({
     buyerId: req.body.buyerId,
     sellerIds: req.body.sellerIds,
@@ -50,20 +43,20 @@ router.post("/buy", (req, res) => {
       delivery: req.body.bill.delivery,
       books: req.body.bill.books,
       total,
-      commissions: totalCommission,
+      commission: req.body.commission,
       discount: req.body.bill.discount
     }
   });
   NewDeal.save()
     .then(deal => {
       if (req.body.bill.discount) {
+        // lessen user bonuspoints
         User.findByIdAndUpdate(req.body.buyerId, {
-          $inc: { bonusPoints: -req.body.bill.discount },
-          virgin: false
+          $inc: { bonusPoints: -req.body.bill.discount }
         })
           .then(user => {
             if (user) {
-              res.json({ code: 0, deal });
+              res.json({ code: 0, user });
             } else {
               res.json({
                 code: 1,
@@ -78,18 +71,8 @@ router.post("/buy", (req, res) => {
               code: 1,
               place: ".findByIdAndUpdate()",
               message:
-                "Qualcosa è andato storto nel salvataggio del tuo pagamento"
-            })
-          );
-      } else if (req.body.bill.virgin) {
-        User.findByIdAndUpdate(req.body.buyerId, { virgin: false })
-          .then(user => res.json({ code: 0, deal }))
-          .catch(erorr =>
-            res.json({
-              code: 1,
-              place: ".findByIdAndUpdate()",
-              message:
-                "Qualcosa è andato storto nel salvataggio del tuo pagamento"
+                "Qualcosa è andato storto nel salvataggio del tuo pagamento",
+              error
             })
           );
       } else {
