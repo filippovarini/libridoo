@@ -48,7 +48,7 @@ router.get("/emailConfirm/:email", (req, res) => {
     // port: 587,
     // secure: false,
     auth: {
-      user: "libridoo0.contacts@gmail.com",
+      user: "libridoo.contacts@gmail.com",
       pass: "scoby-doo"
     }
     // tls: { rejectUnauthorized: false }

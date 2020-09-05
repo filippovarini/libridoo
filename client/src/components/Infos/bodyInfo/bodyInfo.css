@@ -57,8 +57,9 @@
 #bodyInfo .info-text {
   margin-left: 10px;
   font-size: 1rem;
-  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #bodyInfo .info-input {
