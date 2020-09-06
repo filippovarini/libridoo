@@ -42,17 +42,29 @@ router.get("/rating/:_id", (req, res) => {
 router.get("/emailConfirm/:email", (req, res) => {
   let confirmCode = Math.floor(Math.random() * 1000000);
   confirmCode = confirmCode.toString();
-  const transporter = nodemailer.createTransport({
-    // host: "smtp.gmail.com",
-    service: "Gmail",
-    // port: 587,
-    // secure: false,
+  // const transporter = nodemailer.createTransport({
+  //   // host: "smtp.gmail.com",
+  //   service: "Gmail",
+  //   // port: 587,
+  //   // secure: false,
+  //   auth: {
+  //     user: "libridoo.contacts@gmail.com",
+  //     pass: "scoby-doo"
+  //   }
+  //   // tls: { rejectUnauthorized: false }
+  // });
+  const options = {
+    service: "Godaddy",
     auth: {
-      user: "libridoo.contacts@gmail.com",
-      pass: "scoby-doo"
+      user: "info@libridoo.it",
+      pass: "ciaomamma"
+    },
+    tls: {
+      ciphers: "SSLv3",
+      rejectUnauthorized: false
     }
-    // tls: { rejectUnauthorized: false }
-  });
+  };
+  const transporter = nodemailer.createTransport(options);
   // verify connection configuration
 
   transporter.sendMail(
