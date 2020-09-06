@@ -173,7 +173,7 @@ class Recover extends Component {
             <p id="recover-confirm">loading...</p>
           ) : (
             <p id="recover-confirm" onClick={this.handleSubmit}>
-              CONFERMA
+              REIMPOSTA
             </p>
           )}
         </form>

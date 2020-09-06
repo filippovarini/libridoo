@@ -13,6 +13,9 @@ const SoldBooksCluster = require("../models/SoldBooksClusters");
 const upload = require("../services/file-upload");
 const singleUpload = upload.single("image");
 
+// email pass
+const EMAIL_PASS = require("../config/keys").EMAIL_PASS;
+
 // !!! CHECK BOOKS ARE AUTHOMATICALLY SORTED FOR DATE (I THINK SO) --> YES
 
 // get my selling books
@@ -505,7 +508,7 @@ router.post("/checkedOut", (req, res) => {
 
       // send mail with defined transport object
       transporter.sendMail({
-        from: '"Libridoo" <noReply@libridoo.it>',
+        from: '"Libridoo" <sales@libridoo.it>',
         to: cluster.sellerInfo.email,
         subject: "Libri Venduti",
         // text: "Ciao!",
@@ -672,7 +675,7 @@ router.post("/checkedOut", (req, res) => {
               // send mail with defined transport object
               transporter.sendMail(
                 {
-                  from: '"Libridoo" <noReply@libridoo.it>',
+                  from: '"Libridoo" <sales@libridoo.it>',
                   to: req.body.buyerInfo.email,
                   subject: "Ordine completato!",
                   // text: "Ciao!", OK WITHOUT TEXT??

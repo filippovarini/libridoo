@@ -281,6 +281,7 @@ class Login extends Component {
       </div>
     ) : (
       <form id="login-form" onSubmit={this.handleSubmit}>
+        <span id="login-prompt">LOGIN</span>
         <p
           id="login-generalLabel"
           className={`incorrect-input-label ${
@@ -357,7 +358,6 @@ class Login extends Component {
           headerClass=""
         />
         <div id="login-actions">
-          <span id="login-prompt">Effettua il login per continuare</span>
           {body}
           <Link to="/recover" id="recover-prompt">
             Credenziali dimenticate?

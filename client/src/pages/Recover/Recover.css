@@ -1,13 +1,12 @@
 #recover-subContainer {
-  width: 90%;
   margin: 0 auto;
   margin-top: 50px;
   /* border: 1px solid black; */
   text-align: center;
-  padding: 40px 0px;
-  padding-bottom: 20px;
-  box-shadow: 0px 0px 3px purple;
-  border-radius: 5px;
+  background: #ebebeb;
+  width: 50%;
+  padding-bottom: 30px;
+  min-width: 250px;
 }
 
 #recover-subContainer.success {
@@ -24,19 +23,18 @@
 }
 
 #recover-header {
-  font-size: 2rem;
+  font-size: 1.5rem;
   display: inline-block;
-  /* border-bottom: 1px solid black; */
   font-weight: bold;
-  color: rgb(32, 165, 32);
   padding: 0px 10px;
   margin: 0px;
+  margin-top: 30px;
 }
 
 #recover-explainer {
   width: 60%;
   margin: 0 auto;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: gray;
   margin-top: 20px;
 }
@@ -44,7 +42,7 @@
 #recover-input {
   width: 80%;
   height: 20px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: center;
   display: block;
   margin: 0 auto;
@@ -58,12 +56,17 @@
 
 #recover-confirm {
   font-size: 0.8rem;
-  border: 1px solid black;
+  background: black;
+  color: white;
+  font-weight: bold;
+  width: 80%;
+  height: 20px;
+  line-height: 20px;
+  font-size: 1.1rem;
   border-radius: 3px;
-  box-shadow: 0px 0px 3px black;
-  display: inline-block;
+  padding: 3px;
+  margin: 0 auto;
   margin-top: 30px;
-  padding: 7px 20px;
 }
 
 #recover-confirm:hover {

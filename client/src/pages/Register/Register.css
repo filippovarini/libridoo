@@ -54,8 +54,8 @@
 }
 
 #images-container {
-  box-shadow: 0px 0px 10px gray;
-  border-radius: 5px;
+  box-shadow: 0px 0px 3px gray;
+  border-radius: 3px;
   padding: 20px;
   box-sizing: border-box;
   display: grid;
@@ -93,6 +93,7 @@
   border: 1px solid black;
   box-shadow: 0px 0px 3px gray;
   border-radius: 3px;
+  background: rebeccapurple;
   width: 250px;
   height: 250px;
   margin: 0 auto;
@@ -136,11 +137,10 @@
 }
 
 #register-form {
-  box-shadow: 0px 0px 3px black;
-  border-radius: 3px;
+  background: #ebebeb;
   display: inline-block;
-  width: 350px;
   margin: 40px 0px;
+  width: 280px;
 }
 
 .text-input {
@@ -148,21 +148,15 @@
   text-align: center;
   margin: 0 auto;
   height: 20px;
-  width: 300px;
+  width: 200px;
   margin-top: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: black;
 }
 .password {
-  width: 200px;
-}
-
-#password.password {
-  position: relative;
-  right: 50px;
-}
-
-#passwordConfirm {
-  position: relative;
-  left: 50px;
+  width: 180px;
+  height: 18px;
 }
 
 .checkbox-container {
@@ -210,14 +204,16 @@
 }
 
 #register-confirm-btn {
-  font-size: 0.8rem;
-  border: 1px solid black;
-  display: inline-block;
-  padding: 3px 8px;
-  margin: 30px auto;
-  box-shadow: 0px 0px 3px gray;
-  cursor: pointer;
-  border-radius: 3px;
+  width: 200px;
+  height: 25px;
+  background: black;
+  margin: 0 auto;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 30px;
+  border-radius: 2px;
+  line-height: 25px;
+  margin-top: 30px;
 }
 
 #rememberMe {
@@ -226,7 +222,7 @@
 }
 
 #register-confirm-btn:hover {
-  padding: 4px 10px;
+  cursor: pointer;
   box-shadow: 0px 0px 5px black;
 }
 
