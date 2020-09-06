@@ -34,18 +34,11 @@ router.get("/check/:_id", (req, res) => {
 // sent from checkout. 1) Do transition 2) Post newDeal 3) PaymentConfirm
 router.post("/buy", (req, res) => {
   // save this payment only after payment successful!!!!
-  const totalCommission = 1.5 * Number(req.body.bill.count);
   let total = req.body.total;
   const NewDeal = new Deal({
     buyerId: req.body.buyerId,
     sellerIds: req.body.sellerIds,
-    bill: {
-      delivery: req.body.bill.delivery,
-      books: req.body.bill.books,
-      total,
-      commission: req.body.commission,
-      discount: req.body.bill.discount
-    }
+    bill: req.body.bill
   });
   NewDeal.save()
     .then(deal => {
@@ -56,7 +49,7 @@ router.post("/buy", (req, res) => {
         })
           .then(user => {
             if (user) {
-              res.json({ code: 0, user });
+              res.json({ code: 0, deal });
             } else {
               res.json({
                 code: 1,

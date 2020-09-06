@@ -75,15 +75,18 @@ class Checkout extends Component {
 
   purchase = (books, delivery, discount, total) => {
     //destructuring books.
+    console.log("purchase");
     const { history, dispatch, selectedBooks } = this.props;
     this.setState({ loading: true });
     const sellerIds = [];
     selectedBooks.forEach(cluster => sellerIds.push(cluster.sellerId));
     const buyerId = this.props.user._id;
-    const commission = this.state.couponSet ? 0 : 3;
+    const commission = this.state.couponSet
+      ? 0
+      : ((Number(books) + Number(delivery)) / 100) * 3;
     const bill = {
-      books,
-      delivery,
+      books: Number(books),
+      delivery: Number(delivery),
       discount,
       total,
       commission
@@ -136,14 +139,12 @@ class Checkout extends Component {
   render() {
     let totalBookPrice = 0;
     let totalDeliveryPrice = 0;
-    let totalBooksNumber = 0;
     this.props.selectedBooks.forEach(cluster => {
       if (cluster.delivery.choosen)
         totalDeliveryPrice =
           (cluster.delivery.cost * 100 + totalDeliveryPrice * 100) / 100;
       cluster.Books.forEach(book => {
         totalBookPrice = (totalBookPrice * 100 + book.price * 100) / 100;
-        totalBooksNumber += 1;
       });
     });
     let totalPrice = (totalBookPrice * 100 + totalDeliveryPrice * 100) / 100;
@@ -296,7 +297,6 @@ class Checkout extends Component {
                 this.purchase(
                   totalBookPrice,
                   totalDeliveryPrice,
-                  totalBooksNumber,
                   discountAvailable,
                   totalPrice
                 );

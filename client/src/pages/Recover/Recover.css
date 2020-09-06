@@ -42,7 +42,8 @@
 #recover-input {
   width: 80%;
   height: 20px;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: bold;
   text-align: center;
   display: block;
   margin: 0 auto;

@@ -15,9 +15,16 @@ class slideBar extends Component {
           <NavLink to="/invite" className="slideBar-component hover">
             GUADAGNA CON NOI
           </NavLink>
-          <NavLink to="/help" className="slideBar-component hover">
-            COME FUNZIONA
-          </NavLink>
+          <div id="earn-suggester-container">
+            <NavLink
+              id="earn-suggester-link"
+              to="/invite"
+              className="slideBar-component hover"
+            >
+              GUADAGNA CON NOI{" "}
+            </NavLink>
+            <i id="earn-suggester" className="fas fa-circle"></i>
+          </div>
           {/* <NavLink to="/feedback" className="slideBar-component hover">
             DICCI COSA PENSI
           </NavLink> */}
