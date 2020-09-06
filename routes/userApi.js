@@ -7,6 +7,9 @@ const User = require("../models/Users");
 const Book = require("../models/Books");
 const Error = require("../models/Errors");
 
+// email pass
+const EMAIL_PASS = require("../config/keys").EMAIL_PASS;
+
 const router = express.Router();
 
 // secret
@@ -42,22 +45,12 @@ router.get("/rating/:_id", (req, res) => {
 router.get("/emailConfirm/:email", (req, res) => {
   let confirmCode = Math.floor(Math.random() * 1000000);
   confirmCode = confirmCode.toString();
-  // const transporter = nodemailer.createTransport({
-  //   // host: "smtp.gmail.com",
-  //   service: "Gmail",
-  //   // port: 587,
-  //   // secure: false,
-  //   auth: {
-  //     user: "libridoo.contacts@gmail.com",
-  //     pass: "scoby-doo"
-  //   }
-  //   // tls: { rejectUnauthorized: false }
-  // });
+
   const options = {
     service: "Godaddy",
     auth: {
       user: "info@libridoo.it",
-      pass: "ciaomamma"
+      pass: EMAIL_PASS
     },
     tls: {
       ciphers: "SSLv3",
@@ -69,7 +62,7 @@ router.get("/emailConfirm/:email", (req, res) => {
 
   transporter.sendMail(
     {
-      from: '"Libridoo" <info@libridoo.it>',
+      from: '"Libridoo" <noReply@libridoo.it>',
       to: req.params.email,
       subject: "Conferma la tua Email",
       text: "Ciao!",
@@ -575,21 +568,23 @@ router.put("/recover", (req, res) => {
             )
               .then(user => {
                 // send mail
-                const transporter = nodemailer.createTransport({
-                  host: "smtp.gmail.com",
-                  port: 587,
-                  secure: false,
+                const options = {
+                  service: "Godaddy",
                   auth: {
-                    user: "libridoo.contacts@gmail.com",
-                    pass: "scoby-doo"
+                    user: "info@libridoo.it",
+                    pass: EMAIL_PASS
                   },
-                  tls: { rejectUnauthorized: false }
-                });
+                  tls: {
+                    ciphers: "SSLv3",
+                    rejectUnauthorized: false
+                  }
+                };
+                const transporter = nodemailer.createTransport(options);
 
                 // send mail with defined transport object
                 transporter.sendMail(
                   {
-                    from: '"Libridoo" <libridoo.contacts@gmail.com>',
+                    from: '"Libridoo" <noReply@libridoo.it>',
                     to: req.body.email,
                     subject: "Recupero Password",
                     text: "Ciao!",

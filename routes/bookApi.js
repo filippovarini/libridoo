@@ -490,20 +490,22 @@ router.post("/checkedOut", (req, res) => {
       let clusterPrice = 0;
       cluster.Books.forEach(book => (clusterPrice += book.price));
       // send email to seller
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
+      const options = {
+        service: "Godaddy",
         auth: {
-          user: "libridoo.contacts@gmail.com",
-          pass: "scoby-doo"
+          user: "info@libridoo.it",
+          pass: EMAIL_PASS
         },
-        tls: { rejectUnauthorized: false }
-      });
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false
+        }
+      };
+      const transporter = nodemailer.createTransport(options);
 
       // send mail with defined transport object
       transporter.sendMail({
-        from: '"Libridoo" <libridoo.contacts@gmail.com>',
+        from: '"Libridoo" <noReply@libridoo.it>',
         to: cluster.sellerInfo.email,
         subject: "Libri Venduti",
         // text: "Ciao!",
@@ -654,21 +656,23 @@ router.post("/checkedOut", (req, res) => {
             if (req.body._ids.indexOf(_id) === req.body._ids.length - 1) {
               // success
               // send mail
-              const transporter = nodemailer.createTransport({
-                host: "smtp.gmail.com",
-                port: 587,
-                secure: false,
+              const options = {
+                service: "Godaddy",
                 auth: {
-                  user: "libridoo.contacts@gmail.com",
-                  pass: "scoby-doo"
+                  user: "info@libridoo.it",
+                  pass: EMAIL_PASS
                 },
-                tls: { rejectUnauthorized: false }
-              });
+                tls: {
+                  ciphers: "SSLv3",
+                  rejectUnauthorized: false
+                }
+              };
+              const transporter = nodemailer.createTransport(options);
 
               // send mail with defined transport object
               transporter.sendMail(
                 {
-                  from: '"Libridoo" <libridoo.contacts@gmail.com>',
+                  from: '"Libridoo" <noReply@libridoo.it>',
                   to: req.body.buyerInfo.email,
                   subject: "Ordine completato!",
                   // text: "Ciao!", OK WITHOUT TEXT??
