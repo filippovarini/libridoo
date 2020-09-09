@@ -30,7 +30,8 @@ class Home extends Component {
         ciao: "merda"
       })
     })
-      .then(() => console.log("ok"))
+      .then(res => res.json())
+      .then(jsonRes => console.log(jsonRes))
       .catch(e => console.log(e));
   };
 

@@ -19,7 +19,7 @@ const DealSchema = new Schema({
       type: Number,
       required: true
     },
-    commissions: {
+    commission: {
       type: Number
     },
     discount: {

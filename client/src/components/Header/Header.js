@@ -106,6 +106,10 @@ class Header extends Component {
     ) {
       sessionStorage.removeItem("coupon");
     }
+    if (location !== "/checkout") {
+      sessionStorage.removeItem("client_secret");
+      sessionStorage.removeItem("transfer_group");
+    }
     // index in sessionStorage
     if (
       sessionStorage.getItem("index") &&

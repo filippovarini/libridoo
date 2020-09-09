@@ -690,10 +690,9 @@ router.delete("/delete", (req, res) => {
 });
 
 router.post("/ciao", (req, res) => {
-  console.log("doing");
-  res.redirect(
-    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin"
-  );
+  if (process.env.NODE_ENV === "production") {
+    res.json({ shit: "prod" });
+  } else res.json({ shit: "DEV" });
 });
 
 module.exports = router;

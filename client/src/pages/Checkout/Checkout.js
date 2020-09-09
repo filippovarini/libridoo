@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import "./Checkout.css";
 
 // components
@@ -7,11 +8,17 @@ import ClusterBooks from "../../components/clusterBooks/clusterBooks";
 import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
 import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
 import HeaderPart from "../../components/headerPart";
+import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
+
 class Checkout extends Component {
   state = {
     loading: false,
     explainerHidden: true,
-    couponSet: false
+    couponSet: false,
+    paying: false,
+    selected: null,
+    preliminaryErrorSet: false,
+    stripeLoading: false
   };
 
   componentDidMount = () => {
@@ -73,17 +80,67 @@ class Checkout extends Component {
     });
   };
 
-  purchase = (books, delivery, discount, total) => {
-    //destructuring books.
-    console.log("purchase");
+  showOptions = () => {
+    this.setState({ paying: !this.state.paying });
+  };
+
+  purchaseStripe = total => {
+    console.log(total);
+    const { dispatch } = this.props;
+    this.setState({ stripeLoading: true });
+    // fetch create paymentIntent
+    fetch("api/payment/paymentIntent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({ total })
+    })
+      .then(res => res.json())
+      .then(jsonRes => {
+        console.log(jsonRes);
+        if (jsonRes.code === 0) {
+          // success
+          console.log("success");
+          this.setState({
+            selected: "stripe"
+          });
+          sessionStorage.setItem("client_secret", jsonRes.client_secret);
+          sessionStorage.setItem("transfer_group", jsonRes.transfer_group);
+        } else {
+          // faliure
+          this.setState({ preliminaryErrorSet: true });
+          setTimeout(() => this.setState({ preliminaryErrorSet: false }), 6000);
+        }
+        this.setState({ stripeLoading: false });
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({
+          type: "E-SET",
+          error: { frontendPlace: "Checkout/purchaseStripe/catch:113" }
+        });
+        this.props.history.push("/error");
+      });
+  };
+
+  purchasePaypal = () => {
+    this.setState({ selected: "paypal" });
+  };
+
+  savePurchase = (books, delivery, discount, total) => {
+    // props
     const { history, dispatch, selectedBooks } = this.props;
-    this.setState({ loading: true });
+    // this.setState({ loading: true }); UNNECESSARY, ALREADY IN CHECKOUTFORM
     const sellerIds = [];
     selectedBooks.forEach(cluster => sellerIds.push(cluster.sellerId));
     const buyerId = this.props.user._id;
-    const commission = this.state.couponSet
+    const commission = sessionStorage.getItem("coupon")
       ? 0
       : ((Number(books) + Number(delivery)) / 100) * 3;
+
+    // bill and body
     const bill = {
       books: Number(books),
       delivery: Number(delivery),
@@ -113,28 +170,108 @@ class Checkout extends Component {
           sessionStorage.setItem("dealId", jsonRes.deal._id);
           sucessfulOrder = true;
         } else {
-          // this.props.dispatch({
-          //   type: "E-SET",
-          //   error: { frontendPlace: "Checkout/purchase/code1", jsonRes }
-          // });
-          // this.props.history.push("/error");
+          // faliure
+          this.setState({ preliminaryErrorSet: true });
+          setTimeout(() => this.setState({ preliminaryErrorSet: false }), 3000);
         }
         //Changed this function calling state and on completion moving to next page
-        this.setState({ loading: false }, () => {
-          if (sucessfulOrder) {
-            history.push("/paymentConfirm");
-          }
-        });
+        // this.setState({ loading: false }, () => {
+        if (sucessfulOrder) {
+          history.push("/paymentConfirm");
+        }
+        // });
       })
       .catch(error => {
         console.log(error);
         dispatch({
           type: "E-SET",
-          error: { frontendPlace: "Checkout/purchase/catch" }
+          error: { frontendPlace: "Checkout/savePurchase/catch/185" }
         });
-        this.props.history.push("/error");
+        history.push("/error");
       });
   };
+
+  // purchase = (books, delivery, discount, total) => {
+  //   console.log("purchase");
+
+  //   //destructuring books
+  //   const { history, dispatch, selectedBooks } = this.props;
+  //   this.setState({ loading: true });
+  //   const sellerIds = [];
+  //   selectedBooks.forEach(cluster => sellerIds.push(cluster.sellerId));
+  //   const buyerId = this.props.user._id;
+  //   const commission = this.state.couponSet
+  //     ? 0
+  //     : ((Number(books) + Number(delivery)) / 100) * 3;
+
+  //   // bill and body
+  //   const bill = {
+  //     books: Number(books),
+  //     delivery: Number(delivery),
+  //     discount,
+  //     total,
+  //     commission
+  //   };
+  //   const body = {
+  //     buyerId,
+  //     sellerIds,
+  //     bill
+  //   };
+
+  //   // fetch create paymentIntent
+  //   fetch("api/payment/paymentIntent", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json"
+  //     },
+  //     body: JSON.stringify(body)
+  //   })
+  //     .then(res => res.json())
+  //     .then(jsonRes => {
+  //       console.log(jsonRes);
+  //       this.setState({ loading: false });
+  //     })
+  //     .catch(error => console.log(error));
+  //   fetch("/api/payment/buy", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json"
+  //     },
+  //     body: JSON.stringify(body)
+  //   })
+  //     .then(res => res.json())
+  //     .then(jsonRes => {
+  //       console.log(jsonRes);
+  //       let sucessfulOrder = false;
+  //       if (jsonRes.code === 0) {
+  //         // payment successful
+  //         sessionStorage.setItem("dealId", jsonRes.deal._id);
+  //         sucessfulOrder = true;
+  //       } else {
+  //         // this.props.dispatch({
+  //         //   type: "E-SET",
+  //         //   error: { frontendPlace: "Checkout/purchase/code1", jsonRes }
+  //         // });
+  //         // this.props.history.push("/error");
+  //       }
+  //       //Changed this function calling state and on completion moving to next page
+  //       this.setState({ loading: false }, () => {
+  //         if (sucessfulOrder) {
+  //           history.push("/paymentConfirm");
+  //         }
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //       dispatch({
+  //         type: "E-SET",
+  //         error: { frontendPlace: "Checkout/purchase/catch" }
+  //       });
+  //       this.props.history.push("/error");
+  //     });
+  // };
 
   render() {
     let totalBookPrice = 0;
@@ -290,23 +427,95 @@ class Checkout extends Component {
                 COMPLETA LE INFORMAZIONI PERSONALI
               </p>
             </div>
+          ) : !this.state.paying ? (
+            <div id="rc-link-gContainer">
+              <div
+                id="rc-link-container"
+                onClick={this.showOptions}
+                className="rc-cart-div"
+              >
+                <p id="rc-link">
+                  PAGA
+                  {/* carta di credito / paypal */}
+                </p>
+              </div>
+            </div>
           ) : (
-            <div
-              id="rc-link-container"
-              onClick={() => {
-                this.purchase(
-                  totalBookPrice,
-                  totalDeliveryPrice,
-                  discountAvailable,
-                  totalPrice
-                );
-              }}
-              className="rc-cart-div"
-            >
-              <p id="rc-link">
-                PAGA
-                {/* carta di credito / paypal */}
+            <div id="ck-choices-container">
+              <p id="ck-choices-header">Paga con:</p>
+              <div
+                id="ck-choices"
+                className={this.state.paying ? null : "hidden"}
+              >
+                {this.state.stripeLoading ? (
+                  <p
+                    id="stripe-choice-loading"
+                    className={`ck-choice ${
+                      this.state.selected === "stripe" ? "ck-choosen" : null
+                    }`}
+                  >
+                    loading...
+                  </p>
+                ) : (
+                  <div
+                    id="stripe-choice"
+                    className={`ck-choice ${
+                      this.state.selected === "stripe" ? "ck-choosen" : null
+                    }`}
+                    onClick={() => this.purchaseStripe(totalPrice)}
+                  >
+                    <p id="stripe-choice-heaeder">CARTA</p>
+                    <div
+                      id="stripe-secure"
+                      className={
+                        this.state.preliminaryErrorSet ? "hidden" : null
+                      }
+                    >
+                      <i id="stripe-lock" className="fas fa-lock"></i>
+                      {"  "}
+                      paga sicuro con
+                      <i id="stripe-logo" className="fab fa-stripe"></i>
+                    </div>
+                  </div>
+                )}
+                <p
+                  id="paypal-choice"
+                  className={`ck-choice ${
+                    this.state.selected === "paypal" ? "ck-choosen" : null
+                  }`}
+                  onClick={this.purchasePaypal}
+                >
+                  {/* Cane2012 */}
+                  PayPal
+                </p>
+              </div>
+              <p
+                id="preliminary-error"
+                className={this.state.preliminaryErrorSet ? null : "hidden"}
+              >
+                Qualcosa è andato storto nel setup del pagamento. Non ti
+                preoccupare, non hai perso soldi. Ricarica la pagina e prova di
+                nuovo. Se il problema persiste, non esitare a contattarci.
               </p>
+              <div
+                id="ck-form-gContainer"
+                className={this.state.selected ? null : "hidden"}
+              >
+                <div
+                  id="stripe-form-container"
+                  className={`ck-form-container ${
+                    this.state.selected === "stripe" ? null : "hidden"
+                  }`}
+                >
+                  <CheckoutForm
+                    savePurchase={this.savePurchase}
+                    totalBookPrice={totalBookPrice}
+                    totalDeliveryPrice={totalBookPrice}
+                    discountAvailable={discountAvailable}
+                    totalPrice={totalPrice}
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -415,4 +624,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Checkout);
+export default connect(mapStateToProps)(withRouter(Checkout));
