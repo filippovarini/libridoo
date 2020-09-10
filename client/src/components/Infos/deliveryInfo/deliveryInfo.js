@@ -227,9 +227,7 @@ class DeliveryInfo extends Component {
 
     const singleEditing = this.props.user.DeliveryInfo ? (
       <div className="header-container">
-        <p id="header-text">
-          Fagli sapere se spedisci e quando sei disposto ad incontrarti
-        </p>
+        <p id="header-text">Spedisci? In quanti giorni consegni in città?</p>
         <form onSubmit={this.handleSave} className="body-container">
           <div className="body text single">
             <p

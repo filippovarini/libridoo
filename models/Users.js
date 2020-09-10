@@ -81,6 +81,16 @@ const UserSchema = new Schema({
       default: null
     }
   },
+  payOut: {
+    type: {
+      type: String,
+      default: null
+    },
+    accountId: {
+      type: String,
+      default: null
+    }
+  },
   vote: {
     type: Number,
     default: null

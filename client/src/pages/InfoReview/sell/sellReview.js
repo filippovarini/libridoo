@@ -6,12 +6,14 @@ import "./sellReview.css";
 import PlaceInfo from "../../../components/Infos/placeInfo/placeInfo";
 import SellerInfo from "../../../components/Infos/bodyInfo/bodyInfo";
 import DeliveryInfo from "../../../components/Infos/deliveryInfo/deliveryInfo";
+import PayOutInfo from "../../../components/Infos/payOutInfo/payOutInfo";
 
 class sellReview extends Component {
   state = {
     placeEmpty: null,
     sellerInfoEmpty: null,
     deliveryEmpty: null,
+    payOutEmpty: false,
     updated: false,
     emptyClass: null,
     emptyClassHeader: "hidden",
@@ -39,6 +41,9 @@ class sellReview extends Component {
       if (!user.place.city) {
         this.setState({ placeEmpty: true });
       }
+      if (!user.payOut.type) {
+        this.setState({ payOutEmpty: true });
+      }
       this.setState({ set: true });
     }
   };
@@ -60,6 +65,9 @@ class sellReview extends Component {
         if (!user.place.city) {
           this.setState({ placeEmpty: true });
         }
+        if (!user.payOut.type) {
+          this.setState({ payOutEmpty: true });
+        }
         this.setState({ set: true });
       }
     } else {
@@ -71,6 +79,7 @@ class sellReview extends Component {
       this.props.user.phone &&
       this.props.user.DeliveryInfo &&
       this.props.user.DeliveryInfo.timeToMeet &&
+      this.props.user.payOut.type &&
       !this.state.done
     ) {
       this.setState({ done: true });
@@ -80,7 +89,12 @@ class sellReview extends Component {
 
   handleSubmit = () => {
     const user = this.props.user;
-    if (!user.phone || !user.DeliveryInfo.timeToMeet || !user.place.city) {
+    if (
+      !user.phone ||
+      !user.DeliveryInfo.timeToMeet ||
+      !user.place.city ||
+      !user.payOut.type
+    ) {
       this.setState({ emptyClass: "invalid", emptyClassHeader: null });
     } else {
       // post book
@@ -135,6 +149,7 @@ class sellReview extends Component {
     const placeInfo = this.state.placeEmpty ? <PlaceInfo /> : null;
     const bodyInfo = this.state.sellerInfoEmpty ? <SellerInfo /> : null;
     const deliveryInfo = this.state.deliveryEmpty ? <DeliveryInfo /> : null;
+    const payOutInfo = this.state.payOutEmpty ? <PayOutInfo /> : null;
 
     const loading = <h1 className="inside">loading...</h1>;
     const successful = (
@@ -148,6 +163,7 @@ class sellReview extends Component {
         <p id="empty-header" className={this.state.emptyClassHeader}>
           COMPILA TUTTI I CAMPI!
         </p>
+        {payOutInfo}
         {placeInfo}
         {bodyInfo}
         {deliveryInfo}
@@ -156,19 +172,12 @@ class sellReview extends Component {
 
     if (this.state.successful) bodyComponent = successful;
 
-    // const submit = !this.state.submitted ? (
-    //   <p id="submit" onClick={this.handleSubmit}>
-    //     VENDI
-    //   </p>
-    // ) : null;
-
     return (
       <div id="infoReview">
         <p id="header-review">Compila per vendere</p>
         <div id="info-container" className={this.state.emptyClass}>
           {bodyComponent}
         </div>
-        {/* {submit} */}
       </div>
     );
   }

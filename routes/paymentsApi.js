@@ -114,6 +114,47 @@ router.post("/buy", (req, res) => {
     });
 });
 
+// create connected account
+// {_id}
+router.post("/connect", async (req, res) => {
+  const account = await stripe.accounts.create({
+    type: "express",
+    business_type: "individual",
+    country: "IT",
+    default_currency: "EUR",
+    business_profile: {
+      product_description: "libri usati",
+      mcc: 5192,
+      url: null
+    }
+  });
+
+  if (!account.id) {
+    res.json({ code: 1, message: "no account id", place: "/paymentApi:133" });
+  }
+
+  const refresh_url =
+    process.env.NODE_ENV === "production"
+      ? "https://www.libridoo.it/infoReview/sell/refreshed"
+      : "http://localhost:3000/infoReview/sell/refreshed";
+
+  const return_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/infoReview/sell/confirmed/${account.id}`
+      : `http://localhost:3000/infoReview/sell/confirmed/${account.id}`;
+
+  const accountLinks = await stripe.accountLinks.create({
+    account: account.id,
+    refresh_url,
+    return_url,
+    type: "account_onboarding"
+  });
+
+  if (!accountLinks.url)
+    res.json({ code: 1, message: "no account link", place: "/paymentApi:153" });
+  else res.json({ code: 0, url: accountLinks.url });
+});
+
 // delete all deals
 router.delete("/", (req, res) => {
   Deal.deleteMany()

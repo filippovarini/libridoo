@@ -30,6 +30,9 @@ import ErrorPage from "./pages/Error/Error";
 import Privacy from "./pages/Pricacy/Privacy";
 import TandC from "./pages/T&C/T&C";
 
+// FNASCI
+import FNASCI from "./pages/FNASCI/FNASCI";
+
 // ad Images
 import adImageOne from "./pages/Invite/adImageOne";
 import adImageTwo from "./pages/Invite/adImageTwo";
@@ -110,7 +113,12 @@ class App extends React.Component {
         <div className="App">
           <Header />
           <div id="app-body">
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={FNASCI} />
+            <Route
+              exact
+              path="/home"
+              /*FIIPPO NASCI became '/home from '/*/ component={Home}
+            />
             <Route path="/login/:action?" component={Login} />
             <Route path="/register/:invitingId?" component={Register} />
             <Route path="/recover" component={Recover} />

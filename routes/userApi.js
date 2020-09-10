@@ -653,6 +653,25 @@ router.put("/recover", (req, res) => {
     });
 });
 
+// update stripe id
+// _id, payOut: {type / accountId}
+router.put("/connectedAccount", (req, res) => {
+  User.findByIdAndUpdate(
+    req.body._id,
+    { payOut: req.body.payOut },
+    { new: true }
+  )
+    .then(user => {
+      if (user._id) {
+        const activeUser = user.toObject();
+        delete activeUser.password;
+        const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
+        res.json({ code: 0, activeUser, JWT });
+      } else res.json({ code: 1, place: "userApi/666", user });
+    })
+    .catch(e => res.json({ code: 1, place: "userApi/668" }));
+});
+
 // delete account
 // _id
 router.delete("/delete", (req, res) => {

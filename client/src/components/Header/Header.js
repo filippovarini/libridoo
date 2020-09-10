@@ -23,6 +23,16 @@ class Header extends Component {
   };
 
   componentDidMount = () => {
+    // FILIPPO NASCI
+    if (!sessionStorage.getItem("JWT") && !localStorage.getItem("JWT")) {
+      // not logged
+      if (
+        window.location.pathname !== "/" &&
+        window.location.pathname !== "/login"
+      )
+        window.location = "/";
+    }
+    // END FILIPPO
     if (sessionStorage.getItem("selling")) {
       // was selling and refreshed
       this.setState({ BookInfoDisplay: null });
@@ -77,6 +87,15 @@ class Header extends Component {
   componentDidUpdate = () => {
     // remove searchParams
     const location = this.props.history.location.pathname;
+    // FILIPPO NASCI
+    if (!sessionStorage.getItem("JWT") && !localStorage.getItem("JWT")) {
+      // not logged
+      if (
+        window.location.pathname !== "/" &&
+        window.location.pathname !== "/login"
+      )
+        window.location = "/";
+    }
     if (
       location !== "/search" &&
       location !== "/results" &&

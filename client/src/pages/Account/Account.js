@@ -7,6 +7,7 @@ import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
 import DeliveryInfo from "../../components/Infos/deliveryInfo/deliveryInfo";
 import PasswordInfo from "../../components/Infos/passwordInfo/passwordInfo";
 import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
+import PayOutInfo from "../../components/Infos/payOutInfo/payOutInfo";
 
 class Account extends Component {
   state = {
@@ -111,6 +112,7 @@ class Account extends Component {
             className={`fa${this.state.fifthStar} fa-star fa-2x`}
           ></i>
         </div>
+        <PayOutInfo />
         <PlaceInfo />
         <BodyInfo />
         <DeliveryInfo />
