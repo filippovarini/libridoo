@@ -1,6 +1,6 @@
 import React from "react";
 import "./adImageOne.css";
-import imageSrc from "../../images/ad-2.png";
+import imageSrc from "../../images/ad-2.jpg";
 
 const AdImageTwo = () => {
   return (

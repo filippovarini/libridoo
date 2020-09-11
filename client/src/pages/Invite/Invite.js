@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Invite.css";
 import HeaderPart from "../../components/headerPart";
-import adOne from "../../images/ad-1.png";
-import adTwo from "../../images/ad-2.png";
-import adThree from "../../images/ad-3.png";
+import adOne from "../../images/ad-1.jpg";
+import adTwo from "../../images/ad-2.jpg";
+import adThree from "../../images/ad-3.jpg";
 
 class Invite extends Component {
   state = {
