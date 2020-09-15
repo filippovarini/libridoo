@@ -9,6 +9,7 @@ import SlideBar from "../slideBar/slideBar";
 import BookInfo from "../BookInfo/BookInfo";
 import Cart from "../cart/cart";
 import LodaingS from "../Loading/loading_s";
+// import FeedbackPopUp from "../feedbackPopUp/feedbackPopUp";
 
 class Header extends Component {
   state = {
@@ -153,6 +154,20 @@ class Header extends Component {
       this.props.history.location.pathname !== "/checkout"
     ) {
       this.setState({ quickSearchDisplay: null });
+    }
+
+    // what do you think of libridoo?
+    if (this.props.user.registerDate && !sessionStorage.getItem("rating")) {
+      const registerDate = new Date(this.props.user.registerDate);
+      const actualDate = new Date();
+      const hoursDifference = Math.floor(
+        (actualDate.getTime() - registerDate.getTime()) / 3600000
+      );
+      if (hoursDifference > 3) {
+        // means user has logged out and now is logging in back. Rating!
+        sessionStorage.setItem("rating", "true");
+        // show rating bar
+      }
     }
   };
 
@@ -341,6 +356,10 @@ class Header extends Component {
     }
   };
 
+  handleScroll = e => {
+    console.log("ok");
+  };
+
   render() {
     // 3rd Icon choice
     const cart = (
@@ -444,6 +463,8 @@ class Header extends Component {
         ? quickSearchButton
         : quickSearchBarInner;
 
+    // console.log(window.pageYOffset);
+
     return (
       <div id="header-gContainer">
         <div id="header-container">
@@ -475,6 +496,7 @@ class Header extends Component {
             display={this.state.BookInfoDisplay}
             toggleDisplay={this.toggleDisplay}
           />
+          {/* <FeedbackPopUp user={this.props.user} /> */}
         </div>
       </div>
     );

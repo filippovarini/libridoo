@@ -213,10 +213,15 @@ class Orders extends Component {
     );
     const loaded = (
       <div id="orders-body-container">
-        <p id="orders-header-suggester">
-          Conferma l'ordine <span id="oc-highlight">solo dopo</span> averlo
-          ricevuto
-        </p>
+        <div id="orders-headers">
+          <p id="orders-header-suggester">
+            Conferma l'ordine <span id="oc-highlight">solo dopo</span> averlo
+            ricevuto
+          </p>
+          <Link id="problem-link" to="/FAQs">
+            Problemi con un ordine?
+          </Link>
+        </div>
         {this.state.clusters.map(cluster => {
           return (
             <ClusterBooks

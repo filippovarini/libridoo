@@ -13,12 +13,12 @@ class Footer extends Component {
               Le foto presenti su libridoo sono state in larga parte prese da
               Internet e quindi valutate di pubblico dominio. Se i soggetti o
               gli autori avessero qualcosa in contrario alla pubblicazione, non
-              avranno che da segnalarlo alla redazione
-              (libridoo.contacts@gmail.com), che provvederà alla rimozione delle
-              immagini utilizzate. Libridoo non rappresenta una testata
-              giornalistica, in quanto viene aggiornato senza alcuna periodicità
-              regolare. Non può pertanto considerarsi un prodotto editoriale ai
-              sensi della legge n. 62 del 07 marzo 2001.
+              avranno che da segnalarlo alla redazione (complaints@libridoo.it),
+              che provvederà alla rimozione delle immagini utilizzate. Libridoo
+              non rappresenta una testata giornalistica, in quanto viene
+              aggiornato senza alcuna periodicità regolare. Non può pertanto
+              considerarsi un prodotto editoriale ai sensi della legge n. 62 del
+              07 marzo 2001.
               <br />
               <br />
               {this.props.history.location.pathname === "/invite"
@@ -56,8 +56,8 @@ class Footer extends Component {
                 ></i>
               </div>
               <div id="email-container" className="footer-div-container">
-                <a id="footer-email" href="mailto: libridoo.contacts@gmail.com">
-                  libridoo.contacts@gmail.com
+                <a id="footer-email" href="mailto: info@libridoo.it">
+                  info@libridoo.it
                 </a>
                 <i className="far fa-envelope footer-ico"></i>
               </div>

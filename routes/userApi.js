@@ -706,10 +706,4 @@ router.delete("/delete", (req, res) => {
     });
 });
 
-router.post("/ciao", (req, res) => {
-  if (process.env.NODE_ENV === "production") {
-    res.json({ shit: "prod" });
-  } else res.json({ shit: "DEV" });
-});
-
 module.exports = router;

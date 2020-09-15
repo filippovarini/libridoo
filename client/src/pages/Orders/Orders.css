@@ -81,12 +81,27 @@
   text-align: center;
 }
 
+#orders-headers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: -10px;
+}
+
 #orders-header-suggester {
   font-weight: bold;
   text-align: center;
   color: rgb(99, 99, 99);
   margin-top: 30px;
   font-size: 1.5rem;
+}
+
+#problem-link {
+  margin-bottom: 0px;
+  font-size: 0.6rem;
+  color: gray;
 }
 
 #oc-highlight {
