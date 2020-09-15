@@ -287,7 +287,8 @@ class Checkout extends Component {
     });
     let totalPrice = (totalBookPrice * 100 + totalDeliveryPrice * 100) / 100;
     if (!this.state.couponSet) {
-      totalPrice = totalPrice + (totalPrice / 100) * 3;
+      totalPrice =
+        Math.round((totalPrice + 0.35 + (totalPrice / 100) * 3.4) * 100) / 100;
     }
     let discountAvailable = this.props.user.bonusPoints
       ? Math.floor(this.props.user.bonusPoints / 10) * 10
@@ -405,7 +406,7 @@ class Checkout extends Component {
                   : "rc-cart-price"
               }
             >
-              {this.state.couponSet ? "0%" : "3%"}
+              {this.state.couponSet ? "0%" : "3.40% + 0.35 €"}
             </p>
           </div>
           {discountAvailable ? (

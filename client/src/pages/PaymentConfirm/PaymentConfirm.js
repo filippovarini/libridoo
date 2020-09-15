@@ -47,6 +47,7 @@ class PaymentConfirm extends Component {
               buyerInfo: user,
               soldBooksClusters: this.props.selectedBooks
             };
+            console.log(body);
             fetch("/api/book/checkedOut", {
               method: "POST",
               headers: {

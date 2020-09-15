@@ -107,9 +107,9 @@
 #header-container #loading-input {
   height: 20px;
   width: 100%;
-  text-align: center;
-  color: gray;
-  font-style: italic;
+  padding-left: 10px;
+  box-sizing: border-box;
+  color: rgb(99, 99, 99);
   font-size: 0.8rem;
   line-height: 20px;
 }
@@ -205,6 +205,11 @@
   box-shadow: 0px 0px 5px;
 }
 
+#header-loading-ico {
+  display: flex;
+  align-items: center;
+}
+
 @media only screen and (max-width: 600px) {
   #header-image-logo {
     width: 80px;
@@ -280,6 +285,11 @@
     line-height: 36px;
     border-radius: 35px;
     height: 35px;
+  }
+
+  #header-container #loading-input {
+    font-size: 0.7rem;
+    padding-left: 0px;
   }
 
   #quickSearch-label {

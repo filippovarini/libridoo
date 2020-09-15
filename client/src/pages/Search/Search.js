@@ -265,24 +265,26 @@ class Search extends Component {
             {searchParams.map(param => {
               return (
                 <div
-                  className="list-container"
+                  className="list-g-container"
                   key={searchParams.indexOf(param)}
                 >
-                  <p className="list">{param.ui}</p>
-                  <p id="search-list-counter">
-                    {this.props.booksResult
-                      ? this.props.booksResult[searchParams.indexOf(param)]
+                  <div className="list-container">
+                    <p className="list">{param.ui}</p>
+                    <p id="search-list-counter">
+                      {this.props.booksResult
                         ? this.props.booksResult[searchParams.indexOf(param)]
-                            .filterResult.length === 0
-                          ? null
-                          : `${
-                              this.props.booksResult[
-                                searchParams.indexOf(param)
-                              ].filterResult.length
-                            } risultati`
-                        : null
-                      : null}
-                  </p>
+                          ? this.props.booksResult[searchParams.indexOf(param)]
+                              .filterResult.length === 0
+                            ? null
+                            : `${
+                                this.props.booksResult[
+                                  searchParams.indexOf(param)
+                                ].filterResult.length
+                              } risultati`
+                          : null
+                        : null}
+                    </p>
+                  </div>
                   <p
                     id={param.ui}
                     className="list-delete"

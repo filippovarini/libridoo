@@ -2,8 +2,8 @@ import React from "react";
 
 function Loading_s() {
   return (
-    <div class="loadingio-spinner-fidget-spinner-dgpq3obucdb">
-      <div class="ldio-jbgicnezfv">
+    <div className="loadingio-spinner-fidget-spinner-dgpq3obucdb">
+      <div className="ldio-jbgicnezfv">
         <div>
           <div>
             <div style={{ left: "33.5px", top: "5.5px" }}></div>

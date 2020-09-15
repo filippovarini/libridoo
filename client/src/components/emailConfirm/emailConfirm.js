@@ -14,7 +14,7 @@ class EmailConfirm extends Component {
     newEmail: null,
     newEmailClass: null,
     newEmailPlaceholder: null,
-    canResend: false,
+    resendText: null,
     emailLabelMessage: null,
     codeLabelHidden: true,
     emailLoading: false,
@@ -244,8 +244,9 @@ class EmailConfirm extends Component {
 
   handleResend = () => {
     this.setState({
-      canResend: false
+      resendText: "email mandata"
     });
+    setTimeout(() => this.setState({ resendText: "rimanda email" }), 5000);
     document.getElementById("inputCode").value = "";
     this.sendEmail();
   };
@@ -277,7 +278,7 @@ class EmailConfirm extends Component {
           if (!jsonRes.response) {
             // wrong inputcode
             this.setState({
-              canResend: true,
+              resendText: "rimanda email",
               codeLabelHidden: false,
               generalLoading: false
             });
@@ -302,7 +303,6 @@ class EmailConfirm extends Component {
 
   render() {
     console.log(this.state.displayFake);
-    const canShow = this.state.canResend ? null : "hidden";
     let address = null;
     if (sessionStorage.getItem("registerBody")) {
       address = this.state.editing ? (
@@ -381,8 +381,14 @@ class EmailConfirm extends Component {
             onChange={this.handleChange}
             onBlur={this.handleBlur}
           />
-          <span className={canShow} onClick={this.handleResend} id="resend">
-            rimanda email
+          <span
+            onClick={this.handleResend}
+            id="resend"
+            className={
+              this.state.resendText === "email mandata" ? "inactive" : null
+            }
+          >
+            {this.state.resendText}
           </span>
           <input type="submit" value="CONFERMA" className="hidden" />
           <p id="code-submit" className="input" onClick={this.handleSubmit}>

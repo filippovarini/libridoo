@@ -193,10 +193,7 @@ class CheckoutReview extends Component {
         />
         {body}
         <div id="uniCode">
-          <p
-            id="uniCode-header"
-            className={!this.state.uniCode ? null : "obscured"}
-          >
+          <p id="uniCode-header">
             {this.state.couponSet
               ? "Commissioni azzerate"
               : "Vuoi azzerare le commissioni?"}
@@ -229,6 +226,7 @@ class CheckoutReview extends Component {
           <p
             id="uniCode-submit"
             className={this.state.uniCode ? null : "obscured"}
+            onClick={this.handleSubmit}
           >
             SALVA
           </p>
@@ -237,7 +235,9 @@ class CheckoutReview extends Component {
           <p id="rc-header">SUBTOTALE</p>
           <div className="rc-cart-div">
             <p className="rc-cart-header">Libri</p>
-            <p className="rc-cart-price">€ {totalPrice}</p>
+            <p className="rc-cart-price">
+              {totalPrice ? `${totalPrice} €` : "loading..."}
+            </p>
           </div>
           <div className="rc-cart-div">
             <p className="rc-cart-header">Spedizione</p>
@@ -271,13 +271,19 @@ class CheckoutReview extends Component {
                   : "rc-cart-price"
               }
             >
-              {this.state.couponSet ? "0%" : "3%"}
+              {this.state.couponSet ? "0%" : "3.40% + 0.35 €"}
             </p>
           </div>
           <div id="rc-subtotal" className="rc-cart-div">
             <p className="rc-cart-header">SUBTOTALE</p>
             <p className="rc-cart-price">
-              €{totalPrice + (totalPrice * 3) / 100}
+              {totalPrice
+                ? this.state.couponSet
+                  ? `${totalPrice} €`
+                  : `${Math.round(
+                      (totalPrice + 0.35 + (totalPrice * 3.4) / 100) * 100
+                    ) / 100} €`
+                : "loading..."}
             </p>
           </div>
           <div

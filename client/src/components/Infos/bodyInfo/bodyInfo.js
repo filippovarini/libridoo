@@ -127,7 +127,6 @@ class BodyInfo extends Component {
         email: this.state.editingEmail || this.props.user.email,
         phone: this.state.editingPhone || this.props.user.phone,
         school: this.state.editingSchool || this.props.user.school
-        // also schoolLogoURL associated with it
       };
       if (this.state.noSchool && !this.state.editingSchool) {
         bodyInfo.school = "Non frequento un'università";

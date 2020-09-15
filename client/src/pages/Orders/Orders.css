@@ -81,6 +81,18 @@
   text-align: center;
 }
 
+#orders-header-suggester {
+  font-weight: bold;
+  text-align: center;
+  color: rgb(99, 99, 99);
+  margin-top: 30px;
+  font-size: 1.5rem;
+}
+
+#oc-highlight {
+  color: black;
+}
+
 @media only screen and (max-width: 700px) {
   #orders-empty-header {
     font-size: 1.5rem;

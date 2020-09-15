@@ -16,7 +16,8 @@ class Orders extends Component {
     notBought: false,
     loading: true,
     ratingPopUpHidden: true,
-    userRated: null
+    userRated: null,
+    smallLoading: false
   };
 
   toggleDisplay = () => {
@@ -75,52 +76,117 @@ class Orders extends Component {
     }
   };
 
-  confirmOrder = clusterId => {
+  sendTransfer = clusterId => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Confermi di aver ricevuto i libri dal venditore?")) {
-      //   store user in state
-      this.setState({ loading: true });
-      fetch("/api/book/confirm", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify({ clusterID: clusterId })
-      })
-        .then(res => res.json())
-        .then(jsonRes => {
-          if (jsonRes.code === 0) {
-            //   correct
-            //   update, new request
-            //   rating pop-up
-            this.setState({
-              ready: false,
-              clusters: [],
-              ratingPopUpHidden: false,
-              userRated: {
-                name: jsonRes.cluster.sellerInfo.name,
-                _id: jsonRes.cluster.sellerId
+      this.setState({ smallLoading: true });
+      let cluster = this.state.clusters.filter(cluster => {
+        return cluster._id === clusterId;
+      });
+      cluster = cluster[0];
+      let total = cluster.delivery.choosen ? cluster.delivery.cost : 0;
+      cluster.Books.forEach(book => (total += book.price));
+      if (cluster.sellerInfo.payOut.type === "stripe") {
+        // separate route between stripe and paypal
+        const body = {
+          accountId: cluster.sellerInfo.payOut.accountId,
+          clusterId,
+          total
+        };
+        console.log(cluster);
+        console.log(body);
+        fetch("/api/payment/transfer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(body)
+        })
+          .then(res => res.json())
+          .then(jsonRes => {
+            console.log(jsonRes);
+            if (jsonRes.code === 0) {
+              // success
+              this.confirmOrder(clusterId);
+            } else if (jsonRes.code === 1) {
+              if (jsonRes.insufficient) {
+                // insufficient balance
+                this.confirmOrder(clusterId);
+              } else {
+                // general error
+                this.props.dispatch({
+                  type: "E-SET",
+                  error: {
+                    frontendPlace: "Orders/sendTransfer/code1/genera/118",
+                    jsonRes
+                  }
+                });
+                this.props.history.push("/error");
               }
-            });
-          } else {
-            // error
+            }
+          })
+          .catch(error => {
             this.props.dispatch({
               type: "E-SET",
-              error: { frontendPlace: "Orders/confirmOrder/code1", jsonRes }
+              error: {
+                frontendPlace: "Orders/sendTransfer/catch/130",
+                jsonRes: {
+                  message:
+                    "Qualcosa è andato storto nel pagamento del venditore. Controlla di avere una connessione stabile e riprova più tardi. Se il problema persiste, non esitare a conttatarci.",
+                  error
+                }
+              }
             });
             this.props.history.push("/error");
-          }
-        })
-        .catch(error => {
-          console.log(error);
+          });
+      }
+    }
+  };
+
+  confirmOrder = clusterId => {
+    //   store user in state
+    fetch("/api/book/confirm", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({ clusterID: clusterId })
+    })
+      .then(res => res.json())
+      .then(jsonRes => {
+        if (jsonRes.code === 0) {
+          //   correct
+          //   update, new request
+          //   rating pop-up
+          this.setState({
+            ready: false,
+            smallLoading: false,
+            clusters: [],
+            ratingPopUpHidden: false,
+            userRated: {
+              name: jsonRes.cluster.sellerInfo.name,
+              _id: jsonRes.cluster.sellerId
+            }
+          });
+        } else {
+          // error
           this.props.dispatch({
             type: "E-SET",
-            error: { frontendPlace: "Orders/confirmOrder/catch" }
+            error: { frontendPlace: "Orders/confirmOrder/code1", jsonRes }
           });
           this.props.history.push("/error");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.props.dispatch({
+          type: "E-SET",
+          error: { frontendPlace: "Orders/confirmOrder/catch" }
         });
-    }
+        this.props.history.push("/error");
+      });
   };
 
   render() {
@@ -147,7 +213,10 @@ class Orders extends Component {
     );
     const loaded = (
       <div id="orders-body-container">
-        <p id="orders-header-suggester">Conferma</p>
+        <p id="orders-header-suggester">
+          Conferma l'ordine <span id="oc-highlight">solo dopo</span> averlo
+          ricevuto
+        </p>
         {this.state.clusters.map(cluster => {
           return (
             <ClusterBooks
@@ -162,7 +231,8 @@ class Orders extends Component {
               userInfoId={cluster.sellerId}
               userInfo={cluster.sellerInfo}
               confirmed={cluster.confirmed}
-              confirmOrder={this.confirmOrder}
+              confirmOrder={this.sendTransfer}
+              smallLoading={this.state.smallLoading}
             />
           );
         })}

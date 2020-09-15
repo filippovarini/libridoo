@@ -112,6 +112,13 @@
   /* box-shadow: 0px 0px 3px purple; */
 }
 
+#search .list-g-container {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  justify-content: center;
+}
+
 #search .list-container {
   /* border: 1px solid black; */
   box-shadow: 0px 0px 2px gray;
@@ -121,7 +128,7 @@
   /* font-weight: bold; */
   align-items: center;
   width: 80%;
-  margin: 15px auto;
+  margin: 15px;
   padding: 0 10px;
   box-sizing: border-box;
   position: relative;
@@ -142,10 +149,8 @@
 }
 
 #search .list-delete {
-  position: absolute;
-  right: -20px;
-  font-size: 0.7rem;
   color: gray;
+  font-size: 0.6rem;
 }
 
 #search .list-delete:hover {
@@ -182,7 +187,7 @@
   }
   #search-list-counter {
     margin: 0px;
-    margin-top: 5px;
+    margin-top: 0px;
     margin-bottom: 10px;
   }
   #search .list {

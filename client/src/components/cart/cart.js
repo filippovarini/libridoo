@@ -96,7 +96,7 @@ class Cart extends Component {
           <p id="price-header">Totale:</p>
           <p id="price">{totalPrice} €</p>
         </div>
-        <Link to="/checkout" id="checkout-prompt">
+        <Link to="/checkoutReview" id="checkout-prompt">
           CHECKOUT
         </Link>
       </div>

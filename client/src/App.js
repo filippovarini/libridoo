@@ -127,8 +127,8 @@ class App extends React.Component {
             <Route path="/checkoutReview" component={CheckoutReview} />
             <Route exact path="/checkout" component={Checkout} />
             <Route path="/paymentConfirm" component={PaymentConfirm} />
-            <Route path="/infoReview/sell" component={sellReview} />
-            <Route path="/infoReview/buy" component={buyReview} />
+            <Route path="/infoReviewSell" component={sellReview} />
+            <Route path="/infoReviewBuy" component={buyReview} />
             <Route path="/account" component={Account} />
             <Route path="/orders" component={Orders} />
             <Route path="/deals" component={Deals} />

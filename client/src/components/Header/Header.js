@@ -8,6 +8,7 @@ import "./Header.css";
 import SlideBar from "../slideBar/slideBar";
 import BookInfo from "../BookInfo/BookInfo";
 import Cart from "../cart/cart";
+import LodaingS from "../Loading/loading_s";
 
 class Header extends Component {
   state = {
@@ -28,7 +29,8 @@ class Header extends Component {
       // not logged
       if (
         window.location.pathname !== "/" &&
-        window.location.pathname !== "/login"
+        window.location.pathname !== "/login" &&
+        window.location.pathname !== "/register"
       )
         window.location = "/";
     }
@@ -92,7 +94,8 @@ class Header extends Component {
       // not logged
       if (
         window.location.pathname !== "/" &&
-        window.location.pathname !== "/login"
+        window.location.pathname !== "/login" &&
+        window.location.pathname !== "/register"
       )
         window.location = "/";
     }
@@ -355,6 +358,7 @@ class Header extends Component {
         />
       </div>
     );
+
     const sell = (
       <div
         id="quickSell"
@@ -365,6 +369,7 @@ class Header extends Component {
         <i className="fas fa-plus"></i>
       </div>
     );
+
     let promptIcon = this.props.selectedBooks.length > 0 ? cart : sell;
     if (this.props.history.location.pathname === "/checkout") promptIcon = null;
     if (this.props.history.location.pathname === "/paymentConfirm")
@@ -372,7 +377,7 @@ class Header extends Component {
 
     // search input
     const searchInput = this.state.loading ? (
-      <p id="loading-input">loading...</p>
+      <p id="loading-input">un secondo...</p>
     ) : (
       <input
         autoComplete="off"
@@ -409,11 +414,17 @@ class Header extends Component {
           onSubmit={this.handleSearchSubmit}
         >
           <label htmlFor="title-input">
-            <i
-              id="quickSearch-ico"
-              className="fas fa-search searchBar-input"
-              // onClick={this.handleSearchSubmit}
-            ></i>
+            {this.state.loading ? (
+              <div id="header-loading-ico">
+                <LodaingS />
+              </div>
+            ) : (
+              <i
+                id="quickSearch-ico"
+                className="fas fa-search searchBar-input"
+                // onClick={this.handleSearchSubmit}
+              ></i>
+            )}
           </label>
           {searchInput}
           <input type="submit" className="hidden" />

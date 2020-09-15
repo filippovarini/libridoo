@@ -11,7 +11,7 @@ import AL1 from "./AL1";
 
 class Results extends Component {
   state = {
-    loading: true,
+    loading: false,
     index: 0,
     ready: false,
     updated: false,
@@ -615,14 +615,23 @@ class Results extends Component {
                     <option value="buono, sottolineato a penna">
                       buono, sottolineato a penna
                     </option>
-                    <option value="usato, non sottolineato">
-                      usato, non sottolineato
+                    <option value="normale, non sottolineato">
+                      normale, non sottolineato
                     </option>
-                    <option value="usato, sottolineato a matita">
-                      usato, sottolineato a matita
+                    <option value=" normale, sottolineato a matita">
+                      normale, sottolineato a matita
                     </option>
-                    <option value="usato, sottolineato a penna">
-                      usato, sottolineato a penna
+                    <option value="normale, sottolineato a penna">
+                      normale, sottolineato a penna
+                    </option>
+                    <option value="rovinato, non sottolineato">
+                      rovinato, non sottolineato
+                    </option>
+                    <option value="rovinato, sottolineato a matita">
+                      rovinato, sottolineato a matita
+                    </option>
+                    <option value="rovinato, sottolineato a penna">
+                      rovinato, sottolineato a penna
                     </option>
                     <option value="distrutto">distrutto</option>
                     <option value="fotocopiato">fotocopiato</option>
@@ -702,8 +711,9 @@ class Results extends Component {
         </div>
       ) : (
         // )
-        <div id="results-loading">
+        <div id="results-loading" className="r-refreshed">
           <LoadingM />
+          <p id="rlr">Stiamo ricaricando tutti i libri, ci vorra un po'</p>
         </div>
       );
 

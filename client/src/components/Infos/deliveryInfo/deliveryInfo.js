@@ -126,12 +126,16 @@ class DeliveryInfo extends Component {
         errorLabelHidden: false,
         costPlaceholder: "*prezzo*"
       });
-    }
-    if (!this.state.timeToMeet) {
+    } else if (!this.state.timeToMeet) {
       this.setState({
         timeToMeetClass: "invalid-input",
         errorLabelHidden: false,
         timeToMeetPlaceholder: "*numero*"
+      });
+    } else if (this.state.timeToMeet < 0 || this.state.timeToMeet > 80) {
+      alert("La consegna deve avvenire entro 80 giorni");
+      this.setState({
+        timeToMeetClass: "invalid-input"
       });
     } else {
       const DeliveryInfo =

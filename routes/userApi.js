@@ -223,7 +223,7 @@ router.post("/register/check", (req, res) => {
 
 // register
 // bonus update in here
-// email / password / name / avatarImgURL / invitingUserId
+// email / password / name / avatarImgURL / invitingUserId /
 router.post("/register", (req, res) => {
   // User.findOne({ email: req.body.email })
   //   .then(user => {
@@ -656,11 +656,9 @@ router.put("/recover", (req, res) => {
 // update stripe id
 // _id, payOut: {type / accountId}
 router.put("/connectedAccount", (req, res) => {
-  User.findByIdAndUpdate(
-    req.body._id,
-    { payOut: req.body.payOut },
-    { new: true }
-  )
+  const user = jwt.verify(req.body.JWT, JWT_SECRET);
+  console.log(user);
+  User.findByIdAndUpdate(user._id, { payOut: req.body.payOut }, { new: true })
     .then(user => {
       if (user._id) {
         const activeUser = user.toObject();

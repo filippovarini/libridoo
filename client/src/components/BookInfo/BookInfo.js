@@ -197,17 +197,18 @@ class BookInfo extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (
-      !this.state.imgUrl ||
+      // !this.state.imgUrl ||
       !this.state.title ||
       !this.state.quality ||
       !this.state.price
     ) {
-      if (!this.state.imgUrl) {
-        this.setState({
-          emptyImageClass: "empty",
-          headerClass: "empty-header"
-        });
-      }
+      // image not necessary
+      // if (!this.state.imgUrl) {
+      //   this.setState({
+      //     emptyImageClass: "empty",
+      //     headerClass: "empty-header"
+      //   });
+      // }
       if (!this.state.title) {
         this.setState({
           titleClass: "invalid-input",
@@ -228,7 +229,9 @@ class BookInfo extends Component {
       // everything inputted
       const user = this.props.user;
       const body = {
-        imageURL: this.state.imgUrl,
+        imageURL:
+          this.state.imgUrl ||
+          "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1599842783484",
         title: this.state.title,
         quality: this.state.quality,
         price: this.state.decimal
@@ -243,7 +246,8 @@ class BookInfo extends Component {
         user.DeliveryInfo.timeToMeet &&
         user.phone &&
         user.school &&
-        user.place.city
+        user.place.city &&
+        user.payOut.type
       ) {
         // already inputted info
         // post request
@@ -322,7 +326,7 @@ class BookInfo extends Component {
           updated: false
         });
         this.props.toggleDisplay();
-        this.props.history.push("/infoReview/sell");
+        this.props.history.push("/infoReviewSell");
       }
     }
   };
@@ -520,14 +524,23 @@ class BookInfo extends Component {
                 <option value="buono, sottolineato a penna">
                   buono, sottolineato a penna
                 </option>
-                <option value="usato, non sottolineato">
-                  usato, non sottolineato
+                <option value="normale, non sottolineato">
+                  normale, non sottolineato
                 </option>
-                <option value="usato, sottolineato a matita">
-                  usato, sottolineato a matita
+                <option value=" normale, sottolineato a matita">
+                  normale, sottolineato a matita
                 </option>
-                <option value="usato, sottolineato a penna">
-                  usato, sottolineato a penna
+                <option value="normale, sottolineato a penna">
+                  normale, sottolineato a penna
+                </option>
+                <option value="rovinato, non sottolineato">
+                  rovinato, non sottolineato
+                </option>
+                <option value="rovinato, sottolineato a matita">
+                  rovinato, sottolineato a matita
+                </option>
+                <option value="rovinato, sottolineato a penna">
+                  rovinato, sottolineato a penna
                 </option>
                 <option value="distrutto">distrutto</option>
                 <option value="fotocopiato">fotocopiato</option>

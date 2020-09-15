@@ -42,6 +42,12 @@
   border-radius: 10px;
 }
 
+#o-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #book-cluster #orders-delivery.choosen {
   box-shadow: 0px 0px 2px rgb(32, 165, 32);
   color: rgb(32, 165, 32);

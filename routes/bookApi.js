@@ -165,8 +165,8 @@ router.post("/fetch/buy", async (req, res) => {
                 email: user.email,
                 phone: user.phone,
                 avatarImgURL: user.avatarImgURL,
-                schoolLogoURL: user.schoolLogoURL,
-                deliveryInfo: user.DeliveryInfo
+                deliveryInfo: user.DeliveryInfo,
+                payOut: user.payOut
               };
               book.sellerUser = sellerUser;
               if (filterResult.indexOf(book) == filterResult.length - 1)
@@ -311,8 +311,8 @@ router.post("/generalFetch/UI", async (req, res) => {
                     email: user.email,
                     phone: user.phone,
                     avatarImgURL: user.avatarImgURL,
-                    schoolLogoURL: user.schoolLogoURL,
-                    deliveryInfo: user.DeliveryInfo
+                    deliveryInfo: user.DeliveryInfo,
+                    payOut: user.payOut
                   };
                   book.sellerUser = sellerUser;
                   if (filterResult.indexOf(book) == filterResult.length - 1) {
@@ -414,7 +414,6 @@ router.post("/generalFetch/ID", async (req, res) => {
           email: user.email,
           phone: user.phone,
           avatarImgURL: user.avatarImgURL,
-          schoolLogoURL: user.schoolLogoURL,
           deliveryInfo: user.DeliveryInfo
         };
         book.sellerUser = sellerUser;
@@ -435,8 +434,10 @@ router.post("/generalFetch/ID", async (req, res) => {
 
 // post image to s3 and return url to display on front end and later pass to request body
 router.post("/image", (req, res) => {
+  console.log("doingBokAPi");
   singleUpload(req, res, error => {
     if (error) {
+      console.log(error);
       return res.json({
         code: 1,
         place: "singleUpload(), bookApi:423",
@@ -477,7 +478,7 @@ buyerInfo: { / name / place: {country / region /  city} / school / email / phone
 soldBooksClusters: [
   {
     sellerId / delivery: {choosen (if not choosen, still pass null for cost and range) / cost / range / timeToMeet},
-    sellerInfo: { / name / / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL (got in frontend from book.sellerUser in cluster)
+    sellerInfo: { / name / / place: {country / region /  city} / school / email / phone / avatarImgURL / payOut: {type, accountId}}
     Books:[{bookId / imageURL / title  / price / quality / insertionDate}]  }]
 }] */
 // no input mistake
@@ -608,6 +609,7 @@ router.post("/checkedOut", (req, res) => {
             console.log("emailsent", info);
           }
         };
+      console.log(cluster.sellerInfo);
       // post soldbooks cluster
       const newCluster = new SoldBooksCluster({
         dealId: req.body.dealId,

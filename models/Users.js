@@ -37,10 +37,6 @@ const UserSchema = new Schema({
     type: String,
     default: null
   },
-  schoolLogoURL: {
-    type: String,
-    default: null
-  },
   password: {
     type: String,
     required: true

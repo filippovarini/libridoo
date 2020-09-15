@@ -124,9 +124,18 @@
   display: block;
 }
 
+#emailConfirm-input-actions #resend.inactive {
+  color: gray;
+}
+
 #emailConfirm-input-actions #resend:hover {
   font-weight: bold;
   cursor: pointer;
+}
+
+#emailConfirm-input-actions #resend.inactive:hover {
+  cursor: default;
+  font-weight: normal;
 }
 
 #emailConfirm-input-actions #code-submit {

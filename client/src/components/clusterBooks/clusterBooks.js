@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./clusterBooks.css";
+import LoadingS from "../Loading/loading_s";
 
 // component
 import InfoComponent from "./infoComponent/infoComponent";
@@ -321,7 +322,13 @@ class ClusterBooks extends Component {
           }}
         >
           <span id="confirm-icon" className="book-icon lower-icon span-icon">
-            CONFERMA
+            {this.props.smallLoading ? (
+              <div id="o-loading">
+                <LoadingS />
+              </div>
+            ) : (
+              "CONFERMA"
+            )}
           </span>
         </div>
       ) : (
