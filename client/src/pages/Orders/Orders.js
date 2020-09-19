@@ -93,8 +93,7 @@ class Orders extends Component {
           clusterId,
           total
         };
-        console.log(cluster);
-        console.log(body);
+
         fetch("/api/payment/transfer", {
           method: "POST",
           headers: {
@@ -105,7 +104,6 @@ class Orders extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
-            console.log(jsonRes);
             if (jsonRes.code === 0) {
               // success
               this.confirmOrder(clusterId);
@@ -195,52 +193,52 @@ class Orders extends Component {
         <LoadingM />
       </div>
     );
+
     const empty = (
       <div id="orders-empty-container">
         <p id="orders-empty-header">Non hai comprato nessun libro, ancora...</p>
         <p id="empty-subHeader">
           Su libridoo i libri vengono solitamente venduti al 50%. Sfrutta la
-          nostra polici ed{" "}
-          <span id="orders-offer">
-            inizia subito a risparmiare, per te il 10% di sconto sul primo
-            ordine!
-          </span>
+          nostra policy ed inizia subito a risparmiare
         </p>
         <Link id="orders-empty-link" to="/search">
           COMPRA SUBITO
         </Link>
       </div>
     );
+
     const loaded = (
       <div id="orders-body-container">
+        <Link id="problem-link" to="/FAQs">
+          Problemi con un ordine?
+        </Link>
         <div id="orders-headers">
           <p id="orders-header-suggester">
             Conferma l'ordine <span id="oc-highlight">solo dopo</span> averlo
             ricevuto
           </p>
-          <Link id="problem-link" to="/FAQs">
-            Problemi con un ordine?
-          </Link>
         </div>
-        {this.state.clusters.map(cluster => {
-          return (
-            <ClusterBooks
-              books={cluster.Books}
-              index={this.state.clusters.indexOf(cluster)}
-              deliveryInfo={cluster.delivery}
-              place={cluster.sellerInfo.place}
-              school={cluster.sellerInfo.school}
-              page="orders"
-              key={cluster._id}
-              clusterId={cluster._id}
-              userInfoId={cluster.sellerId}
-              userInfo={cluster.sellerInfo}
-              confirmed={cluster.confirmed}
-              confirmOrder={this.sendTransfer}
-              smallLoading={this.state.smallLoading}
-            />
-          );
-        })}
+        <div id="cluster-container">
+          {this.state.clusters.map(cluster => {
+            return (
+              <ClusterBooks
+                books={cluster.Books}
+                index={this.state.clusters.indexOf(cluster)}
+                deliveryInfo={cluster.delivery}
+                place={cluster.sellerInfo.place}
+                school={cluster.sellerInfo.school}
+                page="orders"
+                key={cluster._id}
+                clusterId={cluster._id}
+                userInfoId={cluster.sellerId}
+                userInfo={cluster.sellerInfo}
+                confirmed={cluster.confirmed}
+                confirmOrder={this.sendTransfer}
+                smallLoading={this.state.smallLoading}
+              />
+            );
+          })}
+        </div>
       </div>
     );
 

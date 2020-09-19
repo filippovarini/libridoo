@@ -10,22 +10,26 @@
 }
 
 #earn-login-header {
-  color: purple;
+  color: rgb(99, 99, 99);
   font-weight: bold;
-  opacity: 0.6;
-  margin-bottom: 40px;
   margin-top: 80px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 }
 
 #earn-login-link {
   color: white;
+  display: block;
   text-decoration: none;
   font-weight: bold;
-  background: #f79e02;
-  box-shadow: 0px 0px 2px gray;
-  padding: 5px 15px;
-  border-radius: 5px;
-  margin-top: 40px;
+  background: rgb(105, 142, 245);
+  width: 210px;
+  margin: 0 auto;
+  height: 30px;
+  line-height: 30px;
+  font-size: 1.1rem;
+  margin-top: 0px;
+  border-radius: 3px;
 }
 
 #earn-login-link:hover {
@@ -40,14 +44,6 @@
 .invite-ico:hover {
   font-size: 1.5rem;
   cursor: pointer;
-}
-
-#invite-link-copied {
-  font-style: italic;
-  text-align: center;
-  margin: 0px;
-  margin-right: 15%;
-  color: rgb(32, 165, 32);
 }
 
 #firstEarn {
@@ -67,12 +63,8 @@
   font-weight: bold;
   margin: 0px;
   margin-top: 20px;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   color: gray;
-}
-
-#earn-count {
-  color: #f79e02;
 }
 
 #earn-explainer {
@@ -86,12 +78,13 @@
 #earn-subExplainer {
   text-align: center;
   font-weight: bold;
-  color: rgb(32, 165, 32);
-  box-shadow: 0px 0px 2px rgb(32, 165, 32);
+  background: rgb(105, 142, 245);
+  color: white;
   width: 200px;
   margin: 0 auto;
   padding: 10px 0;
   border-radius: 3px;
+  font-size: 1.2rem;
 }
 
 .earn-tool {
@@ -106,7 +99,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 50px;
-  border: 2px solid purple;
+  background: #ebebeb;
   color: gray;
 }
 
@@ -114,6 +107,7 @@
   font-size: 2.5rem;
   margin: 0px;
   margin-top: 5px;
+  color: rgb(108, 232, 162);
 }
 
 .earn-title {
@@ -125,10 +119,11 @@
 
 .earn-description {
   font-size: 0.9rem;
-  /* width: 150px; */
+  font-weight: bold;
   text-align: center;
   margin: 0px;
   margin-top: 10px;
+  line-height: 13px;
 }
 
 #earn-whatsapp-link {

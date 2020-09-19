@@ -53,8 +53,7 @@ class ReviewBookShort extends Component {
             {this.props.book.title}
           </p>
           <p id="rbs-place" className="rb-titles">
-            {this.props.book.place}
-            {/* , {this.props.book.uni} */}
+            {this.props.book.place}, {this.props.book.uni}
           </p>
           <p id="rbs-quality" className="rb-titles">
             {this.props.book.quality}

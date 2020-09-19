@@ -41,7 +41,6 @@ class ReviewBook extends Component {
   };
 
   render() {
-    console.log(this.props.book, this.props.selectedBooks);
     return (
       <div id="reviewBook">
         {/* <div id="rb-image" className="rb-titles"> */}

@@ -467,9 +467,11 @@ class BookInfo extends Component {
           alt="copertina"
           className={this.state.imageClass}
         />
-        <p id="delete" onClick={this.handleImageDelete}>
-          -
-        </p>
+        <i
+          id="delete"
+          onClick={this.handleImageDelete}
+          className="fas fa-times"
+        ></i>
       </div>
     );
 
@@ -503,17 +505,20 @@ class BookInfo extends Component {
               defaultValue={this.props.editing ? this.state.title : null}
             />
             <div id="quality-container" className="info">
-              <p id="select-header">qualità:</p>
+              <p id="quality-warning" className={this.state.selectHeaderClass}>
+                sii sincero per quadagnare stelle
+              </p>
               <select
                 id="quality"
                 className="input"
                 onFocus={this.handleSelectFocus}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur}
-                defaultValue={
-                  this.props.editing ? this.state.quality : "intatto"
-                }
+                defaultValue={this.props.editing ? this.state.quality : "title"}
               >
+                <option disabled={true} value="title">
+                  qualità
+                </option>
                 <option value="intatto">intatto</option>
                 <option value="buono, non sottolineato">
                   buono, non sottolineato
@@ -545,12 +550,9 @@ class BookInfo extends Component {
                 <option value="distrutto">distrutto</option>
                 <option value="fotocopiato">fotocopiato</option>
               </select>
-              <p id="quality-warning" className={this.state.selectHeaderClass}>
-                Evita dispute con il cliente, sii sincero!
-              </p>
             </div>
             <div id="bookInfo-priceInput-container">
-              €
+              <span id="priceInfo-euro">€</span>
               <input
                 autoComplete="off"
                 id="price"
@@ -624,12 +626,14 @@ class BookInfo extends Component {
       </div>
     );
     const successful = (
-      <h1 className="successful">
-        {this.props.editing
-          ? "Libro modificato con successo"
-          : "Libro inserito con successo"}
-      </h1>
-      // link to help
+      <div id="successful-container">
+        <i className="fas fa-check"></i>
+        <h1 className="successful">
+          {this.props.editing
+            ? "Libro modificato con successo"
+            : "Libro inserito con successo"}
+        </h1>
+      </div>
     );
 
     let bodyComponent = this.state.generalLoading ? generalLoading : loaded;
@@ -637,7 +641,7 @@ class BookInfo extends Component {
 
     const deleteIcon =
       !this.state.generalLoading && !this.state.successful ? (
-        <span
+        <i
           id="general-delete"
           onClick={
             this.props.editing
@@ -647,9 +651,8 @@ class BookInfo extends Component {
                   this.props.toggleDisplay();
                 }
           }
-        >
-          -
-        </span>
+          className="fas fa-times"
+        ></i>
       ) : null;
 
     return (

@@ -24,11 +24,13 @@ import Orders from "./pages/Orders/Orders";
 import Deals from "./pages/Deals/Deals";
 import Invite from "./pages/Invite/Invite";
 import Feedback from "./pages/Feedback/Feedback";
-import Help from "./pages/Help/Help";
 import FAQs from "./pages/FAQs/FAQs";
 import ErrorPage from "./pages/Error/Error";
 import Privacy from "./pages/Pricacy/Privacy";
 import TandC from "./pages/T&C/T&C";
+
+// components
+import BookInfo from "./components/BookInfo/BookInfo";
 
 // FNASCI
 import FNASCI from "./pages/FNASCI/FNASCI";
@@ -39,7 +41,13 @@ import adImageTwo from "./pages/Invite/adImageTwo";
 import adImageThree from "./pages/Invite/adImageThree";
 
 class App extends React.Component {
+  state = {
+    BookInfoDisplay: "hidden",
+    headerWinning: false
+  };
+
   componentDidMount = () => {
+    // if (window.location.pathname !== "/home") NASCI
     let storePlace = null;
     let token = null;
     let jwtFound = false;
@@ -107,17 +115,56 @@ class App extends React.Component {
         });
     }
   };
+
+  // bookInfo
+  toggleBookInfo = () => {
+    if (!this.props.user.DeliveryInfo) {
+      // not logged
+      window.location = "/login";
+    } else {
+      if (this.state.BookInfoDisplay === "hidden") {
+        sessionStorage.setItem("selling", true);
+        this.setState({ BookInfoDisplay: null });
+      } else {
+        sessionStorage.removeItem("selling");
+        this.setState({ BookInfoDisplay: "hidden" });
+      }
+    }
+  };
+
+  // bring back to false
+  resetSlideBarHidden = () => {
+    this.setState({ hideSlidebar: false });
+  };
+
+  headerWinning = value => {
+    if (this.state.headerWinning !== value) {
+      this.setState({ headerWinning: value });
+    }
+  };
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          <Header />
+          <Header
+            toggleBookInfo={this.toggleBookInfo}
+            headerWinning={this.headerWinning}
+          />
+          <BookInfo
+            display={this.state.BookInfoDisplay}
+            toggleDisplay={this.toggleBookInfo}
+          />
           <div id="app-body">
             <Route exact path="/" component={FNASCI} />
             <Route
               exact
               path="/home"
-              /*FIIPPO NASCI became '/home from '/*/ component={Home}
+              // path="/"
+              // /*FIIPPO NASCI became '/home from '/*/ component={Home}
+              render={() => (
+                <Home hideHomeSlidebar={this.state.headerWinning} />
+              )}
             />
             <Route path="/login/:action?" component={Login} />
             <Route path="/register/:invitingId?" component={Register} />
@@ -131,10 +178,13 @@ class App extends React.Component {
             <Route path="/infoReviewBuy" component={buyReview} />
             <Route path="/account" component={Account} />
             <Route path="/orders" component={Orders} />
-            <Route path="/deals" component={Deals} />
+            <Route
+              path="/deals"
+              render={() => <Deals toggleBookInfo={this.toggleBookInfo} />}
+            />
             <Route path="/invite" component={Invite} />
             <Route path="/feedback" component={Feedback} />
-            <Route path="/help" component={Help} />
+
             <Route path="/FAQs" component={FAQs} />
             <Route path="/error" component={ErrorPage} />
             <Route path="/privacy" component={Privacy} />

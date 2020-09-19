@@ -10,6 +10,7 @@ import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
 import HeaderPart from "../../components/headerPart";
 import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
 import LoadingL from "../../components/Loading/loading_l";
+import LoadingS from "../../components/Loading/loading_s";
 
 class Checkout extends Component {
   state = {
@@ -456,7 +457,7 @@ class Checkout extends Component {
                       this.state.selected === "stripe" ? "ck-choosen" : null
                     }`}
                   >
-                    loading...
+                    <LoadingS />
                   </p>
                 ) : (
                   <div
@@ -466,7 +467,10 @@ class Checkout extends Component {
                     }`}
                     onClick={() => this.purchaseStripe(totalPrice)}
                   >
-                    <p id="stripe-choice-heaeder">CARTA</p>
+                    <div id="align-choice">
+                      <i className="far fa-credit-card"></i>
+                      <p id="stripe-choice-heaeder">CARTA</p>
+                    </div>
                     <div
                       id="stripe-secure"
                       className={
@@ -480,6 +484,7 @@ class Checkout extends Component {
                     </div>
                   </div>
                 )}
+
                 <p
                   id="paypal-choice"
                   className={`ck-choice ${
@@ -487,7 +492,7 @@ class Checkout extends Component {
                   }`}
                   onClick={this.purchasePaypal}
                 >
-                  {/* Cane2012 */}
+                  <i id="pp-ico" className="fab fa-paypal po-ico"></i>
                   PayPal
                 </p>
               </div>

@@ -149,7 +149,6 @@ class Register extends Component {
   };
 
   setAvatarImg = (url, male, gender, female) => {
-    console.log(male, gender);
     const description = !gender ? male : this.state.male ? male : female;
     const opposite = !gender ? null : this.state.male ? female : male;
     this.setState({
@@ -490,9 +489,11 @@ class Register extends Component {
     const avatarImage = (
       <div id="ai-general-container">
         <div id="avatar-image-container">
-          <span id="image-delete" onClick={this.deleteImage}>
-            -
-          </span>
+          <i
+            id="image-delete"
+            onClick={this.deleteImage}
+            className="fas fa-times"
+          ></i>
           <img
             src={this.state.avatarImgURL}
             id="register-avatar-image"

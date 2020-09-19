@@ -1,6 +1,11 @@
 #bookInfo-gContainer {
   position: fixed;
-  background: rgba(0, 0, 0, 0.7);
+  /* background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245, 0.6),
+    rgba(108, 232, 162, 0.6)
+  ); */
+  background: rgba(0, 0, 0, 0.8);
   width: 100vw;
   height: 100vh;
   z-index: 1001;
@@ -9,35 +14,26 @@
 }
 
 #bookInfo-gContainer #general-delete {
-  font-size: 2rem;
-  margin: 0px;
-  background: white;
-  border: 1px solid purple;
-  box-sizing: border-box;
-  color: red;
-  height: 30px;
-  width: 30px;
   position: absolute;
-  line-height: 22px;
-  top: -18px;
-  border-radius: 15px;
-  right: -18px;
+  font-size: 0.8rem;
+  top: 8px;
+  right: 8px;
+  color: gray;
 }
 
 #bookInfo-gContainer #general-delete:hover {
-  border: 2px solid red;
+  color: black;
   cursor: pointer;
 }
 
 #bookInfo {
-  border: 1px solid purple;
+  background: #ebebeb;
   border-radius: 5px;
   position: fixed;
   left: 50%;
   margin-left: -250px;
   width: 500px;
   text-align: center;
-  background: white;
   z-index: 1;
   top: 100px;
 }
@@ -58,7 +54,7 @@
   margin: 0 auto;
   margin-top: 30px;
   position: relative;
-  border: 1px solid rgb(32, 165, 32);
+  background: rgb(108, 232, 162);
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -68,9 +64,9 @@
 
 #bookInfo #label {
   display: flex;
-  border: 1px solid gray;
-  color: gray;
-  box-shadow: 0px 0px 3px gray;
+  border: 1px solid white;
+  color: white;
+  box-shadow: 0px 0px 3px white;
   border-radius: 50px;
   height: 100px;
   width: 100px;
@@ -80,7 +76,7 @@
 }
 
 #bookInfo #label:hover {
-  box-shadow: 0px 0px 5px gray;
+  box-shadow: 0px 0px 5px white;
   cursor: pointer;
 }
 
@@ -88,7 +84,6 @@
   display: inline-block;
   padding: 0 20px;
   margin-top: 15px;
-  font-style: italic;
   font-weight: bold;
   color: gray;
   font-size: 0.8rem;
@@ -101,64 +96,92 @@
 }
 
 #bookInfo #delete {
+  color: gray;
+  font-size: 0.6rem;
   position: absolute;
-  color: red;
-  border: 1px solid rgb(32, 165, 32);
-  right: -10px;
   top: -10px;
-  font-size: 1.3rem;
-  line-height: 17px;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  border-radius: 20px;
-  background: white;
-  margin: 0px;
-  z-index: 1001;
+  right: -10px;
 }
 
 #bookInfo #delete:hover {
   cursor: pointer;
-  border: 2px solid red;
   font-weight: bold;
+  color: black;
 }
 
 #bookInfo #form-container {
-  border: 1px solid #f79e02;
   /* box-shadow: 0px 0px 3px purple; */
   border-radius: 3px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 70%;
+  width: 80%;
   min-width: 238px;
   margin: 0 auto;
-  margin-top: 20px;
   padding-bottom: 20px;
+}
+
+#bookInfo .input:focus {
+  outline-color: transparent;
 }
 
 #bookInfo .input {
   display: block;
-  height: 20px;
-  text-align: center;
-  width: 238px;
+  height: 30px;
+  width: 100%;
+  max-width: 300px;
+  background: rgb(207, 207, 207);
+  border: 0px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: rgb(99, 99, 99);
 }
 
 #bookInfo #select-header {
   margin: 0px;
   margin-bottom: 5px;
   font-size: 0.8rem;
-  color: gray;
+  color: rgb(99, 99, 99);
 }
 
-.successful {
-  font-weight: 300;
-  font-style: italic;
+#bookInfo #quality-container {
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+
+#bookInfo #quality {
+  color: rgb(99, 99, 99);
+  border: transparent;
+  margin: 0 auto;
+}
+
+#bookInfo #successful-container {
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#bookInfo #successful-container .fa-check {
+  color: rgb(32, 165, 32);
+  font-size: 3rem;
+}
+
+#bookInfo .successful {
+  font-weight: bold;
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 30px;
+  color: rgb(99, 99, 99);
 }
 
 #bookInfo .info {
   margin-top: 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 #bookInfo-price-label {
@@ -168,19 +191,23 @@
 }
 
 #bookInfo #submit {
+  margin: 0 auto;
   margin-bottom: 30px;
-  border: 1px solid black;
-  display: inline-block;
-  padding: 3px 8px;
-  font-size: 0.9rem;
-  box-shadow: 0px 0px 3px black;
-  cursor: pointer;
+  margin-top: 20px;
+  width: 70%;
+  max-width: 300px;
+  background: rgb(105, 142, 245);
+  height: 30px;
+  line-height: 30px;
+  color: white;
+  font-weight: bold;
   border-radius: 3px;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 #bookInfo #submit:hover {
-  box-shadow: 0px 0px 5px black;
-  padding: 4px 10px;
+  box-shadow: 0px 0px 3px rgb(105, 142, 245);
 }
 
 #bookInfo #submit.disabled {
@@ -213,34 +240,47 @@
 }
 
 #bookInfo-decimal {
-  width: 20px;
-  height: 15px;
+  width: 30px;
+  height: 20px;
   margin-left: 5px;
+  font-size: 0.6rem;
   text-align: center;
+  background: rgb(207, 207, 207);
+  border: transparent;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
 }
 
 #bookInfo #price.info {
   margin-top: 0px;
   margin-right: 5px;
-  width: 60px;
-  font-size: 0.9rem;
+  width: 100px;
+  font-size: 0.8rem;
   margin-left: 10px;
+}
+
+#bookInfo #priceInfo-euro {
+  color: rgb(99, 99, 99);
+  font-weight: bold;
 }
 
 #bookInfo-price-suggestion {
   font-size: 0.8rem;
-  font-style: italic;
+  /* font-style: italic; */
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 10px;
   font-weight: bold;
-  color: gray;
+  color: rgb(99, 99, 99);
 }
 
 #bookInfo #quality-warning {
   font-size: 0.8rem;
   font-weight: bold;
-  color: #f79e02;
+  color: rgb(99, 99, 99);
+  margin: 0px;
+  text-align: start;
+  margin-left: 10px;
 }
 
 #bookInfo-generalLoading {
@@ -281,15 +321,19 @@
   }
 
   #bookInfo .input {
-    width: 200px;
+    font-size: 0.6rem;
   }
 
   #bookInfo #title {
-    width: 200px;
+    font-size: 0.7rem;
   }
 
   #bookInfo-price-suggestion {
     margin-left: 10px;
     margin-right: 10px;
+    font-size: 0.7rem;
+  }
+  #bookInfo #price.info {
+    font-size: 0.7rem;
   }
 }

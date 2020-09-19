@@ -294,7 +294,7 @@ class Login extends Component {
     return (
       <div id="login">
         <HeaderPart
-          title={"LOGIN"}
+          title={"BENTORNATO!"}
           mainClass={"deals"}
           imageId="libridoo-logo-image"
           headerClass=""

@@ -225,7 +225,7 @@ class CheckoutReview extends Component {
           </form>
           <p
             id="uniCode-submit"
-            className={this.state.uniCode ? null : "obscured"}
+            className={this.state.couponSet ? "hidden" : null}
             onClick={this.handleSubmit}
           >
             SALVA

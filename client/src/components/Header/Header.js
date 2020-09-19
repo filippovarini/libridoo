@@ -1,27 +1,27 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import mainLogo from "../../images/logo-short-small.png";
 import "./Header.css";
+
+// image
+import imageSrc from "../../images/logo-white.png";
 
 // components
 import SlideBar from "../slideBar/slideBar";
-import BookInfo from "../BookInfo/BookInfo";
 import Cart from "../cart/cart";
-import LodaingS from "../Loading/loading_s";
-// import FeedbackPopUp from "../feedbackPopUp/feedbackPopUp";
 
 class Header extends Component {
   state = {
     slideBarHidden: true,
-    BookInfoDisplay: "hidden",
     ui: null,
     quickSearchDisplay: null,
     searChInputClass: null,
     loading: false,
     cartHidden: true,
     searched: false,
-    quickSearchLabelMessage: null
+    quickSearchLabelMessage: null,
+    headerDisplay: "hidden",
+    location: "/"
   };
 
   componentDidMount = () => {
@@ -85,9 +85,41 @@ class Header extends Component {
           });
       }
     }
+    if (window.location.pathname !== "/")
+      this.setState({
+        headerDisplay: null
+      });
   };
 
   componentDidUpdate = () => {
+    // show header if not home
+    if (this.state.location !== window.location.pathname) {
+      window.scrollTo(0, 0);
+      // console.log("redir");
+      // just redirected
+
+      if (window.location.pathname !== "/" && this.state.headerDisplay)
+        this.setState({
+          headerDisplay: null,
+          location: window.location.pathname
+        });
+      else if (window.location.pathname === "/" && !this.state.headerDisplay) {
+        this.setState({
+          headerDisplay: "hidden",
+          location: window.location.pathname
+        });
+      }
+    }
+    if (
+      window.location.pathname === "/" &&
+      window.pageYOffset < 60 &&
+      this.state.headerDisplay !== "hidden"
+    ) {
+      this.setState({
+        headerDisplay: "hidden",
+        location: window.location.pathname
+      });
+    }
     // remove searchParams
     const location = this.props.history.location.pathname;
     // FILIPPO NASCI
@@ -143,31 +175,23 @@ class Header extends Component {
     // search Display
     if (
       (this.props.history.location.pathname === "/results" ||
-        this.props.history.location.pathname === "/checkout") &&
+        this.props.history.location.pathname === "/checkoutReview" ||
+        this.props.history.location.pathname === "/search" ||
+        this.props.history.location.pathname === "/checkout" ||
+        this.props.history.location.pathname === "/paymentConfirm") &&
       !this.state.quickSearchDisplay
     ) {
       // searching
-      this.setState({ quickSearchDisplay: "button" });
+      this.setState({ quickSearchDisplay: "enabled" });
     } else if (
       this.state.quickSearchDisplay &&
       this.props.history.location.pathname !== "/results" &&
-      this.props.history.location.pathname !== "/checkout"
+      this.props.history.location.pathname !== "/checkoutReview" &&
+      this.props.history.location.pathname !== "/search" &&
+      this.props.history.location.pathname !== "/checkout" &&
+      this.props.history.location.pathname !== "/paymentConfirm"
     ) {
       this.setState({ quickSearchDisplay: null });
-    }
-
-    // what do you think of libridoo?
-    if (this.props.user.registerDate && !sessionStorage.getItem("rating")) {
-      const registerDate = new Date(this.props.user.registerDate);
-      const actualDate = new Date();
-      const hoursDifference = Math.floor(
-        (actualDate.getTime() - registerDate.getTime()) / 3600000
-      );
-      if (hoursDifference > 3) {
-        // means user has logged out and now is logging in back. Rating!
-        sessionStorage.setItem("rating", "true");
-        // show rating bar
-      }
     }
   };
 
@@ -177,21 +201,6 @@ class Header extends Component {
     });
   };
 
-  toggleDisplay = () => {
-    if (!this.props.user.DeliveryInfo) {
-      // not logged
-      this.props.history.push("/login");
-    } else {
-      if (this.state.BookInfoDisplay === "hidden") {
-        sessionStorage.setItem("selling", true);
-        this.setState({ BookInfoDisplay: null });
-      } else {
-        sessionStorage.removeItem("selling");
-        this.setState({ BookInfoDisplay: "hidden" });
-      }
-    }
-  };
-
   toggleSlideBar = () => {
     this.setState({
       slideBarHidden: !this.state.slideBarHidden
@@ -199,6 +208,7 @@ class Header extends Component {
   };
 
   hideSlidebar = () => {
+    console.log("ok");
     this.setState({
       slideBarHidden: true
     });
@@ -356,147 +366,132 @@ class Header extends Component {
     }
   };
 
-  handleScroll = e => {
-    console.log("ok");
+  handleScroll = action => {
+    if (action === "show" && this.state.headerDisplay) {
+      this.setState({
+        headerDisplay: ""
+      });
+      this.props.headerWinning(true);
+    }
+    if (action === "hide" && !this.state.headerDisplay) {
+      this.setState({
+        headerDisplay: "hidden"
+      });
+      this.props.headerWinning(false);
+    }
   };
 
   render() {
-    // 3rd Icon choice
-    const cart = (
-      <div id="cart-gContainer" className="header-component">
-        <div
-          id="cart-container"
-          className={`promptIcon ${this.state.cartHidden ? "" : "clicked"}`}
-          onClick={this.toggleDisplayCart}
-        >
-          <i className="fas fa-shopping-cart"></i>
-        </div>
-        <Cart
-          toggleDisplay={this.toggleDisplayCart}
-          hidden={this.state.cartHidden}
+    document.onscroll = () => {
+      // if (window.location.pathname === "/home") { NASCI
+      if (window.location.pathname === "/") {
+        if (window.pageYOffset > 60 && this.state.headerDisplay)
+          this.handleScroll("show");
+        else if (window.pageYOffset < 60 && !this.state.headerDisplay)
+          this.handleScroll("hide");
+      }
+    };
+    // console.log(this.props.headerDisplay);
+    const searchMore = (
+      <p
+        id="searchMore"
+        onClick={() => {
+          this.props.history.push("/search");
+        }}
+        className="nav nav-text"
+      >
+        CERCA
+      </p>
+    );
+
+    const sell = (
+      <p
+        id="sell-prompt"
+        className="nav nav-text"
+        onClick={this.props.toggleBookInfo}
+      >
+        VENDI{" "}
+      </p>
+    );
+
+    const menu = (
+      <div
+        id="menu"
+        className={`nav ${this.state.slideBarHidden ? null : "clicked"}`}
+      >
+        <p className="nav-text" onClick={this.toggleSlideBar}>
+          MENU
+        </p>
+        <SlideBar
+          user={this.props.user}
+          hidden={this.state.slideBarHidden}
+          toggleSlideBar={this.toggleSlideBar}
+          handleLogout={this.handleLogout}
+          hideSlidebar={this.hideSlidebar}
         />
       </div>
     );
 
-    const sell = (
-      <div
-        id="quickSell"
-        className="header-component promptIcon"
-        onClick={this.toggleDisplay}
+    const login = (
+      <p
+        className="nav nav-text"
+        onClick={() => this.props.history.push("/login")}
       >
-        <span id="header-sell-prompt">VENDI </span>
-        <i className="fas fa-plus"></i>
-      </div>
+        LOGIN
+        <i className="fas fa-sign-in-alt"></i>
+      </p>
     );
 
-    let promptIcon = this.props.selectedBooks.length > 0 ? cart : sell;
-    if (this.props.history.location.pathname === "/checkout") promptIcon = null;
-    if (this.props.history.location.pathname === "/paymentConfirm")
-      promptIcon = sell;
+    // first Nav config
+    let firstNavClass =
+      this.props.selectedBooks.length > 0 ? null : "hiddenVisibility";
+    if (this.props.history.location.pathname === "/checkout")
+      firstNavClass = "hiddenVisibility";
 
-    // search input
-    const searchInput = this.state.loading ? (
-      <p id="loading-input">un secondo...</p>
-    ) : (
-      <input
-        autoComplete="off"
-        type="text"
-        id="title-input"
-        onChange={this.handleSearchChange}
-        className={this.state.searChInputClass}
-        defaultValue={this.state.ui}
-        placeholder="Cerca"
-      />
-    );
-
-    const quickSearchButton = (
-      <div
-        id="search-prompt"
-        className="header-component"
-        onClick={() => {
-          this.props.history.push("/search");
-        }}
-      >
-        <i className="fas fa-search"></i>
-        <p id="search-header">CERCA ANCORA</p>
-      </div>
-    );
-
-    const quickSearchBarInner = (
-      <div
-        id="quickSearch-general-container"
-        className="header-component quick-search"
-      >
-        <form
-          id="searchBar-form"
-          className="searchBar-input input-real"
-          onSubmit={this.handleSearchSubmit}
+    const firstNav =
+      firstNavClass === "hiddenVisibility" ? (
+        sell
+      ) : (
+        <div
+          id="cart-container"
+          onClick={this.toggleDisplayCart}
+          className={`nav  ${
+            this.state.cartHidden ? "" : "clicked"
+          } ${firstNavClass}`}
         >
-          <label htmlFor="title-input">
-            {this.state.loading ? (
-              <div id="header-loading-ico">
-                <LodaingS />
-              </div>
-            ) : (
-              <i
-                id="quickSearch-ico"
-                className="fas fa-search searchBar-input"
-                // onClick={this.handleSearchSubmit}
-              ></i>
-            )}
-          </label>
-          {searchInput}
-          <input type="submit" className="hidden" />
-        </form>
-        <label
-          htmlFor="text"
-          id="quickSearch-label"
-          className={this.state.quickSearchLabelMessage ? "" : "hidden"}
-        >
-          {this.state.quickSearchLabelMessage}
-        </label>
-      </div>
-    );
+          <i className="nav-text fas fa-shopping-cart"></i>
+          <Cart
+            toggleDisplay={this.toggleDisplayCart}
+            hidden={this.state.cartHidden}
+          />
+        </div>
+      );
 
-    const quickSearch =
-      this.state.quickSearchDisplay === "button"
-        ? quickSearchButton
-        : quickSearchBarInner;
+    // second Nav
+    let secnodNav = searchMore;
 
-    // console.log(window.pageYOffset);
+    // third NAv
+    const thirdNav =
+      sessionStorage.getItem("JWT") || localStorage.getItem("JWT")
+        ? menu
+        : login;
 
     return (
-      <div id="header-gContainer">
-        <div id="header-container">
-          <img
-            src={mainLogo}
-            alt="header logo"
-            id="header-image-logo"
-            onClick={() => this.props.history.push("/")}
-          />
-          {quickSearch}
-          {promptIcon}
-          <div id="slidebar-prompt">
-            <i
-              id="slidebar-prompt-icon"
-              className={`fas fa-${
-                this.state.slideBarHidden ? "book" : "book-open"
-              } fa-2x`}
-              onClick={this.toggleSlideBar}
-            ></i>
-            <SlideBar
-              user={this.props.user}
-              hidden={this.state.slideBarHidden}
-              toggleSlideBar={this.toggleSlideBar}
-              handleLogout={this.handleLogout}
-              hideSlidebar={this.hideSlidebar}
-            />
+      <div id="hc" className={this.state.headerDisplay}>
+        <div id="contained">
+          <div
+            id="logo-container"
+            onClick={() => {
+              this.props.history.push("/");
+            }}
+          >
+            <img id="logo" alt="libridoo logo" src={imageSrc} />
           </div>
-          <BookInfo
-            display={this.state.BookInfoDisplay}
-            toggleDisplay={this.toggleDisplay}
-          />
-          {/* <FeedbackPopUp user={this.props.user} /> */}
+          <div id="navs-container">
+            {firstNav}
+            {secnodNav}
+            {thirdNav}
+          </div>
         </div>
       </div>
     );

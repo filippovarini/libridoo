@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import "./emailConfirm.css";
-import mainLogo from "../../images/logo-long.png"; //import to fix the book error
+
+// compoennts
 import LoadingM from "../../components/Loading/loading_m";
+import imageSrc from "../../images/home-image.jpg";
+
 class EmailConfirm extends Component {
   state = {
     inputCode: null,
@@ -34,7 +37,6 @@ class EmailConfirm extends Component {
   };
 
   sendEmail = () => {
-    console.log("sending1");
     fetch(
       `/api/user/emailConfirm/${
         JSON.parse(sessionStorage.getItem("registerBody")).email
@@ -302,7 +304,6 @@ class EmailConfirm extends Component {
   };
 
   render() {
-    console.log(this.state.displayFake);
     let address = null;
     if (sessionStorage.getItem("registerBody")) {
       address = this.state.editing ? (
@@ -322,7 +323,8 @@ class EmailConfirm extends Component {
               className={`email ${this.state.newEmailClass}`}
               placeholder={
                 this.state.newEmailPlaceholder ||
-                JSON.parse(sessionStorage.getItem("registerBody")).email
+                // JSON.parse(sessionStorage.getItem("registerBody")).email
+                "email"
               }
             />
             <span id="edit" onClick={this.emailSubmit}>
@@ -409,7 +411,7 @@ class EmailConfirm extends Component {
             <p id="emailConfirm-fake-header">CONFERMA</p>
             <img
               id="emailConfirm-libridoo-logo-image"
-              src={mainLogo} //import to fix book error
+              src={imageSrc} //import to fix book error
               alt="logo"
             />
           </div>

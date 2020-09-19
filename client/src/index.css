@@ -25,6 +25,10 @@ code {
   display: none;
 }
 
+.hiddenVisibility {
+  visibility: hidden;
+}
+
 .invalid-input {
   border: 1px solid red;
   border-radius: 1px;
@@ -94,14 +98,14 @@ input[type="number"] {
 .ldio-sqv79tocehf > div > div:nth-child(1) div,
 .ldio-sqv79tocehf > div > div:nth-child(2) div,
 .ldio-sqv79tocehf > div > div:nth-child(3) {
-  background: #dadada;
+  background: #6ce8a2;
   width: 86.13px;
   height: 86.13px;
   border-radius: 50%;
   position: absolute;
 }
 .ldio-sqv79tocehf > div > div:nth-child(1) div {
-  border: 13.049999999999999px solid #dadada;
+  border: 13.049999999999999px solid #6ce8a2;
   width: 60.029999999999994px;
   height: 60.029999999999994px;
   background: none;
@@ -112,22 +116,22 @@ input[type="number"] {
   height: 33.93px;
 }
 .ldio-sqv79tocehf > div > div:nth-child(4) div {
-  background: #dadada;
+  background: #6ce8a2;
   width: 13.049999999999999px;
   height: 19.575px;
   position: absolute;
 }
 .ldio-sqv79tocehf > div > div:nth-child(3) {
-  background: #dadada;
+  background: #6ce8a2;
 }
 .ldio-sqv79tocehf > div > div:nth-child(2) > div:nth-child(1) {
-  background: #82cff5;
+  background: #698ef5;
 }
 .ldio-sqv79tocehf > div > div:nth-child(2) > div:nth-child(2) {
   background: #698ef5;
 }
 .ldio-sqv79tocehf > div > div:nth-child(2) > div:nth-child(3) {
-  background: #6ce8a2;
+  background: #698ef5;
 }
 .loadingio-spinner-fidget-spinner-udtray956qm {
   width: 261px;
@@ -168,14 +172,14 @@ input[type="number"] {
 .ldio-xj4o7xwbsdb > div > div:nth-child(1) div,
 .ldio-xj4o7xwbsdb > div > div:nth-child(2) div,
 .ldio-xj4o7xwbsdb > div > div:nth-child(3) {
-  background: #dadada;
+  background: #6ce8a2;
   width: 33.33px;
   height: 33.33px;
   border-radius: 50%;
   position: absolute;
 }
 .ldio-xj4o7xwbsdb > div > div:nth-child(1) div {
-  border: 5.05px solid #dadada;
+  border: 5.05px solid #6ce8a2;
   width: 23.23px;
   height: 23.23px;
   background: none;
@@ -186,22 +190,22 @@ input[type="number"] {
   height: 13.13px;
 }
 .ldio-xj4o7xwbsdb > div > div:nth-child(4) div {
-  background: #dadada;
+  background: #6ce8a2;
   width: 5.05px;
   height: 7.575px;
   position: absolute;
 }
 .ldio-xj4o7xwbsdb > div > div:nth-child(3) {
-  background: #dadada;
+  background: #6ce8a2;
 }
 .ldio-xj4o7xwbsdb > div > div:nth-child(2) > div:nth-child(1) {
-  background: #82cff5;
+  background: #698ef5;
 }
 .ldio-xj4o7xwbsdb > div > div:nth-child(2) > div:nth-child(2) {
   background: #698ef5;
 }
 .ldio-xj4o7xwbsdb > div > div:nth-child(2) > div:nth-child(3) {
-  background: #6ce8a2;
+  background: #698ef5;
 }
 .loadingio-spinner-fidget-spinner-rpnwi4xirv {
   width: 101px;
@@ -242,14 +246,14 @@ input[type="number"] {
 .ldio-jbgicnezfv > div > div:nth-child(1) div,
 .ldio-jbgicnezfv > div > div:nth-child(2) div,
 .ldio-jbgicnezfv > div > div:nth-child(3) {
-  background: #dadada;
+  background: white;
   width: 33px;
   height: 33px;
   border-radius: 50%;
   position: absolute;
 }
 .ldio-jbgicnezfv > div > div:nth-child(1) div {
-  border: 5px solid #dadada;
+  border: 5px solid white;
   width: 23px;
   height: 23px;
   background: none;
@@ -260,19 +264,19 @@ input[type="number"] {
   height: 13px;
 }
 .ldio-jbgicnezfv > div > div:nth-child(4) div {
-  background: #dadada;
+  background: white;
   width: 5px;
   height: 7.5px;
   position: absolute;
 }
 .ldio-jbgicnezfv > div > div:nth-child(3) {
-  background: #dadada;
+  background: white;
 }
 .ldio-jbgicnezfv > div > div:nth-child(2) > div:nth-child(1) {
-  background: #82cff5;
+  background: #6ce8a2;
 }
 .ldio-jbgicnezfv > div > div:nth-child(2) > div:nth-child(2) {
-  background: #698ef5;
+  background: #6ce8a2;
 }
 .ldio-jbgicnezfv > div > div:nth-child(2) > div:nth-child(3) {
   background: #6ce8a2;
@@ -300,11 +304,11 @@ input[type="number"] {
 /* MEDIAS */
 @media only screen and (max-width: 450px) {
   #app-body {
-    margin-top: 100px;
+    /* margin-top: 100px; */
   }
 }
 @media only screen and (max-width: 350px) {
   #app-body {
-    margin-top: 80px;
+    /* margin-top: 80px; */
   }
 }

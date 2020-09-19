@@ -14,39 +14,36 @@
 }
 
 #emailConfirm-image-container {
-  width: 95%;
-  height: 100px;
+  height: 160px;
   background: white;
-  box-shadow: 0px 0px 3px black;
   border-radius: 3px;
-  margin: 0 auto;
-  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   position: relative;
+}
+
+#emailConfirm-image-container#ih {
+  position: absolute;
 }
 
 #emailConfirm-container {
   background: white;
   height: 400px;
   width: 500px;
-  border: 1px solid black;
-  border-radius: 5px;
 }
 
 #emailConfirm-fake-header {
-  font-size: 2rem;
-  letter-spacing: 1rem;
-  font-family: "Pangolin", cursive;
-  color: #f79e02;
+  position: absolute;
+  font-weight: 600;
+  font-size: 3rem;
+  left: 50px;
+  top: 0px;
 }
 
 #emailConfirm-libridoo-logo-image {
-  height: 25px;
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
+  height: 400px;
 }
 
 #email-address-container {
@@ -58,16 +55,29 @@
   display: block;
   padding: 5px 15px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   box-sizing: border-box;
+  background: rgb(207, 207, 207);
+  border: 0px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+}
+
+#email-address-container .email::placeholder {
+  color: rgb(156, 156, 156);
+  font-weight: normal;
+}
+
+#email-address-container .email:focus {
+  outline-color: transparent;
 }
 
 #email-address-container #email {
-  border: 1px solid gray;
-  /* box-shadow: 0px 0px 3px black; */
+  background: rgb(207, 207, 207);
   border-radius: 3px;
 }
 
@@ -82,13 +92,21 @@
 }
 
 #emailConfirm-input-actions {
-  margin: 0 auto;
-  margin-top: 15px;
-  border: 1px solid white;
-  box-shadow: 0px 0px 3px black;
-  border-radius: 3px;
   text-align: center;
-  width: 95%;
+}
+
+#emailConfirm-input-actions #inputCode {
+  background: rgb(207, 207, 207);
+  border: 0px;
+  height: 20px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  border-radius: 2px;
+  color: rgb(99, 99, 99);
+}
+
+#emailConfirm-input-actions #inputCode::placeholder {
+  font-weight: normal;
 }
 
 #emailConfirm-input-actions.height-set {
@@ -99,10 +117,13 @@
 }
 
 #emailConfirm-input-actions #header {
-  font-size: 0.8rem;
+  width: 200px;
   display: block;
-  margin: 20px;
+  margin: 0 auto;
+  margin-top: 15px;
   font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 15px;
   color: gray;
 }
 
@@ -140,18 +161,18 @@
 
 #emailConfirm-input-actions #code-submit {
   margin-bottom: 20px;
-  font-size: 0.7rem;
-  border: 1px solid black;
-  display: inline-block;
-  box-shadow: 0px 0px 3px gray;
-  padding: 3px 8px;
   cursor: pointer;
+  width: 150px;
+  background: rgb(105, 142, 245);
+  font-weight: bold;
+  color: white;
+  height: 25px;
+  line-height: 25px;
   border-radius: 3px;
 }
 
 #emailConfirm-input-actions #code-submit:hover {
-  box-shadow: 0px 0px 5px black;
-  padding: 4px 10px;
+  box-shadow: 0px 0px 3px rgb(105, 142, 245);
 }
 
 #emailConfirm-inputCode-label {

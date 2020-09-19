@@ -15,9 +15,8 @@ class PayOutInfo extends Component {
   componentDidMount = () => {
     const location = this.props.history.location.pathname;
     const locationArr = location.split("/");
-    console.log(locationArr);
+
     if (locationArr[2] === "refreshed") {
-      console.log("referesi");
       // refreshed
       this.setState({
         stripeError:
@@ -25,7 +24,6 @@ class PayOutInfo extends Component {
       });
       setTimeout(() => this.setState({ stripeError: "" }), 6000);
     } else if (locationArr[2] === "confirmed" && locationArr[3]) {
-      console.log("success");
       // success
       // userUpdate
       this.setState({ loading: true });
@@ -44,7 +42,6 @@ class PayOutInfo extends Component {
         .then(res => res.json())
 
         .then(jsonRes => {
-          console.log(jsonRes);
           if (jsonRes.code === 0) {
             // success
             this.props.dispatch({ type: "SET-USER", user: jsonRes.activeUser });
@@ -205,8 +202,6 @@ class PayOutInfo extends Component {
         <LoadingM />
       </div>
     );
-
-    console.log(this.props.user);
 
     // add for paypal
     const loaded = this.props.user.payOut

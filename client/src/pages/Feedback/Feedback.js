@@ -303,7 +303,8 @@ class Feedback extends Component {
               }}
             >
               <p id="fpl" className="feedback-problem">
-                Visita la pagina "Domande e Problemi frequenti" >>
+                Visita la pagina "Domande e Problemi frequenti"
+                <i className="fas fa-sign-in-alt"></i>
               </p>
             </div>
             <div

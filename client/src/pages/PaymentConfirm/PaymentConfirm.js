@@ -47,7 +47,7 @@ class PaymentConfirm extends Component {
               buyerInfo: user,
               soldBooksClusters: this.props.selectedBooks
             };
-            console.log(body);
+
             fetch("/api/book/checkedOut", {
               method: "POST",
               headers: {
@@ -60,7 +60,7 @@ class PaymentConfirm extends Component {
               .then(jsonRes => {
                 if (jsonRes.code === 1) {
                   //   error
-                  console.log(jsonRes);
+
                   // store and redirect
                   this.props.dispatch({
                     type: "E-SET",
@@ -77,7 +77,7 @@ class PaymentConfirm extends Component {
                   );
                 } else {
                   // successful
-                  console.log("successful");
+
                   // remove every variable
                   sessionStorage.removeItem("searchParams");
                   sessionStorage.removeItem("SBs");
@@ -148,12 +148,14 @@ class PaymentConfirm extends Component {
             </p>
             <p id="secondLine" className="body-text">
               Ti abbiamo appena inviato una <b>email</b> all'indirizzo:{" "}
-              <b>{this.props.user.email}</b> con tutte le informazioni per
-              ricevere i libri e contattare i venditori per farteli consegnare.
+              <span style={{ color: "black" }}>{this.props.user.email}</span>{" "}
+              con tutte le informazioni per ricevere i libri e contattare i
+              venditori per farteli consegnare. Non ti preoccupare, già sanno
+              che non devono ricevere soldi.
             </p>
             <p id="thirdLine" className="body-text">
               Il codice del tuo ordine è: {"   "}
-              <b>{this.state.dealId}</b>
+              <span style={{ color: "black" }}>{this.state.dealId}</span>
             </p>
           </div>
         </div>

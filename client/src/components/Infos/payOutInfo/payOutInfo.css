@@ -23,6 +23,9 @@
   font-size: 0.9rem;
   margin: 0px;
   margin-top: 0px;
+  font-weight: bold;
+  line-height: 13px;
+  color: rgb(99, 99, 99);
 }
 
 #po-choices {
@@ -37,7 +40,7 @@
 }
 
 #po-header-ico {
-  color: purple;
+  color: rgb(108, 232, 162);
   position: absolute;
   top: -12px;
   left: -12px;

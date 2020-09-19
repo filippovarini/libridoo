@@ -1,0 +1,243 @@
+#hec {
+  height: 35vh;
+  background: linear-gradient(to right, rgb(105, 142, 245), rgb(108, 232, 162));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hec #explainer-contained {
+  width: 600px;
+  margin: 0 auto;
+}
+
+#hec #nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+#hec #navs {
+  display: flex;
+  justify-content: center;
+}
+
+#hec #nav-header {
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+  margin: 0px;
+}
+
+#hec .nav {
+  display: inline;
+  margin: 0px;
+  border: 1px solid white;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+#hec .nav:hover {
+  border-radius: 7px;
+}
+
+#hec .nav.active {
+  background: white;
+  color: black;
+}
+
+#hec .nav.active:hover {
+  cursor: default;
+  border-radius: 10px;
+}
+
+#hec #steps-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+#hec .step-container {
+  margin-left: 3%;
+  width: 120px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#hec .step-number {
+  font-size: 4rem;
+  margin: 0px;
+  margin-left: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+#hec .step-text-header {
+  font-weight: bold;
+  color: white;
+  margin: 0px;
+  margin-top: -10px;
+  font-size: 1.3rem;
+}
+
+#hec .step-text {
+  color: white;
+  font-weight: bold;
+  margin: 0px;
+  line-height: 13px;
+}
+
+#hmg #medium-black {
+  background: black;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 30px 0px;
+  font-size: 2rem;
+}
+
+#hmg #sell-prompt-container {
+  background: linear-gradient(to right, rgb(105, 142, 245), rgb(108, 232, 162));
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hmg #sell-prompt-contained {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#hmg #sell-prompt {
+  margin: 0px;
+  color: white;
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+#hmg #sell-confirm {
+  font-weight: bold;
+  font-size: 2rem;
+  background: white;
+  padding: 8px 30px;
+  border-radius: 10px;
+}
+
+#hmg #sell-confirm:hover {
+  cursor: pointer;
+  background: black;
+  color: white;
+}
+
+#hmg .half {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 950px) {
+  #hmg #sell-prompt {
+    font-size: 2.8rem;
+  }
+  #hmg #sell-confirm {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  #hmg #sell-prompt {
+    font-size: 2.4rem;
+  }
+  #hmg #sell-confirm {
+    padding: 7px 20px;
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  #hec #explainer-contained {
+    min-width: 0px;
+    width: 90%;
+  }
+
+  #hec #nav-container {
+    flex-direction: column;
+  }
+
+  #hec #nav-header {
+    font-size: 1.8rem;
+  }
+
+  #hec .nav {
+    padding: 8px 15px;
+  }
+
+  #hec #steps-container {
+    margin-top: 10px;
+    /* flex-direction: column; */
+  }
+
+  #hec .step-container {
+    margin-left: 3%;
+    width: 100px;
+  }
+
+  #hec .step-number {
+    font-size: 3.5rem;
+  }
+
+  #hec .step-text-header {
+    margin-top: -20px;
+    font-size: 1rem;
+  }
+
+  #hec .step-text {
+    font-size: 0.8rem;
+  }
+
+  #hmg #medium-black {
+    padding: 20px 0px;
+    font-size: 1.4rem;
+  }
+
+  #hmg #sell-prompt-container {
+    height: 100px;
+  }
+
+  #hmg #sell-prompt-contained {
+    width: 80%;
+  }
+
+  #hmg #sell-prompt {
+    font-size: 2rem;
+  }
+
+  #hmg #sell-confirm {
+    font-size: 1.2rem;
+    padding: 5px 20px;
+    border-radius: 8px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #hec {
+    height: auto;
+    padding-bottom: 20px;
+  }
+  #hec #steps-container {
+    flex-direction: column;
+  }
+
+  #hmg #medium-black {
+    font-size: 1.2rem;
+  }
+}

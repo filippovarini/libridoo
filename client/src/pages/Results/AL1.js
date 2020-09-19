@@ -1,4 +1,5 @@
-const AL1 = booksResult => {
+const AL1 = (booksResult, sellerIds) => {
+  console.log(booksResult, sellerIds);
   booksResult.forEach(resultObj => {
     // each search ui
     resultObj.filterResult.forEach(book => {
@@ -19,19 +20,45 @@ const AL1 = booksResult => {
     });
   });
   //   then sort
-  booksResult.forEach(resultObj => {
-    //   !!! DOES MAP AFFECT IT?
-    resultObj.filterResult.sort((a, b) =>
-      // a.userSellsCount < b.userSellsCount ? 1 : -1
-      a.userSellsCount < b.userSellsCount
-        ? 1
-        : a.userSellsCount === b.userSellsCount
-        ? Number(a.price) <= Number(b.price)
-          ? -1
-          : 1
-        : -1
-    );
-  });
+  if (!sellerIds) {
+    booksResult.forEach(resultObj => {
+      //   !!! DOES MAP AFFECT IT?
+      resultObj.filterResult.sort((a, b) =>
+        // a.userSellsCount < b.userSellsCount ? 1 : -1
+        a.userSellsCount < b.userSellsCount
+          ? 1
+          : a.userSellsCount === b.userSellsCount
+          ? Number(a.price) <= Number(b.price)
+            ? -1
+            : 1
+          : -1
+      );
+    });
+  } else {
+    console.log("shitting");
+    booksResult.forEach(resultObj => {
+      //   !!! DOES MAP AFFECT IT?
+      resultObj.filterResult.sort((a, b) =>
+        // a.userSellsCount < b.userSellsCount ? 1 : -1
+        // put sellerIds on top
+        // !sellerIds.includes(a.sellerId) && sellerIds.includes(b.sellerId) ?
+        // -1 : sellerIds.includes(a.sellerId) && !sellerIds.includes(b.sellerId) ? -1 :
+        (sellerIds.includes(a.sellerId) && sellerIds.includes(b.sellerId)) ||
+        (!sellerIds.includes(a.sellerId) && !sellerIds.includes(b.sellerId))
+          ? // same, perform basic
+            a.userSellsCount < b.userSellsCount
+            ? 1
+            : a.userSellsCount === b.userSellsCount
+            ? Number(a.price) <= Number(b.price)
+              ? -1
+              : 1
+            : -1
+          : !sellerIds.includes(a.sellerId) && sellerIds.includes(b.sellerId)
+          ? 1
+          : -1
+      );
+    });
+  }
 
   return booksResult;
 };

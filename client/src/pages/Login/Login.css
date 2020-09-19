@@ -13,6 +13,11 @@
 
 #login-form {
   background: #ebebeb;
+  background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245),
+    rgba(108, 232, 162)
+  );
   display: inline-block;
   margin-top: 60px;
 }
@@ -58,7 +63,7 @@
 
 .login-rememberMe {
   font-weight: bold;
-  color: gray;
+  color: white;
 }
 
 #submit-btn {
@@ -70,9 +75,10 @@
   display: block;
   text-decoration: none;
   margin: 20px;
+  margin-bottom: -10px;
   font-weight: bold;
-  font-size: 0.8rem;
-  color: purple;
+  font-size: 0.9rem;
+  color: rgb(108, 232, 162);
 }
 
 #recover-prompt:hover {
@@ -91,18 +97,20 @@
 
 #login-submit-btn {
   width: 200px;
-  height: 25px;
+  height: 30px;
   background: black;
   margin: 0 auto;
   color: white;
   font-weight: bold;
   margin-bottom: 30px;
   border-radius: 2px;
-  line-height: 25px;
+  line-height: 30px;
+  font-size: 1.3rem;
 }
 
 #login #register-btn {
-  color: rgb(32, 165, 32);
+  margin-top: 0px;
+  color: rgb(105, 142, 245);
   text-decoration: none;
 }
 

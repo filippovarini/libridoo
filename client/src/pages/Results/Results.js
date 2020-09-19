@@ -40,6 +40,11 @@ class Results extends Component {
     if (!sessionStorage.getItem("searchParams")) {
       this.props.history.push("/search");
     }
+    // const sellerUser = this.props.selectedBooks.map(
+    //   cluster => cluster.sellerId
+    // );
+    // console.log(sellerUser);
+    // USELESS BASED ON BOUGHT BECAUSE DON't HAVE SELLER USER ON MOUNTING
     const sortedResult = AL1(this.props.booksResult);
     this.props.dispatch({ type: "R-SET", results: sortedResult });
     this.setState({
@@ -100,9 +105,6 @@ class Results extends Component {
                     JSON.parse(sessionStorage.getItem("searchParams"))[index]
                       .quality || "__disabled"
                 });
-              } else if (jsonRes.code === 2.5) {
-                // one quality filter error
-                console.log("updateerorr");
               } else {
                 // code 1, code 1.5 ...
                 this.props.dispatch({
@@ -140,7 +142,8 @@ class Results extends Component {
     this.props.history.push("/search");
   };
 
-  increaseIndex = () => {
+  increaseIndex = action => {
+    console.log(action);
     sessionStorage.setItem("index", this.state.index + 1);
     // reset original configuration
     this.setState({
@@ -158,6 +161,13 @@ class Results extends Component {
     // }
     if (this.state.index + 1 === this.props.booksResult.length) {
       this.props.history.push("/checkoutReview");
+    }
+    if (action === "bought") {
+      const sellerUser = this.props.selectedBooks.map(
+        cluster => cluster.sellerId
+      );
+      const sortedResult = AL1(this.props.booksResult, sellerUser);
+      this.props.dispatch({ type: "R-SET", results: sortedResult });
     }
   };
 
@@ -345,7 +355,7 @@ class Results extends Component {
     if (this.props.booksResult[this.state.index]) {
       if (this.props.booksResult[this.state.index].wrongCode === 2.5) {
         maxUserSellsCount = null;
-        console.log("hello");
+
         set = true;
       }
     }
@@ -491,7 +501,7 @@ class Results extends Component {
                     <option value="Università degli Studi di Padova" />
                     <option value="Università Ca Foscari di Venezia" />
                     <option value="Università Iuav di Venezia" />
-                    <option value="Università della Valle d'Aosta - Université de la Vallée D'Aoste" />
+                    <option value="Università della Valle d'Aosta" />
                     <option value="Università per Stranieri di Perugia" />
                     <option value="Università degli Studi di Perugia" />
                     <option value="Università degli Studi di Trento" />
@@ -500,7 +510,7 @@ class Results extends Component {
                     <option value="Università degli Studi di Siena" />
                     <option value="Università degli Studi di Pisa" />
                     <option value="Università degli Studi di Firenze" />
-                    <option value="Scuola Superiore di Studi Universitari e di Perfezionamento Sant'Anna - Pisa" />
+                    <option value="Scuola Superiore di Studi Sant'Anna - Pisa" />
                     <option value="Scuola Normale Superiore - Pisa" />
                     <option value="Università degli Studi di Palermo" />
                     <option value="Università degli Studi di Messina" />
@@ -514,7 +524,7 @@ class Results extends Component {
                     <option value="LUM - Libera Università Mediterranea Jean Monnet" />
                     <option value="Università di Scienze Gastronomiche" />
                     <option value="Università degli Studi di Torino" />
-                    <option value="Università degli Studi del Piemonte Orientale Amedeo Avogadro" />
+                    <option value="Università degli Studi del Piemonte Orientale" />
                     <option value="Politecnico di Torino" />
                     <option value="Università degli Studi del Molise" />
                     <option value="Università degli Studi di Urbino Carlo Bo" />
@@ -542,7 +552,7 @@ class Results extends Component {
                     <option value="Università degli Studi della Tuscia" />
                     <option value="Università Campus Bio-Medico di Roma" />
                     <option value="LUMSA - Libera Università Maria Ss. Assunta" />
-                    <option value="LUISS - Libera Università Internazionale degli Studi Sociali Guido Carli" />
+                    <option value="LUISS - Guido Carli" />
                     <option value="Libera Università degli Studi San Pio V" />
                     <option value="IUSM - Università degli Studi di Roma Foro Italico" />
                     <option value="Università degli Studi di Udine" />
@@ -654,8 +664,8 @@ class Results extends Component {
               </div>
             </form>
             <div id="filter-suggester" onClick={this.toggleFilter}>
-              <i id="filter-suggester-ico" className="fas fa-chevron-up"></i>
               <p id="filter-suggester-text">HIDE</p>
+              <i id="filter-suggester-ico" className="fas fa-chevron-up"></i>
             </div>
           </div>
         ) : null;
@@ -687,9 +697,9 @@ class Results extends Component {
               value={this.state.order}
               onChange={this.handleOrderChange}
             >
-              <option value="1">Quanti libri cercati vende</option>
-              <option value="2">Prezzo: discendente</option>
-              <option value="3">Prezzo: ascendente</option>
+              <option value="1">riduzione incontri</option>
+              <option value="2">Prezzo discendente</option>
+              <option value="3">Prezzo ascendente</option>
             </select>
           </div>
           <div id="results-nav-top" className="normal-footer">
@@ -701,9 +711,9 @@ class Results extends Component {
             ></i>
             <p id="nav-ui">{uiList[this.state.index] || "REVIEW"}</p>
             <i
-              onClick={this.increaseIndex}
+              onClick={() => this.increaseIndex()}
               className={`fas fa-angle-right nav ${
-                uiList.length < this.state.index + 1 ? "hidden" : null
+                uiList.length === this.state.index + 1 ? "hidden" : null
               }`}
             ></i>
           </div>
@@ -746,9 +756,11 @@ class Results extends Component {
           ></i>
           <p id="nav-ui">{uiList[this.state.index] || "REVIEW"}</p>
           <i
-            onClick={this.increaseIndex}
+            onClick={() => this.increaseIndex()}
             className={`fas fa-angle-right nav ${
-              uiList.length < this.state.index + 1 ? "hidden" : null
+              // this.state.index
+              uiList.length === this.state.index + 1 ? "hidden" : null
+              // : "hidden"
             }`}
           ></i>
         </div>

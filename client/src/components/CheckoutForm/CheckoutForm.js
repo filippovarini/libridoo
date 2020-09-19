@@ -42,8 +42,6 @@ export default function CheckoutForm(props) {
       } else {
         // The payment has been processed!
         if (result.paymentIntent.status === "succeeded") {
-          console.log("success");
-          console.log(result);
           // setLoading(false);
           props.savePurchase(
             props.totalBookPrice,

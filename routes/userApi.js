@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 const User = require("../models/Users");
 const Book = require("../models/Books");
 const Error = require("../models/Errors");
+const Rating = require("../models/Ratings");
 
 // email pass
 const EMAIL_PASS = require("../config/keys").EMAIL_PASS;
@@ -27,7 +28,7 @@ router.get("/rating/:_id", (req, res) => {
           place: ".findById(), userApi:16"
         });
       } else {
-        res.json({ code: 0, rating: user.rating.average });
+        res.json({ code: 0, rating: user.rating });
       }
     })
     .catch(error => {
@@ -397,8 +398,10 @@ router.put("/delivery", (req, res) => {
 });
 
 // update rating
-// _id (the seller's one)/ rating
+// _id (the seller's one)/ qualityRating / deliveryRating
+// if one not given, just pass it
 router.put("/ratingUpdate", (req, res) => {
+  console.log(req.body);
   User.findById(req.body._id)
     .then(user => {
       if (!user) {
@@ -410,14 +413,20 @@ router.put("/ratingUpdate", (req, res) => {
         });
       } else {
         count = user.rating.count + 1;
-        rawAverage =
-          (user.rating.count * user.rating.rawAverage + req.body.rating) /
-          count;
-        average = Math.round(rawAverage);
+        qualityAverage = req.body.qualityRating
+          ? (user.rating.count * user.rating.qualityAverage +
+              req.body.qualityRating) /
+            count
+          : user.rating.qualityAverage;
+        deliveryAverage = req.body.deliveryRating
+          ? (user.rating.count * user.rating.deliveryAverage +
+              req.body.deliveryRating) /
+            count
+          : user.rating.deliveryAverage;
         newRating = {
-          average,
+          deliveryAverage,
           count,
-          rawAverage
+          qualityAverage
         };
         User.findByIdAndUpdate(
           req.body._id,
@@ -435,10 +444,30 @@ router.put("/ratingUpdate", (req, res) => {
                 place: ".findByIdAndUpdate(), userApi: 402"
               });
             } else {
-              res.json({
-                code: 0,
-                message: "Valutazione effettuata con successo"
+              console.log("okmokok");
+              // post libridoo feedback
+              const newRating = new Rating({
+                value: req.body.libridoo
               });
+
+              newRating
+                .save()
+                .then(() => {
+                  res.json({
+                    code: 0,
+                    message: "Valutazione effettuata con successo"
+                  });
+                  console.log("dou");
+                })
+                .catch(error => {
+                  console.log(error);
+                  res.json({
+                    code: 0.5,
+                    message: "Valutazione effettuata con successo",
+                    error: "Errore nel salvataggio rating",
+                    error
+                  });
+                });
             }
           })
           .catch(error => {

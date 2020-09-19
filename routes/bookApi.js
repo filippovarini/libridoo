@@ -8,6 +8,7 @@ const Book = require("../models/Books");
 const User = require("../models/Users");
 const Error = require("../models/Errors");
 const SoldBooksCluster = require("../models/SoldBooksClusters");
+const Spam = require("../models/Spam");
 
 // multer upload
 const upload = require("../services/file-upload");
@@ -103,7 +104,9 @@ router.post("/fetch/buy", async (req, res) => {
     // title
     pointer = "titolo";
     const TitleRegExp = new RegExp(req.body.searchParams.ui, "i");
-    frozenBooks = await Book.find({ title: TitleRegExp });
+    frozenBooks = req.body.limit
+      ? (frozenBooks = await Book.find({ title: TitleRegExp }).limit(10))
+      : (frozenBooks = await Book.find({ title: TitleRegExp }));
   }
   let booksFetched = frozenBooks.map(book => {
     return book.toObject();
@@ -160,7 +163,10 @@ router.post("/fetch/buy", async (req, res) => {
             } else {
               const sellerUser = {
                 name: user.name,
-                rating: user.rating.average,
+                rating: {
+                  deliveryAverage: user.rating.deliveryAverage,
+                  qualityAverage: user.rating.qualityAverage
+                },
                 school: user.school,
                 email: user.email,
                 phone: user.phone,
@@ -306,7 +312,10 @@ router.post("/generalFetch/UI", async (req, res) => {
                 } else {
                   const sellerUser = {
                     name: user.name,
-                    rating: user.rating.average,
+                    rating: {
+                      deliveryAverage: user.rating.deliveryAverage,
+                      qualityAverage: user.rating.qualityAverage
+                    },
                     school: user.school,
                     email: user.email,
                     phone: user.phone,
@@ -409,7 +418,10 @@ router.post("/generalFetch/ID", async (req, res) => {
       } else {
         const sellerUser = {
           name: user.name,
-          rating: user.rating.average,
+          rating: {
+            deliveryAverage: user.rating.deliveryAverage,
+            qualityAverage: user.rating.qualityAverage
+          },
           school: user.school,
           email: user.email,
           phone: user.phone,
@@ -449,6 +461,16 @@ router.post("/image", (req, res) => {
       return res.json({ code: 0, imageURL: req.file.location });
     }
   });
+});
+
+// post spam book
+// book
+router.post("/spam", (req, res) => {
+  const newSpam = new Spam({ book: req.body.book, shit: "fsfmo" });
+  newSpam
+    .save()
+    .then(book => res.json(book))
+    .catch(error => res.json(error));
 });
 
 // post new book

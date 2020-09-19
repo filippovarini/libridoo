@@ -1,59 +1,53 @@
-#deals-image-container {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 30px;
-  height: 200px;
-  box-shadow: 0px 0px 8px grey;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
 #deals-choices {
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 50%;
   margin: 0 auto;
-  margin-top: 30px;
+  font-size: 1.4rem;
   min-width: 250px;
-  color: rgb(32, 165, 32, 0.6);
+  color: rgb(99, 99, 99);
 }
 
 #deals-problem-container {
   text-align: center;
-  margin-top: 20px;
   margin-bottom: 0px;
+  text-align: start;
+  margin: 10px;
 }
 
 #deals-problem-link {
-  color: gray;
-  font-size: 0.7rem;
+  display: block;
+  color: rgb(105, 142, 245);
+  font-size: 0.8rem;
   margin-bottom: 0px;
+  line-height: 11px;
 }
 
 .deals-choice:hover {
   cursor: pointer;
-  /* padding: 0 5px; */
-  box-sizing: border-box;
-  color: rgb(32, 165, 32, 1);
-  /* font-weight: bold; */
+  text-decoration: underline;
 }
 
 .deals-choice.active:hover {
   cursor: default;
-  border: none;
-  padding: 0;
+  text-decoration: none;
+}
+
+#ds {
+  color: rgb(108, 232, 162);
+  font-weight: bold;
 }
 
 .deals-choice.active {
-  color: green;
+  color: rgb(99, 99, 99);
 }
 
 #deals-body {
-  margin: 80px 0;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 #deals-body.deals-loading {
@@ -63,33 +57,37 @@
 }
 
 #deals-empty-container {
-  /* border: 1px solid black; */
-  box-shadow: 0px 0px 2px rgb(32, 165, 32);
   border-radius: 3px;
   text-align: center;
-  color: rgb(32, 165, 32);
-  /* font-weight: bold; */
-  /* color: purple; */
+  color: rgb(99, 99, 99);
+  font-weight: bold;
   width: 80%;
   margin: 0 auto;
   margin-top: 100px;
   box-sizing: border-box;
-  padding: 20px 40px;
+  width: 250px;
+  text-align: start;
+  line-height: 25px;
 }
 
-#deals-empty-container.selling {
-  box-shadow: 0px 0px 2px purple;
-  color: purple;
+.de-subheader {
+  margin: 0px;
+  line-height: 15px;
+  margin-top: 15px;
+}
+
+.de-prompt {
+  background: rgb(105, 142, 245);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  line-height: 30px;
+  border-radius: 3px;
 }
 
 #deals-empty-header {
   font-size: 1.6rem;
-  /* font-weight: 200; */
-  margin-top: 40px;
-}
-
-#deals-empty-header.deals-noBooksSold {
-  margin-bottom: 40px;
+  margin: 0px;
 }
 
 #deals-empty-link {

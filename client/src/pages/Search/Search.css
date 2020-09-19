@@ -24,19 +24,34 @@
 #searchPage-header {
   display: inline-block;
   margin: 0px 20px;
-  margin-top: 50px;
-  /* border-bottom: 1px solid black; */
+  margin-top: 20px;
   padding: 2px 20px;
   font-weight: bold;
-  font-style: italic;
   color: gray;
+  text-transform: uppercase;
+  width: 70%;
+  max-width: 400px;
+  min-width: 200px;
+  line-height: 20px;
+  text-align: start;
+  font-size: 1.5rem;
 }
 
-#search-header-bold {
-  color: black;
+#search #subheader {
+  font-weight: bold;
+  margin: 0px;
+  width: 70%;
+  max-width: 400px;
+  min-width: 200px;
+  margin: 0 auto;
+  line-height: 15px;
+  margin-top: 10px;
+  text-align: start;
+  color: rgb(99, 99, 99);
 }
 
 #searchPage-header-container {
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -44,25 +59,62 @@
   width: 70%;
   max-width: 400px;
   min-width: 200px;
-  text-align: center;
-  font-size: 1rem;
-  height: 20px;
+  height: 30px;
+  background: rgb(207, 207, 207);
+  border: 0px;
+  font-weight: bold;
+  color: white;
+  text-align: start;
+  box-sizing: border-box;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  border-radius: 3px;
+}
+
+#search #title:focus {
+  outline-color: transparent;
+}
+
+#search #title::placeholder {
+  font-weight: normal;
+}
+
+#search #input-error {
+  font-weight: bold;
+  margin: 0px;
+  color: rgb(99, 99, 99);
+  margin-bottom: 15px;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+#search #sbmt-container {
+  width: 70%;
+  max-width: 400px;
+  min-width: 200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 5px;
+  flex-direction: column;
 }
 
 #search .submit {
-  display: inline-block;
-  padding: 3px 8px;
-  border: 1px solid black;
-  box-shadow: 0px 0px 3px gray;
+  background: rgb(105, 142, 245);
+  width: 30%;
+  max-width: 150px;
+  min-width: 80px;
+  line-height: 30px;
+  margin: 0px;
+  font-weight: bold;
+  color: white;
   border-radius: 3px;
-  font-size: 0.9rem;
-  margin-top: 20px;
 }
 
 #search .submit:hover {
-  padding: 4px 10px;
   cursor: pointer;
-  box-shadow: 0px 0px 5px black;
+  box-shadow: 0px 0px 3px rgb(105, 142, 245);
 }
 
 #search #input-submit.hidden {
@@ -70,8 +122,7 @@
 }
 
 #search #search-list {
-  border: 1px solid purple;
-  /* box-shadow: 0px 0px 3px purple; */
+  background: #ebebeb;
   border-radius: 3px;
   width: 80%;
   max-width: 900px;
@@ -81,8 +132,9 @@
   box-sizing: border-box;
   padding-top: 20px;
   text-align: center;
-  margin-top: 100px;
+  margin-top: -30px;
   margin-bottom: 100px;
+  padding-bottom: 20px;
 }
 
 #search #search-list.empty {
@@ -91,25 +143,15 @@
   align-items: center;
   justify-content: center;
   padding-top: 0px;
-  font-style: italic;
   font-weight: bold;
-  color: gray;
+  color: rgb(99, 99, 99);
 }
 
 #search #search-list #header {
-  border: 1px solid purple;
-  display: inline-block;
-  position: absolute;
-  margin: 0;
-  padding: 5px 35px;
-  top: -16px;
-  background: white;
-  left: -5px;
-  border-radius: 3px;
+  margin: 0px;
   font-weight: bold;
-  color: rgb(32, 165, 32);
-  color-interpolation-filters: rgb(32, 165, 32);
-  /* box-shadow: 0px 0px 3px purple; */
+  font-size: 1.3rem;
+  margin-bottom: 20px;
 }
 
 #search .list-g-container {
@@ -120,24 +162,24 @@
 }
 
 #search .list-container {
-  /* border: 1px solid black; */
-  box-shadow: 0px 0px 2px gray;
   border-radius: 3px;
-  display: flex;
-  justify-content: space-between;
-  /* font-weight: bold; */
-  align-items: center;
   width: 80%;
-  margin: 15px;
+  margin: 5px;
   padding: 0 10px;
   box-sizing: border-box;
   position: relative;
+  background: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #search-list-counter {
   font-size: 0.7rem;
-  color: gray;
+  color: white;
   font-weight: bold;
+  line-height: 15px;
+  margin: 0px;
 }
 
 #search .list {
@@ -146,6 +188,12 @@
   overflow: hidden;
   width: 85%;
   text-align: start;
+  color: white;
+  font-weight: bold;
+  margin: 0px;
+  line-height: 18px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #search .list-delete {
@@ -163,20 +211,32 @@
 #search #search-list-proceed {
   margin: 30px 0;
   text-decoration: none;
-  color: rgb(32, 165, 32);
-  box-shadow: 0px 0px 3px rgb(32, 165, 32);
-  border: 1px solid rgb(32, 165, 32);
   font-weight: bold;
+  display: block;
+  width: 100px;
+  margin: 0 auto;
+  margin-top: 20px;
+  background: rgb(108, 232, 162);
+  cursor: pointer;
 }
 
 #search #search-list-proceed:hover {
-  box-shadow: 0px 0px 5px rgb(32, 165, 32);
+  box-shadow: 0px 0px 5px rgb(108, 232, 162);
 }
 
-#search-loading {
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 100px;
+#sl-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 120px;
+}
+
+#sl-header {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  margin: 0px;
+  font-size: 0.8rem;
+  margin-left: -10px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -188,7 +248,7 @@
   #search-list-counter {
     margin: 0px;
     margin-top: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   #search .list {
     margin-bottom: 0px;

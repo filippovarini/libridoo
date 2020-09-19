@@ -292,7 +292,7 @@ class BodyInfo extends Component {
               <option value="Università degli Studi di Padova" />
               <option value="Università Ca Foscari di Venezia" />
               <option value="Università Iuav di Venezia" />
-              <option value="Università della Valle d'Aosta - Université de la Vallée D'Aoste" />
+              <option value="Università della Valle d'Aosta" />
               <option value="Università per Stranieri di Perugia" />
               <option value="Università degli Studi di Perugia" />
               <option value="Università degli Studi di Trento" />
@@ -301,7 +301,7 @@ class BodyInfo extends Component {
               <option value="Università degli Studi di Siena" />
               <option value="Università degli Studi di Pisa" />
               <option value="Università degli Studi di Firenze" />
-              <option value="Scuola Superiore di Studi Universitari e di Perfezionamento Sant'Anna - Pisa" />
+              <option value="Scuola Superiore di Studi Sant'Anna - Pisa" />
               <option value="Scuola Normale Superiore - Pisa" />
               <option value="Università degli Studi di Palermo" />
               <option value="Università degli Studi di Messina" />
@@ -315,7 +315,7 @@ class BodyInfo extends Component {
               <option value="LUM - Libera Università Mediterranea Jean Monnet" />
               <option value="Università di Scienze Gastronomiche" />
               <option value="Università degli Studi di Torino" />
-              <option value="Università degli Studi del Piemonte Orientale Amedeo Avogadro" />
+              <option value="Università degli Studi del Piemonte Orientale" />
               <option value="Politecnico di Torino" />
               <option value="Università degli Studi del Molise" />
               <option value="Università degli Studi di Urbino Carlo Bo" />
@@ -343,7 +343,7 @@ class BodyInfo extends Component {
               <option value="Università degli Studi della Tuscia" />
               <option value="Università Campus Bio-Medico di Roma" />
               <option value="LUMSA - Libera Università Maria Ss. Assunta" />
-              <option value="LUISS - Libera Università Internazionale degli Studi Sociali Guido Carli" />
+              <option value="LUISS - Guido Carli" />
               <option value="Libera Università degli Studi San Pio V" />
               <option value="IUSM - Università degli Studi di Roma Foro Italico" />
               <option value="Università degli Studi di Udine" />

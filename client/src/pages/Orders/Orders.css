@@ -2,37 +2,9 @@
   position: relative;
 }
 
-#orders-image-container {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 30px;
-  height: 200px;
-  box-shadow: 0px 0px 8px grey;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-#libridoo-logo-image {
-  width: 150px;
-  bottom: 15px;
-  position: absolute;
-  right: 30px;
-}
-
-#fake-header {
-  font-size: 4rem;
-  letter-spacing: 3rem;
-  font-weight: 100;
-  font-family: "Pangolin", cursive;
-  color: #f79e02;
-}
-
 #orders-empty-container {
-  text-align: center;
-  /* width: 350px; */
+  /* text-align: center; */
+  width: 350px;
   margin: 0 auto;
   margin-top: 100px;
 }
@@ -42,15 +14,15 @@
   font-weight: 200;
   font-weight: bold;
   color: gray;
-  /* margin: 0px; */
+  margin: 0px;
   margin-bottom: 10px;
+  line-height: 25px;
 }
 
 #empty-subHeader {
   color: gray;
   font-weight: bold;
-  width: 650px;
-  /* border: 1px solid black; */
+  line-height: 15px;
   margin: 0 auto;
   margin-top: 0px;
 }
@@ -60,15 +32,17 @@
 }
 
 #orders-empty-link {
-  background: rgb(32, 165, 32);
-  box-shadow: 0px 0px 3px rgb(32, 165, 32);
+  width: 350px;
+  background: rgb(105, 142, 245);
   border-radius: 3px;
   text-decoration: none;
   color: white;
   font-weight: bold;
-  padding: 8px 25px;
-  margin: 40px auto;
-  display: inline-block;
+  display: block;
+  margin-top: 20px;
+  line-height: 35px;
+  text-align: center;
+  font-size: 1.2rem;
 }
 #orders-empty-link:hover {
   box-shadow: 0px 0px 5px rgb(32, 165, 32);
@@ -94,14 +68,23 @@
   font-weight: bold;
   text-align: center;
   color: rgb(99, 99, 99);
-  margin-top: 30px;
+  margin-top: 0px;
   font-size: 1.5rem;
+}
+
+#orders #cluster-container {
+  width: 95%;
+  margin: 0 auto;
 }
 
 #problem-link {
   margin-bottom: 0px;
-  font-size: 0.6rem;
-  color: gray;
+  font-size: 0.8rem;
+  color: rgb(105, 142, 245);
+  text-align: end;
+  display: block;
+  margin-right: 10px;
+  margin-top: 5px;
 }
 
 #oc-highlight {
