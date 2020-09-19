@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import "react-slidedown/lib/slidedown.css";
 import "./home-header.css";
 
 import imageSrc from "../../../images/logo-black.png";
