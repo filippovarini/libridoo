@@ -269,10 +269,10 @@ class Feedback extends Component {
           <a
             className="feedback-contact-info"
             id="feedback-email"
-            href="mailto:libridoo.contacts@gmail.com"
+            href="mailto:info@libridoo.it"
             target="_top"
           >
-            libridoo.contacts@gmail.com
+            info@libridoo.it
           </a>
         </div>
         <div className="feedback-contact">

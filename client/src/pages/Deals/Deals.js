@@ -178,49 +178,6 @@ class Deals extends Component {
     ) : (
       <div id="deals-body">
         {this.state.sellingBooks.map(book => {
-          const date = new Date(book.insertionDate);
-          let month = null;
-          switch (date.getMonth()) {
-            case 0:
-              month = "gennaio";
-              break;
-            case 1:
-              month = "febbraio";
-              break;
-            case 2:
-              month = "marzo";
-              break;
-            case 3:
-              month = "aprile";
-              break;
-            case 4:
-              month = "maggio";
-              break;
-            case 5:
-              month = "giugno";
-              break;
-            case 6:
-              month = "luglio";
-              break;
-            case 7:
-              month = "agosto";
-              break;
-            case 8:
-              month = "settembre";
-              break;
-            case 9:
-              month = "ottobre";
-              break;
-            case 10:
-              month = "novembre";
-              break;
-            case 11:
-              month = "dicembre";
-              break;
-            default:
-              break;
-          }
-          const stringDate = `${date.getDate()} ${month} ${date.getUTCFullYear()}`;
           return (
             <Book
               key={book._id}
@@ -232,7 +189,6 @@ class Deals extends Component {
                 }
               }}
               page="deals"
-              date={stringDate}
               toggleBookInfo={this.toggleBookInfo}
             />
           );

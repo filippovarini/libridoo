@@ -55,6 +55,15 @@
   text-align: center;
 }
 
+#orders-headers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: -10px;
+}
+
 #orders-header-suggester {
   font-weight: bold;
   text-align: center;
@@ -63,8 +72,13 @@
   font-size: 1.5rem;
 }
 
-<<<<<<< HEAD
-#orders #cluster-container {
+<<<<<<<
+  head
+  <<<<<<<
+  head
+  =======>>>>>>>2de2b213fa509e39f5f0a948fc7f4ee03dd2c9a5
+  #orders
+  #cluster-container {
   width: 95%;
   margin: 0 auto;
 }
@@ -79,9 +93,16 @@
   margin-top: 5px;
 }
 
-=======
->>>>>>> parent of 6a0607d... ready to restyle
-#oc-highlight {
+<<<<<<<
+  head
+  =======>>>>>>>parent
+  of
+  6a0607d...
+  ready
+  to
+  restyle
+  =======>>>>>>>2de2b213fa509e39f5f0a948fc7f4ee03dd2c9a5
+  #oc-highlight {
   color: black;
 }
 

@@ -9,7 +9,6 @@
   color: rgb(99, 99, 99);
 }
 
-<<<<<<< HEAD
 #deals-problem-container {
   text-align: center;
   margin-bottom: 0px;
@@ -25,8 +24,6 @@
   line-height: 11px;
 }
 
-=======
->>>>>>> parent of 6a0607d... ready to restyle
 .deals-choice:hover {
   cursor: pointer;
   text-decoration: underline;

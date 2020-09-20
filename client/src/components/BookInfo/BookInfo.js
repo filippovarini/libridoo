@@ -452,7 +452,7 @@ class BookInfo extends Component {
           />
         </div>
         <p id="image-header" className={this.state.headerClass}>
-          I clienti vogliono un'immagine chiara della copertina
+          Una foto chiara della copertina vende 7 volte di più.
         </p>
       </div>
     );
