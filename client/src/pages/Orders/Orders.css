@@ -72,13 +72,7 @@
   font-size: 1.5rem;
 }
 
-<<<<<<<
-  head
-  <<<<<<<
-  head
-  =======>>>>>>>2de2b213fa509e39f5f0a948fc7f4ee03dd2c9a5
-  #orders
-  #cluster-container {
+#orders #cluster-container {
   width: 95%;
   margin: 0 auto;
 }
@@ -93,16 +87,7 @@
   margin-top: 5px;
 }
 
-<<<<<<<
-  head
-  =======>>>>>>>parent
-  of
-  6a0607d...
-  ready
-  to
-  restyle
-  =======>>>>>>>2de2b213fa509e39f5f0a948fc7f4ee03dd2c9a5
-  #oc-highlight {
+#oc-highlight {
   color: black;
 }
 
