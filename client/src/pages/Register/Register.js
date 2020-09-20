@@ -27,7 +27,20 @@ class Register extends Component {
     passwordConfirmPlaceholder: "conferma password",
     emailConfirmClass: "hidden",
     errorMessage: null,
-    loading: false
+    loading: false,
+    description: null,
+    opposite: null,
+    male: true
+  };
+
+  handleToggleChange = () => {
+    this.setState({ male: !this.state.male });
+    if (this.state.opposite) {
+      this.setState({
+        opposite: this.state.description,
+        description: this.state.opposite
+      });
+    }
   };
 
   emailValidation = email => {
@@ -129,13 +142,19 @@ class Register extends Component {
 
   deleteImage = () => {
     this.setState({
-      avatarImgURL: null
+      avatarImgURL: null,
+      description: null,
+      opposite: null
     });
   };
 
-  setAvatarImg = e => {
+  setAvatarImg = (url, male, gender, female) => {
+    const description = !gender ? male : this.state.male ? male : female;
+    const opposite = !gender ? null : this.state.male ? female : male;
     this.setState({
-      avatarImgURL: e.target.src
+      avatarImgURL: url,
+      description,
+      opposite
     });
   };
 
@@ -221,7 +240,7 @@ class Register extends Component {
             // everything correct
             const avatarImgURL =
               this.state.avatarImgURL ||
-              "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598352393512";
+              "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1599843473300";
             const invitingUserId =
               this.props.match.params.invitingId === "buying"
                 ? null
@@ -264,16 +283,31 @@ class Register extends Component {
         <div id="images-container">
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981692298",
+                  "Il professore",
+                  true,
+                  "La professoressa"
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981692298"
               alt="schifomadò"
               className="register-avatarImage"
             />
-            <p className="image-register-header">Il professore</p>
+            <p className="image-register-header">
+              {this.state.male ? "Il professore" : "La professoressa"}
+            </p>
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981699850",
+                  "L'appello",
+                  false
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981699850"
               alt="morgan e bugo"
               className="register-avatarImage"
@@ -282,7 +316,13 @@ class Register extends Component {
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981735139",
+                  "Il 18",
+                  false
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981735139"
               alt="disappointed"
               className="register-avatarImage"
@@ -291,7 +331,13 @@ class Register extends Component {
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981716946",
+                  "Pausa caffè",
+                  false
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981716946"
               alt="baby yoda"
               className="register-avatarImage"
@@ -300,25 +346,49 @@ class Register extends Component {
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981730904",
+                  "Il copione",
+                  true,
+                  "La copiona"
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981730904"
               alt="donna-giraffa"
               className="register-avatarImage"
             />
-            <p className="image-register-header">Il copione</p>
+            <p className="image-register-header">
+              {this.state.male ? "Il copione" : "La copiona"}
+            </p>
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981720614",
+                  "Il businessman",
+                  true,
+                  "La businesswoman"
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981720614"
               alt="stonks"
               className="register-avatarImage"
             />
-            <p className="image-register-header">L'economista</p>
+            <p className="image-register-header">
+              {this.state.male ? "Il businessman" : "La businesswoman"}
+            </p>
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598765298832",
+                  "L'ingegnere",
+                  false
+                )
+              }
               src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598765298832"
               alt="matematica"
               className="register-avatarImage"
@@ -328,16 +398,31 @@ class Register extends Component {
 
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780677065",
+                  "Il giurista",
+                  true,
+                  "La giurista"
+                )
+              }
               src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780677065"
               alt="the wolf of wall street leonardo di caprio"
               className="register-avatarImage"
             />
-            <p className="image-register-header">Il legale</p>
+            <p className="image-register-header">
+              {this.state.male ? "Il giurista" : "La giurista"}
+            </p>
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780236639",
+                  "Il medico",
+                  false
+                )
+              }
               src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780236639"
               alt="de luca il medico"
               className="register-avatarImage"
@@ -346,44 +431,76 @@ class Register extends Component {
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981712262",
+                  "L'agronomo",
+                  true,
+                  "L'agronoma"
+                )
+              }
               src="https://libridoo-avatar-images.s3.eu-west-3.amazonaws.com/1587981712262"
               alt="lavoro onesto"
               className="register-avatarImage"
             />
-            <p className="image-register-header">L'agronomo</p>
+            <p className="image-register-header">
+              {this.state.male ? "L'agronomo" : "L'agronoma"}
+            </p>
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598781381406",
+                  "Lo storico",
+                  true,
+                  "La storica"
+                )
+              }
               src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598781381406"
               alt="alberto angela"
               className="register-avatarImage"
             />
-            <p className="image-register-header">Storia</p>
+            <p className="image-register-header">
+              {this.state.male ? "Lo storico" : "La storica"}
+            </p>
           </div>
           <div className="image-register-container">
             <img
-              onClick={this.setAvatarImg}
+              onClick={() =>
+                this.setAvatarImg(
+                  "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780483720",
+                  "Lo psicologo",
+                  true,
+                  "La psicologa"
+                )
+              }
               src="https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1598780483720"
               alt="ragazzo che si sforza"
               className="register-avatarImage"
             />
-            <p className="image-register-header">Psicologia</p>
+            <p className="image-register-header">
+              {this.state.male ? "Lo psicologo" : "La psicologa"}
+            </p>
           </div>
         </div>
       </div>
     );
     const avatarImage = (
-      <div id="avatar-image-container">
-        <span id="image-delete" onClick={this.deleteImage}>
-          -
-        </span>
-        <img
-          src={this.state.avatarImgURL}
-          id="register-avatar-image"
-          alt="avatar"
-        />
+      <div id="ai-general-container">
+        <div id="avatar-image-container">
+          <i
+            id="image-delete"
+            onClick={this.deleteImage}
+            className="fas fa-times"
+          ></i>
+          <img
+            src={this.state.avatarImgURL}
+            id="register-avatar-image"
+            alt="avatar"
+          />
+        </div>
+        <p id="ai-description">{this.state.description}</p>
       </div>
     );
     const avatarHeader = this.state.avatarImgURL ? avatarImage : avatarImages;
@@ -396,6 +513,24 @@ class Register extends Component {
           imageId={"register-libridoo-logo-image"}
           headerClass="register-"
         />
+        <div id="rg-sex">
+          <p id="rg-sex-header">Sono {this.state.male ? "un" : "una"}</p>
+          <div className="onoffswitch">
+            <input
+              type="checkbox"
+              name="onoffswitch"
+              className="onoffswitch-checkbox"
+              id="myonoffswitch"
+              tabIndex="0"
+              defaultChecked
+              onChange={this.handleToggleChange}
+            />
+            <label className="onoffswitch-label" htmlFor="myonoffswitch">
+              <span className="onoffswitch-inner"></span>
+              <span className="onoffswitch-switch"></span>
+            </label>
+          </div>
+        </div>
         {avatarHeader}
         <div id="register-actions">
           <form onSubmit={this.handleSubmit} id="register-form">

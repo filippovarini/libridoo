@@ -2,45 +2,30 @@
   text-align: center;
 }
 
-#paymentConfirm-image-container {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 30px;
-  height: 200px;
-  box-shadow: 0px 0px 8px grey;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 80px;
-}
-
 #paymentConfirm #body-container {
   text-align: start;
-  border: 1px solid purple;
-  box-shadow: 0px 0px 3px purple;
+  background: #ebebeb;
   border-radius: 5px;
   width: 90%;
   margin: 0 auto;
   position: relative;
   padding: 20px;
   box-sizing: border-box;
+  margin-top: 50px;
 }
 
 #paymentConfirm #body-header {
-  border: 1px solid purple;
   font-weight: bold;
   color: rgb(32, 165, 32);
   display: inline-block;
   padding: 5px 20px;
   margin: 0px;
   position: absolute;
-  top: -10px;
-  left: -10px;
+  top: -20px;
+  left: -15px;
   background: white;
-  box-shadow: 0px 0px 3px purple;
-  border-radius: 3px;
+  border-radius: 20px;
+  font-size: 1.2rem;
 }
 
 #paymentConfirm #firstLine {
@@ -53,7 +38,8 @@
 #paymentConfirm #thirdLine {
   /* font-size: 0.8rem; */
   margin-top: 20px;
-  font-style: italic;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
 }
 
 #paymentConfirm #secondLine {
@@ -66,19 +52,19 @@
 }
 
 #paymentConfirm #home-link {
-  color: #f79e02;
   text-decoration: none;
-  border: 1px solid #f79e02;
-  box-shadow: 0px 0px 3px #f79e02;
   border-radius: 3px;
   font-weight: bold;
-  padding: 10px 30px;
   display: inline-block;
-  margin-top: 100px;
+  margin-top: 60px;
+  background: rgb(105, 142, 245);
+  color: white;
+  font-size: 1.3rem;
+  width: 180px;
 }
 
 #paymentConfirm #home-link:hover {
-  box-shadow: 0px 0px 5px #f79e02;
+  box-shadow: 0px 0px 5px rgb(105, 142, 245);
   cursor: pointer;
   font-weight: bold;
 }

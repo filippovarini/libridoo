@@ -8,8 +8,7 @@
 
 #placeInfo {
   width: 100%;
-  /* border: 1px solid black; */
-  box-shadow: 0px 0px 3px black;
+  background: #ebebeb;
   border-radius: 5px;
   position: relative;
   margin: 10px;
@@ -19,7 +18,8 @@
   top: -10px;
   left: -10px;
   border: none;
-  color: purple;
+  color: rgb(108, 232, 162);
+  border-radius: 20px;
 }
 
 #placeInfo .placeInfoBody {
@@ -41,7 +41,9 @@
 }
 
 #placeInfo #header-text {
-  color: gray;
+  color: black;
+  font-size: 1.2rem;
+  line-height: 20px;
   font-weight: bold;
   /* border-bottom: 1px solid black; */
   margin-bottom: 0;
@@ -59,12 +61,15 @@
 }
 
 #placeInfo .text {
-  box-shadow: 0px 0px 3px black;
+  box-shadow: 0px 0px 2px black;
   border-radius: 3px;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
 }
 
 #placeInfo-form.placeInfoBody {
   margin-top: 0px;
+  margin-left: 10px;
 }
 
 #placeInfo-error-label {

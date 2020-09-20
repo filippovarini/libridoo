@@ -1,7 +1,8 @@
 #footer-gContainer {
-  border-top: 1px solid #f79e02;
+  background: black;
+  color: white;
+  font-weight: bold;
   margin-top: 100px;
-  margin-bottom: 30px;
   padding: 20px;
   display: grid;
   grid-gap: 20px;
@@ -23,7 +24,7 @@
   flex-direction: column;
   height: 50px;
   justify-content: space-around;
-  color: gray;
+  color: white;
   font-size: 0.8rem;
 }
 /* 
@@ -37,26 +38,33 @@
 }
 
 .footer-link {
-  color: gray;
+  color: white;
+  font-weight: bold;
 }
 
 #footer-email {
-  color: gray;
+  color: white;
   font-size: 0.7rem;
+  font-weight: bold;
 }
 
 #footer-mobile {
   /* margin-right: 10px; */
-  color: gray;
+  color: white;
+  font-weight: bold;
 }
 
 #asskeeper {
-  color: gray;
-  font-size: 0.6rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 10px;
 }
+
 #copywright {
   color: gray;
   font-size: 0.9rem;
+  visibility: hidden;
 }
 
 @media only screen and (max-width: 420px) {

@@ -10,6 +10,7 @@ import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
 import HeaderPart from "../../components/headerPart";
 import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
 import LoadingL from "../../components/Loading/loading_l";
+import LoadingS from "../../components/Loading/loading_s";
 
 class Checkout extends Component {
   state = {
@@ -287,7 +288,8 @@ class Checkout extends Component {
     });
     let totalPrice = (totalBookPrice * 100 + totalDeliveryPrice * 100) / 100;
     if (!this.state.couponSet) {
-      totalPrice = totalPrice + (totalPrice / 100) * 3;
+      totalPrice =
+        Math.round((totalPrice + 0.35 + (totalPrice / 100) * 3.4) * 100) / 100;
     }
     let discountAvailable = this.props.user.bonusPoints
       ? Math.floor(this.props.user.bonusPoints / 10) * 10
@@ -405,7 +407,7 @@ class Checkout extends Component {
                   : "rc-cart-price"
               }
             >
-              {this.state.couponSet ? "0%" : "3%"}
+              {this.state.couponSet ? "0%" : "3.40% + 0.35 €"}
             </p>
           </div>
           {discountAvailable ? (
@@ -455,7 +457,7 @@ class Checkout extends Component {
                       this.state.selected === "stripe" ? "ck-choosen" : null
                     }`}
                   >
-                    loading...
+                    <LoadingS />
                   </p>
                 ) : (
                   <div
@@ -465,7 +467,10 @@ class Checkout extends Component {
                     }`}
                     onClick={() => this.purchaseStripe(totalPrice)}
                   >
-                    <p id="stripe-choice-heaeder">CARTA</p>
+                    <div id="align-choice">
+                      <i className="far fa-credit-card"></i>
+                      <p id="stripe-choice-heaeder">CARTA</p>
+                    </div>
                     <div
                       id="stripe-secure"
                       className={
@@ -479,6 +484,7 @@ class Checkout extends Component {
                     </div>
                   </div>
                 )}
+
                 <p
                   id="paypal-choice"
                   className={`ck-choice ${
@@ -486,7 +492,7 @@ class Checkout extends Component {
                   }`}
                   onClick={this.purchasePaypal}
                 >
-                  {/* Cane2012 */}
+                  <i id="pp-ico" className="fab fa-paypal po-ico"></i>
                   PayPal
                 </p>
               </div>

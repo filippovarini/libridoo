@@ -15,20 +15,21 @@ class PayOutInfo extends Component {
   componentDidMount = () => {
     const location = this.props.history.location.pathname;
     const locationArr = location.split("/");
-    if (locationArr[3] === "refreshed") {
+
+    if (locationArr[2] === "refreshed") {
       // refreshed
       this.setState({
         stripeError:
           "Setup fallito. Non ricaricare la pagina o tornare indietro mentre carichi le informazioni su stripe."
       });
       setTimeout(() => this.setState({ stripeError: "" }), 6000);
-    } else if (locationArr[3] === "confirmed" && locationArr[4]) {
+    } else if (locationArr[2] === "confirmed" && locationArr[3]) {
       // success
       // userUpdate
       this.setState({ loading: true });
       const body = {
-        _id: this.props.user._id,
-        payOut: { type: "stripe", accountId: locationArr[4] }
+        JWT: sessionStorage.getItem("JWT") || localStorage.getItem("JWT"),
+        payOut: { type: "stripe", accountId: locationArr[3] }
       };
       fetch("/api/user/connectedAccount", {
         method: "PUT",
@@ -39,6 +40,7 @@ class PayOutInfo extends Component {
         body: JSON.stringify(body)
       })
         .then(res => res.json())
+
         .then(jsonRes => {
           if (jsonRes.code === 0) {
             // success
@@ -50,8 +52,8 @@ class PayOutInfo extends Component {
               // rememberMe, localStorage
               localStorage.setItem("JWT", jsonRes.JWT);
             }
+            if (locationArr[1] === "account") window.location = "/account";
           } else {
-            console.log(jsonRes);
             this.setState({
               stripeError: "Setup fallito. Ricarica la pagina e riprova."
             });
@@ -88,7 +90,10 @@ class PayOutInfo extends Component {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json"
-        }
+        },
+        body: JSON.stringify({
+          pathname: this.props.history.location.pathname.split("/")[1]
+        })
       })
         .then(res => res.json())
         .then(jsonRes => {
@@ -116,8 +121,8 @@ class PayOutInfo extends Component {
         <div id="po-headers">
           <p id="po-header">Come vuoi essere pagato?</p>
           <p id="po-suggestion">
-            ti consigliamo di usare PayPal perchè il bonifico ti costa 2€ al
-            mese solo se ricevi ordini in quel mese
+            Anche se non hai un'account, ti consigliamo di usare PayPal, perchè
+            il bonifico ti costa 2€ al mese, se in quel mese vendi.
           </p>
         </div>
         <div id="po-choices">

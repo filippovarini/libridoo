@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import "./Deals.css";
 
 // components
@@ -7,7 +8,7 @@ import Book from "../../components/book/book";
 import ClusterBooks from "../../components/clusterBooks/clusterBooks";
 import BookInfo from "../../components/BookInfo/BookInfo";
 import HeaderPart from "../../components/headerPart";
-import LoadingL from "../../components/Loading/loading_l";
+import LoadingM from "../../components/Loading/loading_m";
 
 class Deals extends Component {
   state = {
@@ -159,19 +160,18 @@ class Deals extends Component {
   render() {
     const loading = (
       <div id="deals-body" className="deals-loading">
-        <LoadingL />
+        <LoadingM />
       </div>
     );
 
     const sellingBody = this.state.noBooksSelling ? (
       <div id="deals-empty-container" className="selling">
         <p id="deals-empty-header">Non hai venduto nessun libro, ancora...</p>
-        <p
-          id="deals-empty-link"
-          onClick={() => {
-            this.toggleBookInfo(false);
-          }}
-        >
+        <p className="de-subheader">
+          Vendendo i tuoi libri ci aiuti a fornire a studenti come te i libri
+          scolastici... Contribuisci alla rivoluzione!
+        </p>
+        <p className="de-prompt" onClick={this.props.toggleBookInfo}>
           VENDI
         </p>
       </div>
@@ -243,8 +243,14 @@ class Deals extends Component {
     const soldBody = this.state.noBooksSold ? (
       <div id="deals-empty-container">
         <p id="deals-empty-header" className="deals-noBooksSold">
-          Nessun utente ha comprato,{" "}
-          <span id="deals-empty-hope">ancora...</span>
+          Nessun utente ha comprato, ancora...
+        </p>
+        <p className="de-subheader">
+          Ti consigliamo di vendere al 50% per essere competitivo ed attrarre
+          clienti
+        </p>
+        <p className="de-prompt" onClick={this.props.toggleBookInfo}>
+          VENDI
         </p>
       </div>
     ) : (
@@ -270,11 +276,13 @@ class Deals extends Component {
       </div>
     );
 
-    const bodyComponent = this.state.loading
+    let bodyComponent = this.state.loading
       ? loading
       : this.state.navigator === "selling"
       ? sellingBody
       : soldBody;
+
+    if (!this.props.user._id) bodyComponent = loading;
 
     return (
       <div id="deals">
@@ -284,12 +292,13 @@ class Deals extends Component {
           editing={this.state.bookInfoBookEditing}
           id={this.state.BookInfoId}
         />
-        <HeaderPart
-          title="AFFARI"
-          mainClass={"deals"}
-          imageId="libridoo-logo-image"
-          headerClass=""
-        />
+        <HeaderPart title="AFFARI" />
+        <div id="deals-problem-container">
+          <Link id="deals-problem-link" to="/FAQs">
+            Problemi con un{" "}
+            {this.state.navigator === "selling" ? "annuncio" : "ordine"}?
+          </Link>
+        </div>
         <div id="deals-choices">
           <p
             id="selling"
@@ -300,7 +309,9 @@ class Deals extends Component {
           >
             IN VENDITA
           </p>
-          <p className="deals-choiches-component">|</p>
+          <p id="ds" className="deals-choiches-component">
+            |
+          </p>
           <p
             id="sold"
             onClick={this.handleNavChange}

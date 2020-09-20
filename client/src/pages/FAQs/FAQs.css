@@ -28,8 +28,7 @@
 }
 
 .faq-container {
-  border: 1px solid white;
-  box-shadow: 0px 0px 3px purple;
+  box-shadow: 0px 0px 2px black;
   border-radius: 3px;
   padding: 0px 20px;
   margin-top: 20px;
@@ -47,7 +46,7 @@
 
 .faq-ico {
   cursor: pointer;
-  color: rgb(32, 165, 32);
+  color: rgb(108, 232, 162);
 }
 
 .faq-ico:hover {

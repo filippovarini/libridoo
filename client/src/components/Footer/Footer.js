@@ -41,9 +41,6 @@ class Footer extends Component {
               <Link className="footer-link" to="./feedback">
                 Dicci cosa ne pensi
               </Link>
-              <Link className="footer-link" to="./help">
-                Help
-              </Link>
             </div>
             <div id="contacts" className="footer-div">
               <div id="phone-container" className="footer-div-container">

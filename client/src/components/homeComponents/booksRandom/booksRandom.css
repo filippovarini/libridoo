@@ -1,0 +1,45 @@
+#rb #header-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  margin: 0px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+#rb #header {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 30px;
+  margin-right: 10px;
+}
+
+#rb #sub-header {
+  width: 150px;
+  line-height: 17px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+#rb #books-container {
+  margin-top: -40px;
+}
+
+@media screen and (max-width: 600px) {
+  #rb #header {
+    font-size: 1.4rem;
+    margin-top: 40px;
+  }
+
+  #rb #sub-header {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #rb #header {
+    font-size: 1.2rem;
+    line-height: 20px;
+    width: 100px;
+  }
+}

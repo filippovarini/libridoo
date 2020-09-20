@@ -21,12 +21,11 @@
   text-align: center;
   margin-top: 50px;
   font-size: 3rem;
-  color: purple;
+  color: rgb(99, 99, 99);
 }
 
 #error-container {
-  border: 1px solid #f79e02;
-  box-shadow: 0px 0px 3px #f79e02;
+  background: #ebebeb;
   border-radius: 5px;
   max-width: 500px;
   width: 50%;
@@ -60,20 +59,22 @@
   color: gray;
 }
 
-#error-link {
+#error #error-link {
   display: inline-block;
-  color: rgb(32, 165, 32);
   text-decoration: none;
   margin-top: 40px;
-  border: 1px solid rgb(32, 165, 32);
   padding: 3px 10px;
-  box-shadow: 0px 0px 3px rgb(32, 165, 32);
   border-radius: 3px;
   font-weight: bold;
+  background: rgb(105, 142, 245);
+  color: white;
+  font-weight: bold;
+  width: 100px;
+  font-size: 1.2rem;
 }
 
 #error-link:hover {
-  box-shadow: 0px 0px 5px rgb(32, 165, 32);
+  box-shadow: 0px 0px 3px rgb(105, 142, 245);
 }
 
 @media only screen and (max-width: 700px) {

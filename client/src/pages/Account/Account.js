@@ -8,6 +8,7 @@ import DeliveryInfo from "../../components/Infos/deliveryInfo/deliveryInfo";
 import PasswordInfo from "../../components/Infos/passwordInfo/passwordInfo";
 import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
 import PayOutInfo from "../../components/Infos/payOutInfo/payOutInfo";
+import Stars from "../../components/stars/stars";
 
 class Account extends Component {
   state = {
@@ -24,62 +25,6 @@ class Account extends Component {
   componentDidMount = () => {
     if (!localStorage.getItem("JWT") && !sessionStorage.getItem("JWT")) {
       this.props.history.push("/");
-    } else {
-      if (this.props.user.DeliveryInfo) {
-        let avg = this.props.user.rating.average;
-        if (!avg) {
-          this.setState({ starsDisplay: "hidden" });
-        }
-        if (avg >= 1) {
-          this.setState({ firstStar: "s" });
-        }
-        if (avg >= 2) {
-          this.setState({ secondStar: "s" });
-        }
-        if (avg >= 3) {
-          this.setState({ thirdStar: "s" });
-        }
-        if (avg >= 4) {
-          this.setState({ fourthStar: "s" });
-        }
-        if (avg === 5) {
-          this.setState({ fifthStar: "s" });
-        }
-        this.setState({ set: true });
-      }
-    }
-  };
-
-  componentDidUpdate = () => {
-    if (this.state.updated) {
-      if (!localStorage.getItem("JWT") && !sessionStorage.getItem("JWT")) {
-        this.props.history.push("/");
-      } else if (!this.state.set) {
-        if (this.props.user.DeliveryInfo) {
-          let avg = this.props.user.rating.average;
-          if (!avg) {
-            this.setState({ starsDisplay: "hidden" });
-          }
-          if (avg >= 1) {
-            this.setState({ firstStar: "s" });
-          }
-          if (avg >= 2) {
-            this.setState({ secondStar: "s" });
-          }
-          if (avg >= 3) {
-            this.setState({ thirdStar: "s" });
-          }
-          if (avg >= 4) {
-            this.setState({ fourthStar: "s" });
-          }
-          if (avg === 5) {
-            this.setState({ fifthStar: "s" });
-          }
-          this.setState({ set: true });
-        }
-      }
-    } else {
-      this.setState({ updated: true });
     }
   };
 
@@ -90,27 +35,51 @@ class Account extends Component {
           <img id="avatarImg" src={this.props.user.avatarImgURL} alt="avatar" />
         </div>
         <p id="name">{this.props.user.name}</p>
-        <div id="rating" className={this.state.starsDisplay}>
-          <i
-            id="first"
-            className={`fa${this.state.firstStar} fa-star fa-2x`}
-          ></i>
-          <i
-            id="second"
-            className={`fa${this.state.secondStar} fa-star fa-2x`}
-          ></i>
-          <i
-            id="third"
-            className={`fa${this.state.thirdStar} fa-star fa-2x`}
-          ></i>
-          <i
-            id="fourt"
-            className={`fa${this.state.fourthStar} fa-star fa-2x`}
-          ></i>
-          <i
-            id="fifth"
-            className={`fa${this.state.fifthStar} fa-star fa-2x`}
-          ></i>
+        <div id="ratings-container">
+          <div
+            id="quality"
+            className={`rating-container ${
+              this.props.user.rating ? null : "hidden"
+            }`}
+          >
+            <p className="rating-header">QUALITÀ</p>
+            <div className="stars-container">
+              <Stars
+                rating={
+                  this.props.user.rating
+                    ? this.props.user.rating.qualityAverage
+                    : 0
+                }
+              />
+              <p className="rating-average">
+                {this.props.user.rating
+                  ? Math.round(this.props.user.rating.qualityAverage * 10) / 10
+                  : null}
+              </p>
+            </div>
+          </div>
+          <div
+            id="delivery"
+            className={`rating-container ${
+              this.props.user.rating ? null : "hidden"
+            }`}
+          >
+            <p className="rating-header">CONSEGNA</p>
+            <div className="stars-container">
+              <Stars
+                rating={
+                  this.props.user.rating
+                    ? this.props.user.rating.deliveryAverage
+                    : 0
+                }
+              />
+              <p className="rating-average">
+                {this.props.user.rating
+                  ? Math.round(this.props.user.rating.deliveryAverage * 10) / 10
+                  : null}
+              </p>
+            </div>
+          </div>
         </div>
         <PayOutInfo />
         <PlaceInfo />

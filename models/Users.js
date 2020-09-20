@@ -37,10 +37,6 @@ const UserSchema = new Schema({
     type: String,
     default: null
   },
-  schoolLogoURL: {
-    type: String,
-    default: null
-  },
   password: {
     type: String,
     required: true
@@ -50,17 +46,17 @@ const UserSchema = new Schema({
     required: true
   },
   rating: {
-    average: {
-      type: Number,
-      default: 0
-    },
     count: {
       type: Number,
-      default: 0
+      default: 1
     },
-    rawAverage: {
+    qualityAverage: {
       type: Number,
-      default: 0
+      default: 2.5
+    },
+    deliveryAverage: {
+      type: Number,
+      default: 2.5
     }
   },
   bonusPoints: {

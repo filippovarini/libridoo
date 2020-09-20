@@ -8,6 +8,7 @@ const Book = require("../models/Books");
 const User = require("../models/Users");
 const Error = require("../models/Errors");
 const SoldBooksCluster = require("../models/SoldBooksClusters");
+const Spam = require("../models/Spam");
 
 // multer upload
 const upload = require("../services/file-upload");
@@ -103,7 +104,9 @@ router.post("/fetch/buy", async (req, res) => {
     // title
     pointer = "titolo";
     const TitleRegExp = new RegExp(req.body.searchParams.ui, "i");
-    frozenBooks = await Book.find({ title: TitleRegExp });
+    frozenBooks = req.body.limit
+      ? (frozenBooks = await Book.find({ title: TitleRegExp }).limit(10))
+      : (frozenBooks = await Book.find({ title: TitleRegExp }));
   }
   let booksFetched = frozenBooks.map(book => {
     return book.toObject();
@@ -160,13 +163,16 @@ router.post("/fetch/buy", async (req, res) => {
             } else {
               const sellerUser = {
                 name: user.name,
-                rating: user.rating.average,
+                rating: {
+                  deliveryAverage: user.rating.deliveryAverage,
+                  qualityAverage: user.rating.qualityAverage
+                },
                 school: user.school,
                 email: user.email,
                 phone: user.phone,
                 avatarImgURL: user.avatarImgURL,
-                schoolLogoURL: user.schoolLogoURL,
-                deliveryInfo: user.DeliveryInfo
+                deliveryInfo: user.DeliveryInfo,
+                payOut: user.payOut
               };
               book.sellerUser = sellerUser;
               if (filterResult.indexOf(book) == filterResult.length - 1)
@@ -306,13 +312,16 @@ router.post("/generalFetch/UI", async (req, res) => {
                 } else {
                   const sellerUser = {
                     name: user.name,
-                    rating: user.rating.average,
+                    rating: {
+                      deliveryAverage: user.rating.deliveryAverage,
+                      qualityAverage: user.rating.qualityAverage
+                    },
                     school: user.school,
                     email: user.email,
                     phone: user.phone,
                     avatarImgURL: user.avatarImgURL,
-                    schoolLogoURL: user.schoolLogoURL,
-                    deliveryInfo: user.DeliveryInfo
+                    deliveryInfo: user.DeliveryInfo,
+                    payOut: user.payOut
                   };
                   book.sellerUser = sellerUser;
                   if (filterResult.indexOf(book) == filterResult.length - 1) {
@@ -409,12 +418,14 @@ router.post("/generalFetch/ID", async (req, res) => {
       } else {
         const sellerUser = {
           name: user.name,
-          rating: user.rating.average,
+          rating: {
+            deliveryAverage: user.rating.deliveryAverage,
+            qualityAverage: user.rating.qualityAverage
+          },
           school: user.school,
           email: user.email,
           phone: user.phone,
           avatarImgURL: user.avatarImgURL,
-          schoolLogoURL: user.schoolLogoURL,
           deliveryInfo: user.DeliveryInfo
         };
         book.sellerUser = sellerUser;
@@ -435,8 +446,10 @@ router.post("/generalFetch/ID", async (req, res) => {
 
 // post image to s3 and return url to display on front end and later pass to request body
 router.post("/image", (req, res) => {
+  console.log("doingBokAPi");
   singleUpload(req, res, error => {
     if (error) {
+      console.log(error);
       return res.json({
         code: 1,
         place: "singleUpload(), bookApi:423",
@@ -448,6 +461,16 @@ router.post("/image", (req, res) => {
       return res.json({ code: 0, imageURL: req.file.location });
     }
   });
+});
+
+// post spam book
+// book
+router.post("/spam", (req, res) => {
+  const newSpam = new Spam({ book: req.body.book, shit: "fsfmo" });
+  newSpam
+    .save()
+    .then(book => res.json(book))
+    .catch(error => res.json(error));
 });
 
 // post new book
@@ -477,7 +500,7 @@ buyerInfo: { / name / place: {country / region /  city} / school / email / phone
 soldBooksClusters: [
   {
     sellerId / delivery: {choosen (if not choosen, still pass null for cost and range) / cost / range / timeToMeet},
-    sellerInfo: { / name / / place: {country / region /  city} / school / email / phone / avatarImgURL / schoolLogoURL (got in frontend from book.sellerUser in cluster)
+    sellerInfo: { / name / / place: {country / region /  city} / school / email / phone / avatarImgURL / payOut: {type, accountId}}
     Books:[{bookId / imageURL / title  / price / quality / insertionDate}]  }]
 }] */
 // no input mistake
@@ -608,6 +631,7 @@ router.post("/checkedOut", (req, res) => {
             console.log("emailsent", info);
           }
         };
+      console.log(cluster.sellerInfo);
       // post soldbooks cluster
       const newCluster = new SoldBooksCluster({
         dealId: req.body.dealId,

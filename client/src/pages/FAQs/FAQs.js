@@ -23,7 +23,7 @@ class FAQs extends Component {
     return (
       <div id="faqs">
         <HeaderPart
-          title={"FAQs"}
+          title={"FAQs & PROBs"}
           mainClass={"faqs"}
           imageId="libridoo-logo-image"
           headerClass=""

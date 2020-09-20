@@ -65,7 +65,7 @@ class Invite extends Component {
       <div id="empty-body" className="invite-body">
         <p id="earn-login-header">Effettua il login prima di continuare</p>
         <Link id="earn-login-link" to="./login">
-          LOGIN
+          LOGIN <i className="fas fa-sign-in-alt"></i>
         </Link>
       </div>
     );

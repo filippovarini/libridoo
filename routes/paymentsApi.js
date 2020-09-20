@@ -1,11 +1,17 @@
 const express = require("express");
+const nodemailer = require("nodemailer");
 
 // stripe
 const stripe = require("stripe")("sk_test_ATOs31AJKZnuM1ijWJHdyYak00PdSpKYBJ");
 
+// nodemailer
+const EMAIL_PASS = require("../config/keys").EMAIL_PASS;
+
 // models
 const Deal = require("../models/Deals");
+const Error = require("../models/Errors");
 const User = require("../models/Users");
+
 // router
 const router = express.Router();
 
@@ -135,13 +141,13 @@ router.post("/connect", async (req, res) => {
 
   const refresh_url =
     process.env.NODE_ENV === "production"
-      ? "https://www.libridoo.it/infoReview/sell/refreshed"
-      : "http://localhost:3000/infoReview/sell/refreshed";
+      ? `https://www.libridoo.it/${req.body.pathname}/refreshed`
+      : `http://localhost:3000/${req.body.pathname}/refreshed`;
 
   const return_url =
     process.env.NODE_ENV === "production"
-      ? `https://www.libridoo.it/infoReview/sell/confirmed/${account.id}`
-      : `http://localhost:3000/infoReview/sell/confirmed/${account.id}`;
+      ? `https://www.libridoo.it/${req.body.pathname}/confirmed/${account.id}`
+      : `http://localhost:3000/${req.body.pathname}/confirmed/${account.id}`;
 
   const accountLinks = await stripe.accountLinks.create({
     account: account.id,
@@ -153,6 +159,80 @@ router.post("/connect", async (req, res) => {
   if (!accountLinks.url)
     res.json({ code: 1, message: "no account link", place: "/paymentApi:153" });
   else res.json({ code: 0, url: accountLinks.url });
+});
+
+router.post("/transfer", async (req, res) => {
+  console.log("sendingf");
+  const amount = req.body.total * 100 - req.body.total * 10;
+  console.log(amount);
+  stripe.transfers
+    .create({
+      amount,
+      currency: "EUR",
+      destination: req.body.accountId
+    })
+    .then(transfer => {
+      console.log(transfer);
+      // assume then means success
+      res.json({
+        code: 0,
+        accountId: req.body.accountId,
+        transfered: amount
+      });
+    })
+    .catch(error => {
+      if (error.raw.code === "balance_insufficient") {
+        const date = new Date();
+        // balance insufficient
+        const options = {
+          service: "Godaddy",
+          auth: {
+            user: "info@libridoo.it",
+            pass: EMAIL_PASS
+          },
+          tls: {
+            ciphers: "SSLv3",
+            rejectUnauthorized: false
+          }
+        };
+        const transporter = nodemailer.createTransport(options);
+        // verify connection configuration
+
+        transporter.sendMail(
+          {
+            from: '"Libridoo" <info@libridoo.it>',
+            to: "errors.libridoo@gmail.com",
+            subject: "Critical Error",
+            text: "Balance insufficiennt",
+            html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
+          <br /><br />
+          Ammount due: ${amount}, seller connected account id = ${
+              req.body.accountId
+            }`
+          },
+          async (error, info) => {
+            if (error) {
+              console.log("error", error);
+              const newError = new Error({
+                error: { message: "EMAIL NOT SENT, confirmEmail", error }
+              });
+              await newError.save();
+            } else {
+              console.log("emailsent", info);
+            }
+          }
+        );
+        res.json({ code: 1, insufficient: true });
+      } else
+        res.json({
+          code: 1,
+          insufficient: false,
+          place: "paymentApi:214",
+          message:
+            "Qualcosa è andato storto nel pagamento del venditore. Controlla di avere una connessione stabile e riprova più tardi. Se il problema persiste, non esitare a conttatarci.",
+          error
+        });
+    });
 });
 
 // delete all deals

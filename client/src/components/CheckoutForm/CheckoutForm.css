@@ -4,7 +4,9 @@
 }
 
 #ck-form-confirm {
-  background: black;
+  /* background: rgb(105, 142, 245); */
+  background: rgb(108, 232, 162);
+  font-size: 1.2rem;
   margin: 0 auto;
   font-weight: bold;
   color: white;
@@ -20,7 +22,7 @@
 
 #ck-form-confirm:hover {
   cursor: pointer;
-  box-shadow: 0px 0px 3px black;
+  box-shadow: 0px 0px 3px rgb(108, 232, 162);
 }
 
 #ckf-error {

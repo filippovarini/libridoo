@@ -1,7 +1,11 @@
 #ratingPopUp-container {
   height: 100vh;
   width: 100vw;
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245, 0.5),
+    rgba(108, 232, 162, 0.5)
+  );
   position: fixed;
   top: 0px;
   left: 0px;
@@ -10,19 +14,33 @@
 
 #ratingPopUp {
   background: white;
-  width: 70%;
-  min-width: 280px;
+  width: 350px;
   position: fixed;
   left: 50%;
-  margin-left: -35%;
+  margin-left: -175px;
   top: 50%;
-  height: 190px;
+  height: 300px;
   margin-top: -100px;
   text-align: center;
-  border: 1px solid purple;
-  box-shadow: 0px 0px 3px purple;
-  border-radius: 5px;
+  border: 1px solid transparent;
   position: relative;
+  background: #ebebeb;
+}
+
+#ratingPopUp .rating-stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+#ratingPopUp .rating-header {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  margin: 0px;
 }
 
 #ratingPopUp.rating-loading {
@@ -32,50 +50,86 @@
 }
 
 #ratingPopUp-header {
-  margin-top: 35px;
+  margin: 0px;
+  margin-top: 20px;
   font-size: 1.4rem;
   font-weight: bold;
   color: gray;
   margin-left: 10px;
   margin-right: 10px;
-}
-
-#ratingPopUp-stars-container {
-  font-size: 2.5rem;
-  margin-top: 40px;
+  text-transform: uppercase;
 }
 
 #ratingPopUp .fa-star {
-  margin: 0 15px;
+  margin: 0 5px;
   cursor: pointer;
-  color: rgb(32, 165, 32);
+  /* color: rgb(32, 165, 32);/ */
+  color: black;
+  font-size: 1.1rem;
+}
+
+#ratingPopUp #lr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+#ratingPopUp #lr-header {
+  margin: 0px;
+  font-size: 1.4rem;
+  color: rgb(99, 99, 99);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#ratingPopUp #lr-choices {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  margin: 0 auto;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+#ratingPopUp #lr-choices #c1 {
+  background: rgb(105, 142, 245);
+}
+
+#ratingPopUp #lr-choices #c2 {
+  background: rgb(108, 232, 162);
+}
+
+#ratingPopUp .choice {
+  margin: 0px;
+  color: white;
+  font-weight: bold;
+  width: 70px;
+  border-radius: 3px;
+}
+
+#ratingPopUp .choice.clicked {
+  text-decoration: underline;
 }
 
 #ratingPopUp-delete {
-  box-shadow: 0px 0px 3px purple;
-  font-size: 1.3rem;
-  margin: 0px;
-  background: white;
-  border: 1px solid purple;
-  color: red;
-  height: 20px;
-  width: 20px;
+  font-size: 0.8rem;
+  color: rgb(99, 99, 99);
   position: absolute;
-  line-height: 17.5px;
-  top: -12px;
-  border-radius: 15px;
-  right: -12px;
+  top: 5px;
+  right: 5px;
 }
 
 #ratingPopUp-delete:hover {
   cursor: pointer;
-  border: 2px solid red;
+  color: black;
 }
 
 @media only screen and (max-width: 600px) {
   #ratingPopUp .fa-star {
     margin: 0 8px;
-    font-size: 2rem;
+    /* font-size: 2rem; */
   }
 
   #ratingPopUp-header {
@@ -84,9 +138,16 @@
 }
 
 @media only screen and (max-width: 500px) {
+  #ratingPopUp {
+    width: 300px;
+    margin-left: -150px;
+  }
+  #ratingPopUp .rating-stars {
+    width: 250px;
+  }
   #ratingPopUp .fa-star {
     margin: 0 5px;
-    font-size: 1.8rem;
+    font-size: 1rem;
   }
 
   #ratingPopUp-header {

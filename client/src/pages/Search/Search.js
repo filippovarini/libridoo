@@ -198,7 +198,7 @@ class Search extends Component {
             this.setState({ inputClass: null });
           } else {
             // error
-            console.log(jsonRes);
+
             this.props.dispatch({
               type: "E-SET",
               error: {
@@ -234,29 +234,11 @@ class Search extends Component {
     let searchList = (
       <div id="search-list-container">
         <div id="search-list" className="empty">
-          <p id="header">La mia lista</p>
-          {/* {searchParams.map(param => {
-              return (
-                <div
-                  className="list-container"
-                  key={searchParams.indexOf(param)}
-                >
-                  <p className="list">{param.ui}</p>
-                  <p
-                    id={param.ui}
-                    className="list-delete"
-                    title="elimina"
-                    onClick={this.handleDelete}
-                  >
-                    -
-                  </p>
-                </div>
-              );
-            })} */}
           <p id="search-empty-searchList">La lista della spesa è vuota</p>
         </div>
       </div>
     );
+
     if (searchParams && searchParams.length !== 0) {
       searchList = (
         <div id="search-list-container">
@@ -265,24 +247,26 @@ class Search extends Component {
             {searchParams.map(param => {
               return (
                 <div
-                  className="list-container"
+                  className="list-g-container"
                   key={searchParams.indexOf(param)}
                 >
-                  <p className="list">{param.ui}</p>
-                  <p id="search-list-counter">
-                    {this.props.booksResult
-                      ? this.props.booksResult[searchParams.indexOf(param)]
+                  <div className="list-container">
+                    <p className="list">{param.ui}</p>
+                    <p id="search-list-counter">
+                      {this.props.booksResult
                         ? this.props.booksResult[searchParams.indexOf(param)]
-                            .filterResult.length === 0
-                          ? null
-                          : `${
-                              this.props.booksResult[
-                                searchParams.indexOf(param)
-                              ].filterResult.length
-                            } risultati`
-                        : null
-                      : null}
-                  </p>
+                          ? this.props.booksResult[searchParams.indexOf(param)]
+                              .filterResult.length === 0
+                            ? null
+                            : `${
+                                this.props.booksResult[
+                                  searchParams.indexOf(param)
+                                ].filterResult.length
+                              } risultati`
+                          : null
+                        : null}
+                    </p>
+                  </div>
                   <p
                     id={param.ui}
                     className="list-delete"
@@ -316,14 +300,6 @@ class Search extends Component {
       <div id="body-container">
         <div id="input-container">
           <form onSubmit={this.handleSubmit} id="input-form">
-            <label
-              htmlFor="title"
-              className={`incorrect-input-label ${
-                this.state.errorMessage ? "" : "hidden"
-              }`}
-            >
-              {this.state.errorMessage}
-            </label>
             <input
               autoComplete="off"
               id="title"
@@ -334,21 +310,26 @@ class Search extends Component {
             />
             <input type="submit" className="hidden" />
           </form>
-          <p
-            id="input-submit"
-            className={`${this.state.submitDisplay} submit`}
-            onClick={this.handleSubmit}
-          >
-            CERCA
-          </p>
+          <div id="sbmt-container">
+            <p
+              id="input-error"
+              className={!this.state.errorMessage ? "" : "visibilityHidden"}
+            >
+              {this.state.errorMessage}
+            </p>
+            <p id="input-submit" className="submit" onClick={this.handleSubmit}>
+              CERCA
+            </p>
+          </div>
         </div>
         {searchList}
       </div>
     );
 
     const loading = (
-      <div id="search-loading">
+      <div id="sl-container">
         <LoadingM />
+        <p id="sl-header">un secondo...</p>
       </div>
     );
 
@@ -364,8 +345,11 @@ class Search extends Component {
         />
         <div id="searchPage-header-container">
           <p id="searchPage-header">
-            Inserisci <span id="search-header-bold">tutti</span> i libri che
-            stati cercando prima di proseguire
+            dicci tutti i titoli che cerchi prima di proseguire
+          </p>
+          <p id="subheader">
+            i nostri algoritmi ti selezioneranno i venditori che ne hanno di
+            più, per ridurti gli incontri e la fatica
           </p>
         </div>
         {bodyComponent}

@@ -8,7 +8,7 @@
   height: 200px;
   margin: 0 auto;
   margin-top: 40px;
-  box-shadow: 0px 0px 5px;
+  box-shadow: 0px 0px 2px black;
 }
 
 #account-gContainer #avatarImg {
@@ -19,10 +19,11 @@
 }
 
 #account-gContainer #name {
-  margin-top: 30px;
-  font-size: 2rem;
+  margin-top: 10px;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: gray;
+  color: black;
+  margin-bottom: 10px;
 }
 
 #account-gContainer #rating {
@@ -31,5 +32,41 @@
 
 #account-gContainer .fa-star {
   margin-left: 10px;
-  color: rgb(32, 165, 32);
+  color: rgb(99, 99, 99);
+  font-size: 0.8rem;
+  margin-top: 0px;
+}
+
+#account-gContainer .stars-container {
+  display: flex;
+  align-items: center;
+}
+
+#account-gContainer .rating-average {
+  margin: 0px;
+  margin-left: 10px;
+}
+
+#account-gContainer #ratings-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+}
+
+#account-gContainer #ratings-container #quality {
+  margin-top: 0px;
+}
+
+#account-gContainer .rating-container {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  margin-top: 10px;
+}
+
+#account-gContainer .rating-header {
+  margin: 0px;
+  line-height: 15px;
 }

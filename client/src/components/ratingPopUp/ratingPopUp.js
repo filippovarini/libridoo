@@ -4,128 +4,190 @@ import { withRouter } from "react-router-dom";
 import "./ratingPopUp.css";
 
 import LoadingM from "../Loading/loading_m";
+import RatingStar from "../stars/ratingStars";
 
 // user: { name / _id } / toggleDisplay / display
 class RatingPopUp extends Component {
   state = {
-    "1Star": "r",
-    "2Star": "r",
-    "3Star": "r",
-    "4Star": "r",
-    "5Star": "r",
-    loading: false
+    delivery1: "r",
+    delivery2: "r",
+    delivery3: "r",
+    delivery4: "r",
+    delivery5: "r",
+    quality1: "r",
+    quality2: "r",
+    quality3: "r",
+    quality4: "r",
+    quality5: "r",
+    loading: false,
+    deliveryRating: 0,
+    qualityRating: 0,
+    suggest: null
   };
 
-  handleStarLeave = () => {
+  handleStarLeave = (number, type) => {
     this.setState({
-      "1Star": "r",
-      "2Star": "r",
-      "3Star": "r",
-      "4Star": "r",
-      "5Star": "r"
+      [`${type}1`]: "r",
+      [`${type}2`]: "r",
+      [`${type}3`]: "r",
+      [`${type}4`]: "r",
+      [`${type}5`]: "r"
     });
   };
 
-  handleStarOver = e => {
-    for (let i = Number(e.target.id); i--; i > 0) {
-      this.setState({
-        [`${i + 1}Star`]: "s"
-      });
-    }
+  handleStarOver = (number, type) => {
+    this.setState({
+      [`${type}1`]: number >= 1 ? "s" : "r",
+      [`${type}2`]: number >= 2 ? "s" : "r",
+      [`${type}3`]: number >= 3 ? "s" : "r",
+      [`${type}4`]: number >= 4 ? "s" : "r",
+      [`${type}5`]: number === 5 ? "s" : "r"
+    });
   };
 
-  handleRatingConfirm = rate => {
-    this.setState({ loading: true });
-    fetch("/api/user/ratingUpdate", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({ _id: this.props.user._id, rating: rate })
-    })
-      .then(res => res.json())
-      .then(jsonRes => {
-        //   even if errors, don't care
-        this.setState({ loading: false });
-        this.props.toggleDisplay();
-      })
-      .catch(error => {
-        console.log(error);
-        this.props.dispatch({
-          type: "E-SET",
-          error: { frontendPlace: "ratingPopUp/handleRatingConfirm/catch" }
-        });
-        this.props.history.push("/error");
+  handleRatingConfirm = (number, type) => {
+    console.log(number);
+    let canSend = false;
+    let body = {};
+    if (type === "libridoo") {
+      if (this.state.deliveryRating && this.state.qualityRating) {
+        canSend = true;
+        body = {
+          qualityRating: this.state.qualityRating,
+          deliveryRating: this.state.deliveryRating,
+          libridoo: number
+        };
+      } else {
+        this.setState({ suggest: number });
+      }
+    } else {
+      this.setState({
+        [`${type}Rating`]: number
       });
+      if (
+        type === "delivery" &&
+        this.state.suggest &&
+        this.state.qualityRating
+      ) {
+        canSend = true;
+        body = {
+          qualityRating: this.state.qualityRating,
+          deliveryRating: number,
+          libridoo: this.state.suggest
+        };
+      } else if (
+        type === "quality" &&
+        this.state.suggest &&
+        this.state.deliveryRating
+      ) {
+        canSend = true;
+        body = {
+          qualityRating: number,
+          deliveryRating: this.state.deliveryRating,
+          libridoo: this.state.suggest
+        };
+      }
+    }
+
+    if (canSend) {
+      console.log(
+        this.state.deliveryRating,
+        this.state.qualityRating,
+        this.state.suggest,
+        body
+      );
+      this.setState({ loading: true });
+      fetch("/api/user/ratingUpdate", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({ ...body, _id: "5e79de62892bc21bc92dbf20" })
+      })
+        .then(res => res.json())
+        .then(jsonRes => {
+          //   even if errors, don't care
+          this.setState({ loading: false });
+          this.props.toggleDisplay();
+        })
+        .catch(error => {
+          console.log(error);
+          this.props.dispatch({
+            type: "E-SET",
+            error: { frontendPlace: "ratingPopUp/handleRatingConfirm/catch" }
+          });
+          this.props.history.push("/error");
+        });
+    }
   };
 
   render() {
     const loaded = (
       <div id="ratingPopUp">
-        <p id="ratingPopUp-delete" onClick={this.props.toggleDisplay}>
-          -
-        </p>
+        <i
+          className="fas fa-times"
+          id="ratingPopUp-delete"
+          onClick={this.props.toggleDisplay}
+        ></i>
         <p id="ratingPopUp-header">
-          Come valuti il servizio offerto da{" "}
-          {this.props.user ? this.props.user.name : "il tuo venditore"}?
+          VALUTA
+          {this.props.user ? this.props.user.name : " il tuo venditore"}
         </p>
-        <div id="ratingPopUp-stars-container">
-          <i
-            onMouseOver={this.handleStarOver}
-            onTouchStart={this.handleStarOver}
-            onMouseLeave={this.handleStarLeave}
-            onTouchEnd={this.handleStarLeave}
-            onClick={() => {
-              this.handleRatingConfirm(1);
-            }}
-            id="1"
-            className={`fa${this.state["1Star"]} fa-star `}
-          ></i>
-          <i
-            onMouseOver={this.handleStarOver}
-            onTouchStart={this.handleStarOver}
-            onMouseLeave={this.handleStarLeave}
-            onTouchEnd={this.handleStarLeave}
-            onClick={() => {
-              this.handleRatingConfirm(2);
-            }}
-            id="2"
-            className={`fa${this.state["2Star"]} fa-star `}
-          ></i>
-          <i
-            onMouseOver={this.handleStarOver}
-            onTouchStart={this.handleStarOver}
-            onMouseLeave={this.handleStarLeave}
-            onTouchEnd={this.handleStarLeave}
-            onClick={() => {
-              this.handleRatingConfirm(3);
-            }}
-            id="3"
-            className={`fa${this.state["3Star"]} fa-star `}
-          ></i>
-          <i
-            onMouseOver={this.handleStarOver}
-            onTouchStart={this.handleStarOver}
-            onMouseLeave={this.handleStarLeave}
-            onTouchEnd={this.handleStarLeave}
-            onClick={() => {
-              this.handleRatingConfirm(4);
-            }}
-            id="4"
-            className={`fa${this.state["4Star"]} fa-star `}
-          ></i>
-          <i
-            onMouseOver={this.handleStarOver}
-            onTouchStart={this.handleStarOver}
-            onMouseLeave={this.handleStarLeave}
-            onTouchEnd={this.handleStarLeave}
-            onClick={() => {
-              this.handleRatingConfirm(5);
-            }}
-            id="5"
-            className={`fa${this.state["5Star"]} fa-star `}
-          ></i>
+        <div id="g-rating-stars">
+          <div className="rating-stars">
+            <p className="rating-header">QUALITÀ AFFIDABILE</p>
+            <RatingStar
+              handleStarOver={this.handleStarOver}
+              handleStarLeave={this.handleStarLeave}
+              handleRatingConfirm={this.handleRatingConfirm}
+              firstStar={this.state.quality1}
+              secondStar={this.state.quality2}
+              thirdStar={this.state.quality3}
+              fourthStar={this.state.quality4}
+              fifthStar={this.state.quality5}
+              type="quality"
+              rating={this.state.qualityRating}
+            />
+          </div>
+          <div className="rating-stars">
+            <p className="rating-header">CONSEGNA ED INCONTRO</p>
+            <RatingStar
+              handleStarOver={this.handleStarOver}
+              handleStarLeave={this.handleStarLeave}
+              handleRatingConfirm={this.handleRatingConfirm}
+              firstStar={this.state.delivery1}
+              secondStar={this.state.delivery2}
+              thirdStar={this.state.delivery3}
+              fourthStar={this.state.delivery4}
+              fifthStar={this.state.delivery5}
+              type="delivery"
+              rating={this.state.deliveryRating}
+            />
+          </div>
+        </div>
+        <div id="lr">
+          <p id="lr-header">Consiglieresti Libridoo?</p>
+          <div id="lr-choices">
+            <p
+              id="c1"
+              className={`${
+                this.state.suggest === "SI" ? "clicked" : null
+              } choice`}
+              onClick={() => this.handleRatingConfirm("SI", "libridoo")}
+            >
+              SI
+            </p>
+            <p
+              id="c2"
+              className={`${
+                this.state.suggest === "NO" ? "clicked" : null
+              } choice`}
+              onClick={() => this.handleRatingConfirm("NO", "libridoo")}
+            >
+              NO
+            </p>
+          </div>
         </div>
       </div>
     );

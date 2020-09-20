@@ -7,6 +7,11 @@
   width: 50%;
   padding-bottom: 30px;
   min-width: 250px;
+  background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245),
+    rgba(108, 232, 162)
+  );
 }
 
 #recover-subContainer.success {
@@ -32,10 +37,13 @@
 }
 
 #recover-explainer {
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   /* font-weight: bold; */
   color: gray;
+  font-weight: bold;
+  color: white;
+  line-height: 15px;
   margin-top: 20px;
 }
 
@@ -61,8 +69,8 @@
   color: white;
   font-weight: bold;
   width: 80%;
-  height: 20px;
-  line-height: 20px;
+  height: 30px;
+  line-height: 30px;
   font-size: 1.1rem;
   border-radius: 3px;
   padding: 3px;

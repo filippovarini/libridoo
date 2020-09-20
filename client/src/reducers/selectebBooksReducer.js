@@ -23,7 +23,6 @@ const clusterGenerator = (books, state) => {
       sellerInfo.place = book.place;
       delete book.place;
       delete sellerInfo.deliveryInfo;
-      delete sellerInfo.rating;
       delete book.sellerUser;
       // on SBs refresh, book doesn't have userSellsCount. Still good
       delete book.userSellsCount;

@@ -9,15 +9,18 @@ const S3_ID = require("../config/keys").S3_KEY_ID;
 aws.config.update({
   secretAccessKey: S3_SECRET,
   accessKeyId: S3_ID,
-  region: "eu-west-3"
+  // region: "eu-west-3"
+  region: "us-west-1"
 });
 
 var s3 = new aws.S3({});
 
 const fileFilter = (req, file, cb) => {
+  console.log("doingFileFilter", file);
   if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
     cb(new Error("Type not allowed, post only jpeg and png"), false);
   } else if (file.size > 3000000) {
+    console.log("error");
     cb(new Error("Too big, less than 3mb!"));
   } else {
     cb(null, true);
@@ -27,9 +30,14 @@ const fileFilter = (req, file, cb) => {
 var upload = multer({
   fileFilter,
   storage: multerS3({
+    // accelerateConfiguration: {
+    //   /* required */
+    //   status: "Enabled"
+    // },
     s3: s3,
     acl: "public-read",
-    bucket: "book-cover-images.libridoo",
+    // bucket: "book-cover-images.libridoo",
+    bucket: "libridoocovers" /*transfer acceleration*/,
     metadata: function(req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },

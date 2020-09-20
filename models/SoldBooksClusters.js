@@ -74,9 +74,6 @@ const SoldBooksClusterSchema = new Schema({
     },
     avatarImgURL: {
       type: String
-    },
-    schoolLogoURL: {
-      type: String
     }
   },
   sellerInfo: {
@@ -113,8 +110,9 @@ const SoldBooksClusterSchema = new Schema({
     avatarImgURL: {
       type: String
     },
-    schoolLogoURL: {
-      type: String
+    payOut: {
+      type: { type: String, required: true },
+      accountId: { type: String, required: true }
     }
   },
   Books: {

@@ -1,16 +1,3 @@
-#register-image-container {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 30px;
-  height: 200px;
-  box-shadow: 0px 0px 8px grey;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
 #register-loading {
   position: fixed;
   top: 50%;
@@ -24,37 +11,23 @@
   justify-content: center;
 }
 
-#register-libridoo-logo-image {
-  width: 150px;
-  bottom: 15px;
-  position: absolute;
-  right: 30px;
-}
-
-#register-fake-header {
-  font-size: 4rem;
-  letter-spacing: 1rem;
-  font-family: "Pangolin", cursive;
-  color: #f79e02;
-}
-
 #register-general-container #register-avatarImgs {
   width: 95%;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 #register-general-container #agatarImg-prompt {
   display: block;
   margin-bottom: 10px;
   font-weight: bold;
-  text-align: center;
-  color: gray;
-  font-size: 1.3rem;
+  /* text-align: center; */
+  color: rgb(99, 99, 99);
+  font-size: 1rem;
 }
 
 #images-container {
-  box-shadow: 0px 0px 3px gray;
+  background: #ebebeb;
   border-radius: 3px;
   padding: 20px;
   box-sizing: border-box;
@@ -89,15 +62,30 @@
   box-shadow: 0px 0px 5px;
 }
 
+#ai-general-container {
+  width: 250px;
+  margin: 0 auto;
+  margin-bottom: 0px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+#ai-description {
+  margin: 0px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  font-size: 1.3rem;
+}
+
 #avatar-image-container {
   border: 1px solid black;
   box-shadow: 0px 0px 3px gray;
   border-radius: 3px;
-  background: rebeccapurple;
   width: 250px;
   height: 250px;
   margin: 0 auto;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   position: relative;
 }
 
@@ -108,23 +96,15 @@
 
 #image-delete {
   position: absolute;
-  color: red;
-  border: 1px solid black;
-  right: -10px;
-  font-size: 1.3rem;
-  line-height: 17px;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  border-radius: 20px;
-  top: -10px;
-  background: white;
+  color: rgb(99, 99, 99);
+  top: -15px;
+  right: -15px;
+  font-size: 0.8rem;
 }
 
 #image-delete:hover {
   cursor: pointer;
-  border: 2px solid red;
-  font-weight: bold;
+  color: black;
 }
 
 #avatar-image {
@@ -138,8 +118,14 @@
 
 #register-form {
   background: #ebebeb;
+  background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245),
+    rgba(108, 232, 162)
+  );
   display: inline-block;
   margin: 40px 0px;
+  margin-top: 30px;
   width: 280px;
 }
 
@@ -154,8 +140,9 @@
   font-weight: bold;
   color: black;
 }
+
 .password {
-  width: 180px;
+  width: 200px;
   height: 18px;
 }
 
@@ -191,7 +178,7 @@
 #login-btn {
   margin-left: 5px;
   text-decoration: none;
-  color: rgb(32, 165, 32);
+  color: rgb(105, 142, 245);
   font-weight: bold;
 }
 
@@ -205,25 +192,110 @@
 
 #register-confirm-btn {
   width: 200px;
-  height: 25px;
+  height: 30px;
   background: black;
   margin: 0 auto;
   color: white;
   font-weight: bold;
   margin-bottom: 30px;
   border-radius: 2px;
-  line-height: 25px;
+  line-height: 30px;
   margin-top: 30px;
 }
 
 #rememberMe {
   font-weight: bold;
-  color: gray;
+  color: white;
 }
 
 #register-confirm-btn:hover {
   cursor: pointer;
   box-shadow: 0px 0px 5px black;
+}
+
+.onoffswitch {
+  position: relative;
+  width: 66px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #636363;
+  border-radius: 20px;
+}
+.onoffswitch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 11px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+  content: "LUI";
+  padding-left: 10px;
+  background-color: #698ef5;
+  color: #ffffff;
+}
+.onoffswitch-inner:after {
+  content: "LEI";
+  padding-right: 10px;
+  background-color: #6ce8a2;
+  color: #ffffff;
+  text-align: right;
+}
+.onoffswitch-switch {
+  display: block;
+  width: 18px;
+  margin: 6px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 32px;
+  border: 2px solid #636363;
+  border-radius: 20px;
+  transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px;
+}
+
+#rg-sex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+#rg-sex-header {
+  font-weight: bold;
+  margin-right: 10px;
+  color: rgb(99, 99, 99);
 }
 
 @media only screen and (max-width: 650px) {

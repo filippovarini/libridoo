@@ -8,7 +8,7 @@
 
 #bodyInfo {
   /* border: 1px solid black; */
-  box-shadow: 0px 0px 3px black;
+  background: #ebebeb;
   border-radius: 5px;
   width: 100%;
   height: 220px;
@@ -42,24 +42,37 @@
   height: 30px;
   display: flex;
   align-items: center;
-  /* border: 1px solid black; */
   box-shadow: 0px 0px 2px black;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 #bodyInfo .info-ico {
   width: 25px;
-  border-right: 1px solid gray;
   padding: 5px;
   text-align: center;
+  color: rgb(99, 99, 99);
 }
 
 #bodyInfo .info-text {
-  margin-left: 10px;
-  font-size: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  color: rgb(99, 99, 99);
+  font-weight: bold;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  font-size: 0.8rem;
+  border-radius: 3px;
+}
+
+#bodyInfo .info-input:focus {
+  outline-color: transparent;
+}
+
+#bodyInfo .info-text::placeholder {
+  font-weight: normal;
+  font-style: italic;
+  font-size: 0.8rem;
 }
 
 #bodyInfo .info-input {
@@ -80,30 +93,32 @@
   position: absolute;
   background: white;
   padding: 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
 #bodyInfo #header {
   top: -10px;
   left: -10px;
-  color: purple;
+  color: rgb(108, 232, 162);
+  border-radius: 20px;
 }
 
 .bottom {
-  bottom: -10px;
-  right: -10px;
-  border: 1px solid #f79e02;
-  box-shadow: 0px 0px 3px #f79e02;
+  bottom: -5px;
+  right: -5px;
+  background: rgb(105, 142, 245);
+  box-shadow: 0px 0px 2px rgb(105, 142, 245);
   border-radius: 5px;
-  color: #f79e02;
+  color: white;
 }
 .bottom:hover {
-  font-size: 1.1rem;
   cursor: pointer;
+  box-shadow: 0px 0px 4px rgb(105, 142, 245);
 }
 
 #bodyInfo #header-text {
-  color: gray;
-  /* border-bottom: 1px solid gray; */
+  font-size: 1.2rem;
   font-weight: bold;
   display: inline-block;
   padding: 0 15px;

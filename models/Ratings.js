@@ -3,10 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.set("useFindAndModify", false);
 
 const RatingSchema = new Schema({
-  rating: {
-    type: Number,
-    required: true
-  },
+  value: String,
   insertionDate: {
     type: Date,
     default: Date.now

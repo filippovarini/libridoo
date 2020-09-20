@@ -22,6 +22,8 @@ class Cart extends Component {
   };
 
   render() {
+    let display = this.props.hidden ? "hidden" : null;
+    if (this.props.hiderCart) display = "hidden";
     let totalPrice = 0;
     this.props.selectedBooks.forEach(cluster => {
       cluster.Books.forEach(book => {
@@ -39,11 +41,9 @@ class Cart extends Component {
     return (
       <div
         id="cart"
-        className={this.props.hidden ? "hidden" : null}
+        className={display}
         onMouseLeave={this.props.toggleDisplay}
       >
-        {/* <p id="cart-header">Carrello</p> */}
-
         {this.props.selectedBooks.map(cluster => {
           return (
             <div
@@ -66,8 +66,8 @@ class Cart extends Component {
                     className="book-container"
                     key={cluster.Books.indexOf(book)}
                   >
-                    <p
-                      className="delete"
+                    <i
+                      className="delete fas fa-times"
                       onClick={() => {
                         this.removeSelectedBook(
                           this.props.selectedBooks.indexOf(cluster),
@@ -75,9 +75,7 @@ class Cart extends Component {
                           book._id
                         );
                       }}
-                    >
-                      -
-                    </p>
+                    ></i>
                     <p className="title info">{book.title}</p>
                     <p className="place info">
                       {" "}
@@ -96,7 +94,7 @@ class Cart extends Component {
           <p id="price-header">Totale:</p>
           <p id="price">{totalPrice} €</p>
         </div>
-        <Link to="/checkout" id="checkout-prompt">
+        <Link to="/checkoutReview" id="checkout-prompt">
           CHECKOUT
         </Link>
       </div>
