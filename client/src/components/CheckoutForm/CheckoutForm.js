@@ -47,7 +47,8 @@ export default function CheckoutForm(props) {
             props.totalBookPrice,
             props.totalDeliveryPrice,
             props.discountAvailable,
-            props.totalPrice
+            props.totalPrice,
+            "stripe"
           );
           // Show a success message to your customer
         }
@@ -58,10 +59,13 @@ export default function CheckoutForm(props) {
   return (
     <form id="ck-form" onSubmit={handleSubmit}>
       <CardSection />
-      <button id="ck-form-confirm" disabled={!stripe || loading}>
-        {!loading ? "PAGA" : "loading, non chiudere la pagina..."}
-        {/* Cane2012 */}
-      </button>
+      {loading ? (
+        <button id="ck-form-confirm" className="disabled" disabled={true}>
+          loading, non chiudere la pagina...
+        </button>
+      ) : (
+        <button id="ck-form-confirm">PAGA</button>
+      )}
       <p id="ckf-error">{errorDisplay}</p>
       <input type="submit" className="hidden" />
     </form>

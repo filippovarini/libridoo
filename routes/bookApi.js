@@ -426,7 +426,8 @@ router.post("/generalFetch/ID", async (req, res) => {
           email: user.email,
           phone: user.phone,
           avatarImgURL: user.avatarImgURL,
-          deliveryInfo: user.DeliveryInfo
+          deliveryInfo: user.DeliveryInfo,
+          payOut: user.payOut
         };
         book.sellerUser = sellerUser;
       }
@@ -510,6 +511,7 @@ router.post("/checkedOut", (req, res) => {
   // newDeal
   //   .save()
   //   .then(deal => {
+  let clusterIds = [];
   const clusterPromise = new Promise((resolve, reject) => {
     req.body.soldBooksClusters.forEach(cluster => {
       // calculate total price
@@ -616,21 +618,7 @@ router.post("/checkedOut", (req, res) => {
         <p style="margin:20px; font-size: .7rem">* Conforme ai termini e condizioni di www.libridoo.it, esposti su https://www.libridoo.it/T&C, libridoo trattiene il 10% (10 per cento) dell'incasso del venditore  
         <br/><br/><br/>
         Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
-      }),
-        async (error, info) => {
-          if (error) {
-            console.log(error);
-            const newError = new Error({
-              error: {
-                message: "EMAIL NOT SENT, checkout, email al venditore",
-                error
-              }
-            });
-            await newError.save();
-          } else {
-            console.log("emailsent", info);
-          }
-        };
+      });
       console.log(cluster.sellerInfo);
       // post soldbooks cluster
       const newCluster = new SoldBooksCluster({
@@ -645,7 +633,10 @@ router.post("/checkedOut", (req, res) => {
       });
       newCluster
         .save()
-        .then(() => {
+        .then(cluster => {
+          console.log(cluster._id);
+          clusterIds.push(cluster._id);
+          console.log(clusterIds);
           // if everything goes well, check if it was the last cluster
           if (
             req.body.soldBooksClusters.indexOf(cluster) ===
@@ -667,6 +658,7 @@ router.post("/checkedOut", (req, res) => {
     });
   });
   clusterPromise.then(() => {
+    console.log("its a then!!!");
     // successfully posted all clusters, now delete sold books
     req.body._ids.forEach(_id => {
       Book.findByIdAndDelete(_id)
@@ -798,12 +790,14 @@ router.post("/checkedOut", (req, res) => {
                 code: 0,
                 devmessage: "clusters successfully posted",
                 message: "Operazione effettuata con successo",
-                paymentId: req.body.dealId
+                paymentId: req.body.dealId,
+                clusterIds
               });
             }
           }
         })
         .catch(error => {
+          console.log(error);
           res.json({
             code: 1,
             place: ".findByIdAndDelete(), bookApi:618",

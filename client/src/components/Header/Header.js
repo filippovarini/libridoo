@@ -47,7 +47,7 @@ class Header extends Component {
         const body = {
           _ids: JSON.parse(sessionStorage.getItem("SBs"))
         };
-        fetch("/api/book//generalFetch/ID", {
+        fetch("/api/book/generalFetch/ID", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -57,6 +57,7 @@ class Header extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
+            console.log("shitienifn", jsonRes);
             if (jsonRes.code === 0) {
               // perfect
               this.props.dispatch({ type: "SB-SET", books: jsonRes.results });

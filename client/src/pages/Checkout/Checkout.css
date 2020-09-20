@@ -46,6 +46,20 @@
   margin-top: 40px;
 }
 
+#pp-l {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#pp-l #loading-header {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  margin-top: -20px;
+  font-size: 1.5rem;
+}
+
 #checkout .bill-info-container {
   /* border-bottom: 1px solid black; */
   display: flex;

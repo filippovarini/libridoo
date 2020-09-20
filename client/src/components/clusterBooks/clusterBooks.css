@@ -172,8 +172,13 @@
   font-size: 0.7rem;
 }
 
+#cb #deliveries-contained.single {
+  width: 90%;
+}
+
 #cb .delivery-box.single {
   margin-right: 5px;
+  justify-content: start;
 }
 
 #cb .click-box {
@@ -341,10 +346,6 @@
 
 #cb .sub-header-ico {
   margin-right: 10px;
-}
-
-#cb .delivery-box.single {
-  justify-content: center;
 }
 
 #cb #price-contacts.resized {

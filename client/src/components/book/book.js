@@ -123,7 +123,11 @@ class book extends Component {
 
     // see if can ship
     let text = "";
-    if (this.props.user.place && this.props.user.place.city) {
+    if (
+      this.props.user.place &&
+      this.props.user.place.city &&
+      this.props.book.sellerUser
+    ) {
       //  delivery
       switch (this.props.book.sellerUser.deliveryInfo.range) {
         case "NO":
@@ -178,41 +182,6 @@ class book extends Component {
 
     const lowerIcon = bought ? boughtResultLowerIcon : notBoughtResultLowerIcon;
 
-    // let upperHeader = null;
-    // if (this.props.book.userSellsCount > 1) {
-    //   upperHeader = (
-    //     <div
-    //       id="sells-count-container"
-    //       className={
-    //         this.props.maxUserSellsCount
-    //           ? this.props.book.userSellsCount === this.props.maxUserSellsCount
-    //             ? "maxUserSellsCount"
-    //             : null
-    //           : null
-    //       }
-    //     >
-    //       <p
-    //         id="sells-count"
-    //         className={
-    //           this.props.maxUserSellsCount
-    //             ? this.props.book.userSellsCount ===
-    //               this.props.maxUserSellsCount
-    //               ? "maxUserSellsCount-text"
-    //               : null
-    //             : null
-    //         }
-    //       >
-    //         HA ALTRI{" "}
-    //         <span id="number">
-    //           {this.props.book.userSellsCount -
-    //             1 /*ACTUALLY THIS SHOULD BE COUNTER : SELLS COUNT - ANY SELECTE BOOK SOLD BY HIM*/}{" "}
-    //         </span>{" "}
-    //         LIBRI CHE CERCHI
-    //       </p>
-    //     </div>
-    //   );
-    // }
-
     const spam = (
       <div id="spam-container">
         <i
@@ -235,162 +204,165 @@ class book extends Component {
       cluster => cluster.sellerId
     );
 
-    const results = {
-      infoContainer: (
-        <div id="info-container" className="sub-container half">
-          {lowerIcon}
-          {spam}
-          <div id="contained">
-            {/* <div
+    const results = this.props.book.sellerUser
+      ? {
+          infoContainer: (
+            <div id="info-container" className="sub-container half">
+              {lowerIcon}
+              {spam}
+              <div id="contained">
+                {/* <div
             id="title-container"
             className="info-container results"
             onClick={this.generalClicked}
           >
             <i className="fas fa-book info-book-ico"></i> */}
-            <p id="title" className="info">
-              {this.props.book.title}
-            </p>
-            {/* </div>
+                <p id="title" className="info">
+                  {this.props.book.title}
+                </p>
+                {/* </div>
             <div
             id="place-container"
             className="info-container results"
             onClick={this.generalClicked}
           >
             <i className="fas fa-home fa-1x info-book-ico"></i> */}
-            <p id="place" className="info">
-              {this.props.book.place.city}
-              {this.props.book.sellerUser.school
-                ? this.props.book.sellerUser.school ===
-                  "Non frequento un'università"
-                  ? null
-                  : `, ${this.props.book.sellerUser.school}`
-                : null}
-            </p>
-            {/* </div> */}
-            <div
-              id="quality-container"
-              className="info-container results"
-              // onClick={this.generalClicked}
-            >
-              <i className="fas fa-award info-book-ico"></i>
-              <p id="quality" className="info">
-                {this.props.book.quality}
-              </p>
-            </div>
-            <div
-              className="info-container results"
-              //   onClick={this.generalClicked}
-            >
-              <i className="fas fa-truck info-book-ico fa-1x"></i>
-              <p id="delivery" className="info">
-                Consegno in città entro{" "}
-                {this.props.book.sellerUser.deliveryInfo.timeToMeet} giorni{" "}
-                {text ? `e ${text}` : null}
-              </p>
-            </div>
-            <div
-              className="info-container"
-              //   onClick={this.generalClicked}
-            >
-              <i className="fas fa-euro-sign info-book-ico fa-1x"></i>
-              <p id="price" className="info">
-                {bookPrice}
-              </p>
-            </div>
-          </div>
-        </div>
-      ),
-      user: (
-        <div id={this.props.cartDisabled ? "center" : null}>
-          <div className="user-box-container">
-            <div className="user-box box-big">
-              <i className="fas fa-user-graduate"></i>
-              <p id="user-header" className="box-text">
-                {this.props.user.name
-                  ? this.props.user.name.split(" ")[0]
-                  : "INFO VENDITORE"}
-              </p>
-            </div>
-            <div>
-              <div className="user-box box-small">
-                <p className="rating-header box-text">
-                  {/* SINCERITÀ SULLA QUALITÀ{" "} */}
-                  AFFIDABILITÀ
-                </p>
-                <div className="rating">
-                  <Stars
-                    rating={Math.round(
-                      this.props.book.sellerUser.rating.qualityAverage
-                    )}
-                  />
-                  <p className="mean box-text">
-                    {Math.round(
-                      this.props.book.sellerUser.rating.qualityAverage * 10
-                    ) / 10}
-                  </p>
-                </div>
-              </div>
-              <div className="user-box box-small">
-                <p className="rating-header box-text">CONSEGNA</p>
-                <div className="rating">
-                  <Stars
-                    rating={Math.round(
-                      this.props.book.sellerUser.rating.deliveryAverage
-                    )}
-                  />
-                  <p className="box-text mean">
-                    {Math.round(
-                      this.props.book.sellerUser.rating.deliveryAverage * 10
-                    ) / 10}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              id="convenience-box"
-              className={`user-box box-big ${
-                this.props.cartDisabled ? "hidden" : null
-              } ${
-                this.props.book.userSellsCount === this.props.maxUserSellsCount
-                  ? "highlight"
-                  : null
-              }`}
-            >
-              <p id="convenience-param" className="box-text">
-                {this.props.book.userSellsCount} /{" "}
-                {this.props.booksResult.length}
-                <i
-                  id="convenience-check"
-                  className={`fas fa-check ${
-                    sellerUser.includes(this.props.book.sellerId)
+                <p id="place" className="info">
+                  {this.props.book.place.city}
+                  {this.props.book.sellerUser.school
+                    ? this.props.book.sellerUser.school ===
+                      "Non frequento un'università"
                       ? null
-                      : "hidden"
-                  }`}
-                ></i>
-              </p>
-              <i
-                id="exp-cb-ico"
-                onClick={() => {
-                  this.setState({ expDisplay: null });
-                  setTimeout(
-                    () => this.setState({ expDisplay: "hidden" }),
-                    3000
-                  );
-                }}
-                className="fas fa-info-circle"
-              ></i>
-              <p id="exp-cb" className={this.state.expDisplay}>
-                {sellerUser.includes(this.props.book.sellerId)
-                  ? `vende ${this.props.book.userSellsCount} dei libri che ti servono e stai comprando altri libri di questo venditore`
-                  : `vende ${this.props.book.userSellsCount} dei libri che ti servono`}
-              </p>
+                      : `, ${this.props.book.sellerUser.school}`
+                    : null}
+                </p>
+                {/* </div> */}
+                <div
+                  id="quality-container"
+                  className="info-container results"
+                  // onClick={this.generalClicked}
+                >
+                  <i className="fas fa-award info-book-ico"></i>
+                  <p id="quality" className="info">
+                    {this.props.book.quality}
+                  </p>
+                </div>
+                <div
+                  className="info-container results"
+                  //   onClick={this.generalClicked}
+                >
+                  <i className="fas fa-truck info-book-ico fa-1x"></i>
+                  <p id="delivery" className="info">
+                    Consegno in città entro{" "}
+                    {this.props.book.sellerUser.deliveryInfo.timeToMeet} giorni{" "}
+                    {text ? `e ${text}` : null}
+                  </p>
+                </div>
+                <div
+                  className="info-container"
+                  //   onClick={this.generalClicked}
+                >
+                  <i className="fas fa-euro-sign info-book-ico fa-1x"></i>
+                  <p id="price" className="info">
+                    {bookPrice}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ),
-      lowerIcon
-    };
+          ),
+          user: (
+            <div id={this.props.cartDisabled ? "center" : null}>
+              <div className="user-box-container">
+                <div className="user-box box-big">
+                  <i className="fas fa-user-graduate"></i>
+                  <p id="user-header" className="box-text">
+                    {this.props.user.name
+                      ? this.props.user.name.split(" ")[0]
+                      : "INFO VENDITORE"}
+                  </p>
+                </div>
+                <div>
+                  <div className="user-box box-small">
+                    <p className="rating-header box-text">
+                      {/* SINCERITÀ SULLA QUALITÀ{" "} */}
+                      AFFIDABILITÀ
+                    </p>
+                    <div className="rating">
+                      <Stars
+                        rating={Math.round(
+                          this.props.book.sellerUser.rating.qualityAverage
+                        )}
+                      />
+                      <p className="mean box-text">
+                        {Math.round(
+                          this.props.book.sellerUser.rating.qualityAverage * 10
+                        ) / 10}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="user-box box-small">
+                    <p className="rating-header box-text">CONSEGNA</p>
+                    <div className="rating">
+                      <Stars
+                        rating={Math.round(
+                          this.props.book.sellerUser.rating.deliveryAverage
+                        )}
+                      />
+                      <p className="box-text mean">
+                        {Math.round(
+                          this.props.book.sellerUser.rating.deliveryAverage * 10
+                        ) / 10}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  id="convenience-box"
+                  className={`user-box box-big ${
+                    this.props.cartDisabled ? "hidden" : null
+                  } ${
+                    this.props.book.userSellsCount ===
+                    this.props.maxUserSellsCount
+                      ? "highlight"
+                      : null
+                  }`}
+                >
+                  <p id="convenience-param" className="box-text">
+                    {this.props.book.userSellsCount} /{" "}
+                    {this.props.booksResult.length}
+                    <i
+                      id="convenience-check"
+                      className={`fas fa-check ${
+                        sellerUser.includes(this.props.book.sellerId)
+                          ? null
+                          : "hidden"
+                      }`}
+                    ></i>
+                  </p>
+                  <i
+                    id="exp-cb-ico"
+                    onClick={() => {
+                      this.setState({ expDisplay: null });
+                      setTimeout(
+                        () => this.setState({ expDisplay: "hidden" }),
+                        3000
+                      );
+                    }}
+                    className="fas fa-info-circle"
+                  ></i>
+                  <p id="exp-cb" className={this.state.expDisplay}>
+                    {sellerUser.includes(this.props.book.sellerId)
+                      ? `vende ${this.props.book.userSellsCount} dei libri che ti servono e stai comprando altri libri di questo venditore`
+                      : `vende ${this.props.book.userSellsCount} dei libri che ti servono`}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ),
+          lowerIcon
+        }
+      : null;
 
     // insertionDate
     const insertion = new Date(this.props.book.insertionDate);

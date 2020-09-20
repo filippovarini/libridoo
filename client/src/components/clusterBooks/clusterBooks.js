@@ -338,7 +338,7 @@ class ClusterBooks extends Component {
               })}
             </div>
             <div id="delivery-boxes" className="box-container single">
-              <div id="deliveries-contained">
+              <div id="deliveries-contained" className="single">
                 <div className="box ">
                   <p id="singlePlace" className="box-text delivery single">
                     {this.props.place.city}, {this.props.userInfo.school}
