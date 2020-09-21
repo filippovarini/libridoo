@@ -155,9 +155,10 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              render={() => (
-                <Home hideHomeSlidebar={this.state.headerWinning} />
-              )}
+              // render={() => (
+              //   <Home hideHomeSlidebar={this.state.headerWinning} />
+              // )}
+              component={Home}
             />
             <Route path="/login/:action?" component={Login} />
             <Route path="/register/:invitingId?" component={Register} />

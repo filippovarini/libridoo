@@ -26,6 +26,9 @@ class Register extends Component {
     passwordPlaceholder: "password",
     passwordConfirmPlaceholder: "conferma password",
     emailConfirmClass: "hidden",
+    emailConfirm: null,
+    emailConfirmEmptyClass: null,
+    emailConfirmPlaceholder: "conferma email",
     errorMessage: null,
     loading: false,
     description: null,
@@ -158,7 +161,8 @@ class Register extends Component {
     });
   };
 
-  handleSubmit = e => {
+  // old submit
+  handleSubmit1 = e => {
     e.preventDefault();
     if (
       !this.state.name ||
@@ -174,6 +178,12 @@ class Register extends Component {
         });
       }
       if (!this.state.email) {
+        this.setState({
+          emailEmptyClass: "invalid-input",
+          emailPlaceholder: "*email*"
+        });
+      }
+      if (!this.state.emailConfirm) {
         this.setState({
           emailEmptyClass: "invalid-input",
           emailPlaceholder: "*email*"
@@ -258,6 +268,174 @@ class Register extends Component {
               emailConfirmClass: "",
               loading: false
             });
+          }
+        })
+        .catch(error => {
+          this.props.dispatch({
+            type: "E-SET",
+            error: { frontendPlace: "Register/handleSubmit/catch", error }
+          });
+          this.props.history.push("/error");
+        });
+    }
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    if (
+      !this.state.name ||
+      !this.state.email ||
+      !this.state.password ||
+      !this.state.passwordConfirm
+    ) {
+      this.setState({ errorMessage: "Inserisci tutti i campi obbligatori" });
+      if (!this.state.name) {
+        this.setState({
+          nameEmptyClass: "invalid-input",
+          namePlaceholder: "*nome*"
+        });
+      }
+      if (!this.state.email) {
+        this.setState({
+          emailEmptyClass: "invalid-input",
+          emailPlaceholder: "*email*"
+        });
+      }
+      if (!this.state.emailConfirm) {
+        this.setState({
+          emailEmptyClass: "invalid-input",
+          emailPlaceholder: "*email*"
+        });
+      }
+      if (!this.state.password) {
+        this.setState({
+          passwordEmptyClass: "invalid-input",
+          passwordPlaceholder: "*password*"
+        });
+      }
+      if (!this.state.passwordConfirm) {
+        this.setState({
+          passwordConfirmEmptyClass: "invalid-input",
+          passwordConfirmPlaceholder: "*conferma password*"
+        });
+      }
+    } else if (this.state.email !== this.state.emailConfirm) {
+      this.setState({ errorMessage: "Le due email non coincidono" });
+    } else if (!this.emailValidation(this.state.email)) {
+      this.setState({ errorMessage: "Email non valida" });
+    } else if (this.state.password !== this.state.passwordConfirm) {
+      this.setState({ errorMessage: "Le due password non coincidono" });
+    } else if (
+      this.state.password.length < 8 ||
+      this.state.password.length > 15
+    ) {
+      this.setState({
+        errorMessage:
+          "La password deve essere lunga minimo 8 massimo 15 caratteri"
+      });
+    } else if (!this.state.tcpClicked) {
+      this.setState({
+        errorMessage: "Accetta i termini e condizioni"
+      });
+    } else {
+      this.setState({ loading: true });
+      fetch("/api/user/register/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({ email: this.state.email.toLowerCase() })
+      })
+        .then(res => res.json())
+        .then(jsonRes => {
+          if (jsonRes.code === 1) {
+            this.props.dispatch({
+              type: "E-SET",
+              error: { frontendPlace: "Register/handleSubmit/code1", jsonRes }
+            });
+            this.props.history.push("/error");
+          } else if (jsonRes.code === 2) {
+            this.setState({
+              emailEmptyClass: "invalid-input",
+              nameEmptyClass: "",
+              passwordEmptyClass: "",
+              passwordConfirm: ""
+            });
+            this.setState({
+              errorMessage: "Email già registrata con un altro account",
+              loading: false
+            });
+          } else {
+            // everything correct
+            const avatarImgURL =
+              this.state.avatarImgURL ||
+              "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1599843473300";
+            const invitingUserId =
+              this.props.match.params.invitingId === "buying"
+                ? null
+                : this.props.match.params.invitingId;
+            const body = {
+              avatarImgURL,
+              name: this.state.name,
+              email: this.state.email.toLowerCase(),
+              password: this.state.password,
+              invitingUserId
+            };
+            fetch("/api/user/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+              },
+              body: JSON.stringify(body)
+            })
+              .then(res => res.json())
+              .then(jsonRes => {
+                // sessionStorage.removeItem("emailSent");
+                // sessionStorage.removeItem("requestSent");
+                // sessionStorage.removeItem("hashedCode");
+                // sessionStorage.removeItem("registerBody");
+                if (jsonRes.code === 1) {
+                  // error
+                  this.props.dispatch({
+                    type: "E-SET",
+                    error: {
+                      frontendPlace: "emailConfirm/register/code1",
+                      jsonRes
+                    }
+                  });
+                  this.props.history.push("/error");
+                } else {
+                  // code = 3 || 0 -> correct, save user and JWT
+                  this.props.dispatch({
+                    type: "SET-USER",
+                    user: jsonRes.activeUser
+                  });
+                  if (this.props.rememberMe) {
+                    localStorage.setItem("JWT", jsonRes.JWT);
+                  } else {
+                    sessionStorage.setItem("JWT", jsonRes.JWT);
+                  }
+                  const redirection =
+                    this.props.match.params.invitingId === "buying"
+                      ? "/checkout"
+                      : "/";
+                  this.props.history.push(redirection);
+                }
+              })
+              .catch(error => {
+                // store error in redux and redirect
+                // sessionStorage.removeItem("emailSent");
+                // sessionStorage.removeItem("requestSent");
+                // sessionStorage.removeItem("hashedCode");
+                // sessionStorage.removeItem("registerBody");
+                this.props.dispatch({
+                  type: "E-SET",
+                  error: { frontendPlace: "emailConfirm/register/catch", error }
+                });
+                this.props.history.push("/error");
+              });
           }
         })
         .catch(error => {
@@ -557,6 +735,16 @@ class Register extends Component {
               id="email"
               placeholder={this.state.emailPlaceholder}
               className={`text-input ${this.state.emailEmptyClass}`}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
+            />
+            {/* emailConfirm */}
+            <input
+              autoComplete="off"
+              type="text"
+              id="emailConfirm"
+              placeholder={this.state.emailConfirmPlaceholder}
+              className={`text-input ${this.state.emailConfirmEmptyClass}`}
               onBlur={this.handleBlur}
               onChange={this.handleChange}
             />

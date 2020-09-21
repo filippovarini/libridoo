@@ -436,12 +436,7 @@ router.post("/paypalTransfer", async (req, res) => {
         recipient_type: "EMAIL",
         amount: { value: amount, currency: "EUR" },
         receiver: req.body.email,
-        alternate_notification_method: {
-          phone: {
-            country_code: "39",
-            national_number: req.body.phone
-          }
-        },
+
         note: `Pagamento per l'ordine ${req.body.clusterId}`,
         sender_item_id: new Date().getTime(),
         notification_language: "it-IT"

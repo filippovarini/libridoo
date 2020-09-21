@@ -1,10 +1,10 @@
 #bookInfo-gContainer {
   position: fixed;
   /* background: linear-gradient(
-      to bottom right,
-      rgba(105, 142, 245, 0.6),
-      rgba(108, 232, 162, 0.6)
-    ); */
+    to bottom right,
+    rgba(105, 142, 245, 0.6),
+    rgba(108, 232, 162, 0.6)
+  ); */
   background: rgba(0, 0, 0, 0.8);
   width: 100vw;
   height: 100vh;
@@ -55,7 +55,6 @@
   margin-top: 30px;
   position: relative;
   background: rgb(108, 232, 162);
-  border: 1px solid black;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -214,9 +213,8 @@
 #bookInfo #submit.disabled {
   cursor: default;
   box-shadow: none;
-  color: white;
-  font-size: 0.8rem;
-  font-weight: normal;
+  color: gray;
+  border: 1px solid gray;
 }
 
 #bookInfo #submit.disabled {
