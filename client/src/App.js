@@ -32,9 +32,6 @@ import TandC from "./pages/T&C/T&C";
 // components
 import BookInfo from "./components/BookInfo/BookInfo";
 
-// FNASCI
-// import FNASCI from "./pages/FNASCI/FNASCI";
-
 // ad Images
 import adImageOne from "./pages/Invite/adImageOne";
 import adImageTwo from "./pages/Invite/adImageTwo";
@@ -47,7 +44,6 @@ class App extends React.Component {
   };
 
   componentDidMount = () => {
-    // if (window.location.pathname !== "/home") NASCI
     let storePlace = null;
     let token = null;
     let jwtFound = false;
@@ -156,12 +152,9 @@ class App extends React.Component {
             toggleDisplay={this.toggleBookInfo}
           />
           <div id="app-body">
-            {/* <Route exact path="/" component={FNASCI} /> */}
             <Route
               exact
-              // path="/home"
               path="/"
-              // /*FIIPPO NASCI became '/home from '/*/ component={Home}
               render={() => (
                 <Home hideHomeSlidebar={this.state.headerWinning} />
               )}

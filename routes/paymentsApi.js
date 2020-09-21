@@ -54,43 +54,43 @@ router.get("/check/:_id", (req, res) => {
 });
 
 // savePayPal Purchase
-// router.get("/savePayPal/:dealId/:total", (req, res) => {
-//   const return_url =
-//     process.env.NODE_ENV === "production"
-//       ? `https://www.libridoo.it/paymentConfirm/${req.params.dealId}`
-//       : `http://localhost:3000/paymentConfirm/${req.params.dealId}`;
+router.get("/savePayPal/:dealId/:total", (req, res) => {
+  const return_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/paymentConfirm/${req.params.dealId}`
+      : `http://localhost:3000/paymentConfirm/${req.params.dealId}`;
 
-//   const cancel_url =
-//     process.env.NODE_ENV === "production"
-//       ? `https://www.libridoo.it/paymentConfirm/cancel/${req.params.dealId}`
-//       : `http://localhost:3000/paymentConfirm/cancel/${req.params.dealId}`;
+  const cancel_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/paymentConfirm/cancel/${req.params.dealId}`
+      : `http://localhost:3000/paymentConfirm/cancel/${req.params.dealId}`;
 
-//   const payerId = req.query.PayerID;
-//   const paymentId = req.query.paymentId;
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
 
-//   const execute_payment_json = {
-//     payer_id: payerId,
-//     transactions: [
-//       {
-//         amount: {
-//           currency: "EUR",
-//           total: req.params.total
-//         }
-//       }
-//     ]
-//   };
+  const execute_payment_json = {
+    payer_id: payerId,
+    transactions: [
+      {
+        amount: {
+          currency: "EUR",
+          total: req.params.total
+        }
+      }
+    ]
+  };
 
-//   paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
-//     if (error) {
-//       console.log(error);
-//       res.redirect(cancel_url);
-//     } else {
-//       // res.json({ code: 7, payment });
+  paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
+    if (error) {
+      console.log(error);
+      res.redirect(cancel_url);
+    } else {
+      // res.json({ code: 7, payment });
 
-//       res.redirect(return_url);
-//     }
-//   });
-// });
+      res.redirect(return_url);
+    }
+  });
+});
 
 router.post("/paymentIntent", (req, res) => {
   amount = req.body.total * 100;
@@ -123,92 +123,92 @@ router.post("/paymentIntent", (req, res) => {
 
 // paypal link
 // {total, dealId}
-// router.post("/paypal", (req, res) => {
-//   const return_url =
-//     process.env.NODE_ENV === "production"
-//       ? `https://www.libridoo.it/paymentConfirm/${req.body.dealId}/${req.body.total}`
-//       : `http://localhost:5050/api/payment/savePayPal/${req.body.dealId}/${req.body.total}`;
+router.post("/paypal", (req, res) => {
+  const return_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/paymentConfirm/${req.body.dealId}/${req.body.total}`
+      : `http://localhost:5050/api/payment/savePayPal/${req.body.dealId}/${req.body.total}`;
 
-//   const cancel_url =
-//     process.env.NODE_ENV === "production"
-//       ? `https://www.libridoo.it/paymentConfirm/cancel/${req.body.dealId}`
-//       : `http://localhost:3000/paymentConfirm/cancel/${req.body.dealId}`;
+  const cancel_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/paymentConfirm/cancel/${req.body.dealId}`
+      : `http://localhost:3000/paymentConfirm/cancel/${req.body.dealId}`;
 
-//   let create_payment_json = {
-//     intent: "sale",
-//     payer: {
-//       payment_method: "paypal"
-//     },
-//     redirect_urls: {
-//       return_url,
-//       cancel_url
-//     },
-//     transactions: [
-//       {
-//         amount: {
-//           currency: "EUR",
-//           total: req.body.total
-//         },
+  let create_payment_json = {
+    intent: "sale",
+    payer: {
+      payment_method: "paypal"
+    },
+    redirect_urls: {
+      return_url,
+      cancel_url
+    },
+    transactions: [
+      {
+        amount: {
+          currency: "EUR",
+          total: req.body.total
+        },
 
-//         description: "Acquisto di libri su Libridoo"
-//       }
-//     ]
-//   };
+        description: "Acquisto di libri su Libridoo"
+      }
+    ]
+  };
 
-//   const profile_name = new Date().getTime();
+  const profile_name = new Date().getTime();
 
-//   const create_web_profile_json = {
-//     name: profile_name,
-//     presentation: {
-//       brand_name: "Libridoo",
-//       logo_image:
-//         "https://libridoocovers.s3.us-west-1.amazonaws.com/1600526996557",
-//       locale_code: "IT"
-//     },
-//     input_fields: {
-//       allow_note: true,
-//       no_shipping: 1,
-//       address_override: 1
-//     },
-//     flow_config: {
-//       landing_page_type: "billing",
-//       bank_txn_pending_url: "http://www.yeowza.com"
-//     }
-//   };
+  const create_web_profile_json = {
+    name: profile_name,
+    presentation: {
+      brand_name: "Libridoo",
+      logo_image:
+        "https://libridoocovers.s3.us-west-1.amazonaws.com/1600526996557",
+      locale_code: "IT"
+    },
+    input_fields: {
+      allow_note: true,
+      no_shipping: 1,
+      address_override: 1
+    },
+    flow_config: {
+      landing_page_type: "billing",
+      bank_txn_pending_url: "http://www.yeowza.com"
+    }
+  };
 
-//   paypal.webProfile.create(create_web_profile_json, function(
-//     error,
-//     web_profile
-//   ) {
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       //Set the id of the created payment experience in payment json
-//       var experience_profile_id = web_profile.id;
-//       create_payment_json.experience_profile_id = experience_profile_id;
+  paypal.webProfile.create(create_web_profile_json, function(
+    error,
+    web_profile
+  ) {
+    if (error) {
+      console.log(error);
+    } else {
+      //Set the id of the created payment experience in payment json
+      var experience_profile_id = web_profile.id;
+      create_payment_json.experience_profile_id = experience_profile_id;
 
-//       paypal.payment.create(create_payment_json, function(error, payment) {
-//         if (error) {
-//           console.log(error);
-//           res.json({ code: 1, error });
-//         } else {
-//           let approval_url = null;
-//           for (let i = 0; i < payment.links.length; i++) {
-//             if (payment.links[i].rel === "approval_url") {
-//               approval_url = payment.links[i].href;
-//             }
-//           }
+      paypal.payment.create(create_payment_json, function(error, payment) {
+        if (error) {
+          console.log(error);
+          res.json({ code: 1, error });
+        } else {
+          let approval_url = null;
+          for (let i = 0; i < payment.links.length; i++) {
+            if (payment.links[i].rel === "approval_url") {
+              approval_url = payment.links[i].href;
+            }
+          }
 
-//           if (!approval_url) {
-//             res.json({ code: 1, error: "no approval url", payment });
-//           } else {
-//             res.json({ code: 0, approval_url });
-//           }
-//         }
-//       });
-//     }
-//   });
-// });
+          if (!approval_url) {
+            res.json({ code: 1, error: "no approval url", payment });
+          } else {
+            res.json({ code: 0, approval_url });
+          }
+        }
+      });
+    }
+  });
+});
 
 // buyerId / [sellerIds] / bill: {delivery / books / commission / discount, total}
 // sent from checkout. 1) Do transition 2) Post newDeal 3) PaymentConfirm
