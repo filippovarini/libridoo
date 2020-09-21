@@ -91,6 +91,7 @@
   margin: 0 auto;
   margin-top: 10px;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 #ratingPopUp #lr-choices #c1 {

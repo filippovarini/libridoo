@@ -111,11 +111,13 @@ class Header extends Component {
         });
       }
     }
+
     if (
       window.location.pathname === "/" &&
       window.pageYOffset < 60 &&
       this.state.headerDisplay !== "hidden"
     ) {
+      console.log("shit");
       this.setState({
         headerDisplay: "hidden",
         location: window.location.pathname

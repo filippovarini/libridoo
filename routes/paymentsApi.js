@@ -99,6 +99,7 @@ router.post("/paymentIntent", (req, res) => {
   stripe.paymentIntents
     .create({
       amount,
+      // amount: 500000,
       currency: "EUR",
       payment_method_types: ["card"],
       transfer_group: Date.now()
@@ -312,8 +313,28 @@ router.post("/connect", async (req, res) => {
 
 router.post("/transfer", async (req, res) => {
   console.log("sendingf");
-  const amount = req.body.total * 100 - req.body.total * 10;
+  // hold 10% commission
+  // set total
+  let amount = req.body.total * 100 - req.body.total * 10;
   console.log(amount);
+
+  // set date for confirmmonth
+  const date = new Date();
+  const month = `${date.getMonth() + 1}/${date.getFullYear()}`;
+
+  // fetch clusters sold by that user
+  const clusters = await SoldBooksClusters.find({
+    sellerId: req.body.sellerId,
+    monthConfirmation: month
+  });
+
+  if (clusters.length === 0) {
+    // no transaction in that month, hold 1euro
+    console.log("holding");
+    amount -= 200;
+  } else console.log("no holding, already done");
+  console.log(amount);
+
   stripe.transfers
     .create({
       amount,
@@ -332,46 +353,52 @@ router.post("/transfer", async (req, res) => {
     .catch(error => {
       if (error.raw.code === "balance_insufficient") {
         const date = new Date();
+        console.log(error);
         // balance insufficient
-        const options = {
-          service: "Godaddy",
-          auth: {
-            user: "info@libridoo.it",
-            pass: EMAIL_PASS
-          },
-          tls: {
-            ciphers: "SSLv3",
-            rejectUnauthorized: false
-          }
-        };
-        const transporter = nodemailer.createTransport(options);
-        // verify connection configuration
+        // const options = {
+        //   service: "Godaddy",
+        //   auth: {
+        //     user: "info@libridoo.it",
+        //     pass: EMAIL_PASS
+        //   },
+        //   tls: {
+        //     ciphers: "SSLv3",
+        //     rejectUnauthorized: false
+        //   }
+        // };
+        // const transporter = nodemailer.createTransport(options);
+        // // verify connection configuration
 
-        transporter.sendMail(
-          {
-            from: '"Libridoo" <info@libridoo.it>',
-            to: "errors.libridoo@gmail.com",
-            subject: "Critical Error",
-            text: "Balance insufficiennt",
-            html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
-          <br /><br />
-          Ammount due: ${amount}, seller connected account id = ${
-              req.body.accountId
-            }`
-          },
-          async (error, info) => {
-            if (error) {
-              console.log("error", error);
-              const newError = new Error({
-                error: { message: "EMAIL NOT SENT, confirmEmail", error }
-              });
-              await newError.save();
-            } else {
-              console.log("emailsent", info);
-            }
-          }
-        );
-        res.json({ code: 1, insufficient: true });
+        // transporter.sendMail(
+        //   {
+        //     from: '"Libridoo" <info@libridoo.it>',
+        //     to: "errors.libridoo@gmail.com",
+        //     subject: "Critical Error",
+        //     text: "Balance insufficiennt",
+        //     html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
+        //   <br /><br />
+        //   Ammount due: ${amount}, seller connected account id = ${
+        //       req.body.accountId
+        //     }`
+        //   },
+        //   async (error, info) => {
+        //     if (error) {
+        //       console.log("error", error);
+        //       const newError = new Error({
+        //         error: { message: "EMAIL NOT SENT, confirmEmail", error }
+        //       });
+        //       await newError.save();
+        //     } else {
+        //       console.log("emailsent", info);
+        //     }
+        //   }
+        // );
+        res.json({
+          code: 1,
+          insufficient: true,
+          message:
+            "Qualcosa è andato storto nel pagamento del venditore. Controlla di avere una connessione stabile e riprova più tardi. Se il problema persiste, non esitare a conttatarci."
+        });
       } else
         res.json({
           code: 1,
@@ -382,6 +409,129 @@ router.post("/transfer", async (req, res) => {
           error
         });
     });
+});
+
+// send transfer
+// {email, total sellerId}
+router.post("/paypalTransfer", async (req, res) => {
+  const date = new Date();
+  const month = `${date.getMonth() + 1}/${date.getFullYear()}`;
+
+  // total price
+  const total = Number(req.body.total);
+  // hold 10% transactions
+  let amount = (total * 100 - total * 10) / 100;
+  console.log(amount);
+
+  // fetch clusters sold by that user
+  const clusters = await SoldBooksClusters.find({
+    sellerId: req.body.sellerId,
+    monthConfirmation: month
+  });
+
+  if (clusters.length === 0) {
+    // no transaction in that month, hold 1euro
+    console.log("holding");
+    amount -= 1;
+  } else console.log("no holding, already done");
+
+  console.log("sending payout", amount);
+  const sender_batch_id = new Date().getTime();
+
+  const create_payout_json = {
+    sender_batch_header: {
+      sender_batch_id: sender_batch_id,
+      email_subject: "Pagamento da Libridoo",
+      email_message: "Buone notizie, abbiamo grana per te!"
+    },
+    items: [
+      {
+        recipient_type: "EMAIL",
+        amount: { value: amount, currency: "EUR" },
+        receiver: req.body.email,
+        alternate_notification_method: {
+          phone: {
+            country_code: "39",
+            national_number: req.body.phone
+          }
+        },
+        note: `Pagamento per l'ordine ${req.body.clusterId}`,
+        sender_item_id: new Date().getTime(),
+        notification_language: "it-IT"
+      }
+    ]
+  };
+
+  // const sync_mode = "true";
+
+  paypal.payout.create(create_payout_json, function(error, payout) {
+    if (error) {
+      if (error.response.name === "INSUFFICIENT_FUNDS") {
+        console.log("insufficient funds");
+        const date = new Date();
+        // balance insufficient
+        // const options = {
+        //   service: "Godaddy",
+        //   auth: {
+        //     user: "info@libridoo.it",
+        //     pass: EMAIL_PASS
+        //   },
+        //   tls: {
+        //     ciphers: "SSLv3",
+        //     rejectUnauthorized: false
+        //   }
+        // };
+        // const transporter = nodemailer.createTransport(options);
+        // // verify connection configuration
+
+        // transporter.sendMail(
+        //   {
+        //     from: '"Libridoo" <info@libridoo.it>',
+        //     to: "errors.libridoo@gmail.com",
+        //     subject: "Critical Error",
+        //     text: "Balance insufficiennt PayPal",
+        //     html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
+        //   <br /><br />
+        //   Ammount due: ${amount}, seller connected email  = ${
+        //       req.body.email
+        //     }`
+        //   },
+        //   async (error, info) => {
+        //     if (error) {
+        //       console.log("error", error);
+        //       const newError = new Error({
+        //         error: { message: "EMAIL NOT SENT, confirmEmail", error }
+        //       });
+        //       await newError.save();
+        //     } else {
+        //       console.log("emailsent", info);
+        //     }
+        //   }
+        // );
+        res.json({
+          code: 1,
+          insufficient: true,
+          message:
+            "Qualcosa è andato storto nel pagamento del venditore. Controlla di avere una connessione stabile e riprova più tardi. Se il problema persiste, non esitare a conttatarci."
+        });
+      } else
+        res.json({
+          code: 1,
+          insufficient: false,
+          place: "paymentApi:471",
+          message:
+            "Qualcosa è andato storto nel pagamento del venditore. Controlla di avere una connessione stabile e riprova più tardi. Se il problema persiste, non esitare a conttatarci.",
+          error
+        });
+      // throw error;
+    } else {
+      // success
+      res.json({
+        code: 0,
+        transfered: amount
+      });
+    }
+  });
 });
 
 // delete deals and checkout

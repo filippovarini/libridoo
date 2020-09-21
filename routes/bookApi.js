@@ -858,13 +858,18 @@ router.put("/edit", (req, res) => {
 // confirm (SKRILL and confirm in the same request) and save date
 // clusterID
 router.put("/confirm", (req, res) => {
-  // SKRILL
+  // month confirmation
+  const date = new Date();
+  const month = `${date.getMonth() + 1}/${date.getFullYear()}`;
+  console.log(month);
+
   SoldBooksCluster.findByIdAndUpdate(
     req.body.clusterID,
-    { confirmed: true, confirmationDate: Date.now() },
+    { confirmed: true, monthConfirmation: month, confirmationDate: Date.now() },
     { new: true }
   )
     .then(cluster => {
+      console.log(cluster);
       if (!cluster) {
         res.json({
           code: 1.5,

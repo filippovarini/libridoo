@@ -148,8 +148,7 @@ class Checkout extends Component {
     const buyerId = this.props.user._id;
     const commission = sessionStorage.getItem("coupon")
       ? 0
-      : (((Number(books) * 100 + Number(delivery) * 100) / 100) * 3.4) / 100 +
-        0.35;
+      : ((Number(books) * 340 + Number(delivery) * 340) / 100 + 35) / 100;
     console.log(commission);
     // bill and body
     const bill = {

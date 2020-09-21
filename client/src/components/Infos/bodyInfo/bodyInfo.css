@@ -28,6 +28,19 @@
   width: 80%;
 }
 
+#bodyInfo #plus-phone {
+  font-weight: bold;
+  color: rgb(32, 165, 32);
+  font-size: 0.9rem;
+  background: white;
+  /* border: 1px solid gray; */
+  margin-right: 5px;
+  width: 30px;
+  text-align: center;
+  display: block;
+  border-radius: 3px;
+}
+
 #bodyInfo .info-container-inter {
   height: 100%;
   width: 100%;

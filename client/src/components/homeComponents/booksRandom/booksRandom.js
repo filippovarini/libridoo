@@ -34,29 +34,48 @@ class booksRandom extends Component {
   };
 
   render() {
+    console.log(this.state.books);
     const noError = (
       <div id="body">
-        <div id="header-container">
-          <p id="header">POTREBBERO INTERESSARTI:</p>
-          <p id="sub-header">
-            Più libri acquisti con noi, più riusciremo a proporti annunci
-            interesanti.
-          </p>
-        </div>
-        <div id="books-container">
-          {this.state.books
-            ? this.state.books.map(book => {
-                return (
-                  <Book
-                    book={book}
-                    key={book._id}
-                    page="results"
-                    cartDisabled={true}
-                  />
-                );
-              })
-            : null}
-        </div>
+        {this.state.books ? (
+          this.state.books.length !== 0 ? (
+            <div>
+              <div id="header-container">
+                <p id="header">POTREBBERO INTERESSARTI:</p>
+                <p id="sub-header">
+                  Più libri acquisti con noi, più riusciremo a proporti annunci
+                  interesanti.
+                </p>
+              </div>
+              <div id="books-container">
+                {this.state.books.map(book => {
+                  return (
+                    <Book
+                      book={book}
+                      key={book._id}
+                      page="results"
+                      cartDisabled={true}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <div id="header-container">
+              <p id="header">
+                Più libri acquisti con noi, più riusciremo a proporti annunci
+                interesanti.
+              </p>
+            </div>
+          )
+        ) : (
+          <div id="header-container">
+            <p id="header">
+              Più libri acquisti con noi, più riusciremo a proporti annunci
+              interesanti.
+            </p>
+          </div>
+        )}
       </div>
     );
 

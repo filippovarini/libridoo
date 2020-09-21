@@ -79,22 +79,44 @@ class Orders extends Component {
   sendTransfer = clusterId => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Confermi di aver ricevuto i libri dal venditore?")) {
-      this.setState({ smallLoading: true });
+      this.setState({ loading: true });
       let cluster = this.state.clusters.filter(cluster => {
         return cluster._id === clusterId;
       });
       cluster = cluster[0];
       let total = cluster.delivery.choosen ? cluster.delivery.cost : 0;
       cluster.Books.forEach(book => (total += book.price));
-      if (cluster.sellerInfo.payOut.type === "stripe") {
-        // separate route between stripe and paypal
-        const body = {
-          accountId: cluster.sellerInfo.payOut.accountId,
-          clusterId,
-          total
-        };
 
-        fetch("/api/payment/transfer", {
+      // body and route
+      console.log(cluster.sellerInfo.payOut.type);
+      if (
+        cluster.sellerInfo.payOut.type === "stripe" ||
+        cluster.sellerInfo.payOut.type === "paypal"
+      ) {
+        let body,
+          route = null;
+        if (cluster.sellerInfo.payOut.type === "stripe") {
+          // separate route between stripe and paypal
+          body = {
+            accountId: cluster.sellerInfo.payOut.accountId,
+            total,
+            sellerId: cluster.sellerId
+          };
+          route = "/api/payment/transfer";
+        } else if (cluster.sellerInfo.payOut.type === "paypal") {
+          body = {
+            email: cluster.sellerInfo.email,
+            total,
+            clusterId,
+            phone: cluster.sellerInfo.phone,
+            sellerId: cluster.sellerId
+          };
+          route = "/api/payment/paypalTransfer";
+        }
+
+        // send request
+        console.log(body, route);
+        fetch(route, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -104,6 +126,7 @@ class Orders extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
+            console.log(jsonRes);
             if (jsonRes.code === 0) {
               // success
               this.confirmOrder(clusterId);
@@ -138,6 +161,9 @@ class Orders extends Component {
             });
             this.props.history.push("/error");
           });
+      } else {
+        this.setState({ loading: "false" });
+        alert("Errore nel salvataggio. Riprova più tardi");
       }
     }
   };
@@ -160,7 +186,7 @@ class Orders extends Component {
           //   rating pop-up
           this.setState({
             ready: false,
-            smallLoading: false,
+            loading: false,
             clusters: [],
             ratingPopUpHidden: false,
             userRated: {

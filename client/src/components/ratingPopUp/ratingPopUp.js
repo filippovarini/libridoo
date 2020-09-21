@@ -131,8 +131,7 @@ class RatingPopUp extends Component {
           onClick={this.props.toggleDisplay}
         ></i>
         <p id="ratingPopUp-header">
-          VALUTA
-          {this.props.user ? this.props.user.name : " il tuo venditore"}
+          VALUTA {this.props.user ? this.props.user.name : " il tuo venditore"}
         </p>
         <div id="g-rating-stars">
           <div className="rating-stars">

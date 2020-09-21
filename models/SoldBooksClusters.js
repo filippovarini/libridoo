@@ -19,6 +19,10 @@ const SoldBooksClusterSchema = new Schema({
     type: Boolean,
     default: false
   },
+  monthConfirmation: {
+    type: String,
+    default: null
+  },
   sellerId: {
     type: String,
     required: true

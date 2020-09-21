@@ -276,8 +276,8 @@ class book extends Component {
                 <div className="user-box box-big">
                   <i className="fas fa-user-graduate"></i>
                   <p id="user-header" className="box-text">
-                    {this.props.user.name
-                      ? this.props.user.name.split(" ")[0]
+                    {this.props.book.sellerUser
+                      ? this.props.book.sellerUser.name.split(" ")[0]
                       : "INFO VENDITORE"}
                   </p>
                 </div>

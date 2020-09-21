@@ -255,6 +255,9 @@ class BodyInfo extends Component {
           </div>
           <div id="phone-container" className="info-container">
             <i id="phone-ico" className="fas fa-mobile-alt info-ico"></i>
+            <label id="plus-phone" htmlFor="editingPhone">
+              +39
+            </label>
             <input
               autoComplete="off"
               type="number"
