@@ -265,7 +265,8 @@ class Results extends Component {
                 ? "__disabled"
                 : jsonRes.results.searchParams.school
               : "__disabled",
-            quality: jsonRes.results.searchParams.quality || "__disabled"
+            quality: jsonRes.results.searchParams.quality || "__disabled",
+            filterHidden: true
           });
         } else {
           // error:
@@ -487,7 +488,7 @@ class Results extends Component {
                       this.props.booksResult[this.state.index]
                         ? this.props.booksResult[this.state.index].searchParams
                             .school
-                        : "città"
+                        : "università"
                     }
                     list="universities"
                     value={

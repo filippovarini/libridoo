@@ -23,6 +23,8 @@ const EMAIL_PASS = require("../config/keys").EMAIL_PASS;
 const Deal = require("../models/Deals");
 const Error = require("../models/Errors");
 const User = require("../models/Users");
+const SoldBooksClusters = require("../models/SoldBooksClusters");
+const Book = require("../models/Books");
 
 // router
 const router = express.Router();
@@ -49,6 +51,47 @@ router.get("/check/:_id", (req, res) => {
         message: "Qualcosa è andato storto nel salvataggio del tuo pagamento"
       })
     );
+});
+
+// savePayPal Purchase
+router.get("/savePayPal/:dealId/:total", (req, res) => {
+  const return_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/paymentConfirm/${req.params.dealId}`
+      : `http://localhost:3000/paymentConfirm/${req.params.dealId}`;
+
+  const cancel_url =
+    process.env.NODE_ENV === "production"
+      ? `https://www.libridoo.it/paymentConfirm/cancel/${req.params.dealId}`
+      : `http://localhost:3000/paymentConfirm/cancel/${req.params.dealId}`;
+
+  console.log(return_url, req.params.dealId, req.params.total);
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
+
+  const execute_payment_json = {
+    payer_id: payerId,
+    transactions: [
+      {
+        amount: {
+          currency: "EUR",
+          total: req.params.total
+        }
+      }
+    ]
+  };
+
+  paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
+    if (error) {
+      console.log(error);
+      res.redirect(cancel_url);
+    } else {
+      console.log("done", payment);
+      // res.json({ code: 7, payment });
+      console.log("redirecting, success");
+      res.redirect(return_url);
+    }
+  });
 });
 
 router.post("/paymentIntent", (req, res) => {
@@ -85,8 +128,8 @@ router.post("/paypal", (req, res) => {
   console.log("route");
   const return_url =
     process.env.NODE_ENV === "production"
-      ? `https://www.libridoo.it/paymentConfirm/${req.body.dealId}`
-      : `http://localhost:3000/paymentConfirm/${req.body.dealId}`;
+      ? `https://www.libridoo.it/paymentConfirm/${req.body.dealId}/${req.body.total}`
+      : `http://localhost:5050/api/payment/savePayPal/${req.body.dealId}/${req.body.total}`;
 
   const cancel_url =
     process.env.NODE_ENV === "production"
@@ -165,7 +208,7 @@ router.post("/paypal", (req, res) => {
             console.log("faliure");
             res.json({ code: 1, error: "no approval url", payment });
           } else {
-            console.log("success");
+            console.log("success final");
             res.json({ code: 0, approval_url });
           }
         }
@@ -342,9 +385,76 @@ router.post("/transfer", async (req, res) => {
 });
 
 // delete deals and checkout
-// {dealId, [clusterIds]}
-router.delete("/failure", async (req, res) => {
-  Deal.findByIdAndDelete(req.body.dealId);
+// {dealId}
+router.delete("/failure", (req, res) => {
+  console.log(req.body.dealId);
+  const dealId = req.body.dealId;
+  Deal.findByIdAndDelete(dealId)
+    .then(() => {
+      console.log("deal eliminated");
+      SoldBooksClusters.find({ dealId })
+        .then(clusters => {
+          console.log("clusters found");
+          clusters.forEach(cluster => {
+            SoldBooksClusters.findByIdAndDelete(cluster._id)
+              .then(deletedCluster => {
+                if (clusters.indexOf(cluster) === clusters.length - 1) {
+                  // success
+                  res.json({ code: 0 });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+                res.json({ code: 1, place: ".find...Delete:357" });
+              });
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          res.json({ code: 1, place: ".find() 353" });
+        });
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({ code: 1, place: "find..Update:350" });
+    });
+});
+
+// delete books upon success
+// dealId
+router.delete("/success", (req, res) => {
+  console.log("successing");
+  SoldBooksClusters.find({ dealId: req.body.dealId })
+    .then(clusters => {
+      console.log("clusters length", clusters.length);
+      clusters.forEach(cluster => {
+        cluster.Books.forEach(book => {
+          Book.findByIdAndDelete(book._id)
+            .then(() => {
+              if (
+                cluster.Books.indexOf(book) === cluster.Books.length - 1 &&
+                clusters.indexOf(cluster) === clusters.length - 1
+              ) {
+                console.log("finished clusters");
+                res.json({ code: 0 });
+              }
+            })
+            .catch(error => {
+              console.log(error, book);
+              res.json({
+                code: 1,
+                message: "Errore nell'eliminazione dei libri",
+                error,
+                book
+              });
+            });
+        });
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({ code: 1, place: "/.find(), paymentAP:385", error });
+    });
 });
 
 // delete all deals

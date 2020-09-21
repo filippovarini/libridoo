@@ -193,6 +193,10 @@
   border-radius: 3px;
 }
 
+#cb .click-box.inactive {
+  background: rgB(150, 150, 150);
+}
+
 #cb .click-box.no-delivery {
   background: rgb(207, 207, 207);
   border-radius: 0px;

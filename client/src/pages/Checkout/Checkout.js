@@ -148,8 +148,9 @@ class Checkout extends Component {
     const buyerId = this.props.user._id;
     const commission = sessionStorage.getItem("coupon")
       ? 0
-      : ((Number(books) + Number(delivery)) / 100) * 3;
-
+      : (((Number(books) * 100 + Number(delivery) * 100) / 100) * 3.4) / 100 +
+        0.35;
+    console.log(commission);
     // bill and body
     const bill = {
       books: Number(books),
@@ -231,10 +232,7 @@ class Checkout extends Component {
       },
       body: JSON.stringify(body)
     })
-      .then(res => {
-        console.log("ok");
-        res.json();
-      })
+      .then(res => res.json())
       .then(jsonRes => {
         // also get clusterIds
         console.log("finished chackout request", jsonRes);
@@ -265,8 +263,8 @@ class Checkout extends Component {
           this.props.dispatch({ type: "GENERAL-DELETE" });
           // this.setState({ loading: false, dealId: jsonRes.paymentId });
           //  if stripe, ended route, if paypal, now redirect!
+          console.log(deal._id);
           if (action === "stripe") {
-            console.log(jsonRes.clusterIds);
             console.log("redirecting to stripe");
             this.props.history.push(`/paymentConfirm/${deal._id}`);
           } else if (action === "paypal") {
@@ -295,6 +293,7 @@ class Checkout extends Component {
       dealId,
       total
     };
+    console.log(body);
     fetch("/api/payment/paypal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -309,11 +308,31 @@ class Checkout extends Component {
           window.location = jsonRes.approval_url;
         } else {
           //  error
-          // if (jsonRes.code === 7) alert(",erensifnewfoifn");
-          console.log("error", jsonRes);
+          this.props.dispatch({
+            type: "E-SET",
+            error: {
+              frontendPlace: "checkout/savePeyPalPurchase/code1",
+              jsonRes,
+              message:
+                "Qualcosa è andato storto nel setup del pagamento. Non ti preoccupare, non hai perso i soldi. Ricarica e riprova"
+            }
+          });
+          this.props.history.push("/error");
         }
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e);
+        this.props.dispatch({
+          type: "E-SET",
+          error: {
+            frontendPlace: "checkout/savePeyPalPurchase/catch",
+            error: e,
+            message:
+              "Qualcosa è andato storto nel setup del pagamento. Non ti preoccupare, non hai perso i soldi. Ricarica e riprova"
+          }
+        });
+        this.props.history.push("/error");
+      });
   };
 
   render() {

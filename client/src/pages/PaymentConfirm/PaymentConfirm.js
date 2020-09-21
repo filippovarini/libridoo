@@ -14,7 +14,90 @@ class PaymentConfirm extends Component {
   componentDidMount = () => {
     const locationArr = window.location.pathname.split("/");
     if (locationArr[2]) {
-      this.setState({ dealId: locationArr[2] });
+      if (locationArr[2] === "cancel") {
+        console.log("cancel", locationArr[3]);
+        // paypal cancel
+        fetch("/api/payment/failure", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ dealId: locationArr[3] })
+        })
+          .then(res => res.json())
+          .then(jsonRes => {
+            // error, not a big deal
+            console.log(jsonRes);
+            this.props.dispatch({
+              type: "E-SET",
+              error: {
+                frontendPlace: "paymentConfirm/delete/catch",
+                noSave: true,
+                message:
+                  "Qualcosa è andato storto nel setup del pagamento. Non ti preoccupare, non hai perso i soldi. La prossima volta evita di ricaricare la pagina o tornare indietro"
+              }
+            });
+            this.props.history.push("/error");
+          })
+          .catch(error => {
+            // couldn't delete cluster, not a big deal
+            console.log(error);
+            this.props.dispatch({
+              type: "E-SET",
+              error: {
+                frontendPlace: "paymentConfirm/delete",
+                noSave: true,
+                message:
+                  "Qualcosa è andato storto nel setup del pagamento. Non ti preoccupare, non hai perso i soldi. La prossima volta evita di ricaricare la pagina o tornare indietro"
+              }
+            });
+            this.props.history.push("/error");
+          });
+
+        this.props.history.push("/error");
+      } else {
+        // success
+        console.log("success");
+        // delete books
+        this.setState({ dealId: locationArr[2], loading: true });
+        fetch("/api/payment/success", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ dealId: locationArr[2] })
+        })
+          .then(res => res.json())
+          .then(jsonRes => {
+            if (jsonRes.code === 0) {
+              // success
+              console.log("yayyy");
+              this.setState({ loading: false });
+            } else {
+              // faliure
+              this.props.dispatch({
+                type: "E-SET",
+                error: {
+                  frontendPlace: "paymentConfirm/delete",
+                  jsonRes,
+                  message: "Libri non eliminati dopo il pagamento"
+                }
+              });
+            }
+          })
+          .catch(error => {
+            this.props.dispatch({
+              type: "E-SET",
+              error: {
+                frontendPlace: "paymentConfirm/delete",
+                noSave: true,
+                message:
+                  "Qualcosa è andato storto nella conferma del pagametno. Prova a contattarci, risolveremo il tuo problema"
+              }
+            });
+            this.props.history.push("/error");
+          });
+      }
     } else {
       this.props.history.push("/");
     }

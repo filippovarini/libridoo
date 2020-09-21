@@ -21,7 +21,7 @@ class Error extends Component {
       this.setState({
         message: this.props.error.jsonRes
           ? this.props.error.jsonRes.message || null
-          : null
+          : this.props.error.message || null
       });
       // clear all storage
       let JWT = null;
@@ -40,30 +40,34 @@ class Error extends Component {
         localStorage.setItem("JWT", JWT);
       }
       // post error
-      fetch("/api/feedback/error", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify(this.props.error)
-      })
-        .then(res => res.json())
-        .then(jsonRes => {
-          if (jsonRes.code === 0) {
-            this.setState({
-              loading: false
-            });
-            // empty error state
-            this.props.dispatch({ type: "E-DELETE" });
-            // delete it after
-          } else {
-            console.log(jsonRes);
-          }
+      if (!this.props.error.noSave) {
+        fetch("/api/feedback/error", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(this.props.error)
         })
-        .catch(error => {
-          console.log(error);
-        });
+          .then(res => res.json())
+          .then(jsonRes => {
+            if (jsonRes.code === 0) {
+              this.setState({
+                loading: false
+              });
+              // empty error state
+              this.props.dispatch({ type: "E-DELETE" });
+              // delete it after
+            } else {
+              console.log(jsonRes);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        console.log("not saving");
+      }
     }
   };
 

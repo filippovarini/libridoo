@@ -397,94 +397,96 @@ class book extends Component {
       </div>
     );
 
-    const deals = {
-      infoContainer: (
-        <div id="info-container" className="sub-container half">
-          {/* {lowerIcon} */}
-          {more}
-          <div id="contained">
-            {/* <div
+    const deals = this.props.book.sellerUser
+      ? {
+          infoContainer: (
+            <div id="info-container" className="sub-container half">
+              {/* {lowerIcon} */}
+              {more}
+              <div id="contained">
+                {/* <div
               id="title-container"
               className="info-container results"
               onClick={this.generalClicked}
             >
               <i className="fas fa-book info-book-ico"></i> */}
-            <p id="title" className="info">
-              {this.props.book.title}
-            </p>
-            {/* </div>
+                <p id="title" className="info">
+                  {this.props.book.title}
+                </p>
+                {/* </div>
               <div
               id="place-container"
               className="info-container results"
               onClick={this.generalClicked}
             >
               <i className="fas fa-home fa-1x info-book-ico"></i> */}
-            <p id="place" className="info">
-              {this.props.book.place.city}
-              {this.props.book.sellerUser.school
-                ? this.props.book.sellerUser.school ===
-                  "Non frequento un'università"
-                  ? null
-                  : `, ${this.props.book.sellerUser.school}`
-                : null}
-            </p>
-            {/* </div> */}
-            <div
-              id="quality-container"
-              className="info-container results"
-              // onClick={this.generalClicked}
-            >
-              <i className="fas fa-award info-book-ico"></i>
-              <p id="quality" className="info">
-                {this.props.book.quality}
+                <p id="place" className="info">
+                  {this.props.book.place.city}
+                  {this.props.book.sellerUser.school
+                    ? this.props.book.sellerUser.school ===
+                      "Non frequento un'università"
+                      ? null
+                      : `, ${this.props.book.sellerUser.school}`
+                    : null}
+                </p>
+                {/* </div> */}
+                <div
+                  id="quality-container"
+                  className="info-container results"
+                  // onClick={this.generalClicked}
+                >
+                  <i className="fas fa-award info-book-ico"></i>
+                  <p id="quality" className="info">
+                    {this.props.book.quality}
+                  </p>
+                </div>
+                <div
+                  className="info-container results"
+                  //   onClick={this.generalClicked}
+                >
+                  <i className="fas fa-truck info-book-ico fa-1x"></i>
+                  <p id="delivery" className="info">
+                    Consegno in città entro{" "}
+                    {this.props.book.sellerUser.deliveryInfo.timeToMeet} giorni{" "}
+                    {text ? `e ${text}` : null}
+                  </p>
+                </div>
+                <div
+                  className="info-container"
+                  //   onClick={this.generalClicked}
+                >
+                  <i className="fas fa-euro-sign info-book-ico fa-1x"></i>
+                  <p id="price" className="info">
+                    {bookPrice}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ),
+          user: (
+            <div id="user-container" className="user-box-container">
+              <p className="even-box">
+                {" "}
+                {insertion.getDate() < 10
+                  ? `0${insertion.getDate()}`
+                  : insertion.getDate()}
+              </p>
+              <p className="even-box">
+                {insertion.getMonth() < 10
+                  ? `0${insertion.getMonth()}`
+                  : insertion.getMonth()}
+              </p>
+              <p className="even-box">
+                {insertion
+                  .getFullYear()
+                  .toString()
+                  .substr(2, 3)}
               </p>
             </div>
-            <div
-              className="info-container results"
-              //   onClick={this.generalClicked}
-            >
-              <i className="fas fa-truck info-book-ico fa-1x"></i>
-              <p id="delivery" className="info">
-                Consegno in città entro{" "}
-                {this.props.book.sellerUser.deliveryInfo.timeToMeet} giorni{" "}
-                {text ? `e ${text}` : null}
-              </p>
-            </div>
-            <div
-              className="info-container"
-              //   onClick={this.generalClicked}
-            >
-              <i className="fas fa-euro-sign info-book-ico fa-1x"></i>
-              <p id="price" className="info">
-                {bookPrice}
-              </p>
-            </div>
-          </div>
-        </div>
-      ),
-      user: (
-        <div id="user-container" className="user-box-container">
-          <p className="even-box">
-            {" "}
-            {insertion.getDate() < 10
-              ? `0${insertion.getDate()}`
-              : insertion.getDate()}
-          </p>
-          <p className="even-box">
-            {insertion.getMonth() < 10
-              ? `0${insertion.getMonth()}`
-              : insertion.getMonth()}
-          </p>
-          <p className="even-box">
-            {insertion
-              .getFullYear()
-              .toString()
-              .substr(2, 3)}
-          </p>
-        </div>
-      ),
-      lowerIcon
-    };
+          ),
+          lowerIcon
+        }
+      : null;
 
     // const deals = {
     //   infoContainer: (
@@ -549,7 +551,7 @@ class book extends Component {
       <div id="book">
         <div id="firstHalf" className="half sub-container">
           <div id="user" className="child sub-container">
-            {page.user}
+            {page ? page.user : null}
           </div>
           {/* <div id="image-container"  */}
           <img
@@ -562,7 +564,7 @@ class book extends Component {
           <i className="fas fa-search-plus" onClick={this.imageBigger}></i>
         </div>
         {/* </div> */}
-        {page.infoContainer}
+        {page ? page.infoContainer : null}
         {/* {page.delivery} */}
       </div>
     );
