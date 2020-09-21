@@ -89,7 +89,6 @@ class Checkout extends Component {
 
   // first (payment intent)
   purchaseStripe = total => {
-    console.log(this.props.selectedBooks);
     const { dispatch } = this.props;
     this.setState({ stripeLoading: true });
     // fetch create paymentIntent
@@ -103,10 +102,8 @@ class Checkout extends Component {
     })
       .then(res => res.json())
       .then(jsonRes => {
-        console.log(jsonRes);
         if (jsonRes.code === 0) {
           // success
-          console.log("success");
           this.setState({
             selected: "stripe"
           });
@@ -137,19 +134,18 @@ class Checkout extends Component {
 
   // second (save deal) action = stripe/paypal
   savePurchase = (books, delivery, discount, total, action) => {
-    console.log("savePurchase");
     // props
     const { history, dispatch, selectedBooks } = this.props;
     // this.setState({ loading: true }); UNNECESSARY, ALREADY IN CHECKOUTFORM
     // get ids
-    console.log("selected books", this.props.selectedBooks);
     const sellerIds = [];
     selectedBooks.forEach(cluster => sellerIds.push(cluster.sellerId));
     const buyerId = this.props.user._id;
     const commission = sessionStorage.getItem("coupon")
       ? 0
-      : ((Number(books) * 340 + Number(delivery) * 340) / 100 + 35) / 100;
+      : Math.round(((total / 100) * 3.4 + 0.35) * 100) / 100;
     console.log(commission);
+
     // bill and body
     const bill = {
       books: Number(books),
@@ -163,7 +159,6 @@ class Checkout extends Component {
       sellerIds,
       bill
     };
-    console.log("pre", this.props.selectedBooks);
     // post deal
     fetch("/api/payment/buy", {
       method: "POST",
@@ -175,14 +170,10 @@ class Checkout extends Component {
     })
       .then(res => res.json())
       .then(jsonRes => {
-        console.log(jsonRes);
         if (jsonRes.code === 0) {
           // payment successful
           //Changed this function calling state and on completion moving to next page
           // this.setState({ loading: false }, () => {
-          console.log("savePurchase success");
-          console.log("firing saveCheckout");
-          console.log("post", this.props.selectedBooks);
           this.saveCheckout(jsonRes.deal, action, total);
         } else {
           // faliure
@@ -203,7 +194,6 @@ class Checkout extends Component {
 
   // third (save checkout, then redirect) action = stripe/paypal
   saveCheckout = (deal, action, total) => {
-    console.log("saveCheckout");
     // post cluster books
     const user = Object.assign({}, this.props.user);
     delete user.DeliveryInfo;
@@ -234,7 +224,6 @@ class Checkout extends Component {
       .then(res => res.json())
       .then(jsonRes => {
         // also get clusterIds
-        console.log("finished chackout request", jsonRes);
         if (jsonRes.code === 1) {
           //   error
           // store and redirect
@@ -250,7 +239,6 @@ class Checkout extends Component {
           //   posted successfully, but books not deleted successfuly
           console.log("code 1.5 in PaymentConfirm/componentDidMount2", jsonRes);
         } else {
-          console.log("success");
           // successful
           // remove every variable
           sessionStorage.removeItem("searchParams");
@@ -262,9 +250,7 @@ class Checkout extends Component {
           this.props.dispatch({ type: "GENERAL-DELETE" });
           // this.setState({ loading: false, dealId: jsonRes.paymentId });
           //  if stripe, ended route, if paypal, now redirect!
-          console.log(deal._id);
           if (action === "stripe") {
-            console.log("redirecting to stripe");
             this.props.history.push(`/paymentConfirm/${deal._id}`);
           } else if (action === "paypal") {
             // send request
@@ -273,7 +259,6 @@ class Checkout extends Component {
         }
       })
       .catch(error => {
-        console.log("error");
         console.log(error);
         // store and redirect
         this.props.dispatch({
@@ -287,12 +272,10 @@ class Checkout extends Component {
   };
 
   savePayPalPurchase = (dealId, total) => {
-    console.log(dealId, total, typeof total);
     const body = {
       dealId,
       total
     };
-    console.log(body);
     fetch("/api/payment/paypal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -300,10 +283,8 @@ class Checkout extends Component {
     })
       .then(res => res.json())
       .then(jsonRes => {
-        console.log("ok");
         if (jsonRes.code === 0) {
           // success
-          console.log("final success");
           window.location = jsonRes.approval_url;
         } else {
           //  error
@@ -350,13 +331,12 @@ class Checkout extends Component {
       totalPrice =
         Math.round((totalPrice + 0.35 + (totalPrice / 100) * 3.4) * 100) / 100;
     }
-    let discountAvailable = this.props.user.bonusPoints
-      ? Math.floor(this.props.user.bonusPoints / 10) * 10
-      : null;
-    if (discountAvailable > totalPrice) {
-      discountAvailable = Math.floor(totalPrice / 10) * 10;
-    }
-    if (discountAvailable) totalPrice -= discountAvailable;
+    console.log(totalPrice);
+    let discountAvailable = this.props.user.bonusPoints > 10 ? true : false;
+
+    // 10 percent
+    if (discountAvailable)
+      totalPrice = Math.round((totalPrice - totalPrice / 10) * 100) / 100;
 
     // .00 at the end of totalprice
     if (String(totalPrice).indexOf(".") === -1) {
@@ -473,12 +453,17 @@ class Checkout extends Component {
             <div className="rc-cart-div">
               <p className="rc-cart-header">Sconto bonus:</p>
               <p id="checkout-discount" className="rc-cart-price">
-                -{discountAvailable}.00 €
+                -10%
               </p>
             </div>
           ) : null}
           <div id="rc-subtotal" className="rc-cart-div">
-            <p className="rc-cart-header">TOTALE</p>
+            <p
+              className="rc-cart-header"
+              onClick={() => this.print(totalPrice)}
+            >
+              TOTALE
+            </p>
             <p className="rc-cart-price">{totalPrice} €</p>
           </div>
           {(this.props.user.place && !this.props.user.place.city) ||

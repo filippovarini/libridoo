@@ -11,6 +11,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  popUpSeen: {
+    type: Boolean,
+    default: false
+  },
   email: {
     type: String,
     required: true

@@ -58,15 +58,11 @@ class Error extends Component {
               // empty error state
               this.props.dispatch({ type: "E-DELETE" });
               // delete it after
-            } else {
-              console.log(jsonRes);
             }
           })
           .catch(error => {
             console.log(error);
           });
-      } else {
-        console.log("not saving");
       }
     }
   };

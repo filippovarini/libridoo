@@ -1,0 +1,81 @@
+#ip-container {
+  background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245, 0.7),
+    rgba(108, 232, 162, 0.7)
+  );
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+
+#ip {
+  background: #ebebeb;
+  position: absolute;
+  width: 350px;
+  height: 200px;
+  top: 50%;
+  margin-top: -100px;
+  left: 50%;
+  margin-left: -175px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+#ip.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#ip #header {
+  color: rgb(32, 165, 32);
+  font-weight: bold;
+  margin: 0px;
+  font-size: 1.7rem;
+  text-align: center;
+  line-height: 20px;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 0px;
+}
+
+#ip .fa-times {
+  color: rgb(99, 99, 99);
+  font-size: 0.7rem;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+}
+
+#ip #sub {
+  margin: 0px;
+  color: rgb(99, 99, 99);
+  width: 300px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  box-sizing: border-box;
+  font-size: 1.1rem;
+}
+
+#ip .fa-times:hover {
+  cursor: pointer;
+  color: black;
+}
+
+#ip #body {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  width: 300px;
+  margin: 0 auto;
+  line-height: 20px;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  padding-left: 5px;
+  box-sizing: border-box;
+}

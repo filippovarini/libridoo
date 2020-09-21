@@ -15,7 +15,6 @@ router.get("/:university", (req, res) => {
 
 // get coupon code
 router.get("/code/:code", (req, res) => {
-  console.log("doing");
   Coupon.find({ code: req.params.code })
     .then(coupon => {
       if (coupon.length !== 0) res.json({ code: 0, coupon });
@@ -47,14 +46,12 @@ router.post("/update", (req, res) => {
         const counter = coupon[0].counter + 1;
         const average =
           (coupon[0].average * coupon[0].counter + req.body.total) / counter;
-        console.log(counter, average);
         Coupon.findByIdAndUpdate(
           coupon[0]._id,
           { average, counter },
           { new: true }
         )
           .then(coupon => {
-            console.log(coupon);
             if (coupon) res.json({ code: 0, coupon });
             else res.json({ code: 1, place: ".findByIdAndUpdate()" });
           })

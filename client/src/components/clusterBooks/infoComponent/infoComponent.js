@@ -35,7 +35,6 @@ class InfoComponent extends Component {
   };
 
   toggleImage = () => {
-    console.log(this.state.imageClass);
     if (this.state.imageClass) this.setState({ imageClass: null });
     else this.setState({ imageClass: "book-bigger" });
   };

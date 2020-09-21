@@ -8,6 +8,8 @@ import LoadingS from "../../Loading/loading_s";
 import BookInfo from "../../BookInfo/BookInfo";
 import SlideBar from "../../slideBar/slideBar";
 import Cart from "../../cart/cart";
+import EmailPopUp from "../../emailPopUp/emailPopUp";
+import InsertPopUp from "../../insertPopUp/insertPopUp";
 
 // interface DropdownProps {
 //   open: boolean;
@@ -24,7 +26,101 @@ class HomeHeader extends Component {
     ui: null,
     quickSearchLabelMessage: "",
     slideBarHidden: true,
-    cartHidden: true
+    cartHidden: true,
+    emailPPSuccess: false,
+    emailPPHidden: true,
+    ppLoading: false,
+    IpHidden: true,
+    IpLoading: false
+  };
+
+  componentDidMount = () => {
+    if (this.props.user._id && !this.props.user.popUpSeen) {
+      this.setState({ IpHidden: false });
+    }
+  };
+
+  toggleEmailPP = () => {
+    this.setState({ emailPPHidden: !this.state.emailPPHidden });
+  };
+
+  toggleIp = () => {
+    // request
+    this.setState({ IpLoading: true });
+    fetch("/api/user/seen", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ _id: this.props.user._id })
+    })
+      .then(res => res.json())
+      .then(jsonRes => {
+        // regardless of success
+        if (jsonRes.code === 0) {
+          this.props.dispatch({ type: "SET-USER", user: jsonRes.activeUser });
+          if (sessionStorage.getItem("JWT")) {
+            // not rememberME
+            sessionStorage.setItem("JWT", jsonRes.JWT);
+          } else {
+            // rememberMe, localStorage
+            localStorage.setItem("JWT", jsonRes.JWT);
+          }
+          window.location = "/";
+        } else {
+          this.setState({ IpHidden: true });
+        }
+      })
+      .catch(error => {
+        // still nevermind
+        console.log(error);
+      });
+  };
+
+  contactMe = email => {
+    const body = {
+      title: this.state.ui,
+      email
+    };
+    fetch("/api/book/notFound", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    })
+      .then(() => {
+        // nevermind if done or not!
+        // if (!this.state.emailPPHidden) {
+        // showing
+        this.setState({ emailPPSuccess: true, emailPPHidden: false });
+        setTimeout(
+          () =>
+            this.setState({
+              emailPPSuccess: false,
+              emailPPHidden: true,
+              ppLoading: false
+            }),
+          2000
+        );
+        // }
+      })
+      .catch(error => {
+        console.log(error);
+        if (!this.state.emailPPHidden) {
+          this.setState({ emailPPSuccess: true, emailPPHidden: false });
+          setTimeout(
+            () =>
+              this.setState({
+                emailPPSuccess: false,
+                emailPPHidden: true,
+                ppLoading: false
+              }),
+            2000
+          );
+        }
+      });
+    // request
   };
 
   toggleDisplayCart = () => {
@@ -56,7 +152,7 @@ class HomeHeader extends Component {
   };
 
   handleSearchChange = e => {
-    this.setState({ ui: e.target.value });
+    this.setState({ ui: e.target.value, quickSearchLabelMessage: null });
   };
 
   handleSubmit = e => {
@@ -108,11 +204,6 @@ class HomeHeader extends Component {
               this.setState({
                 quickSearchLabelMessage: jsonRes.message
               });
-              setTimeout(() => {
-                this.setState({
-                  quickSearchLabelMessage: null
-                });
-              }, 2000);
             } else if (jsonRes.code === 0 || jsonRes.code === 2.5) {
               // redirect
               this.props.history.push("/search");
@@ -171,8 +262,7 @@ class HomeHeader extends Component {
               this.props.history.push("/error");
             }
             this.setState({
-              loading: false,
-              ui: null
+              loading: false
             });
           })
           .catch(error => {
@@ -266,6 +356,18 @@ class HomeHeader extends Component {
           </div>
           <p id="use-explainer">VENDI E COMPRA I TUOI LIBRI UNIVERSITARI</p>
           <div id="search-container">
+            <EmailPopUp
+              success={this.state.emailPPSuccess}
+              display={this.state.emailPPHidden ? "hidden" : null}
+              contactMe={this.contactMe}
+              toggleEmailPP={this.toggleEmailPP}
+              ppLoading={this.state.ppLoading}
+            />
+            <InsertPopUp
+              IpDisplay={this.state.IpHidden ? "hidden" : null}
+              toggleIp={this.toggleIp}
+              loading={this.state.IpLoading}
+            />
             <p id="search-header">COSA STAI CERCANDO?</p>
             {this.state.loading ? (
               <div id="search-input-loading">
@@ -283,15 +385,35 @@ class HomeHeader extends Component {
                 <input type="submit" className="hidden" />
               </form>
             )}
-
-            <p
-              id="error"
-              className={
-                this.state.quickSearchLabelMessage ? null : "hiddenVisibility"
-              }
-            >
-              {this.state.quickSearchLabelMessage || "errore"}
-            </p>
+            {this.state.quickSearchLabelMessage === "Nessun libro trovato" ? (
+              <p
+                id="error"
+                className={
+                  this.state.quickSearchLabelMessage ? null : "hiddenVisibility"
+                }
+              >
+                Libro non in vendita.{" "}
+                <span
+                  id="contactMe"
+                  onClick={() => {
+                    if (this.props.user.email)
+                      this.contactMe(this.props.user.email);
+                    else this.toggleEmailPP();
+                  }}
+                >
+                  Contattami appena è disponibile
+                </span>
+              </p>
+            ) : (
+              <p
+                id="error"
+                className={
+                  this.state.quickSearchLabelMessage ? null : "hiddenVisibility"
+                }
+              >
+                {this.state.quickSearchLabelMessage}
+              </p>
+            )}
           </div>
           <p id="search-submit" onClick={this.handleSubmit}>
             CERCA

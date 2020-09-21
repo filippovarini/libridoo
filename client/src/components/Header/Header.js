@@ -57,7 +57,6 @@ class Header extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
-            console.log("shitienifn", jsonRes);
             if (jsonRes.code === 0) {
               // perfect
               this.props.dispatch({ type: "SB-SET", books: jsonRes.results });
@@ -96,7 +95,6 @@ class Header extends Component {
     // show header if not home
     if (this.state.location !== window.location.pathname) {
       window.scrollTo(0, 0);
-      // console.log("redir");
       // just redirected
 
       if (window.location.pathname !== "/" && this.state.headerDisplay)
@@ -117,7 +115,6 @@ class Header extends Component {
       window.pageYOffset < 60 &&
       this.state.headerDisplay !== "hidden"
     ) {
-      console.log("shit");
       this.setState({
         headerDisplay: "hidden",
         location: window.location.pathname
@@ -212,7 +209,6 @@ class Header extends Component {
   };
 
   hideSlidebar = () => {
-    console.log("ok");
     this.setState({
       slideBarHidden: true
     });
@@ -395,7 +391,6 @@ class Header extends Component {
           this.handleScroll("hide");
       }
     };
-    // console.log(this.props.headerDisplay);
     const searchMore = (
       <p
         id="searchMore"

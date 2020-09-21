@@ -34,7 +34,6 @@ class booksRandom extends Component {
   };
 
   render() {
-    console.log(this.state.books);
     const noError = (
       <div id="body">
         {this.state.books ? (

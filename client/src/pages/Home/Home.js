@@ -31,22 +31,6 @@ class Home extends Component {
     }
   };
 
-  send = () => {
-    console.log("sending");
-    fetch("/api/user/ciao", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ciao: "merda"
-      })
-    })
-      // .then(res => res.json())
-      // .then(jsonRes => console.log(jsonRes))
-      .catch(e => console.log(e));
-  };
-
   render() {
     return (
       <div id="home">

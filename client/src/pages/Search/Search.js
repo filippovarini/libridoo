@@ -5,6 +5,7 @@ import HeaderPart from "../../components/headerPart";
 import "./Search.css";
 
 import LoadingM from "../../components/Loading/loading_m";
+import EmailPopUp from "../../components/emailPopUp/emailPopUp";
 
 class Search extends Component {
   state = {
@@ -14,7 +15,60 @@ class Search extends Component {
     loading: false,
     ready: false,
     updated: false,
-    errorMessage: null
+    errorMessage: null,
+    emailPPSuccess: false,
+    emailPPHidden: true,
+    ppLoading: false
+  };
+
+  toggleEmailPP = () => {
+    this.setState({ emailPPHidden: !this.state.emailPPHidden });
+  };
+
+  handleContactMe = email => {
+    const body = {
+      title: this.state.ui,
+      email
+    };
+    fetch("/api/book/notFound", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    })
+      .then(() => {
+        // nevermind if done or not!
+        // if (!this.state.emailPPHidden) {
+        // showing
+        this.setState({ emailPPSuccess: true, emailPPHidden: false });
+        setTimeout(
+          () =>
+            this.setState({
+              emailPPSuccess: false,
+              emailPPHidden: true,
+              ppLoading: false
+            }),
+          2000
+        );
+        // }
+      })
+      .catch(error => {
+        console.log(error);
+        if (!this.state.emailPPHidden) {
+          this.setState({ emailPPSuccess: true, emailPPHidden: false });
+          setTimeout(
+            () =>
+              this.setState({
+                emailPPSuccess: false,
+                emailPPHidden: true,
+                ppLoading: false
+              }),
+            2000
+          );
+        }
+      });
+    // request
   };
 
   // no access limitation
@@ -311,12 +365,38 @@ class Search extends Component {
             <input type="submit" className="hidden" />
           </form>
           <div id="sbmt-container">
-            <p
-              id="input-error"
-              className={!this.state.errorMessage ? "" : "visibilityHidden"}
-            >
-              {this.state.errorMessage}
-            </p>
+            <EmailPopUp
+              success={this.state.emailPPSuccess}
+              display={this.state.emailPPHidden ? "hidden" : null}
+              contactMe={this.handleContactMe}
+              toggleEmailPP={this.toggleEmailPP}
+              ppLoading={this.state.ppLoading}
+            />
+            {this.state.errorMessage === "Nessun libro trovato" ? (
+              <p
+                id="input-error"
+                className={!this.state.errorMessage ? "" : "visibilityHidden"}
+              >
+                Libro non in vendita.{" "}
+                <span
+                  id="contactMe"
+                  onClick={() => {
+                    if (this.props.user.email)
+                      this.handleContactMe(this.props.user.email);
+                    else this.toggleEmailPP();
+                  }}
+                >
+                  Contattami appena è disponibile
+                </span>
+              </p>
+            ) : (
+              <p
+                id="input-error"
+                className={!this.state.errorMessage ? "" : "visibilityHidden"}
+              >
+                {this.state.errorMessage}
+              </p>
+            )}
             <p id="input-submit" className="submit" onClick={this.handleSubmit}>
               CERCA
             </p>

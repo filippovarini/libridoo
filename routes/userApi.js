@@ -457,7 +457,6 @@ router.put("/ratingUpdate", (req, res) => {
                     code: 0,
                     message: "Valutazione effettuata con successo"
                   });
-                  console.log("dou");
                 })
                 .catch(error => {
                   console.log(error);
@@ -682,11 +681,30 @@ router.put("/recover", (req, res) => {
     });
 });
 
+// _id
+router.put("/seen", (req, res) => {
+  User.findByIdAndUpdate(req.body._id, { popUpSeen: true }, { new: true })
+    .then(user => {
+      const activeUser = user.toObject();
+      delete activeUser.password;
+      const JWT = jwt.sign(activeUser, JWT_SECRET, { expiresIn: "7d" });
+      res.json({ code: 0, activeUser, JWT });
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({
+        code: 1,
+        place: "/seen/.findByIdAndUpdate()",
+        message: "problem in saving popUpSeen"
+      });
+    });
+});
+
 // update stripe id
 // _id, payOut: {type / accountId}
 router.put("/connectedAccount", (req, res) => {
   const user = jwt.verify(req.body.JWT, JWT_SECRET);
-  console.log(user);
+
   User.findByIdAndUpdate(user._id, { payOut: req.body.payOut }, { new: true })
     .then(user => {
       if (user._id) {

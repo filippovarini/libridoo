@@ -88,7 +88,6 @@ class Orders extends Component {
       cluster.Books.forEach(book => (total += book.price));
 
       // body and route
-      console.log(cluster.sellerInfo.payOut.type);
       if (
         cluster.sellerInfo.payOut.type === "stripe" ||
         cluster.sellerInfo.payOut.type === "paypal"
@@ -115,7 +114,6 @@ class Orders extends Component {
         }
 
         // send request
-        console.log(body, route);
         fetch(route, {
           method: "POST",
           headers: {
@@ -126,7 +124,6 @@ class Orders extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
-            console.log(jsonRes);
             if (jsonRes.code === 0) {
               // success
               this.confirmOrder(clusterId);

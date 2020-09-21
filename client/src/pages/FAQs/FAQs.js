@@ -34,7 +34,7 @@ class FAQs extends Component {
           body: JSON.stringify({ _id: this.props.user._id })
         })
           .then(res => res.json())
-          .then(jsonRes => console.log(jsonRes))
+          // .then(jsonRes => console.log(jsonRes))
           .catch(error => console.log(error));
         // anyway, even if error, jsut logout account, to hide problem
         if (sessionStorage.getItem("JWT")) {

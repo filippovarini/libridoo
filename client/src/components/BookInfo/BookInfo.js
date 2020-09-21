@@ -17,7 +17,7 @@ class BookInfo extends Component {
     titleClass: null,
     priceClass: null,
     title: null,
-    quality: "intatto",
+    quality: "",
     price: null,
     generalLoading: false,
     successful: false,
@@ -114,7 +114,6 @@ class BookInfo extends Component {
           });
           this.props.history.push("/error");
         } else {
-          console.log(jsonRes.imageURL);
           // perfect
           this.setState({
             imgUrl: jsonRes.imageURL,

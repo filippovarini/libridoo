@@ -108,7 +108,6 @@ class book extends Component {
   };
 
   render() {
-    console.log();
     //   make bookprice .00
     let bookPrice = 0;
     if (String(this.props.book.price).indexOf(".") === -1) {

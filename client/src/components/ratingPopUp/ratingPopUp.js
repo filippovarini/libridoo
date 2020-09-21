@@ -46,7 +46,6 @@ class RatingPopUp extends Component {
   };
 
   handleRatingConfirm = (number, type) => {
-    console.log(number);
     let canSend = false;
     let body = {};
     if (type === "libridoo") {
@@ -90,12 +89,6 @@ class RatingPopUp extends Component {
     }
 
     if (canSend) {
-      console.log(
-        this.state.deliveryRating,
-        this.state.qualityRating,
-        this.state.suggest,
-        body
-      );
       this.setState({ loading: true });
       fetch("/api/user/ratingUpdate", {
         method: "PUT",

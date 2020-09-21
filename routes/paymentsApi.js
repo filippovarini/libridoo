@@ -65,7 +65,6 @@ router.get("/savePayPal/:dealId/:total", (req, res) => {
       ? `https://www.libridoo.it/paymentConfirm/cancel/${req.params.dealId}`
       : `http://localhost:3000/paymentConfirm/cancel/${req.params.dealId}`;
 
-  console.log(return_url, req.params.dealId, req.params.total);
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
 
@@ -86,9 +85,8 @@ router.get("/savePayPal/:dealId/:total", (req, res) => {
       console.log(error);
       res.redirect(cancel_url);
     } else {
-      console.log("done", payment);
       // res.json({ code: 7, payment });
-      console.log("redirecting, success");
+
       res.redirect(return_url);
     }
   });
@@ -126,7 +124,6 @@ router.post("/paymentIntent", (req, res) => {
 // paypal link
 // {total, dealId}
 router.post("/paypal", (req, res) => {
-  console.log("route");
   const return_url =
     process.env.NODE_ENV === "production"
       ? `https://www.libridoo.it/paymentConfirm/${req.body.dealId}/${req.body.total}`
@@ -136,8 +133,6 @@ router.post("/paypal", (req, res) => {
     process.env.NODE_ENV === "production"
       ? `https://www.libridoo.it/paymentConfirm/cancel/${req.body.dealId}`
       : `http://localhost:3000/paymentConfirm/cancel/${req.body.dealId}`;
-
-  console.log(return_url, cancel_url);
 
   let create_payment_json = {
     intent: "sale",
@@ -188,7 +183,6 @@ router.post("/paypal", (req, res) => {
     if (error) {
       console.log(error);
     } else {
-      console.log("webprofile success");
       //Set the id of the created payment experience in payment json
       var experience_profile_id = web_profile.id;
       create_payment_json.experience_profile_id = experience_profile_id;
@@ -204,12 +198,10 @@ router.post("/paypal", (req, res) => {
               approval_url = payment.links[i].href;
             }
           }
-          console.log(approval_url);
+
           if (!approval_url) {
-            console.log("faliure");
             res.json({ code: 1, error: "no approval url", payment });
           } else {
-            console.log("success final");
             res.json({ code: 0, approval_url });
           }
         }
@@ -233,7 +225,7 @@ router.post("/buy", (req, res) => {
       if (req.body.bill.discount) {
         // lessen user bonuspoints
         User.findByIdAndUpdate(req.body.buyerId, {
-          $inc: { bonusPoints: -req.body.bill.discount }
+          $inc: { bonusPoints: -10 }
         })
           .then(user => {
             if (user) {
@@ -312,11 +304,9 @@ router.post("/connect", async (req, res) => {
 });
 
 router.post("/transfer", async (req, res) => {
-  console.log("sendingf");
   // hold 10% commission
   // set total
   let amount = req.body.total * 100 - req.body.total * 10;
-  console.log(amount);
 
   // set date for confirmmonth
   const date = new Date();
@@ -330,10 +320,9 @@ router.post("/transfer", async (req, res) => {
 
   if (clusters.length === 0) {
     // no transaction in that month, hold 1euro
-    console.log("holding");
+
     amount -= 200;
-  } else console.log("no holding, already done");
-  console.log(amount);
+  }
 
   stripe.transfers
     .create({
@@ -421,7 +410,6 @@ router.post("/paypalTransfer", async (req, res) => {
   const total = Number(req.body.total);
   // hold 10% transactions
   let amount = (total * 100 - total * 10) / 100;
-  console.log(amount);
 
   // fetch clusters sold by that user
   const clusters = await SoldBooksClusters.find({
@@ -431,11 +419,10 @@ router.post("/paypalTransfer", async (req, res) => {
 
   if (clusters.length === 0) {
     // no transaction in that month, hold 1euro
-    console.log("holding");
-    amount -= 1;
-  } else console.log("no holding, already done");
 
-  console.log("sending payout", amount);
+    amount -= 1;
+  }
+
   const sender_batch_id = new Date().getTime();
 
   const create_payout_json = {
@@ -467,7 +454,6 @@ router.post("/paypalTransfer", async (req, res) => {
   paypal.payout.create(create_payout_json, function(error, payout) {
     if (error) {
       if (error.response.name === "INSUFFICIENT_FUNDS") {
-        console.log("insufficient funds");
         const date = new Date();
         // balance insufficient
         // const options = {
@@ -537,14 +523,11 @@ router.post("/paypalTransfer", async (req, res) => {
 // delete deals and checkout
 // {dealId}
 router.delete("/failure", (req, res) => {
-  console.log(req.body.dealId);
   const dealId = req.body.dealId;
   Deal.findByIdAndDelete(dealId)
     .then(() => {
-      console.log("deal eliminated");
       SoldBooksClusters.find({ dealId })
         .then(clusters => {
-          console.log("clusters found");
           clusters.forEach(cluster => {
             SoldBooksClusters.findByIdAndDelete(cluster._id)
               .then(deletedCluster => {
@@ -573,10 +556,8 @@ router.delete("/failure", (req, res) => {
 // delete books upon success
 // dealId
 router.delete("/success", (req, res) => {
-  console.log("successing");
   SoldBooksClusters.find({ dealId: req.body.dealId })
     .then(clusters => {
-      console.log("clusters length", clusters.length);
       clusters.forEach(cluster => {
         cluster.Books.forEach(book => {
           Book.findByIdAndDelete(book._id)
@@ -585,7 +566,6 @@ router.delete("/success", (req, res) => {
                 cluster.Books.indexOf(book) === cluster.Books.length - 1 &&
                 clusters.indexOf(cluster) === clusters.length - 1
               ) {
-                console.log("finished clusters");
                 res.json({ code: 0 });
               }
             })

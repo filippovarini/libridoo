@@ -9,6 +9,7 @@ const User = require("../models/Users");
 const Error = require("../models/Errors");
 const SoldBooksCluster = require("../models/SoldBooksClusters");
 const Spam = require("../models/Spam");
+const notFound = require("../models/notFound");
 
 // multer upload
 const upload = require("../services/file-upload");
@@ -447,7 +448,6 @@ router.post("/generalFetch/ID", async (req, res) => {
 
 // post image to s3 and return url to display on front end and later pass to request body
 router.post("/image", (req, res) => {
-  console.log("doingBokAPi");
   singleUpload(req, res, error => {
     if (error) {
       console.log(error);
@@ -511,11 +511,8 @@ router.post("/checkedOut", (req, res) => {
   // newDeal
   //   .save()
   //   .then(deal => {
-  console.log("doing");
   const clusterPromise = new Promise((resolve, reject) => {
-    console.log("promising");
     req.body.soldBooksClusters.forEach(cluster => {
-      console.log("cluster");
       // calculate total price
       let clusterPrice = 0;
       cluster.Books.forEach(book => (clusterPrice += book.price));
@@ -622,7 +619,6 @@ router.post("/checkedOut", (req, res) => {
       //   Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
       // });
       // post soldbooks cluster
-      console.log("saving cluster");
       const newCluster = new SoldBooksCluster({
         dealId: req.body.dealId,
         checkoutDate: req.body.checkoutDate,
@@ -641,7 +637,6 @@ router.post("/checkedOut", (req, res) => {
             req.body.soldBooksClusters.indexOf(cluster) ===
             req.body.soldBooksClusters.length - 1
           ) {
-            console.log("last cluster");
             resolve();
           }
         })
@@ -658,11 +653,9 @@ router.post("/checkedOut", (req, res) => {
     });
   });
   clusterPromise.then(() => {
-    console.log("its a then!!!");
     // successfully posted all clusters, now delete sold books
     // DELETE BOOKS
     // req.body._ids.forEach(_id => {
-    //   console.log("deleting books");
     //   Book.findByIdAndDelete(_id)
     //     .then(book => {
     //       console.log("book not deleted");
@@ -792,7 +785,6 @@ router.post("/checkedOut", (req, res) => {
     //     }
     //   }
     // );
-    console.log("finished, going back");
     res.json({
       code: 0,
       devmessage: "clusters successfully posted",
@@ -828,6 +820,25 @@ router.post("/checkedOut", (req, res) => {
   // });
 });
 
+// post not found book
+// email / title
+router.post("/notFound", (req, res) => {
+  const newNotFound = new notFound({
+    title: req.body.title,
+    email: req.body.email
+  });
+
+  newNotFound
+    .save()
+    .then(notFound => {
+      res.json({ code: 0 });
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({ code: 1, error });
+    });
+});
+
 // edit book
 // bookInfo type edit, already fetched url
 // _id / newInfo: {imageURL / title / price / quality}
@@ -861,7 +872,6 @@ router.put("/confirm", (req, res) => {
   // month confirmation
   const date = new Date();
   const month = `${date.getMonth() + 1}/${date.getFullYear()}`;
-  console.log(month);
 
   SoldBooksCluster.findByIdAndUpdate(
     req.body.clusterID,
@@ -869,7 +879,6 @@ router.put("/confirm", (req, res) => {
     { new: true }
   )
     .then(cluster => {
-      console.log(cluster);
       if (!cluster) {
         res.json({
           code: 1.5,
@@ -885,7 +894,6 @@ router.put("/confirm", (req, res) => {
         if (cluster.delivery.choosen) totalPrice += cluster.delivery.cost;
         // from here, payment trnsition, holding 10%
         totalPrice -= totalPrice / 10;
-        console.log(totalPrice);
         res.json({ code: 0, cluster });
       }
     })

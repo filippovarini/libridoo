@@ -82,6 +82,59 @@ class PayOutInfo extends Component {
     }
   };
 
+  payPalSetup = () => {
+    this.setState({ loading: true });
+    const body = {
+      JWT: sessionStorage.getItem("JWT") || localStorage.getItem("JWT"),
+      payOut: { type: "paypal", accountId: "invalid" }
+    };
+    fetch("/api/user/connectedAccount", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+
+      .then(jsonRes => {
+        if (jsonRes.code === 0) {
+          // success
+          this.props.dispatch({ type: "SET-USER", user: jsonRes.activeUser });
+          if (sessionStorage.getItem("JWT")) {
+            // not rememberME
+            sessionStorage.setItem("JWT", jsonRes.JWT);
+          } else {
+            // rememberMe, localStorage
+            localStorage.setItem("JWT", jsonRes.JWT);
+          }
+          // if (locationArr[1] === "account") window.location = "/account";
+        } else {
+          this.props.dispatch({
+            type: "E-SET",
+            error: {
+              frontendPlace: "payOutInfo/payPalSetup/code1",
+              jsonRes
+            }
+          });
+          this.props.history.push("/error");
+        }
+        this.setState({ loading: false });
+      })
+      .catch(error => {
+        console.log(error);
+        this.props.dispatch({
+          type: "E-SET",
+          error: {
+            frontendPlace: "payOutInfo/payPalSetup/code1",
+            error
+          }
+        });
+        this.props.history.push("/error");
+      });
+  };
+
   stripeSetup = () => {
     if (!this.state.payPalLoadig) {
       this.setState({ stripeLoading: true });
@@ -121,17 +174,20 @@ class PayOutInfo extends Component {
         <div id="po-headers">
           <p id="po-header">Come vuoi essere pagato?</p>
           <p id="po-suggestion">
-            Anche se non hai un'account, ti consigliamo di usare PayPal, perchè
-            il bonifico ti costa 2€ al mese, se in quel mese vendi.
+            Anche se non hai un'account, ti consigliamo di usare PayPal. Il
+            setup è instantaneo, e ti costa la metà!
           </p>
         </div>
         <div id="po-choices">
-          <div id="po-paypal" className="po-choice">
-            <i id="po-pp-ico" className="fab fa-paypal po-ico"></i>
-            <p id="po-paypal-header" className="po-choice-header">
-              <span id="po-pp-1">Pay</span>
-              <span id="po-pp-2">Pal</span>
-            </p>
+          <div id="po-paypal" className="po-choice" onClick={this.payPalSetup}>
+            <div className="logo-container">
+              <i id="po-pp-ico" className="fab fa-paypal po-ico"></i>
+              <p id="po-paypal-header" className="po-choice-header">
+                <span id="po-pp-1">Pay</span>
+                <span id="po-pp-2">Pal</span>
+              </p>
+            </div>
+            <p className="monthly">1€ sul primo ordine del mese</p>
           </div>
           <div id="po-stripe-container">
             {this.state.stripeLoading ? (
@@ -146,10 +202,13 @@ class PayOutInfo extends Component {
                 className="po-choice"
                 onClick={this.stripeSetup}
               >
-                <i className="far fa-credit-card"></i>
-                <p id="po-stripe-header-word" className="po-choice-header">
-                  BONIFICO
-                </p>
+                <div className="logo-container">
+                  <i className="far fa-credit-card"></i>
+                  <p id="po-stripe-header-word" className="po-choice-header">
+                    BONIFICO
+                  </p>
+                </div>
+                <p className="monthly">2€ sul primo ordine del mese</p>
               </div>
             )}
             <div id="po-stripe-secure">
@@ -175,10 +234,13 @@ class PayOutInfo extends Component {
         <p id="po-header">Hai scelto di essere pagato previo:</p>
         <div id="po-choices" className="selected">
           <div id="po-stripe" className="po-choice selected">
-            <i className="far fa-credit-card"></i>
-            <p id="po-stripe-header-word" className="po-choice-header">
-              BONIFICO
-            </p>
+            <div className="logo-container">
+              <i className="far fa-credit-card"></i>
+              <p id="po-stripe-header-word" className="po-choice-header">
+                BONIFICO
+              </p>
+            </div>
+            <p className="monthly">2€ sul primo ordine del mese</p>
           </div>
 
           <div id="po-stripe-secure">
@@ -196,6 +258,32 @@ class PayOutInfo extends Component {
       </div>
     );
 
+    const paypalBody = (
+      <div>
+        {/* should I inform user of 2€ each:? already done! */}
+        <i id="po-header-ico" className="fas fa-coins"></i>
+
+        <p id="po-header">Hai scelto di essere pagato previo:</p>
+        <div id="po-choices" className="selected">
+          <div
+            id="po-paypal"
+            className="po-choice selected"
+            onClick={this.payPalSetup}
+          >
+            <div className="logo-container">
+              <i id="po-pp-ico" className="fab fa-paypal po-ico"></i>
+              <p id="po-paypal-header" className="po-choice-header">
+                <span id="po-pp-1">Pay</span>
+                <span id="po-pp-2">Pal</span>
+              </p>
+            </div>
+
+            <p className="monthly">1€ sul primo del mese</p>
+          </div>
+        </div>
+      </div>
+    );
+
     const loading = (
       <div id="po-loading">
         <i id="po-header-ico" className="fas fa-coins"></i>
@@ -205,10 +293,11 @@ class PayOutInfo extends Component {
 
     // add for paypal
     const loaded = this.props.user.payOut
-      ? this.props.user.payOut.type
+      ? this.props.user.payOut.type === "stripe"
         ? stripeBody
-        : editing
+        : paypalBody
       : editing;
+    // : editing;
 
     let body = this.state.loading ? loading : loaded;
 

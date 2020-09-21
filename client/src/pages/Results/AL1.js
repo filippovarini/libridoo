@@ -1,5 +1,4 @@
 const AL1 = (booksResult, sellerIds) => {
-  console.log(booksResult, sellerIds);
   booksResult.forEach(resultObj => {
     // each search ui
     resultObj.filterResult.forEach(book => {
@@ -35,7 +34,6 @@ const AL1 = (booksResult, sellerIds) => {
       );
     });
   } else {
-    console.log("shitting");
     booksResult.forEach(resultObj => {
       //   !!! DOES MAP AFFECT IT?
       resultObj.filterResult.sort((a, b) =>

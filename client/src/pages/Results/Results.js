@@ -143,7 +143,6 @@ class Results extends Component {
   };
 
   increaseIndex = action => {
-    console.log(action);
     sessionStorage.setItem("index", this.state.index + 1);
     // reset original configuration
     this.setState({

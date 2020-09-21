@@ -1,0 +1,139 @@
+#ep-container {
+  background: linear-gradient(
+    to bottom right,
+    rgba(105, 142, 245, 0.7),
+    rgba(108, 232, 162, 0.7)
+  );
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+
+#ep {
+  background: #ebebeb;
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  top: 50%;
+  margin-top: -100px;
+  left: 50%;
+  margin-left: -150px;
+  border-radius: 3px;
+}
+
+#ep.success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+#ep .fa-times {
+  color: rgb(99, 99, 99);
+  font-size: 0.7rem;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+}
+
+#ep #sub-header {
+  margin: 0px;
+  color: rgb(99, 99, 99);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#ep .fa-times:hover {
+  cursor: pointer;
+  color: black;
+}
+
+#ep #header {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  text-align: center;
+  font-size: 1.8rem;
+  margin: 0px;
+  margin-top: 10px;
+}
+
+#ep #email-ep {
+  width: 250px;
+  margin: 0 auto;
+  height: 25px;
+  display: block;
+  background: rgb(207, 207, 207);
+  box-sizing: border-box;
+  border: 0px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  font-weight: bold;
+  color: white;
+}
+
+#errorLabel-ep {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: rgb(99, 99, 99);
+  width: 250px;
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+#errorLabel-ep.hidden {
+  visibility: hidden;
+}
+
+#ep #email-ep:focus {
+  outline-color: transparent;
+}
+
+#ep #email-ep::placeholder {
+  font-weight: normal;
+}
+
+#ep #submit {
+  width: 250px;
+  background: rgb(105, 142, 245);
+  margin: 0 auto;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  margin-top: 15px;
+  border-radius: 3px;
+}
+
+#ep #submit:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 3px rgb(105, 142, 245);
+}
+
+#ep #submit.disabled:hover {
+  cursor: default;
+  box-shadow: 0px;
+}
+
+#ep .fa-check {
+  color: rgb(32, 165, 32);
+  font-size: 3rem;
+  margin: 0px;
+}
+
+#ep #success {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  width: 260px;
+  line-height: 23px;
+  font-size: 1.65rem;
+}

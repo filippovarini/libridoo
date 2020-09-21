@@ -15,7 +15,6 @@ class PaymentConfirm extends Component {
     const locationArr = window.location.pathname.split("/");
     if (locationArr[2]) {
       if (locationArr[2] === "cancel") {
-        console.log("cancel", locationArr[3]);
         // paypal cancel
         fetch("/api/payment/failure", {
           method: "DELETE",
@@ -27,7 +26,6 @@ class PaymentConfirm extends Component {
           .then(res => res.json())
           .then(jsonRes => {
             // error, not a big deal
-            console.log(jsonRes);
             this.props.dispatch({
               type: "E-SET",
               error: {
@@ -57,7 +55,6 @@ class PaymentConfirm extends Component {
         this.props.history.push("/error");
       } else {
         // success
-        console.log("success");
         // delete books
         this.setState({ dealId: locationArr[2], loading: true });
         fetch("/api/payment/success", {
@@ -71,7 +68,6 @@ class PaymentConfirm extends Component {
           .then(jsonRes => {
             if (jsonRes.code === 0) {
               // success
-              console.log("yayyy");
               this.setState({ loading: false });
             } else {
               // faliure

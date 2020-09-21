@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 class RatingStar extends Component {
   render() {
-    // console.log(this.props.secondStar);
     return (
       <div id="ratingPopUp-stars-container">
         <i
