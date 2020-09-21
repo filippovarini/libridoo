@@ -38,10 +38,10 @@ import adImageTwo from "./pages/Invite/adImageTwo";
 import adImageThree from "./pages/Invite/adImageThree";
 
 class App extends React.Component {
-  state = {
-    BookInfoDisplay: "hidden",
-    headerWinning: false
-  };
+  // state = {
+  //   BookInfoDisplay: "hidden",
+  //   headerWinning: false
+  // };
 
   componentDidMount = () => {
     let storePlace = null;
@@ -113,52 +113,52 @@ class App extends React.Component {
   };
 
   // bookInfo
-  toggleBookInfo = () => {
-    if (!this.props.user.DeliveryInfo) {
-      // not logged
-      window.location = "/login";
-    } else {
-      if (this.state.BookInfoDisplay === "hidden") {
-        sessionStorage.setItem("selling", true);
-        this.setState({ BookInfoDisplay: null });
-      } else {
-        sessionStorage.removeItem("selling");
-        this.setState({ BookInfoDisplay: "hidden" });
-      }
-    }
-  };
+  // toggleBookInfo = () => {
+  //   if (!this.props.user.DeliveryInfo) {
+  //     // not logged
+  //     window.location = "/login";
+  //   } else {
+  //     if (this.state.BookInfoDisplay === "hidden") {
+  //       sessionStorage.setItem("selling", true);
+  //       this.setState({ BookInfoDisplay: null });
+  //     } else {
+  //       sessionStorage.removeItem("selling");
+  //       this.setState({ BookInfoDisplay: "hidden" });
+  //     }
+  //   }
+  // };
 
   // bring back to false
-  resetSlideBarHidden = () => {
-    this.setState({ hideSlidebar: false });
-  };
+  // resetSlideBarHidden = () => {
+  //   this.setState({ hideSlidebar: false });
+  // };
 
-  headerWinning = value => {
-    if (this.state.headerWinning !== value) {
-      this.setState({ headerWinning: value });
-    }
-  };
+  // headerWinning = value => {
+  //   if (this.state.headerWinning !== value) {
+  //     this.setState({ headerWinning: value });
+  //   }
+  // };
 
   render() {
     return (
       <BrowserRouter>
         <div className="App">
           <Header
-            toggleBookInfo={this.toggleBookInfo}
-            headerWinning={this.headerWinning}
+          // toggleBookInfo={this.toggleBookInfo}
+          // headerWinning={this.headerWinning}
           />
-          <BookInfo
+          {/* <BookInfo
             display={this.state.BookInfoDisplay}
             toggleDisplay={this.toggleBookInfo}
-          />
+          /> */}
           <div id="app-body">
             <Route
               exact
               path="/"
+              component={Home}
               // render={() => (
               //   <Home hideHomeSlidebar={this.state.headerWinning} />
               // )}
-              component={Home}
             />
             <Route path="/login/:action?" component={Login} />
             <Route path="/register/:invitingId?" component={Register} />

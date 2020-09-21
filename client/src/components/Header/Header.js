@@ -350,13 +350,13 @@ class Header extends Component {
       this.setState({
         headerDisplay: ""
       });
-      this.props.headerWinning(true);
+      // this.props.headerWinning(true);
     }
     if (action === "hide" && !this.state.headerDisplay) {
       this.setState({
         headerDisplay: "hidden"
       });
-      this.props.headerWinning(false);
+      // this.props.headerWinning(false);
     }
   };
 
