@@ -141,16 +141,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <Header
-          toggleBookInfo={this.toggleBookInfo}
-          headerWinning={this.headerWinning}
-        />
-        <BookInfo
-          display={this.state.BookInfoDisplay}
-          toggleDisplay={this.toggleBookInfo}
-        />
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className="App">
+          <Header
+            toggleBookInfo={this.toggleBookInfo}
+            headerWinning={this.headerWinning}
+          />
+          <BookInfo
+            display={this.state.BookInfoDisplay}
+            toggleDisplay={this.toggleBookInfo}
+          />
           <div id="app-body">
             <Route
               exact
@@ -186,9 +186,9 @@ class App extends React.Component {
             <Route path="/adImageTwo" component={adImageTwo} />
             <Route path="/adImageThree" component={adImageThree} />
           </div>
-        </BrowserRouter>
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </BrowserRouter>
     );
   }
 }
