@@ -546,7 +546,7 @@ router.post("/checkedOut", (req, res) => {
           }</span> a ${
             req.body.buyerInfo.name
           }, per un totale di ${clusterPrice}
-        euro${cluster.delivery.choosen ? "" : "*"}.<br />
+        euro.<br />
         ${
           cluster.delivery.choosen
             ? `<span>${req.body.buyerInfo.name} vive in zona ${
@@ -557,15 +557,26 @@ router.post("/checkedOut", (req, res) => {
         pagandoti un extra di ${
           cluster.delivery.cost
         } euro, come da te specificato.<br />
-        Il totale, dunque, ammonta a <b>€ ${clusterPrice +
-          cluster.delivery.cost}*</span>`
-            : ""
+        Il totale, dunque, ammonta a € ${clusterPrice +
+          cluster.delivery
+            .cost}<br/>Per supportare spese di gestione, Libridoo chiede il 10% ai venditori. Dunque incasserai <b>€ ${clusterPrice +
+                cluster.delivery.cost -
+                Math.round((clusterPrice + cluster.delivery.cost) * 100) /
+                  1000}</b></span>`
+            : `
+            Il totale, dunque, ammonta a € ${clusterPrice}<br/>Per supportare spese di gestione, Libridoo chiede il 10% ai venditori. Dunque incasserai <b>€ ${clusterPrice -
+                Math.round(clusterPrice * 100) / 1000}</b></span>`
         }
         </b><br/><br />
         Adesso,<br />
         tutto quello che devi fare per <b>ricevere i soldi</b>, è consegnare i libri al
         compratore. Una volta fatto, ricordagli di confermare la consegna per ricevere il pagamento.
         <br/><br/>
+        ${
+          cluster.sellerInfo.payOut.type === "stripe"
+            ? `Hai scelto di ricevere i soldi via bonifico. Quando il venditore conferma la consegna, ti arrivarà una email da stripe.com con un link per ricevere i soldi. Per trasferirli sul tuo conto in banca, <b>verifica il tuo conto stripe</b> direttamente su www.stripe.com oppure accedendo da Libridoo e cliccando su "PAGAMENTI".<br/>L'oridne viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato due euro in meno, per coprire i costi di pagamento via bonifico.`
+            : `Hai scelto di ricevere i su PayPal. Quando il venditore conferma la consegna, ti arriverà una email da PayPal.com con il link per riceverli. <b>Assicurati di controllare la tua casella email connessa all'account Libridoo.</b>.<br/>L'oridne viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato un euro in meno, per coprire i costi di PayPal.`
+        }
           Ecco le informazioni di ${
             req.body.buyerInfo.name
           }, accordati con lui per
@@ -615,9 +626,7 @@ router.post("/checkedOut", (req, res) => {
               </ul>
             </div>
           </div>
-        </div>
-        <br/>
-        <p style="margin:20px; font-size: .7rem">* Conforme ai termini e condizioni di www.libridoo.it, esposti su https://www.libridoo.it/T&C, libridoo trattiene il 10% (10 per cento) dell'incasso del venditore
+        </div>       
         <br/><br/><br/>
         Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
         },

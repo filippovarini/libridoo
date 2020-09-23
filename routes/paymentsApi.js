@@ -53,6 +53,29 @@ router.get("/check/:_id", (req, res) => {
     );
 });
 
+// get login link
+router.get("/dashboard/:id", async (req, res) => {
+  const connectedAccount = req.params.id;
+  const redirect_url =
+    process.env.NODE_ENV === "production"
+      ? "https://www.libridoo.it"
+      : "http://localhost:3000";
+  stripe.accounts
+    .createLoginLink(connectedAccount, {
+      redirect_url
+    })
+    .then(link => {
+      res.json({ code: 0, link });
+    })
+    .catch(error => {
+      console.log("error", error);
+      res.json({ code: 1, place: ".loginLink/catch", error });
+    });
+
+  // if (link.error) res.json({ code: 1, error });
+  // else res.json({ code: 0, link });
+});
+
 // savePayPal Purchase
 router.get("/savePayPal/:dealId/:total", (req, res) => {
   const return_url =

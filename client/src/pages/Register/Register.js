@@ -21,7 +21,7 @@ class Register extends Component {
     passwordConfirmEmptyClass: null,
     tcpClicked: false,
     rememberClicked: true,
-    namePlaceholder: "nome",
+    namePlaceholder: "nome e cognome",
     emailPlaceholder: "email",
     passwordPlaceholder: "password",
     passwordConfirmPlaceholder: "conferma password",

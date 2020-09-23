@@ -1,9 +1,50 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "./slideBar.css";
+import { connect } from "react-redux";
 
-class slideBar extends Component {
+class SlideBar extends Component {
+  state = {
+    stripeLoading: false
+  };
+
+  stripeDashboard = () => {
+    fetch(`/api/payment/dashboard/${this.props.user.payOut.accountId}`)
+      .then(res => res.json())
+      .then(jsonRes => {
+        console.log(jsonRes);
+        if (jsonRes.code === 0) window.location = jsonRes.link.url;
+        else {
+          // error
+          this.props.dispatch({
+            type: "E-SET",
+            error: {
+              frontendPlace: "slidebar/stripeDashboard/catch",
+              jsonRes,
+              message:
+                "Qualcosa è andato storto nel setup della console pagamenti. Riprova più tardi"
+            }
+          });
+          this.props.history.push("/error");
+        }
+      })
+      .catch(error => {
+        // store and redirect
+        this.props.dispatch({
+          type: "E-SET",
+          error: {
+            frontendPlace: "slidebar/stripeDashboard/catch",
+            error,
+            message:
+              "Qualcosa è andato storto nel setup della console pagamenti. Riprova più tardi"
+          }
+        });
+        this.props.history.push("/error");
+      });
+  };
+
   render() {
+    console.log(this.props.user.payOut);
     let display = this.props.hidden ? "hidden" : null;
     if (this.props.hiderSlidebar) display = "hidden";
     if (this.props.fromHomeHeader && window.pageYOffset > 60) {
@@ -38,6 +79,18 @@ class slideBar extends Component {
           >
             I MIEI AFFARI
           </NavLink>
+          <p
+            className={`slideBar-component hover ${
+              this.props.user.payOut
+                ? this.props.user.payOut.type === "stripe"
+                  ? null
+                  : "hidden"
+                : "hidden"
+            }`}
+            onClick={this.stripeDashboard}
+          >
+            PAGAMENTI
+          </p>
           <div id="earn-suggester-container" onClick={this.props.hideSlidebar}>
             <NavLink
               id="earn-suggester-link"
@@ -75,4 +128,4 @@ class slideBar extends Component {
   }
 }
 
-export default slideBar;
+export default connect()(SlideBar);

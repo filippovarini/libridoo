@@ -319,7 +319,7 @@ class book extends Component {
                     </div>
                   </div>
                 ) : (
-                  <p id="rating-substitute">ancora non è stato valutato</p>
+                  <p id="rating-substitute">no reviews</p>
                 )}
                 <div
                   id="convenience-box"
