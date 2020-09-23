@@ -40,7 +40,8 @@ import adImageThree from "./pages/Invite/adImageThree";
 class App extends React.Component {
   state = {
     BookInfoDisplay: "hidden",
-    headerWinning: false
+    headerWinning: false,
+    book: null
   };
 
   componentDidMount = () => {
@@ -113,7 +114,7 @@ class App extends React.Component {
   };
 
   // bookInfo
-  toggleBookInfo = () => {
+  toggleBookInfo = book => {
     if (!this.props.user.DeliveryInfo) {
       // not logged
       window.location = "/login";
@@ -125,6 +126,10 @@ class App extends React.Component {
         sessionStorage.removeItem("selling");
         this.setState({ BookInfoDisplay: "hidden" });
       }
+    }
+    if (book) {
+      // editing
+      this.setState({ book });
     }
   };
 
@@ -150,14 +155,18 @@ class App extends React.Component {
           <BookInfo
             display={this.state.BookInfoDisplay}
             toggleDisplay={this.toggleBookInfo}
+            book={this.state.book}
           />
           <div id="app-body">
             <Route
               exact
               path="/"
-              component={Home}
               render={() => (
-                <Home hideHomeSlidebar={this.state.headerWinning} />
+                <Home
+                  hideHomeSlidebar={this.state.headerWinning}
+                  toggleBookInfo={this.toggleBookInfo}
+                  editing={this.state.bookEditing}
+                />
               )}
             />
             <Route path="/login/:action?" component={Login} />

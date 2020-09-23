@@ -5,7 +5,6 @@ import "./home-header.css";
 
 import imageSrc from "../../../images/logo-black.png";
 import LoadingS from "../../Loading/loading_s";
-import BookInfo from "../../BookInfo/BookInfo";
 import SlideBar from "../../slideBar/slideBar";
 import Cart from "../../cart/cart";
 import EmailPopUp from "../../emailPopUp/emailPopUp";
@@ -303,10 +302,6 @@ class HomeHeader extends Component {
     );
     return (
       <div id="hh">
-        <BookInfo
-          display={this.props.bookInfoDisplay}
-          toggleDisplay={this.props.toggleBookInfoDisplay}
-        />
         <div id="hh-contained">
           <div id="hh-header-container">
             <img
@@ -321,7 +316,10 @@ class HomeHeader extends Component {
               {firstNav}
               <p
                 className="header-nav"
-                onClick={this.props.toggleBookInfoDisplay}
+                onClick={() => {
+                  console.log("doing");
+                  this.props.toggleBookInfoDisplay();
+                }}
               >
                 VENDI
               </p>

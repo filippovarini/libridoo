@@ -5,76 +5,53 @@ import LoadingM from "../Loading/loading_m";
 import LoadingL from "../Loading/loading_l";
 import "./BookInfo.css";
 
+const initialState = {
+  imgUrl: "",
+  title: null,
+  quality: "title",
+  price: null,
+  decimal: "00",
+  actualPrice: 0,
+  submitting: true,
+  generalLoading: false,
+  imageClass: "normal",
+  selectHeaderClass: "hiddenVisibility",
+  successful: false,
+  errorMessage: null
+  // emptyImageClass: null,
+  // headerClass: null,
+  // loading: false,
+  // titleClass: null,
+  // priceClass: null,
+};
+
 class BookInfo extends Component {
   state = {
     imgUrl: "",
+    title: null,
+    quality: "",
+    price: null,
+    decimal: "00",
+    actualPrice: 0,
     emptyImageClass: null,
     headerClass: null,
     imageClass: "normal",
     submitting: true,
     loading: false,
-    selectHeaderClass: "hidden",
+    selectHeaderClass: "hiddenVisibility",
     titleClass: null,
     priceClass: null,
-    title: null,
-    quality: "",
-    price: null,
     generalLoading: false,
     successful: false,
-    updated: false,
-    imageDone: false,
-    timeOut: null,
-    imageDoneSet: false,
-    pricePlaceholder: "prezzo",
-    titlePlaceholder: "titolo come appare sulla copertina",
-    priceLabelHidden: true,
-    decimal: "00",
-    actualPrice: 0,
     errorMessage: null
   };
 
-  componentDidMount = () => {
-    this.setState({ successful: false });
-  };
-
-  componentDidUpdate = () => {
-    if (!this.state.price && sessionStorage.getItem("BookInfoParams")) {
-      const BookInfo = JSON.parse(sessionStorage.getItem("BookInfoParams"));
-      this.setState({
-        imgUrl: BookInfo.imageURL,
-        title: BookInfo.title,
-        price: Number(String(BookInfo.price).split(".")[0]),
-        quality: BookInfo.quality,
-        submitting: false,
-        decimal: String(BookInfo.price).split(".")[1] || "00"
-      });
-    }
-    if (this.props.editing && !this.state.imageDoneSet) {
-      // just updated
-      this.setState({ imageDoneSet: true, imageDone: true });
-    }
-  };
-
-  handleDecimalChange = e => {
-    this.setState({
-      decimal: e.target.value
-    });
-    if (e.target.value.length <= 2 && !this.state.priceLabelHidden) {
-      this.setState({ priceLabelHidden: true });
-    }
-  };
-
-  handleMouseOver = () => {
-    this.setState({
-      timeout: setInterval(() => {
-        this.setState({ imageClass: "bigger" });
-      }, 1500)
-    });
-  };
-
-  handleMouseLeave = () => {
-    clearTimeout(this.state.timeout);
-    this.setState({ imageClass: "normal" });
+  handleInputChange = e => {
+    console.log(e.target.id, e.target.value);
+    if (e.target.id === "bookInfo-decimal")
+      this.setState({ decimal: e.target.value });
+    else this.setState({ [e.target.id]: e.target.value });
+    if (this.state.errorMessage) this.setState({ errorMessage: null });
   };
 
   handleImageDelete = () => {
@@ -134,52 +111,13 @@ class BookInfo extends Component {
       });
   };
 
-  handleInputChange = e => {
-    if (e.target.id !== "quality") {
-      if (!e.target.value) {
-        this.setState({
-          [`${e.target.id}Class`]: "invalid-input",
-          [`${e.target.id}Placeholder`]:
-            e.target.id === "title" ? "*titolo*" : "*prezzo*"
-        });
-      }
-    }
-    if (e.target.value) {
-      this.setState({ [`${e.target.id}Class`]: null });
-    }
-    if (e.target.id === "price" && e.target.value <= 0) {
-      this.setState({ [`${e.target.id}Class`]: "invalid-input" });
-    }
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-    if (
-      e.target.id === "price" &&
-      e.target.value > 0 &&
-      !this.state.priceLabelHidden
-    ) {
-      this.setState({ priceLabelHidden: true });
-    }
-  };
-
   handleSelectFocus = () => {
     this.setState({ selectHeaderClass: null });
   };
 
   handleBlur = e => {
     if (e.target.id === "quality") {
-      this.setState({ selectHeaderClass: "hidden" });
-    } else if (!e.target.value) {
-      this.setState({
-        [`${e.target.id}Class`]: "invalid-input",
-        [e.target.id]: null,
-        [`${e.target.id}Placeholder`]:
-          e.target.id === "title" ? "*titolo*" : "*prezzo*"
-      });
-    } else {
-      this.setState({
-        [`${e.target.id}Class`]: "correct-input"
-      });
+      this.setState({ selectHeaderClass: "hiddenVisibility" });
     }
     if (e.target.id === "price" && e.target.value) {
       if (e.target.value <= 0) {
@@ -191,34 +129,22 @@ class BookInfo extends Component {
   };
 
   handleToggle = () => {
-    this.setState({
-      imgUrl: "",
-      title: null,
-      price: null,
-      quality: "intatto"
-    });
+    this.setState(initialState);
+    document.getElementById("bookInfo-form").reset();
     this.props.toggleDisplay();
   };
 
   handleSubmit = e => {
+    console.log("submit");
     e.preventDefault();
     if (!this.state.title || !this.state.quality || !this.state.price) {
-      if (!this.state.title) {
-        this.setState({
-          titleClass: "invalid-input",
-          titlePlaceholder: "*titolo*"
-        });
-      }
-      if (!this.state.price) {
-        this.setState({
-          priceClass: "invalid-input",
-          pricePlaceholder: "*prezzo*"
-        });
-      }
-    } else if (this.state.price <= 0) {
-      this.setState({ priceClass: "invalid-input", priceLabelHidden: false });
-    } else if (this.state.decimal.length > 2) {
-      this.setState({ priceLabelHidden: false });
+      this.setState({ errorMessage: "Compila tutti i campi" });
+    } else if (
+      this.state.price <= 0 ||
+      this.state.decimal.length > 2 ||
+      Number(this.state.decimal < 0)
+    ) {
+      this.setState({ errorMessage: "Inserisci un importo valido" });
     } else {
       // everything inputted
       const user = this.props.user;
@@ -236,6 +162,7 @@ class BookInfo extends Component {
         sellerId: user._id
         // missing place
       };
+      console.log(body);
       if (
         user.DeliveryInfo.timeToMeet &&
         user.phone &&
@@ -269,23 +196,7 @@ class BookInfo extends Component {
               sessionStorage.removeItem("selling");
               this.setState({ generalLoading: false, successful: true });
               setTimeout(() => {
-                this.setState({
-                  imgUrl: "",
-                  emptyImageClass: null,
-                  headerClass: null,
-                  imageClass: "normal",
-                  submitting: true,
-                  loading: false,
-                  selectHeaderClass: "hidden",
-                  titleClass: null,
-                  priceClass: null,
-                  title: null,
-                  quality: "intatto",
-                  price: null,
-                  generalLoading: false,
-                  successful: false,
-                  updated: false
-                });
+                this.setState(initialState);
                 this.props.toggleDisplay();
               }, 1000);
             }
@@ -328,39 +239,19 @@ class BookInfo extends Component {
   handleEdit = e => {
     e.preventDefault();
     if (
-      !this.state.imgUrl ||
-      !this.state.title ||
-      !this.state.quality ||
-      !this.state.price
+      (this.state.price && this.state.price <= 0) ||
+      this.state.decimal.length > 2 ||
+      Number(this.state.decimal < 0)
     ) {
-      if (!this.state.imgUrl) {
-        this.setState({
-          emptyImageClass: "empty",
-          headerClass: "empty-header"
-        });
-      }
-      if (!this.state.title) {
-        this.setState({
-          titleClass: "invalid-input",
-          titlePlaceholder: "*titolo*"
-        });
-      }
-      if (!this.state.price) {
-        this.setState({
-          priceClass: "invalid-input",
-          pricePlaceholder: "*prezzo*"
-        });
-      }
-    } else if (this.state.price <= 0) {
-      this.setState({ priceClass: "invalid-input", priceLabelHidden: false });
-    } else if (this.state.decimal.length > 2) {
-      this.setState({ priceLabelHidden: false });
+      this.setState({ errorMessage: "Inserisci un importo valido" });
     } else {
       // everything inputted
       const body = {
-        _id: this.props.id,
+        _id: this.props.book.id,
         newInfo: {
-          imageURL: this.state.imgUrl,
+          imageURL:
+            this.state.imgUrl ||
+            "https://s3.eu-west-3.amazonaws.com/book-cover-images.libridoo/1599842783484",
           title: this.state.title,
           quality: this.state.quality,
           price: this.state.decimal
@@ -394,23 +285,7 @@ class BookInfo extends Component {
             // show for a bit "successful", then hide it
             this.setState({ generalLoading: false, successful: true });
             setTimeout(() => {
-              this.setState({
-                imgUrl: "",
-                emptyImageClass: null,
-                headerClass: null,
-                imageClass: "normal",
-                submitting: true,
-                loading: false,
-                selectHeaderClass: "hidden",
-                titleClass: null,
-                priceClass: null,
-                title: null,
-                quality: "intatto",
-                price: null,
-                generalLoading: false,
-                successful: false,
-                updated: false
-              });
+              this.setState(initialState);
               this.props.toggleDisplay();
             }, 1000);
           }
@@ -428,7 +303,7 @@ class BookInfo extends Component {
 
   render() {
     const notSubmitted = (
-      <div id="notSubmitted-container">
+      <div className="ig-container">
         <div
           id="notSubmitted"
           className={`image-container ${this.state.emptyImageClass}`}
@@ -446,26 +321,31 @@ class BookInfo extends Component {
           />
         </div>
         <p id="image-header" className={this.state.headerClass}>
-          Una foto chiara della copertina vende 7 volte di più.
+          Una foto chiara della vera copertina vende 7 volte di più.
         </p>
       </div>
     );
 
     const submitted = (
-      <div id="submitted" className="image-container">
-        <img
-          // onMouseOver={this.handleMouseOver}
-          // onMouseLeave={this.handleMouseLeave}
-          id="image"
-          src={this.state.imgUrl}
-          alt="copertina"
-          className={this.state.imageClass}
-        />
-        <i
-          id="delete"
-          onClick={this.handleImageDelete}
-          className="fas fa-times"
-        ></i>
+      <div className="ig-container">
+        <div id="submitted" className="image-container">
+          <img
+            // onMouseOver={this.handleMouseOver}
+            // onMouseLeave={this.handleMouseLeave}
+            id="image"
+            src={this.state.imgUrl}
+            alt="copertina"
+            className={this.state.imageClass}
+          />
+          <i
+            id="delete"
+            onClick={this.handleImageDelete}
+            className="fas fa-times"
+          ></i>
+        </div>
+        <p id="image-header" className={this.state.headerClass}>
+          Una foto chiara della vera copertina vende 7 volte di più.
+        </p>
       </div>
     );
 
@@ -477,26 +357,24 @@ class BookInfo extends Component {
 
     let imageContainer = this.state.submitting ? notSubmitted : submitted;
     if (this.state.loading) imageContainer = loading;
-
     const loaded = (
       <div>
-        {/* <p id="header">
-          Compila con chiarezza per vendere con maggior successo
-        </p> */}
         {imageContainer}
         <form
-          onSubmit={this.props.editing ? this.handleEdit : this.handleSubmit}
+          id="bookInfo-form"
+          onSubmit={this.props.book ? this.handleEdit : this.handleSubmit}
         >
           <div id="form-container">
+            <p id="error-message">{this.state.errorMessage}</p>
+
             <input
               autoComplete="off"
               id="title"
               type="text"
               onChange={this.handleInputChange}
-              onBlur={this.handleBlur}
-              className={`input info ${this.state.titleClass}`}
-              placeholder={this.state.titlePlaceholder}
-              defaultValue={this.props.editing ? this.state.title : null}
+              className="input info"
+              placeholder="titolo, come appare sulla copertina"
+              defaultValue={this.props.book ? this.props.book.title : null}
             />
             <div id="quality-container" className="info">
               <p id="quality-warning" className={this.state.selectHeaderClass}>
@@ -508,7 +386,9 @@ class BookInfo extends Component {
                 onFocus={this.handleSelectFocus}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur}
-                defaultValue={this.props.editing ? this.state.quality : "title"}
+                value={
+                  this.props.book ? this.props.book.quality : this.state.quality
+                }
               >
                 <option disabled={true} value="title">
                   qualità
@@ -549,41 +429,33 @@ class BookInfo extends Component {
                 type="number"
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur}
-                className={`input ${this.state.priceClass} info price-input`}
-                placeholder={this.state.pricePlaceholder}
-                defaultValue={this.props.editing ? this.state.price : null}
+                className="input info price-input"
+                placeholder="prezzo"
+                defaultValue={
+                  this.props.book
+                    ? String(this.props.book.price).split(".")[0]
+                    : null
+                }
               />
               ,
               <input
                 type="number"
                 className="price-input"
                 id="bookInfo-decimal"
-                value={this.state.decimal}
                 placeholder="00"
-                onChange={this.handleDecimalChange}
+                value={
+                  this.props.book
+                    ? String(this.props.book.price).split(".")[1]
+                      ? String(this.props.book.price).split(".")[1]
+                      : this.state.decimal
+                    : this.state.decimal
+                }
+                onChange={this.handleInputChange}
                 onBlur={this.handleBlur}
               />
             </div>
-            <label
-              id="bookInfo-price-label"
-              htmlFor="price"
-              className={this.state.priceLabelHidden ? "hidden" : ""}
-            >
-              Inserisci un importo valido
-            </label>
           </div>
-          <input
-            type="submit"
-            className="hidden"
-            value={
-              !this.state.imageDone && this.state.imgUrl
-                ? "CARICANDO L'IMMAGINE..."
-                : this.props.editing
-                ? "SALVA"
-                : "VENDI"
-            }
-            disabled={!this.state.imageDone && this.state.imgUrl ? true : false}
-          />
+          <input type="submit" className="hidden" />
           {this.state.actualPrice ? (
             <p id="bookInfo-price-suggestion">
               Libridoo vive chiedendo il 10%. Incasserai{" "}
@@ -598,7 +470,6 @@ class BookInfo extends Component {
               venditori
             </p>
           )}
-
           <p
             id="submit"
             className={`info ${
@@ -607,14 +478,14 @@ class BookInfo extends Component {
             onClick={
               !this.state.imageDone && this.state.imgUrl
                 ? null
-                : this.props.editing
+                : this.props.book
                 ? this.handleEdit
                 : this.handleSubmit
             }
           >
             {!this.state.imageDone && this.state.imgUrl
               ? "CARICANDO L'IMMAGINE..."
-              : this.props.editing
+              : this.props.book
               ? "SALVA"
               : "VENDI"}
           </p>
@@ -631,7 +502,7 @@ class BookInfo extends Component {
       <div id="successful-container">
         <i className="fas fa-check"></i>
         <h1 className="successful">
-          {this.props.editing
+          {this.props.book
             ? "Libro modificato con successo"
             : "Libro inserito con successo"}
         </h1>
@@ -646,11 +517,11 @@ class BookInfo extends Component {
         <i
           id="general-delete"
           onClick={
-            this.props.editing
+            this.props.book
               ? this.handleToggle
               : () => {
                   this.handleImageDelete();
-                  this.props.toggleDisplay();
+                  this.handleToggle();
                 }
           }
           className="fas fa-times"

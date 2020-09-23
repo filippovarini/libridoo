@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./home-explainer.css";
 
-import BookInfo from "../../BookInfo/BookInfo";
-
 class HomeExplainer extends Component {
   state = {
     nav: "buy"
@@ -16,10 +14,6 @@ class HomeExplainer extends Component {
   render() {
     return (
       <div id="hmg">
-        <BookInfo
-          display={this.props.bookInfoDisplay}
-          toggleDisplay={this.props.toggleBookInfoDisplay}
-        />
         <div id="hec">
           <div id="explainer-contained">
             <div id="nav-container">

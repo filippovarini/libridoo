@@ -6,7 +6,6 @@ import "./Deals.css";
 // components
 import Book from "../../components/book/book";
 import ClusterBooks from "../../components/clusterBooks/clusterBooks";
-import BookInfo from "../../components/BookInfo/BookInfo";
 import HeaderPart from "../../components/headerPart";
 import LoadingM from "../../components/Loading/loading_m";
 
@@ -134,16 +133,14 @@ class Deals extends Component {
     if (this.state.bookInfoHidden) {
       // logic
       if (editing) {
-        sessionStorage.setItem(
-          "BookInfoParams",
-          JSON.stringify({
-            title: book.title,
-            imageURL: book.imageURL,
-            price: book.price,
-            quality: book.quality
-          })
-        );
         this.setState({ bookInfoBookEditing: true, BookInfoId: book._id });
+        this.props.toggleBookInfo({
+          title: book.title,
+          imageURL: book.imageURL,
+          price: book.price,
+          quality: book.quality,
+          id: book._id
+        });
       }
       this.setState({ bookInfoHidden: false });
     } else {
@@ -152,7 +149,7 @@ class Deals extends Component {
         bookInfoBookEditing: false,
         BookInfoId: null
       });
-      sessionStorage.removeItem("BookInfoParams");
+
       window.location = "/deals";
     }
   };
@@ -243,12 +240,12 @@ class Deals extends Component {
 
     return (
       <div id="deals">
-        <BookInfo
+        {/* <BookInfo
           display={this.state.bookInfoHidden ? "hidden" : null}
           toggleDisplay={this.toggleBookInfo}
           editing={this.state.bookInfoBookEditing}
           id={this.state.BookInfoId}
-        />
+        /> */}
         <HeaderPart title="AFFARI" />
         <div id="deals-problem-container">
           <Link id="deals-problem-link" to="/FAQs">

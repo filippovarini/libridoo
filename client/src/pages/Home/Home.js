@@ -11,24 +11,7 @@ import BooksRandom from "../../components/homeComponents/booksRandom/booksRandom
 
 class Home extends Component {
   state = {
-    imageDisplay: "hiddenVisibility",
-    BookInfoDisplay: "hidden"
-  };
-
-  // toggle BookInfo
-  toggleDisplay = () => {
-    if (!this.props.user.DeliveryInfo) {
-      // not logged
-      this.props.history.push("/login");
-    } else {
-      if (this.state.BookInfoDisplay === "hidden") {
-        sessionStorage.setItem("selling", true);
-        this.setState({ BookInfoDisplay: null });
-      } else {
-        sessionStorage.removeItem("selling");
-        this.setState({ BookInfoDisplay: "hidden" });
-      }
-    }
+    imageDisplay: "hiddenVisibility"
   };
 
   render() {
@@ -36,7 +19,7 @@ class Home extends Component {
       <div id="home">
         <HomeHeader
           bookInfoDisplay={this.state.BookInfoDisplay}
-          toggleBookInfoDisplay={this.toggleDisplay}
+          toggleBookInfoDisplay={this.props.toggleBookInfo}
           hiderSlidebar={this.props.hideHomeSlidebar}
         />
         <div id="home-image-container">
@@ -48,10 +31,7 @@ class Home extends Component {
             alt="Libri di testo vari"
           />
         </div>
-        <HomeExplainer
-          bookInfoDisplay={this.state.BookInfoDisplay}
-          toggleBookInfoDisplay={this.toggleDisplay}
-        />
+        <HomeExplainer bookInfoDisplay={this.state.BookInfoDisplay} />
         <BooksRandom />
       </div>
     );

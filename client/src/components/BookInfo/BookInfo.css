@@ -32,17 +32,16 @@
   text-align: center;
   z-index: 1;
   top: 50%;
-  margin-top: -250px;
+  height: 550px;
+  margin-top: -275px;
+}
+
+#bookInfo .inactive {
+  font-weight: normal;
 }
 
 #bookInfo.heigh-set {
   height: 660px;
-}
-
-#bookInfo #header {
-  border-bottom: 1px solid black;
-  display: inline-block;
-  padding: 10px;
 }
 
 #bookInfo .image-container {
@@ -52,7 +51,6 @@
   margin-top: 30px;
   position: relative;
   background: rgb(108, 232, 162);
-  border: 1px solid black;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -82,7 +80,7 @@
   font-weight: normal;
 }
 
-#bookInfo #notSubmitted-container #image-header {
+#bookInfo .ig-container #image-header {
   display: inline-block;
   padding: 0 20px;
   margin-top: 15px;
@@ -112,7 +110,7 @@
 }
 
 #bookInfo #form-container {
-  /* box-shadow: 0px 0px 3px purple; */
+  border: 1px solid transparent;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -120,7 +118,18 @@
   width: 80%;
   min-width: 238px;
   margin: 0 auto;
-  padding-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+#bookInfo #error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin: 0px;
+  width: 100%;
+  max-width: 300px;
+  text-align: start;
+  line-height: 10px;
+  margin-bottom: -10px;
 }
 
 #bookInfo .input:focus {
@@ -142,17 +151,11 @@
   border-radius: 3px;
 }
 
-#bookInfo #select-header {
-  margin: 0px;
-  margin-bottom: 5px;
-  font-size: 0.8rem;
-  color: rgb(99, 99, 99);
-}
-
 #bookInfo #quality-container {
   width: 100%;
   max-width: 300px;
   text-align: center;
+  margin-top: 5px;
 }
 
 #bookInfo #quality {
@@ -185,12 +188,6 @@
 #bookInfo .info {
   margin-top: 20px;
   font-size: 0.8rem;
-}
-
-#bookInfo-price-label {
-  color: red;
-  font-size: 0.8rem;
-  margin-top: 5px;
 }
 
 #bookInfo #submit {
@@ -283,7 +280,7 @@
 #bookInfo #quality-warning {
   font-size: 0.8rem;
   font-weight: bold;
-  color: rgb(99, 99, 99);
+  color: red;
   margin: 0px;
   text-align: start;
   margin-left: 10px;
