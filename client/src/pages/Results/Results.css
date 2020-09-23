@@ -146,9 +146,21 @@
   margin: 0 auto;
   position: relative;
   margin-top: 50px;
-  padding: 20px 15px;
+  padding: 0px 15px;
   padding-top: 0px;
   box-sizing: border-box;
+  border: 1px solid white;
+}
+
+#results #al1 {
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgb(99, 99, 99);
+  font-size: 1rem;
+  line-height: 15px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 #results #ui-header {

@@ -215,6 +215,17 @@
   right: 5px;
 }
 
+#book #rating-substitute {
+  line-height: 15px;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 15px;
+  color: rgb(99, 99, 99);
+  text-align: center;
+  /* background: rgb(207, 207, 207);  */
+  background: white;
+}
+
 #book #convenience-box.hidden {
   display: none;
 }

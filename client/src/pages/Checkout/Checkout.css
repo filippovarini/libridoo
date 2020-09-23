@@ -171,6 +171,10 @@
   color: gray;
 }
 
+#checkout #paypal-choice {
+  color: rgb(18, 65, 143);
+}
+
 #stripe-secure.hidden {
   display: none;
 }

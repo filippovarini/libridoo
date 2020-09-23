@@ -61,7 +61,15 @@
   align-items: center;
   margin-bottom: 20px;
   font-size: 1.3rem;
+  position: relative;
   flex-direction: column;
+}
+
+#po-info .time {
+  position: absolute;
+  right: -30px;
+  font-size: 0.7rem;
+  color: rgb(99, 99, 99);
 }
 
 .po-choice .logo-container {

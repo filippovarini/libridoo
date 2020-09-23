@@ -280,42 +280,47 @@ class book extends Component {
                       : "INFO VENDITORE"}
                   </p>
                 </div>
-                <div>
-                  <div className="user-box box-small">
-                    <p className="rating-header box-text">
-                      {/* SINCERITÀ SULLA QUALITÀ{" "} */}
-                      AFFIDABILITÀ
-                    </p>
-                    <div className="rating">
-                      <Stars
-                        rating={Math.round(
-                          this.props.book.sellerUser.rating.qualityAverage
-                        )}
-                      />
-                      <p className="mean box-text">
-                        {Math.round(
-                          this.props.book.sellerUser.rating.qualityAverage * 10
-                        ) / 10}
+                {this.props.book.sellerUser.rating.deliveryAverage !== 0 ? (
+                  <div>
+                    <div className="user-box box-small">
+                      <p className="rating-header box-text">
+                        {/* SINCERITÀ SULLA QUALITÀ{" "} */}
+                        AFFIDABILITÀ
                       </p>
+                      <div className="rating">
+                        <Stars
+                          rating={Math.round(
+                            this.props.book.sellerUser.rating.qualityAverage
+                          )}
+                        />
+                        <p className="mean box-text">
+                          {Math.round(
+                            this.props.book.sellerUser.rating.qualityAverage *
+                              10
+                          ) / 10}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="user-box box-small">
+                      <p className="rating-header box-text">CONSEGNA</p>
+                      <div className="rating">
+                        <Stars
+                          rating={Math.round(
+                            this.props.book.sellerUser.rating.deliveryAverage
+                          )}
+                        />
+                        <p className="box-text mean">
+                          {Math.round(
+                            this.props.book.sellerUser.rating.deliveryAverage *
+                              10
+                          ) / 10}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="user-box box-small">
-                    <p className="rating-header box-text">CONSEGNA</p>
-                    <div className="rating">
-                      <Stars
-                        rating={Math.round(
-                          this.props.book.sellerUser.rating.deliveryAverage
-                        )}
-                      />
-                      <p className="box-text mean">
-                        {Math.round(
-                          this.props.book.sellerUser.rating.deliveryAverage * 10
-                        ) / 10}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
+                ) : (
+                  <p id="rating-substitute">ancora non è stato valutato</p>
+                )}
                 <div
                   id="convenience-box"
                   className={`user-box box-big ${

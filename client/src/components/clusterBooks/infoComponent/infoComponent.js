@@ -158,6 +158,10 @@ class InfoComponent extends Component {
             <i
               className={`fas zoom-ico fa-search-${
                 this.state.imageClass === "book-bigger" ? "minus" : "plus"
+              } ${
+                this.props.page === "orders" || this.props.page === "deals"
+                  ? "bigger-ico"
+                  : null
               }`}
               onClick={this.toggleImage}
             ></i>

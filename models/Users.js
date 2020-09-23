@@ -56,15 +56,15 @@ const UserSchema = new Schema({
   rating: {
     count: {
       type: Number,
-      default: 1
+      default: 0
     },
     qualityAverage: {
       type: Number,
-      default: 2.5
+      default: 0
     },
     deliveryAverage: {
       type: Number,
-      default: 2.5
+      default: 0
     }
   },
   bonusPoints: {

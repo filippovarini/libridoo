@@ -745,6 +745,10 @@ class Results extends Component {
               );
             })}
           </div>
+          <p id="al1">
+            ti consigliamo di comprare da meno utenti possibili per ridurre gli
+            incontri
+          </p>
         </div>
         {bodyContainer}
         <div id="results-footer">

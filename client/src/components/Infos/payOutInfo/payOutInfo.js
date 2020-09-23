@@ -201,6 +201,7 @@ class PayOutInfo extends Component {
                 <span id="po-pp-2">Pal</span>
               </p>
             </div>
+            <p className="time">( 0 sec)</p>
             <p className="monthly">1€ sul primo ordine del mese</p>
           </div>
           <div id="po-stripe-container">
@@ -222,6 +223,7 @@ class PayOutInfo extends Component {
                     BONIFICO
                   </p>
                 </div>
+                <p className="time">(30 sec)</p>
                 <p className="monthly">2€ sul primo ordine del mese</p>
               </div>
             )}

@@ -319,9 +319,8 @@ class CheckoutReview extends Component {
               id="rc-commission-explainer"
               className={this.state.explainerHidden ? "hidden" : null}
             >
-              Noi di Libridoo non guadagamo sui nostri compratori! Questa
-              commissione copre solo le commissioni imposte da PayPal o carte di
-              credito.
+              Libridoo non guadagna sui compratori! Questa commissione copre
+              solo le commissioni imposte da PayPal o carte di credito.
             </p>
             <p
               className={

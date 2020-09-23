@@ -9,6 +9,7 @@ class slideBar extends Component {
     if (this.props.fromHomeHeader && window.pageYOffset > 60) {
       display = "hidden";
     }
+
     const slideBar = (
       <div
         id="slideBar"

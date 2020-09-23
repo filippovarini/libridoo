@@ -28,7 +28,9 @@ class BookInfo extends Component {
     pricePlaceholder: "prezzo",
     titlePlaceholder: "titolo come appare sulla copertina",
     priceLabelHidden: true,
-    decimal: "00"
+    decimal: "00",
+    actualPrice: 0,
+    errorMessage: null
   };
 
   componentDidMount = () => {
@@ -179,8 +181,12 @@ class BookInfo extends Component {
         [`${e.target.id}Class`]: "correct-input"
       });
     }
-    if (e.target.id === "price" && e.target.value && e.target.value <= 0) {
-      this.setState({ priceClass: "invalid-input" });
+    if (e.target.id === "price" && e.target.value) {
+      if (e.target.value <= 0) {
+        this.setState({ priceClass: "invalid-input", actualPrice: 0 });
+      } else {
+        this.setState({ actualPrice: e.target.value });
+      }
     }
   };
 
@@ -196,19 +202,7 @@ class BookInfo extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (
-      // !this.state.imgUrl ||
-      !this.state.title ||
-      !this.state.quality ||
-      !this.state.price
-    ) {
-      // image not necessary
-      // if (!this.state.imgUrl) {
-      //   this.setState({
-      //     emptyImageClass: "empty",
-      //     headerClass: "empty-header"
-      //   });
-      // }
+    if (!this.state.title || !this.state.quality || !this.state.price) {
       if (!this.state.title) {
         this.setState({
           titleClass: "invalid-input",
@@ -567,6 +561,7 @@ class BookInfo extends Component {
                 value={this.state.decimal}
                 placeholder="00"
                 onChange={this.handleDecimalChange}
+                onBlur={this.handleBlur}
               />
             </div>
             <label
@@ -589,10 +584,21 @@ class BookInfo extends Component {
             }
             disabled={!this.state.imageDone && this.state.imgUrl ? true : false}
           />
-          <p id="bookInfo-price-suggestion">
-            Vendi a metà del prezzo originale per competere con gli altri
-            venditori
-          </p>
+          {this.state.actualPrice ? (
+            <p id="bookInfo-price-suggestion">
+              Libridoo vive chiedendo il 10%. Incasserai{" "}
+              {Math.round(
+                (this.state.actualPrice - this.state.actualPrice / 10) * 100
+              ) / 100}{" "}
+              € più i centesimi
+            </p>
+          ) : (
+            <p id="bookInfo-price-suggestion">
+              Vendi a metà del prezzo originale per competere con gli altri
+              venditori
+            </p>
+          )}
+
           <p
             id="submit"
             className={`info ${
