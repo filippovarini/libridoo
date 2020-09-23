@@ -340,3 +340,9 @@
     font-size: 0.7rem;
   }
 }
+
+@media only screen and (max-height: 750px) {
+  #bookInfo {
+    margin-top: -250px;
+  }
+}

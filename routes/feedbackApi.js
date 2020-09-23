@@ -5,6 +5,7 @@ const User = require("../models/Users");
 const Rating = require("../models/Ratings");
 const Comment = require("../models/Comments");
 const Error = require("../models/Errors");
+const Spam = require("../models/Spam");
 
 // get Avg Rating
 router.get("/rating", (req, res) => {
@@ -120,6 +121,39 @@ router.post("/error", (req, res) => {
 // delete all errors
 router.delete("/error", (req, res) => {
   Error.deleteMany({})
+    .then(() => {
+      res.json({ code: 0 });
+    })
+    .catch(error => {
+      res.json({ code: 1, error });
+    });
+});
+
+// delete all comments
+router.delete("/comments", (req, res) => {
+  Comment.deleteMany({})
+    .then(() => {
+      res.json({ code: 0 });
+    })
+    .catch(error => {
+      res.json({ code: 1, error });
+    });
+});
+
+// delete all rating
+router.delete("/rating", (req, res) => {
+  Rating.deleteMany({})
+    .then(() => {
+      res.json({ code: 0 });
+    })
+    .catch(error => {
+      res.json({ code: 1, error });
+    });
+});
+
+// delete all rating
+router.delete("/spam", (req, res) => {
+  Spam.deleteMany({})
     .then(() => {
       res.json({ code: 0 });
     })

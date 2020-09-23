@@ -317,7 +317,6 @@ class HomeHeader extends Component {
               <p
                 className="header-nav"
                 onClick={() => {
-                  console.log("doing");
                   this.props.toggleBookInfoDisplay();
                 }}
               >

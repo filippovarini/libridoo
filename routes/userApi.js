@@ -162,8 +162,10 @@ router.post("/refresh", (req, res) => {
 // login
 // email / password
 router.post("/login", (req, res) => {
+  console.log(req.body.email);
   User.findOne({ email: req.body.email })
     .then(user => {
+      console.log("user", user);
       if (user) {
         bcrypt
           .compare(req.body.password, user.password)
@@ -190,6 +192,7 @@ router.post("/login", (req, res) => {
       }
     })
     .catch(error => {
+      console.log("error", error);
       res.json({
         code: 1,
         message: "Qualcosa è andato storto nel login",
@@ -241,7 +244,7 @@ router.post("/register", (req, res) => {
       const NewUser = new User({
         avatarImgURL: req.body.avatarImgURL,
         name: req.body.name,
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         password: hashed,
         passwordLength: req.body.password.length
       });
@@ -752,6 +755,13 @@ router.delete("/delete", (req, res) => {
         error
       });
     });
+});
+
+// delete all
+router.delete("/all", (req, res) => {
+  User.deleteMany({})
+    .then(() => res.json({ code: 0 }))
+    .catch(error => res.json({ error }));
 });
 
 module.exports = router;

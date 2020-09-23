@@ -12,7 +12,6 @@ class SlideBar extends Component {
     fetch(`/api/payment/dashboard/${this.props.user.payOut.accountId}`)
       .then(res => res.json())
       .then(jsonRes => {
-        console.log(jsonRes);
         if (jsonRes.code === 0) window.location = jsonRes.link.url;
         else {
           // error
@@ -44,7 +43,6 @@ class SlideBar extends Component {
   };
 
   render() {
-    console.log(this.props.user.payOut);
     let display = this.props.hidden ? "hidden" : null;
     if (this.props.hiderSlidebar) display = "hidden";
     if (this.props.fromHomeHeader && window.pageYOffset > 60) {

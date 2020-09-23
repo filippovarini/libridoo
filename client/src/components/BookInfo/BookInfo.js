@@ -47,7 +47,6 @@ class BookInfo extends Component {
   };
 
   handleInputChange = e => {
-    console.log(e.target.id, e.target.value);
     if (e.target.id === "bookInfo-decimal")
       this.setState({ decimal: e.target.value });
     else this.setState({ [e.target.id]: e.target.value });
@@ -63,7 +62,6 @@ class BookInfo extends Component {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = function(event) {
-        console.log(event.target.result);
         this.setState({
           imgUrl: event.target.result,
           submitting: false,
@@ -135,7 +133,6 @@ class BookInfo extends Component {
   };
 
   handleSubmit = e => {
-    console.log("submit");
     e.preventDefault();
     if (!this.state.title || !this.state.quality || !this.state.price) {
       this.setState({ errorMessage: "Compila tutti i campi" });
@@ -162,7 +159,6 @@ class BookInfo extends Component {
         sellerId: user._id
         // missing place
       };
-      console.log(body);
       if (
         user.DeliveryInfo.timeToMeet &&
         user.phone &&

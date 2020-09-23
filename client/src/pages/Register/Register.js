@@ -319,7 +319,9 @@ class Register extends Component {
           passwordConfirmPlaceholder: "*conferma password*"
         });
       }
-    } else if (this.state.email !== this.state.emailConfirm) {
+    } else if (
+      this.state.email.toLowerCase() !== this.state.emailConfirm.toLowerCase()
+    ) {
       this.setState({ errorMessage: "Le due email non coincidono" });
     } else if (!this.emailValidation(this.state.email)) {
       this.setState({ errorMessage: "Email non valida" });
@@ -412,7 +414,7 @@ class Register extends Component {
                     type: "SET-USER",
                     user: jsonRes.activeUser
                   });
-                  if (this.props.rememberMe) {
+                  if (this.state.rememberClicked) {
                     localStorage.setItem("JWT", jsonRes.JWT);
                   } else {
                     sessionStorage.setItem("JWT", jsonRes.JWT);

@@ -53,34 +53,6 @@ class CheckoutReview extends Component {
     }
   };
 
-  // componentDidMount = () => {
-  //   if (!sessionStorage.getItem("searchParams")) {
-  //     this.props.history.push("/search");
-  //   } else {
-  //     // something searched
-  //     if (!sessionStorage.getItem("SBs")) {
-  //       // nothing selected
-  //       this.props.history.push("/results");
-  //     } else {
-  //       if (!this.state.couponSet && sessionStorage.getItem("coupon")) {
-  //         fetch(`/api/coupon/code/${sessionStorage.getItem("coupon")}`)
-  //           .then(res => res.json())
-  //           .then(jsonRes => {
-  //             if (jsonRes.code === 0) {
-  //               // correct
-  //               this.setState({
-  //                 couponSet: true
-  //               });
-  //             }
-  //           })
-  //           .catch(error => {
-  //             console.log(error);
-  //           });
-  //       }
-  //     }
-  //   }
-  // };
-
   handleChange = e => {
     this.setState({
       uniCode: e.target.value
@@ -114,7 +86,6 @@ class CheckoutReview extends Component {
       })
         .then(res => res.json())
         .then(jsonRes => {
-          console.log(jsonRes);
           this.setState({ loading: false });
           if (jsonRes.code === 0) {
             // correct

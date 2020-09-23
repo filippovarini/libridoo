@@ -144,7 +144,6 @@ class Checkout extends Component {
     const commission = sessionStorage.getItem("coupon")
       ? 0
       : Math.round(((total / 100) * 3.4 + 0.35) * 100) / 100;
-    console.log(commission);
 
     // bill and body
     const bill = {
@@ -212,7 +211,6 @@ class Checkout extends Component {
       buyerInfo: user,
       soldBooksClusters: this.props.selectedBooks
     };
-    console.log("saving", body);
     fetch("/api/book/checkedOut", {
       method: "POST",
       headers: {
@@ -331,7 +329,6 @@ class Checkout extends Component {
       totalPrice =
         Math.round((totalPrice + 0.35 + (totalPrice / 100) * 3.4) * 100) / 100;
     }
-    console.log(totalPrice);
     let discountAvailable = this.props.user.bonusPoints > 10 ? true : false;
 
     // 10 percent

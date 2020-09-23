@@ -951,4 +951,11 @@ router.delete("/clusters", (req, res) => {
     .catch(erorr => res.json({ code: 1, error }));
 });
 
+router.delete("/notFound", (req, res) => {
+  notFound
+    .deleteMany()
+    .then(() => res.jsom({ code: 0 }))
+    .catch(error => res.json({ code: 1, error }));
+});
+
 module.exports = router;
