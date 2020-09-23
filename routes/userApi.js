@@ -42,66 +42,67 @@ router.get("/rating/:_id", (req, res) => {
     });
 });
 
+// !! NOT USING
 // send email to user with emailConfirm code
-router.get("/emailConfirm/:email", (req, res) => {
-  let confirmCode = Math.floor(Math.random() * 1000000);
-  confirmCode = confirmCode.toString();
+// router.get("/emailConfirm/:email", (req, res) => {
+//   let confirmCode = Math.floor(Math.random() * 1000000);
+//   confirmCode = confirmCode.toString();
 
-  const options = {
-    service: "Godaddy",
-    auth: {
-      user: "info@libridoo.it",
-      pass: EMAIL_PASS
-    },
-    tls: {
-      ciphers: "SSLv3",
-      rejectUnauthorized: false
-    }
-  };
-  const transporter = nodemailer.createTransport(options);
-  // verify connection configuration
+//   const options = {
+//     service: "Godaddy",
+//     auth: {
+//       user: "info@libridoo.it",
+//       pass: EMAIL_PASS
+//     },
+//     tls: {
+//       ciphers: "SSLv3",
+//       rejectUnauthorized: false
+//     }
+//   };
+//   const transporter = nodemailer.createTransport(options);
+//   // verify connection configuration
 
-  transporter.sendMail(
-    {
-      from: '"Libridoo" <noReply@libridoo.it>',
-      to: req.params.email,
-      subject: "Conferma la tua Email",
-      text: "Ciao!",
-      html: `Gentile Utente,
-    <br /><br />
-    Il suo codice per confermare l'email è ${confirmCode}
-    <br /><br /><br />
-    Saluti,
-    <br />
-    <i>Il team di Libridoo</i>`
-    },
-    async (error, info) => {
-      if (error) {
-        console.log("error", error);
-        const newError = new Error({
-          error: { message: "EMAIL NOT SENT, confirmEmail", error }
-        });
-        await newError.save();
-      } else {
-        console.log("emailsent", info);
-      }
-    }
-  );
-  bcrypt
-    .hash(confirmCode, 10)
-    .then(confirmCode => {
-      res.json({ code: 0, hashedCode: confirmCode });
-    })
-    .catch(error => {
-      res.json({
-        code: 1,
-        place: ".hash(), userApi:70",
-        message:
-          "Qualcosa è andato storto nella creazione di una nuova password",
-        error
-      });
-    });
-});
+//   transporter.sendMail(
+//     {
+//       from: '"Libridoo" <noReply@libridoo.it>',
+//       to: req.params.email,
+//       subject: "Conferma la tua Email",
+//       text: "Ciao!",
+//       html: `Gentile Utente,
+//     <br /><br />
+//     Il suo codice per confermare l'email è ${confirmCode}
+//     <br /><br /><br />
+//     Saluti,
+//     <br />
+//     <i>Il team di Libridoo</i>`
+//     },
+//     async (error, info) => {
+//       if (error) {
+//         console.log("error", error);
+//         const newError = new Error({
+//           error: { message: "EMAIL NOT SENT, confirmEmail", error }
+//         });
+//         await newError.save();
+//       } else {
+//         console.log("emailsent", info);
+//       }
+//     }
+//   );
+//   bcrypt
+//     .hash(confirmCode, 10)
+//     .then(confirmCode => {
+//       res.json({ code: 0, hashedCode: confirmCode });
+//     })
+//     .catch(error => {
+//       res.json({
+//         code: 1,
+//         place: ".hash(), userApi:70",
+//         message:
+//           "Qualcosa è andato storto nella creazione di una nuova password",
+//         error
+//       });
+//     });
+// });
 
 // check hashed code
 // hashed / code

@@ -3,9 +3,9 @@ const nodemailer = require("nodemailer");
 const paypal = require("paypal-rest-sdk");
 
 // stripe
-const stripe = require("stripe")(
-  "sk_test_51HT5a3Bfsl1QGy9mM3Mch4AqaKnx3bBzAzoZreRmU7L5YJwAKBzusvsUI7c1HBAe2YtEAEA4V19JXFhI4CIG4B8T00aDxrpJv1"
-);
+// secret
+const stripe_secret = require("../config/keys").STRIPE_SECRET;
+const stripe = require("stripe")(stripe_secret);
 
 // paypal
 paypal.configure({
@@ -344,44 +344,44 @@ router.post("/transfer", async (req, res) => {
         const date = new Date();
         console.log(error);
         // balance insufficient
-        // const options = {
-        //   service: "Godaddy",
-        //   auth: {
-        //     user: "info@libridoo.it",
-        //     pass: EMAIL_PASS
-        //   },
-        //   tls: {
-        //     ciphers: "SSLv3",
-        //     rejectUnauthorized: false
-        //   }
-        // };
-        // const transporter = nodemailer.createTransport(options);
+        const options = {
+          service: "Godaddy",
+          auth: {
+            user: "info@libridoo.it",
+            pass: EMAIL_PASS
+          },
+          tls: {
+            ciphers: "SSLv3",
+            rejectUnauthorized: false
+          }
+        };
+        const transporter = nodemailer.createTransport(options);
         // // verify connection configuration
 
-        // transporter.sendMail(
-        //   {
-        //     from: '"Libridoo" <info@libridoo.it>',
-        //     to: "errors.libridoo@gmail.com",
-        //     subject: "Critical Error",
-        //     text: "Balance insufficiennt",
-        //     html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
-        //   <br /><br />
-        //   Ammount due: ${amount}, seller connected account id = ${
-        //       req.body.accountId
-        //     }`
-        //   },
-        //   async (error, info) => {
-        //     if (error) {
-        //       console.log("error", error);
-        //       const newError = new Error({
-        //         error: { message: "EMAIL NOT SENT, confirmEmail", error }
-        //       });
-        //       await newError.save();
-        //     } else {
-        //       console.log("emailsent", info);
-        //     }
-        //   }
-        // );
+        transporter.sendMail(
+          {
+            from: '"Libridoo" <info@libridoo.it>',
+            to: "errors.libridoo@gmail.com",
+            subject: "Critical Error",
+            text: "Balance insufficiennt",
+            html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
+          <br /><br />
+          Ammount due: ${amount}, seller connected account id = ${
+              req.body.accountId
+            }`
+          },
+          async (error, info) => {
+            if (error) {
+              console.log("error", error);
+              const newError = new Error({
+                error: { message: "EMAIL NOT SENT, confirmEmail", error }
+              });
+              await newError.save();
+            } else {
+              console.log("emailsent", info);
+            }
+          }
+        );
         res.json({
           code: 1,
           insufficient: true,
@@ -451,44 +451,42 @@ router.post("/paypalTransfer", async (req, res) => {
       if (error.response.name === "INSUFFICIENT_FUNDS") {
         const date = new Date();
         // balance insufficient
-        // const options = {
-        //   service: "Godaddy",
-        //   auth: {
-        //     user: "info@libridoo.it",
-        //     pass: EMAIL_PASS
-        //   },
-        //   tls: {
-        //     ciphers: "SSLv3",
-        //     rejectUnauthorized: false
-        //   }
-        // };
-        // const transporter = nodemailer.createTransport(options);
+        const options = {
+          service: "Godaddy",
+          auth: {
+            user: "info@libridoo.it",
+            pass: EMAIL_PASS
+          },
+          tls: {
+            ciphers: "SSLv3",
+            rejectUnauthorized: false
+          }
+        };
+        const transporter = nodemailer.createTransport(options);
         // // verify connection configuration
 
-        // transporter.sendMail(
-        //   {
-        //     from: '"Libridoo" <info@libridoo.it>',
-        //     to: "errors.libridoo@gmail.com",
-        //     subject: "Critical Error",
-        //     text: "Balance insufficiennt PayPal",
-        //     html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
-        //   <br /><br />
-        //   Ammount due: ${amount}, seller connected email  = ${
-        //       req.body.email
-        //     }`
-        //   },
-        //   async (error, info) => {
-        //     if (error) {
-        //       console.log("error", error);
-        //       const newError = new Error({
-        //         error: { message: "EMAIL NOT SENT, confirmEmail", error }
-        //       });
-        //       await newError.save();
-        //     } else {
-        //       console.log("emailsent", info);
-        //     }
-        //   }
-        // );
+        transporter.sendMail(
+          {
+            from: '"Libridoo" <info@libridoo.it>',
+            to: "errors.libridoo@gmail.com",
+            subject: "Critical Error",
+            text: "Balance insufficiennt PayPal",
+            html: `Happened on the: ${date} at ${date.getHours()}: ${date.getMinutes()},
+          <br /><br />
+          Ammount due: ${amount}, seller connected email  = ${req.body.email}`
+          },
+          async (error, info) => {
+            if (error) {
+              console.log("error", error);
+              const newError = new Error({
+                error: { message: "EMAIL NOT SENT, confirmEmail", error }
+              });
+              await newError.save();
+            } else {
+              console.log("emailsent", info);
+            }
+          }
+        );
         res.json({
           code: 1,
           insufficient: true,

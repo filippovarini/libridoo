@@ -86,9 +86,9 @@ class HomeExplainer extends Component {
                   </p>
                   <p className="step-text">
                     {this.state.nav === "buy"
-                      ? "Ti invieremo via email i contatti dei venditori organizzare la consegna."
+                      ? "Ti invieremo via email i contatti dei venditori per organizzare la consegna."
                       : this.state.nav === "sell"
-                      ? "Ti notificheremo via email, mandandoti i contatti dei compratori, per organizzarti per la consegna"
+                      ? "Ti notificheremo via email, mandandoti i contatti dei compratori per organizzarti per la consegna"
                       : "Segui la nostra pagina Instagram @libridoo.it e l'omonima pagina Facebook"}
                   </p>
                 </div>

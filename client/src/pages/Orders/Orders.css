@@ -25,6 +25,7 @@
   line-height: 15px;
   margin: 0 auto;
   margin-top: 0px;
+  font-size: 1rem;
 }
 
 #orders-offer {
@@ -42,7 +43,7 @@
   margin-top: 20px;
   line-height: 35px;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 #orders-empty-link:hover {
   box-shadow: 0px 0px 5px rgb(32, 165, 32);
@@ -92,15 +93,6 @@
 }
 
 @media only screen and (max-width: 700px) {
-  #orders-empty-header {
-    font-size: 1.5rem;
-  }
-
-  #empty-subHeader {
-    font-size: 0.8rem;
-    width: 450px;
-  }
-
   #orders-empty-link {
     font-size: 0.9rem;
   }
@@ -110,58 +102,19 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
-  #fake-header {
-    letter-spacing: 2rem;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  #orders-empty-container {
-    margin-top: 80px;
-  }
-
-  #orders-empty-header {
-    font-size: 1.2rem;
-  }
-
-  #empty-subHeader {
-    font-size: 0.7rem;
-    width: 350px;
-  }
-
-  #orders-empty-link {
-    font-size: 0.5rem;
-  }
-
-  #orders-empty-link:hover {
-    font-size: 0.51rem;
-  }
-}
-
-@media only screen and (max-width: 450px) {
-  #fake-header {
-    /* font-size: 3rem; */
-    letter-spacing: 1rem;
-  }
-}
-
 @media only screen and (max-width: 400px) {
-  #orders-empty-header {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-  }
-
-  #empty-subHeader {
-    font-size: 0.6rem;
-    width: 350px;
-  }
-
   #orders-empty-link {
-    font-size: 0.5rem;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 20px;
   }
 
-  #orders-empty-link:hover {
-    font-size: 0.51rem;
+  #orders-empty-container {
+    width: 300px;
+  }
+
+  #orders #empty-subHeader {
+    width: 300px;
+    line-height: 15px;
   }
 }

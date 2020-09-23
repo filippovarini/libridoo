@@ -194,7 +194,10 @@ class Login extends Component {
               sessionStorage.setItem("JWT", jsonRes.JWT);
             }
             const redirection =
-              this.props.match.params.action === "buying" ? "/checkout" : "/";
+              this.props.match.params.action === "buying"
+                ? // "/checkout"
+                  "/orderReview"
+                : "/";
             this.props.history.push(redirection);
           }
         })
@@ -222,74 +225,84 @@ class Login extends Component {
         <LoadingM />
       </div>
     ) : (
-      <form id="login-form" onSubmit={this.handleSubmit}>
-        <span id="login-prompt">LOGIN</span>
+      <div>
         <p
-          id="login-generalLabel"
-          className={`incorrect-input-label ${
-            this.state.generalLabelHidden ? "hidden" : ""
-          }`}
+          id="buying"
+          className={
+            this.props.match.params.action === "buying" ? "" : "hidden"
+          }
         >
-          Compila tutti i campi obbligatori
+          Effettua il login per completare l'ordine
         </p>
-        <div className="text">
-          <label
-            htmlFor="email"
+        <form id="login-form" onSubmit={this.handleSubmit}>
+          <span id="login-prompt">LOGIN</span>
+          <p
+            id="login-generalLabel"
             className={`incorrect-input-label ${
-              this.state.emailLabelMessage ? "" : "hidden"
+              this.state.generalLabelHidden ? "hidden" : ""
             }`}
           >
-            {this.state.emailLabelMessage}
-          </label>
-          <input
-            id="email"
-            maxLength="320"
-            placeholder={this.state.emailPlaceholder}
-            type="text"
-            onChange={this.handleLoginChange}
-            className={`login-input input-text ${this.state.emailFeedbackClass}`}
-            onBlur={this.handleBlur}
-          />
-        </div>
-        <div className="text">
-          <label
-            htmlFor="password"
-            className={`incorrect-input-label ${
-              this.state.passwordLabelMessage ? "" : "hidden"
-            }`}
-          >
-            {this.state.passwordLabelMessage}
-          </label>
-          <input
-            id="password"
-            placeholder={this.state.passwordPlaceholder}
-            type="password"
-            onChange={this.handleLoginChange}
-            className={`login-input input-text ${this.state.passwordFeedbackClass}`}
-            onBlur={this.handleBlur}
-          />
-        </div>
-        <div id="checkbox" className="login-input">
-          <input
-            type="checkbox"
-            id="remember-me"
-            onChange={this.toggleRememberMe}
-            defaultChecked={true}
-            className="login-input"
-          />
-          <label
-            htmlFor="remember-me"
-            id="checbox-label"
-            className="login-rememberMe"
-          >
-            Resta Collegato
-          </label>
-        </div>
-        <input type="submit" value="LOGIN" className="hidden" />
-        <p id="login-submit-btn" onClick={this.handleSubmit}>
-          LOGIN
-        </p>
-      </form>
+            Compila tutti i campi obbligatori
+          </p>
+          <div className="text">
+            <label
+              htmlFor="email"
+              className={`incorrect-input-label ${
+                this.state.emailLabelMessage ? "" : "hidden"
+              }`}
+            >
+              {this.state.emailLabelMessage}
+            </label>
+            <input
+              id="email"
+              maxLength="320"
+              placeholder={this.state.emailPlaceholder}
+              type="text"
+              onChange={this.handleLoginChange}
+              className={`login-input input-text ${this.state.emailFeedbackClass}`}
+              onBlur={this.handleBlur}
+            />
+          </div>
+          <div className="text">
+            <label
+              htmlFor="password"
+              className={`incorrect-input-label ${
+                this.state.passwordLabelMessage ? "" : "hidden"
+              }`}
+            >
+              {this.state.passwordLabelMessage}
+            </label>
+            <input
+              id="password"
+              placeholder={this.state.passwordPlaceholder}
+              type="password"
+              onChange={this.handleLoginChange}
+              className={`login-input input-text ${this.state.passwordFeedbackClass}`}
+              onBlur={this.handleBlur}
+            />
+          </div>
+          <div id="checkbox" className="login-input">
+            <input
+              type="checkbox"
+              id="remember-me"
+              onChange={this.toggleRememberMe}
+              defaultChecked={true}
+              className="login-input"
+            />
+            <label
+              htmlFor="remember-me"
+              id="checbox-label"
+              className="login-rememberMe"
+            >
+              Resta Collegato
+            </label>
+          </div>
+          <input type="submit" value="LOGIN" className="hidden" />
+          <p id="login-submit-btn" onClick={this.handleSubmit}>
+            LOGIN
+          </p>
+        </form>
+      </div>
     );
     return (
       <div id="login">
@@ -304,7 +317,10 @@ class Login extends Component {
           <Link to="/recover" id="recover-prompt">
             Credenziali dimenticate?
           </Link>
-          <div id="register-prompt-container">
+          <div
+            id="register-prompt-container"
+            className={this.state.loading ? "hidden" : null}
+          >
             <span id="register-prompt">Sei nuovo? </span>
             <Link
               to={

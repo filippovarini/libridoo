@@ -66,7 +66,7 @@ class book extends Component {
 
   handleDelete = () => {
     // eslint-disable-next-line no-restricted-globals
-    if (confirm("Vuoi eliminare questo libro?")) {
+    if (confirm("Confermi di voler eliminare questo libro?")) {
       fetch("/api/book/delete", {
         method: "DELETE",
         headers: {

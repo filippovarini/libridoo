@@ -33,7 +33,8 @@
 }
 
 #placeInfo #editing-placeInfoBody {
-  margin: 15px 50px;
+  margin: 20px 30px;
+  margin-top: 15px;
 }
 
 #placeInfo-header-container {
@@ -72,6 +73,11 @@
   margin-left: 10px;
 }
 
+#placeInfo .placeInfoBody.editing {
+  margin: 0px;
+  text-align: center;
+}
+
 #placeInfo-error-label {
   color: red;
   margin: 0px;
@@ -82,4 +88,5 @@
 
 #placeInfo-form-container {
   margin-top: 20px;
+  margin-bottom: 25px;
 }

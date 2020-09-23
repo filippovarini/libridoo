@@ -150,6 +150,23 @@
   line-height: 14px;
 }
 
+#checkoutReview #infoReview-header {
+  text-align: center;
+  font-weight: bold;
+  color: gray;
+  display: inline-block;
+  padding: 3px 10%;
+  margin: 0px;
+  font-size: 1.2rem;
+}
+
+#checkoutReview #infoReview-header-container {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: -30px;
+  display: none;
+}
+
 #rc-info-ico {
   font-size: 0.65rem;
   position: relative;
@@ -203,6 +220,7 @@
   border-radius: 3px;
   font-size: 1.2rem;
 }
+
 #rc-link {
   font-weight: bold;
   color: white;
@@ -210,9 +228,19 @@
   margin: 0 auto;
 }
 
-#rc-link-container:hover {
+#rc-link-container.infoNeeded:hover {
   box-shadow: 0px 0px 3px rgb(105, 142, 245);
   cursor: pointer;
+}
+
+#rc-link-container.infoNeeded {
+  background: rgb(207, 207, 207);
+  font-size: 1rem;
+}
+
+#rc-link-container.infoNeeded:hover {
+  box-shadow: 0px 0px 0px transparent;
+  cursor: default;
 }
 
 #rc-coupon-ico {

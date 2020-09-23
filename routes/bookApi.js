@@ -517,107 +517,125 @@ router.post("/checkedOut", (req, res) => {
       let clusterPrice = 0;
       cluster.Books.forEach(book => (clusterPrice += book.price));
       // send email to seller
-      // const options = {
-      //   service: "Godaddy",
-      //   auth: {
-      //     user: "info@libridoo.it",
-      //     pass: EMAIL_PASS
-      //   },
-      //   tls: {
-      //     ciphers: "SSLv3",
-      //     rejectUnauthorized: false
-      //   }
-      // };
-      // const transporter = nodemailer.createTransport(options);
+      const options = {
+        service: "Godaddy",
+        auth: {
+          user: "info@libridoo.it",
+          pass: EMAIL_PASS
+        },
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false
+        }
+      };
+      const transporter = nodemailer.createTransport(options);
 
       // // send mail with defined transport object
-      // transporter.sendMail({
-      //   from: '"Libridoo" <sales@libridoo.it>',
-      //   to: cluster.sellerInfo.email,
-      //   subject: "Libri Venduti",
-      //   // text: "Ciao!",
-      //   html: `Caro ${cluster.sellerInfo.name.split(" ")[0] || "utente"},
-      //   <br /><br />
-      //   Abbiamo buone notizie!!
-      //   <br />
-      //   Hai appena venduto ${cluster.Books.length} libr<span>${
-      //     cluster.Books.length === 1 ? "o" : "i"
-      //   }</span> a ${req.body.buyerInfo.name}, per un totale di ${clusterPrice}
-      //   euro${cluster.delivery.choosen ? "" : "*"}.<br />
-      //   ${
-      //     cluster.delivery.choosen
-      //       ? `<span>${req.body.buyerInfo.name} vive in zona ${
-      //           req.body.buyerInfo.place.city
-      //         }, ${
-      //           req.body.buyerInfo.place.region
-      //         }, ed ha chiesto di riceverli via spedizione,
-      //   pagandoti un extra di ${
-      //     cluster.delivery.cost
-      //   } euro, come da te specificato.<br />
-      //   Il totale, dunque, ammonta a <b>€ ${clusterPrice +
-      //     cluster.delivery.cost}*</span>`
-      //       : ""
-      //   }
-      //   </b><br/><br />
-      //   Adesso,<br />
-      //   tutto quello che devi fare per <b>ricevere i soldi</b>, è consegnare i libri al
-      //   compratore. Una volta fatto, ricordagli di confermare la consegna per ricevere il pagamento.
-      //   <br/><br/>
-      //     Ecco le informazioni di ${
-      //       req.body.buyerInfo.name
-      //     }, accordati con lui per
-      //     l'incontro o spedizione.
-      //   </p>
-      //   <div style="margin-top: 30px">
-      //     <p
-      //       style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
-      //     >
-      //       ${req.body.buyerInfo.name}${
-      //     cluster.delivery.choosen
-      //       ? `<span style="font-size: 1.2rem">, da spedire (già pagata)</span>`
-      //       : ""
-      //   }
-      //     </p>
-      //     <div
-      //       style="border: 1px solid black; display: flex; justify-content: space-between;"
-      //     >
-      //       <div style="border: 1px solid black; width: 50%;">
-      //         <p
-      //           style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
-      //         >
-      //           Libri Comprati
-      //         </p>
-      //         <ul>
-      //           ${cluster.Books.map(book => {
-      //             return `<li key=${book._id}>${book.title}</li>`;
-      //           }).join("")}
-      //         </ul>
-      //       </div>
-      //       <div style="border: 1px solid black; width: 50%; min-width: 50%;">
-      //         <p
-      //           style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
-      //         >
-      //           Contatti
-      //         </p>
-      //         <ul>
-      //           <li>
-      //             ${req.body.buyerInfo.email}
-      //           </li>
-      //           <li>
-      //           ${req.body.buyerInfo.phone}
-      //           </li>
-      //           <li>
-      //           ${req.body.buyerInfo.place.city}, ${req.body.buyerInfo.school}
-      //           </li>
-      //         </ul>
-      //       </div>
-      //     </div>
-      //   </div>
-      //   <br/>
-      //   <p style="margin:20px; font-size: .7rem">* Conforme ai termini e condizioni di www.libridoo.it, esposti su https://www.libridoo.it/T&C, libridoo trattiene il 10% (10 per cento) dell'incasso del venditore
-      //   <br/><br/><br/>
-      //   Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
-      // });
+      transporter.sendMail(
+        {
+          from: '"Libridoo" <sales@libridoo.it>',
+          to: cluster.sellerInfo.email,
+          subject: "Libri Venduti",
+          // text: "Ciao!",
+          html: `Caro ${cluster.sellerInfo.name.split(" ")[0] || "utente"},
+        <br /><br />
+        Abbiamo buone notizie!!
+        <br />
+        Hai appena venduto ${cluster.Books.length} libr<span>${
+            cluster.Books.length === 1 ? "o" : "i"
+          }</span> a ${
+            req.body.buyerInfo.name
+          }, per un totale di ${clusterPrice}
+        euro${cluster.delivery.choosen ? "" : "*"}.<br />
+        ${
+          cluster.delivery.choosen
+            ? `<span>${req.body.buyerInfo.name} vive in zona ${
+                req.body.buyerInfo.place.city
+              }, ${
+                req.body.buyerInfo.place.region
+              }, ed ha chiesto di riceverli via spedizione,
+        pagandoti un extra di ${
+          cluster.delivery.cost
+        } euro, come da te specificato.<br />
+        Il totale, dunque, ammonta a <b>€ ${clusterPrice +
+          cluster.delivery.cost}*</span>`
+            : ""
+        }
+        </b><br/><br />
+        Adesso,<br />
+        tutto quello che devi fare per <b>ricevere i soldi</b>, è consegnare i libri al
+        compratore. Una volta fatto, ricordagli di confermare la consegna per ricevere il pagamento.
+        <br/><br/>
+          Ecco le informazioni di ${
+            req.body.buyerInfo.name
+          }, accordati con lui per
+          l'incontro o spedizione.
+        </p>
+        <div style="margin-top: 30px">
+          <p
+            style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
+          >
+            ${req.body.buyerInfo.name}${
+            cluster.delivery.choosen
+              ? `<span style="font-size: 1.2rem">, da spedire (già pagata)</span>`
+              : ""
+          }
+          </p>
+          <div
+            style="border: 1px solid black; display: flex; justify-content: space-between;"
+          >
+            <div style="border: 1px solid black; width: 50%;">
+              <p
+                style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+              >
+                Libri Comprati
+              </p>
+              <ul>
+                ${cluster.Books.map(book => {
+                  return `<li key=${book._id}>${book.title}</li>`;
+                }).join("")}
+              </ul>
+            </div>
+            <div style="border: 1px solid black; width: 50%; min-width: 50%;">
+              <p
+                style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+              >
+                Contatti
+              </p>
+              <ul>
+                <li>
+                  ${req.body.buyerInfo.email}
+                </li>
+                <li>
+                ${req.body.buyerInfo.phone}
+                </li>
+                <li>
+                ${req.body.buyerInfo.place.city}, ${req.body.buyerInfo.school}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <p style="margin:20px; font-size: .7rem">* Conforme ai termini e condizioni di www.libridoo.it, esposti su https://www.libridoo.it/T&C, libridoo trattiene il 10% (10 per cento) dell'incasso del venditore
+        <br/><br/><br/>
+        Cordiali Saluti,<br/>Il team di <i>Libridoo</i>`
+        },
+        async (error, info) => {
+          if (error) {
+            console.log(error);
+            const newError = new Error({
+              error: {
+                message: "EMAIL NOT SENT, checkout, email al compratore",
+                error
+              }
+            });
+            await newError.save();
+          } else {
+            console.log("emailsent", info);
+          }
+        }
+      );
       // post soldbooks cluster
       const newCluster = new SoldBooksCluster({
         dealId: req.body.dealId,
@@ -653,160 +671,123 @@ router.post("/checkedOut", (req, res) => {
     });
   });
   clusterPromise.then(() => {
-    // successfully posted all clusters, now delete sold books
-    // DELETE BOOKS
-    // req.body._ids.forEach(_id => {
-    //   Book.findByIdAndDelete(_id)
-    //     .then(book => {
-    //       console.log("book not deleted");
-    //       if (!book) {
-    //         res.json({
-    //           code: 1.5,
-    //           place: ".findByIdAndDelete(), bookApi:618",
-    //           devmessage: "clusters successfully posted",
-    //           message: "Nessun libro trovato con questo id",
-    //           _id
-    //         });
-    //       } else {
-    // if (req.body._ids.indexOf(_id) === req.body._ids.length - 1) {
-
-    // !!!!! DIRECTLY SEND EMAIL, UNCOMMENT FROM HERE
-
     // success
     // send mail
-    // const options = {
-    //   service: "Godaddy",
-    //   auth: {
-    //     user: "info@libridoo.it",
-    //     pass: EMAIL_PASS
-    //   },
-    //   tls: {
-    //     ciphers: "SSLv3",
-    //     rejectUnauthorized: false
-    //   }
-    // };
-    // const transporter = nodemailer.createTransport(options);
+    const options = {
+      service: "Godaddy",
+      auth: {
+        user: "info@libridoo.it",
+        pass: EMAIL_PASS
+      },
+      tls: {
+        ciphers: "SSLv3",
+        rejectUnauthorized: false
+      }
+    };
+    const transporter = nodemailer.createTransport(options);
 
     // // send mail with defined transport object
-    // transporter.sendMail(
-    //   {
-    //     from: '"Libridoo" <sales@libridoo.it>',
-    //     to: req.body.buyerInfo.email,
-    //     subject: "Ordine completato!",
-    //     // text: "Ciao!", OK WITHOUT TEXT??
-    //     html: `Caro ${req.body.buyerInfo.name.split(" ")[0] ||
-    //       "utente"},
-    //   <br /><br />
-    //   Ti ringraziamo per aver scelto <i>Libridoo</i> per comprare i libri di cui
-    //   avevi bisogno, speriamo ti sia trovato bene con noi.
-    //   <br />
-    //   Il codice del tuo ordine è <b>${req.body.dealId}</b>.
-    //   <br /><br />
-    //   Per ricevere i libri, adesso, contatta i venditori per farti consegnare i
-    //   libri.
-    //   Non ti preoccupare, i venditori sono stati informati e seguiranno le
-    //   istruzioni fino a quando il libro sarà nelle tue mani.
-    //   <br />
-    //   Una volta ricevuti i libri da un venditore, ricordati di <b>confermare la
-    //   consegna</b>, così da permettere al venditore di ricevere i soldi.
-    //   <br />
-    //   Per farlo vai su: <span style="font-weight: bold; color: gray">Libridoo > Ordini</span> e clicca il pulsante "CONFERMA" in basso a destra
-    //   <br/>
-    //   <p style="font-size: 1.2rem">
-    //     Ecco i contatti dei venditori:
-    //   </p>
-    //   ${req.body.soldBooksClusters.map(cluster => {
-    //     return `<div style="margin-top: 30px" key=${cluster.sellerId}>
-    //     <p
-    //       style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
-    //     >
-    //      ${cluster.sellerInfo.name}${
-    //       cluster.delivery.choosen
-    //         ? "<span style='font-size: 1.2rem'>, con spedizione</span>"
-    //         : ""
-    //     }
-    //     </p>
-    //     <div
-    //       style="border: 1px solid black; display: flex; justify-content: space-between;"
-    //     >
-    //       <div style="border: 1px solid black; width: 50%;">
-    //         <p
-    //           style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
-    //         >
-    //           Libri selezionati
-    //         </p>
-    //         <ul>
-    //         ${cluster.Books.map(book => {
-    //           return `<li key=${book._id}>${book.title}</li>`;
-    //         }).join("")}
-    //         </ul>
-    //       </div>
-    //       <div style="border: 1px solid black; width: 50%;">
-    //         <p
-    //           style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
-    //         >
-    //           Contatti
-    //         </p>
-    //         <ul>
-    //           <li>
-    //             ${cluster.sellerInfo.email}
-    //           </li>
-    //           <li>
-    //             ${cluster.sellerInfo.phone}
-    //           </li>
-    //           <li>
-    //             ${cluster.sellerInfo.place.city}, ${
-    //       cluster.sellerInfo.school
-    //     }
-    //           </li>
-    //         </ul>
-    //       </div>
-    //     </div>
-    //   </div>`;
-    //   })}
-    //   <br/><br/><br/><br/>
-    //   Saluti,
-    //   <br />
-    //   Il team di <i>Libridoo</i>`
-    //   },
-    //   async (error, info) => {
-    //     if (error) {
-    //       console.log(error);
-    //       const newError = new Error({
-    //         error: {
-    //           message:
-    //             "EMAIL NOT SENT, checkout, email al compratore",
-    //           error
-    //         }
-    //       });
-    //       await newError.save();
-    //     } else {
-    //       console.log("emailsent", info);
-    //     }
-    //   }
-    // );
+    transporter.sendMail(
+      {
+        from: '"Libridoo" <sales@libridoo.it>',
+        to: req.body.buyerInfo.email,
+        subject: "Ordine completato!",
+        // text: "Ciao!", OK WITHOUT TEXT??
+        html: `Caro ${req.body.buyerInfo.name.split(" ")[0] || "utente"},
+      <br /><br />
+      Ti ringraziamo per aver scelto <i>Libridoo</i> per comprare i libri di cui
+      avevi bisogno, speriamo ti sia trovato bene con noi.
+      <br />
+      Il codice del tuo ordine è <b>${req.body.dealId}</b>.
+      <br /><br />
+      Per ricevere i libri, adesso, contatta i venditori per farti consegnare i
+      libri.
+      Non ti preoccupare, i venditori sono stati informati e seguiranno le
+      istruzioni fino a quando il libro sarà nelle tue mani.
+      <br />
+      Una volta ricevuti i libri da un venditore, ricordati di <b>confermare la
+      consegna</b>, così da permettere al venditore di ricevere i soldi.
+      <br />
+      Per farlo vai su: <span style="font-weight: bold; color: gray">Libridoo > Ordini</span> e clicca il pulsante "CONFERMA" in basso a destra
+      <br/>
+      <p style="font-size: 1.2rem">
+        Ecco i contatti dei venditori:
+      </p>
+      ${req.body.soldBooksClusters.map(cluster => {
+        return `<div style="margin-top: 30px" key=${cluster.sellerId}>
+        <p
+          style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
+        >
+         ${cluster.sellerInfo.name}${
+          cluster.delivery.choosen
+            ? "<span style='font-size: 1.2rem'>, con spedizione</span>"
+            : ""
+        }
+        </p>
+        <div
+          style="border: 1px solid black; display: flex; justify-content: space-between;"
+        >
+          <div style="border: 1px solid black; width: 50%;">
+            <p
+              style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+            >
+              Libri selezionati
+            </p>
+            <ul>
+            ${cluster.Books.map(book => {
+              return `<li key=${book._id}>${book.title}</li>`;
+            }).join("")}
+            </ul>
+          </div>
+          <div style="border: 1px solid black; width: 50%;">
+            <p
+              style="border-bottom: 1px solid black; text-align: center; margin: 5px; font-size: 1.2rem;"
+            >
+              Contatti
+            </p>
+            <ul>
+              <li>
+                ${cluster.sellerInfo.email}
+              </li>
+              <li>
+                ${cluster.sellerInfo.phone}
+              </li>
+              <li>
+                ${cluster.sellerInfo.place.city}, ${cluster.sellerInfo.school}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>`;
+      })}
+      <br/><br/><br/><br/>
+      Saluti,
+      <br />
+      Il team di <i>Libridoo</i>`
+      },
+      async (error, info) => {
+        if (error) {
+          console.log(error);
+          const newError = new Error({
+            error: {
+              message: "EMAIL NOT SENT, checkout, email al compratore",
+              error
+            }
+          });
+          await newError.save();
+        } else {
+          console.log("emailsent", info);
+        }
+      }
+    );
     res.json({
       code: 0,
       devmessage: "clusters successfully posted",
       message: "Operazione effettuata con successo",
       paymentId: req.body.dealId
     });
-    // }
-    // }
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    //   res.json({
-    //     code: 1,
-    //     place: ".findByIdAndDelete(), bookApi:618",
-    //     _id,
-    //     error,
-    //     message: "Qualcosa è andato storto nel completameto dell'acquisto"
-    //   });
-    // });
-    // });
   });
-  clusterPromise.catch(errorObj => {
+  clusterPromise.catch(error => {
     console.log(error);
     res.json({
       code: 1,
@@ -814,10 +795,6 @@ router.post("/checkedOut", (req, res) => {
       message: "Qualcosa è andato storto nel completamento dell'acquisto"
     });
   });
-  // })
-  // .catch(error => {
-  //   res.json({ code: 1, error });
-  // });
 });
 
 // post not found book

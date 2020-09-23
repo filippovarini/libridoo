@@ -73,7 +73,7 @@ class Invite extends Component {
     const notEmptyBody = (
       <div id="notEmptyBody-container" className="earn-container">
         <p className="invite-count-points">
-          Punti :{" "}
+          Punti accumulati:{" "}
           <span id="earn-count">{this.props.user.bonusPoints || 0}</span>
         </p>
         <div id="firstEarn" className="earn-tool">
@@ -168,7 +168,7 @@ class Invite extends Component {
         <p id="earn-subExplainer">
           <span id="subExp1">10 punti</span>
           <span id="subExp2"> = </span>
-          <span id="subExp3">10 euro</span>
+          <span id="subExp3">10% di sconto</span>
         </p>
 
         {body}

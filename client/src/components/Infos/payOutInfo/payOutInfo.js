@@ -83,87 +83,101 @@ class PayOutInfo extends Component {
   };
 
   payPalSetup = () => {
-    this.setState({ loading: true });
-    const body = {
-      JWT: sessionStorage.getItem("JWT") || localStorage.getItem("JWT"),
-      payOut: { type: "paypal", accountId: "invalid" }
-    };
-    fetch("/api/user/connectedAccount", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(body)
-    })
-      .then(res => res.json())
-
-      .then(jsonRes => {
-        if (jsonRes.code === 0) {
-          // success
-          this.props.dispatch({ type: "SET-USER", user: jsonRes.activeUser });
-          if (sessionStorage.getItem("JWT")) {
-            // not rememberME
-            sessionStorage.setItem("JWT", jsonRes.JWT);
-          } else {
-            // rememberMe, localStorage
-            localStorage.setItem("JWT", jsonRes.JWT);
-          }
-          // if (locationArr[1] === "account") window.location = "/account";
-        } else {
-          this.props.dispatch({
-            type: "E-SET",
-            error: {
-              frontendPlace: "payOutInfo/payPalSetup/code1",
-              jsonRes
-            }
-          });
-          this.props.history.push("/error");
-        }
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.log(error);
-        this.props.dispatch({
-          type: "E-SET",
-          error: {
-            frontendPlace: "payOutInfo/payPalSetup/code1",
-            error
-          }
-        });
-        this.props.history.push("/error");
-      });
-  };
-
-  stripeSetup = () => {
-    if (!this.state.payPalLoadig) {
-      this.setState({ stripeLoading: true });
-      fetch("/api/payment/connect", {
-        method: "POST",
+    if (
+      // eslint-disable-next-line no-restricted-globals
+      confirm(
+        "Confermi di voler ricevere i pagamenti su PayPal? Una volta confermato non potrai piû cambiare"
+      )
+    ) {
+      this.setState({ loading: true });
+      const body = {
+        JWT: sessionStorage.getItem("JWT") || localStorage.getItem("JWT"),
+        payOut: { type: "paypal", accountId: "invalid" }
+      };
+      fetch("/api/user/connectedAccount", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json"
         },
-        body: JSON.stringify({
-          pathname: this.props.history.location.pathname.split("/")[1]
-        })
+        body: JSON.stringify(body)
       })
         .then(res => res.json())
+
         .then(jsonRes => {
           if (jsonRes.code === 0) {
             // success
-            window.location = jsonRes.url;
+            this.props.dispatch({ type: "SET-USER", user: jsonRes.activeUser });
+            if (sessionStorage.getItem("JWT")) {
+              // not rememberME
+              sessionStorage.setItem("JWT", jsonRes.JWT);
+            } else {
+              // rememberMe, localStorage
+              localStorage.setItem("JWT", jsonRes.JWT);
+            }
+            // if (locationArr[1] === "account") window.location = "/account";
           } else {
-            // faliure
-            this.setState({
-              stripeError:
-                "Errore! Controlla di avere una connessione stabile, ricarica la pagina e riprova.",
-              stripeLoading: false
+            this.props.dispatch({
+              type: "E-SET",
+              error: {
+                frontendPlace: "payOutInfo/payPalSetup/code1",
+                jsonRes
+              }
             });
-            setTimeout(() => this.setState({ stripeError: "" }), 6000);
+            this.props.history.push("/error");
           }
+          this.setState({ loading: false });
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error);
+          this.props.dispatch({
+            type: "E-SET",
+            error: {
+              frontendPlace: "payOutInfo/payPalSetup/code1",
+              error
+            }
+          });
+          this.props.history.push("/error");
+        });
+    }
+  };
+
+  stripeSetup = () => {
+    if (
+      // eslint-disable-next-line no-restricted-globals
+      confirm(
+        "Confermi di voler ricevere i pagamenti via bonifico? Una volta confermato non potrai piû cambiare"
+      )
+    ) {
+      if (!this.state.payPalLoadig) {
+        this.setState({ stripeLoading: true });
+        fetch("/api/payment/connect", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify({
+            pathname: this.props.history.location.pathname.split("/")[1]
+          })
+        })
+          .then(res => res.json())
+          .then(jsonRes => {
+            if (jsonRes.code === 0) {
+              // success
+              window.location = jsonRes.url;
+            } else {
+              // faliure
+              this.setState({
+                stripeError:
+                  "Errore! Controlla di avere una connessione stabile, ricarica la pagina e riprova.",
+                stripeLoading: false
+              });
+              setTimeout(() => this.setState({ stripeError: "" }), 6000);
+            }
+          })
+          .catch(error => console.log(error));
+      }
     }
   };
 
@@ -240,7 +254,7 @@ class PayOutInfo extends Component {
                 BONIFICO
               </p>
             </div>
-            <p className="monthly">2€ sul primo ordine del mese</p>
+            <p className="monthly">2€ sulla prima vendita del mese</p>
           </div>
 
           <div id="po-stripe-secure">
@@ -278,7 +292,7 @@ class PayOutInfo extends Component {
               </p>
             </div>
 
-            <p className="monthly">1€ sul primo del mese</p>
+            <p className="monthly">1€ sulla prima vendita ordine del mese</p>
           </div>
         </div>
       </div>
@@ -293,9 +307,11 @@ class PayOutInfo extends Component {
 
     // add for paypal
     const loaded = this.props.user.payOut
-      ? this.props.user.payOut.type === "stripe"
-        ? stripeBody
-        : paypalBody
+      ? this.props.user.payOut.type
+        ? this.props.user.payOut.type === "stripe"
+          ? stripeBody
+          : paypalBody
+        : editing
       : editing;
     // : editing;
 

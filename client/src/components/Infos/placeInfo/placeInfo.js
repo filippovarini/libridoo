@@ -142,7 +142,7 @@ class PlaceInfo extends Component {
     } else if (
       // eslint-disable-next-line no-restricted-globals
       confirm(
-        "Sicuro che il domicilio sia giusto? Una volta confermato non potrai più cambiarlo."
+        "Il domicilio è giusto? Una volta confermato non potrai più cambiarlo."
       )
     ) {
       const place = {
@@ -254,7 +254,7 @@ class PlaceInfo extends Component {
           </p>
           <form
             id="placeInfo-form"
-            className="placeInfoBody form"
+            className="placeInfoBody form editing"
             onSubmit={this.handleSubmit}
           >
             <input

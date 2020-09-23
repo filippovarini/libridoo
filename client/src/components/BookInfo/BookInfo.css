@@ -1,15 +1,11 @@
 #bookInfo-gContainer {
   position: fixed;
-  /* background: linear-gradient(
-      to bottom right,
-      rgba(105, 142, 245, 0.6),
-      rgba(108, 232, 162, 0.6)
-    ); */
   background: rgba(0, 0, 0, 0.8);
   width: 100vw;
   height: 100vh;
   z-index: 1001;
   bottom: 0px;
+  top: 0px;
   left: 0px;
 }
 
@@ -35,7 +31,8 @@
   width: 500px;
   text-align: center;
   z-index: 1;
-  top: 100px;
+  top: 50%;
+  margin-top: -300px;
 }
 
 #bookInfo.heigh-set {
@@ -79,6 +76,10 @@
 #bookInfo #label:hover {
   box-shadow: 0px 0px 5px white;
   cursor: pointer;
+}
+
+#bookInfo .input::placeholder {
+  font-weight: normal;
 }
 
 #bookInfo #notSubmitted-container #image-header {
@@ -138,6 +139,7 @@
   font-weight: bold;
   font-size: 0.8rem;
   color: rgb(99, 99, 99);
+  border-radius: 3px;
 }
 
 #bookInfo #select-header {
@@ -233,6 +235,7 @@
 
 #bookInfo .price-input {
   display: inline;
+  text-align: center;
 }
 
 #bookInfo-priceInput-container {
@@ -243,7 +246,8 @@
 
 #bookInfo-decimal {
   width: 30px;
-  height: 20px;
+  height: 30px;
+  box-sizing: border-box;
   margin-left: 5px;
   font-size: 0.6rem;
   text-align: center;
@@ -251,6 +255,7 @@
   border: transparent;
   font-weight: bold;
   color: rgb(99, 99, 99);
+  border-radius: 3px;
 }
 
 #bookInfo #price.info {

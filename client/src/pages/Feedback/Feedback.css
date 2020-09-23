@@ -102,7 +102,6 @@
   text-align: center;
   margin-top: 100px;
   margin-bottom: 50px;
-  /* border: 1px solid black; */
 }
 
 #feedback-problems-header {
@@ -151,11 +150,11 @@
   line-height: 80px;
 }
 
-#feedback #fpl {
+#feedback #fpp {
   text-transform: uppercase;
 }
 
-#feedback #fpp {
+#feedback #fpl {
   text-transform: uppercase;
 }
 
@@ -182,9 +181,24 @@
   cursor: default;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 410px) {
+  #feedback-problems {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
   #feedback-problems-container {
     width: 100%;
     align-items: center;
+  }
+
+  .feedback-problem-container {
+    width: 100%;
+  }
+
+  #feedback #fpl {
+    font-size: 0.8rem;
   }
 }

@@ -5,8 +5,8 @@ import "./Checkout.css";
 
 // components
 import ClusterBooks from "../../components/clusterBooks/clusterBooks";
-import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
-import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
+// import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
+// import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
 import HeaderPart from "../../components/headerPart";
 import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
 import LoadingL from "../../components/Loading/loading_l";
@@ -34,26 +34,26 @@ class Checkout extends Component {
         this.props.history.push("/results");
       } else {
         // both searched and book selected
-        if (!sessionStorage.getItem("JWT") && !localStorage.getItem("JWT")) {
-          // not logged
-          // login and then go back
-          this.props.history.push("/login/buying");
-        } else {
-          if (!this.state.couponSet && sessionStorage.getItem("coupon")) {
-            fetch(`/api/coupon/code/${sessionStorage.getItem("coupon")}`)
-              .then(res => res.json())
-              .then(jsonRes => {
-                if (jsonRes.code === 0) {
-                  // correct
-                  this.setState({
-                    couponSet: true
-                  });
-                }
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
+        // if (!sessionStorage.getItem("JWT") && !localStorage.getItem("JWT")) {
+        //   // not logged
+        //   // login and then go back
+        //   this.props.history.push("/login/buying");
+        // } else {
+        if (!this.state.couponSet && sessionStorage.getItem("coupon")) {
+          fetch(`/api/coupon/code/${sessionStorage.getItem("coupon")}`)
+            .then(res => res.json())
+            .then(jsonRes => {
+              if (jsonRes.code === 0) {
+                // correct
+                this.setState({
+                  couponSet: true
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+          // }
         }
       }
     }
@@ -391,7 +391,7 @@ class Checkout extends Component {
               })
             : null}
         </div>
-        <div id="info-review">
+        {/* <div id="info-review">
           {(this.props.user.place && !this.props.user.place.city) ||
           !this.props.user.phone ||
           !this.props.user.email ? (
@@ -407,7 +407,7 @@ class Checkout extends Component {
             )
           ) : null}
           {this.props.user.phone && this.props.user.email ? null : <BodyInfo />}
-        </div>
+        </div> */}
         <div id="review-cart">
           <p id="rc-header">TOTALE</p>
           <div className="rc-cart-div">

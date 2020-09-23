@@ -6,9 +6,9 @@ class Footer extends Component {
   render() {
     return (
       <div id="footer-gContainer">
-        <div id="footer-right" className="footer-container">
-          <div id="asskeeper-container">
-            <p id="copywright">© libridoo 2020</p>
+        <div id="contained">
+          <div id="footer-right" className="footer-container">
+            {/* <div id="asskeeper-container"> */}
             <p id="asskeeper">
               Le foto presenti su libridoo sono state in larga parte prese da
               Internet e quindi valutate di pubblico dominio. Se i soggetti o
@@ -25,42 +25,48 @@ class Footer extends Component {
                 ? "*offerta valida solo per i primi 1000 utenti"
                 : null}
             </p>
+            {/* </div> */}
+          </div>
+          <div id="footer-container-links" className="footer-container">
+            <div id="footer-container-contained">
+              <div id="security" className="footer-div">
+                <Link to="./privacy" className="footer-link">
+                  Privacy Policy
+                </Link>
+                <Link to="./termsAndConditions" className="footer-link">
+                  Termini e Condizioni
+                </Link>
+              </div>
+              <div className="footer-div">
+                <Link className="footer-link" to="./feedback">
+                  Dicci cosa ne pensi
+                </Link>
+              </div>
+              <div id="contacts" className="footer-div">
+                <div id="phone-container" className="footer-div-container">
+                  <span id="phone" className="contacts-div">
+                    +39 3206265132
+                  </span>
+                  <i
+                    id="footer-mobile"
+                    className="fas fa-mobile-alt footer-ico"
+                  ></i>
+                </div>
+                <div id="email-container" className="footer-div-container">
+                  <a id="footer-email" href="mailto: info@libridoo.it">
+                    info@libridoo.it
+                  </a>
+                  <i className="far fa-envelope footer-ico"></i>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="footer-container-links" className="footer-container">
-          <div id="footer-container-contained">
-            <div id="security" className="footer-div">
-              <Link to="./privacy" className="footer-link">
-                Privacy Policy
-              </Link>
-              <Link to="./termsAndConditions" className="footer-link">
-                Termini e Condizioni
-              </Link>
-            </div>
-            <div className="footer-div">
-              <Link className="footer-link" to="./feedback">
-                Dicci cosa ne pensi
-              </Link>
-            </div>
-            <div id="contacts" className="footer-div">
-              <div id="phone-container" className="footer-div-container">
-                <span id="phone" className="contacts-div">
-                  +39 3206265132
-                </span>
-                <i
-                  id="footer-mobile"
-                  className="fas fa-mobile-alt footer-ico"
-                ></i>
-              </div>
-              <div id="email-container" className="footer-div-container">
-                <a id="footer-email" href="mailto: info@libridoo.it">
-                  info@libridoo.it
-                </a>
-                <i className="far fa-envelope footer-ico"></i>
-              </div>
-            </div>
-          </div>
-        </div>
+        <p id="copywright">
+          Libridoo di Filippo Varini ed Alfonso Gambino Snc è una società con
+          sede legale in Via Carducci 6, 80121, Napoli (NA). P.IVA: 09580581214
+          RI: 09580581214
+        </p>
       </div>
     );
   }

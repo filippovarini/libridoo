@@ -169,7 +169,8 @@ class Deals extends Component {
         <p id="deals-empty-header">Non hai venduto nessun libro, ancora...</p>
         <p className="de-subheader">
           Vendendo i tuoi libri ci aiuti a fornire a studenti come te i libri
-          scolastici... Contribuisci alla rivoluzione!
+          scolastici risparmiandogli la fatica nel comprarli e venderli...
+          Aiutaci a farlo!
         </p>
         <p className="de-prompt" onClick={this.props.toggleBookInfo}>
           VENDI

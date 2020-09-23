@@ -419,8 +419,9 @@ class Register extends Component {
                   }
                   const redirection =
                     this.props.match.params.invitingId === "buying"
-                      ? "/checkout"
-                      : "/";
+                      ? "/orderReview"
+                      : // "/checkout"
+                        "/";
                   this.props.history.push(redirection);
                 }
               })

@@ -159,7 +159,7 @@ class Results extends Component {
     });
     // }
     if (this.state.index + 1 === this.props.booksResult.length) {
-      this.props.history.push("/checkoutReview");
+      this.props.history.push("/orderReview");
     }
     if (action === "bought") {
       const sellerUser = this.props.selectedBooks.map(
@@ -612,38 +612,38 @@ class Results extends Component {
                           "quality"
                     }
                   >
-                    <option value="quality" defaultChecked hidden>
+                    <option value="quality" defaultChecked={true} hidden>
                       qualità
                     </option>
                     <option value="intatto">intatto</option>
-                    <option value="buono, non sottolineato">
-                      buono, non sottolineato
+                    <option value="buono, senza scritte">
+                      buono, senza scritte
                     </option>
-                    <option value="buono, sottolineato a matita">
-                      buono, sottolineato a matita
+                    <option value="buono, sottolineato">
+                      buono, sottolineato
                     </option>
-                    <option value="buono, sottolineato a penna">
-                      buono, sottolineato a penna
+                    <option value="buono, evidenziato">
+                      buono, evidenziato
                     </option>
-                    <option value="normale, non sottolineato">
-                      normale, non sottolineato
+                    <option value="normale, senza scritte">
+                      normale, senza scritte
                     </option>
-                    <option value=" normale, sottolineato a matita">
-                      normale, sottolineato a matita
+                    <option value="normale, sottolineato">
+                      normale, sottolineato
                     </option>
-                    <option value="normale, sottolineato a penna">
-                      normale, sottolineato a penna
+                    <option value="normale, evidenziato">
+                      normale, evidenziato
                     </option>
-                    <option value="rovinato, non sottolineato">
-                      rovinato, non sottolineato
+                    <option value="rovinato, senza scritte">
+                      rovinato, senza scritte
                     </option>
-                    <option value="rovinato, sottolineato a matita">
-                      rovinato, sottolineato a matita
+                    <option value="rovinato, sottolineato">
+                      rovinato, sottolineato
                     </option>
-                    <option value="rovinato, sottolineato a penna">
-                      rovinato, sottolineato a penna
+                    <option value="rovinato, evidenziato">
+                      rovinato, evidenziato
                     </option>
-                    <option value="distrutto">distrutto</option>
+                    <option value="molto rovinato">molto rovinato</option>
                     <option value="fotocopiato">fotocopiato</option>
                   </select>
                 </div>

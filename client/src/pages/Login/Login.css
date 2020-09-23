@@ -11,6 +11,14 @@
   margin-bottom: 30px;
 }
 
+#login #buying {
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  margin-bottom: -50px;
+  margin-top: 40px;
+  font-size: 1.2rem;
+}
+
 #login-form {
   background: #ebebeb;
   background: linear-gradient(

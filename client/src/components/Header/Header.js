@@ -115,7 +115,7 @@ class Header extends Component {
     if (
       location !== "/search" &&
       location !== "/results" &&
-      location !== "/checkoutReview" &&
+      location !== "/orderReview" &&
       location !== "/login/buying" &&
       location !== "/register/buying" &&
       location !== "/checkout" &&
@@ -135,7 +135,7 @@ class Header extends Component {
     }
     if (
       location !== "/checkout" &&
-      location !== "/checkoutReview" &&
+      location !== "/orderReview" &&
       location !== "/login/buying" &&
       location !== "/register/buying"
     ) {
@@ -155,7 +155,7 @@ class Header extends Component {
     // search Display
     if (
       (this.props.history.location.pathname === "/results" ||
-        this.props.history.location.pathname === "/checkoutReview" ||
+        this.props.history.location.pathname === "/orderReview" ||
         this.props.history.location.pathname === "/search" ||
         this.props.history.location.pathname === "/checkout" ||
         this.props.history.location.pathname === "/paymentConfirm") &&
@@ -166,7 +166,7 @@ class Header extends Component {
     } else if (
       this.state.quickSearchDisplay &&
       this.props.history.location.pathname !== "/results" &&
-      this.props.history.location.pathname !== "/checkoutReview" &&
+      this.props.history.location.pathname !== "/orderReview" &&
       this.props.history.location.pathname !== "/search" &&
       this.props.history.location.pathname !== "/checkout" &&
       this.props.history.location.pathname !== "/paymentConfirm"

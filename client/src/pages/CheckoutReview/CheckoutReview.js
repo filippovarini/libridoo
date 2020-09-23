@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./CheckoutReview.css";
+
 import HeaderPart from "../../components/headerPart";
 import ReviewBook from "../../components/reviewBook/reviewBook";
-
 import ReviewBookShort from "../../components/reviewBook/reviewBookShort";
+import PlaceInfo from "../../components/Infos/placeInfo/placeInfo";
+import BodyInfo from "../../components/Infos/bodyInfo/bodyInfo";
 
 class CheckoutReview extends Component {
   state = {
@@ -25,24 +27,59 @@ class CheckoutReview extends Component {
         // nothing selected
         this.props.history.push("/results");
       } else {
-        if (!this.state.couponSet && sessionStorage.getItem("coupon")) {
-          fetch(`/api/coupon/code/${sessionStorage.getItem("coupon")}`)
-            .then(res => res.json())
-            .then(jsonRes => {
-              if (jsonRes.code === 0) {
-                // correct
-                this.setState({
-                  couponSet: true
-                });
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
+        // both searched and book selected
+        if (!sessionStorage.getItem("JWT") && !localStorage.getItem("JWT")) {
+          // not logged
+          // login and then go back actually do it here
+          this.props.history.push("/login/buying");
+        } else {
+          if (!this.state.couponSet && sessionStorage.getItem("coupon")) {
+            fetch(`/api/coupon/code/${sessionStorage.getItem("coupon")}`)
+              .then(res => res.json())
+              .then(jsonRes => {
+                if (jsonRes.code === 0) {
+                  // correct
+                  this.setState({
+                    couponSet: true
+                  });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
         }
       }
     }
   };
+
+  // componentDidMount = () => {
+  //   if (!sessionStorage.getItem("searchParams")) {
+  //     this.props.history.push("/search");
+  //   } else {
+  //     // something searched
+  //     if (!sessionStorage.getItem("SBs")) {
+  //       // nothing selected
+  //       this.props.history.push("/results");
+  //     } else {
+  //       if (!this.state.couponSet && sessionStorage.getItem("coupon")) {
+  //         fetch(`/api/coupon/code/${sessionStorage.getItem("coupon")}`)
+  //           .then(res => res.json())
+  //           .then(jsonRes => {
+  //             if (jsonRes.code === 0) {
+  //               // correct
+  //               this.setState({
+  //                 couponSet: true
+  //               });
+  //             }
+  //           })
+  //           .catch(error => {
+  //             console.log(error);
+  //           });
+  //       }
+  //     }
+  //   }
+  // };
 
   handleChange = e => {
     this.setState({
@@ -62,7 +99,11 @@ class CheckoutReview extends Component {
           });
         });
       }
-      const body = { code: this.state.uniCode, total };
+      const body = {
+        code: this.state.uniCode,
+        total,
+        userId: this.props.user._id
+      };
       fetch("/api/coupon/update", {
         method: "POST",
         headers: {
@@ -73,6 +114,7 @@ class CheckoutReview extends Component {
       })
         .then(res => res.json())
         .then(jsonRes => {
+          console.log(jsonRes);
           this.setState({ loading: false });
           if (jsonRes.code === 0) {
             // correct
@@ -219,7 +261,7 @@ class CheckoutReview extends Component {
               id="rc-error"
               className={this.state.erorrHidden ? "hidden" : null}
             >
-              codice errato o scaduto
+              codice errato, scaduto o già utilizzato
             </label>
             <input className="hidden" type="submit" />
           </form>
@@ -230,6 +272,23 @@ class CheckoutReview extends Component {
           >
             SALVA
           </p>
+        </div>
+        <div id="info-review">
+          {(this.props.user.place && !this.props.user.place.city) ||
+          !this.props.user.phone ||
+          !this.props.user.email ? (
+            <div id="infoReview-header-container">
+              <p id="infoReview-header">
+                Inserisci le tue informazioni personali
+              </p>
+            </div>
+          ) : null}
+          {this.props.user.place ? (
+            this.props.user.place.city ? null : (
+              <PlaceInfo />
+            )
+          ) : null}
+          {this.props.user.phone && this.props.user.email ? null : <BodyInfo />}
         </div>
         <div id="review-cart">
           <p id="rc-header">SUBTOTALE</p>
@@ -286,15 +345,25 @@ class CheckoutReview extends Component {
                 : "loading..."}
             </p>
           </div>
-          <div
-            id="rc-link-container"
-            onClick={() => this.props.history.push("/checkout")}
-            className="rc-cart-div"
-          >
-            <Link id="rc-link" to="/checkout">
-              PROCEDI
-            </Link>
-          </div>
+          {(this.props.user.place && !this.props.user.place.city) ||
+          !this.props.user.phone ||
+          !this.props.user.email ? (
+            <div id="rc-link-container" className="rc-cart-div infoNeeded">
+              <p id="rc-link" className="infoNeeded">
+                COMPLETA LE INFORMAZIONI E SALVA PRIMA
+              </p>
+            </div>
+          ) : (
+            <div
+              id="rc-link-container"
+              onClick={() => this.props.history.push("/checkout")}
+              className="rc-cart-div"
+            >
+              <Link id="rc-link" to="/checkout">
+                PROCEDI
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     );

@@ -24,7 +24,7 @@ class FAQs extends Component {
   handleDelete = () => {
     if (this.props.user._id) {
       // eslint-disable-next-line no-restricted-globals
-      if (confirm("Sei sicuro di voler abbandonare la nave?")) {
+      if (confirm("Confermi di voler abbandonare la nave?")) {
         fetch("/api/user/delete", {
           method: "DELETE",
           headers: {
@@ -149,8 +149,7 @@ class FAQs extends Component {
               <a href="mailto:complaints@libridoo.it">complaints@libridoo.it</a>
               , spiegando il problema e fornendo l'indirizzo email del
               compratore, quello associato al tuo account e il titolo dei libri
-              venduti. Il nostro team sarà felice di risolvere aiutarti a
-              ricevere il pagamento a te dovuto.
+              venduti. Il nostro team ti aiuterà a ricevere il pagamento dovuto.
             </p>
           </div>
           <div
@@ -217,7 +216,7 @@ class FAQs extends Component {
           >
             <div className="faq">
               <p id="6" className="faq-header">
-                Non voglio più far parte di questo movimento universitario. Come
+                Non voglio più far parte di questo network universitario. Come
                 elimino l'account?
               </p>
               <i

@@ -15,6 +15,10 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false
   },
+  coupons: {
+    type: [String],
+    default: []
+  },
   email: {
     type: String,
     required: true

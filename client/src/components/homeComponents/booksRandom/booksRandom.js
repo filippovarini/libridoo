@@ -63,7 +63,7 @@ class booksRandom extends Component {
             <div id="header-container">
               <p id="header">
                 Più libri acquisti con noi, più riusciremo a proporti annunci
-                interesanti.
+                interessanti.
               </p>
             </div>
           )

@@ -6,7 +6,7 @@ import "./reviewBook.css";
 class ReviewBook extends Component {
   handleRemove = () => {
     // eslint-disable-next-line no-restricted-globals
-    if (confirm("Sei sicuro di voler rimuovere il libro dal carrello?")) {
+    if (confirm("Confermi di voler rimuovere il libro dal carrello?")) {
       // remove sb from sessionStorage
       const SBs = JSON.parse(sessionStorage.getItem("SBs"));
       if (SBs.length === 1) {

@@ -26,7 +26,7 @@ class BookInfo extends Component {
     timeOut: null,
     imageDoneSet: false,
     pricePlaceholder: "prezzo",
-    titlePlaceholder: "titolo",
+    titlePlaceholder: "titolo come appare sulla copertina",
     priceLabelHidden: true,
     decimal: "00"
   };
@@ -84,6 +84,7 @@ class BookInfo extends Component {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = function(event) {
+        console.log(event.target.result);
         this.setState({
           imgUrl: event.target.result,
           submitting: false,
@@ -519,34 +520,30 @@ class BookInfo extends Component {
                   qualità
                 </option>
                 <option value="intatto">intatto</option>
-                <option value="buono, non sottolineato">
-                  buono, non sottolineato
+                <option value="buono, senza scritte">
+                  buono, senza scritte
                 </option>
-                <option value="buono, sottolineato a matita">
-                  buono, sottolineato a matita
+                <option value="buono, sottolineato">buono, sottolineato</option>
+                <option value="buono, evidenziato">buono, evidenziato</option>
+                <option value="normale, senza scritte">
+                  normale, senza scritte
                 </option>
-                <option value="buono, sottolineato a penna">
-                  buono, sottolineato a penna
+                <option value="normale, sottolineato">
+                  normale, sottolineato
                 </option>
-                <option value="normale, non sottolineato">
-                  normale, non sottolineato
+                <option value="normale, evidenziato">
+                  normale, evidenziato
                 </option>
-                <option value=" normale, sottolineato a matita">
-                  normale, sottolineato a matita
+                <option value="rovinato, senza scritte">
+                  rovinato, senza scritte
                 </option>
-                <option value="normale, sottolineato a penna">
-                  normale, sottolineato a penna
+                <option value="rovinato, sottolineato">
+                  rovinato, sottolineato
                 </option>
-                <option value="rovinato, non sottolineato">
-                  rovinato, non sottolineato
+                <option value="rovinato, evidenziato">
+                  rovinato, evidenziato
                 </option>
-                <option value="rovinato, sottolineato a matita">
-                  rovinato, sottolineato a matita
-                </option>
-                <option value="rovinato, sottolineato a penna">
-                  rovinato, sottolineato a penna
-                </option>
-                <option value="distrutto">distrutto</option>
+                <option value="molto rovinato">molto rovinato</option>
                 <option value="fotocopiato">fotocopiato</option>
               </select>
             </div>

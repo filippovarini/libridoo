@@ -6,7 +6,7 @@ import "./cart.css";
 class Cart extends Component {
   removeSelectedBook = (clusterIndex, bookIndex, bookId) => {
     // eslint-disable-next-line no-restricted-globals
-    if (confirm("Sei sicuro di voler rimuovere il libro dal carrello?")) {
+    if (confirm("Confermi di voler rimuovere il libro dal carrello?")) {
       // remove sb from sessionStorage
       const SBs = JSON.parse(sessionStorage.getItem("SBs"));
       if (SBs.length === 1) {
@@ -94,7 +94,7 @@ class Cart extends Component {
           <p id="price-header">Totale:</p>
           <p id="price">{totalPrice} €</p>
         </div>
-        <Link to="/checkoutReview" id="checkout-prompt">
+        <Link to="/orderReview" id="checkout-prompt">
           CHECKOUT
         </Link>
       </div>

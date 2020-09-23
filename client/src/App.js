@@ -165,7 +165,7 @@ class App extends React.Component {
             <Route path="/recover" component={Recover} />
             <Route path="/search" component={Search} />
             <Route exact path="/results" component={Results} />
-            <Route path="/checkoutReview" component={CheckoutReview} />
+            <Route path="/orderReview" component={CheckoutReview} />
             <Route exact path="/checkout" component={Checkout} />
             <Route path="/paymentConfirm" component={PaymentConfirm} />
             <Route path="/infoReviewSell" component={sellReview} />
