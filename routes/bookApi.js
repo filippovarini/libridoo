@@ -575,7 +575,7 @@ router.post("/checkedOut", (req, res) => {
         ${
           cluster.sellerInfo.payOut.type === "stripe"
             ? `Hai scelto di ricevere i soldi via bonifico. Quando il venditore conferma la consegna, ti arrivarà una email da stripe.com con un link per ricevere i soldi. Per trasferirli sul tuo conto in banca, <b>verifica il tuo conto stripe</b> direttamente su www.stripe.com oppure accedendo da Libridoo e cliccando su "PAGAMENTI".<br/>L'oridne viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato due euro in meno, per coprire i costi di pagamento via bonifico.`
-            : `Hai scelto di ricevere i su PayPal. Quando il venditore conferma la consegna, ti arriverà una email da PayPal.com con il link per riceverli. <b>Assicurati di controllare la tua casella email connessa all'account Libridoo.</b>.<br/>L'oridne viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato un euro in meno, per coprire i costi di PayPal.`
+            : `Hai scelto di ricevere i soldi su PayPal. Quando il venditore conferma la consegna, ti arriverà una email da PayPal.com con il link per riceverli. <b>Assicurati di controllare la tua casella email connessa all'account Libridoo.</b><br/>L'ordnie viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato un euro in meno, per coprire i costi di PayPal.`
         }
           Ecco le informazioni di ${
             req.body.buyerInfo.name

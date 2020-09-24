@@ -277,6 +277,10 @@
   color: rgb(99, 99, 99);
 }
 
+#bookInfo-price-suggestion.actualPrice {
+  color: black;
+}
+
 #bookInfo #quality-warning {
   font-size: 0.8rem;
   font-weight: bold;

@@ -119,6 +119,7 @@ class App extends React.Component {
       // not logged
       window.location = "/login";
     } else {
+      document.getElementById("bookInfo-form").reset();
       if (this.state.BookInfoDisplay === "hidden") {
         sessionStorage.setItem("selling", true);
         this.setState({ BookInfoDisplay: null });

@@ -21,10 +21,8 @@
 #contactMe {
   text-decoration: underline;
   cursor: pointer;
-}
-
-#contactMe:hover {
-  color: black;
+  /* color: black; */
+  color: #6ce8a2;
 }
 
 #hh #image {

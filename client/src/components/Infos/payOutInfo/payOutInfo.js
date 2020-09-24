@@ -86,7 +86,7 @@ class PayOutInfo extends Component {
     if (
       // eslint-disable-next-line no-restricted-globals
       confirm(
-        "Confermi di voler ricevere i pagamenti su PayPal? Una volta confermato non potrai piû cambiare"
+        "Confermi di voler ricevere i pagamenti su PayPal? Una volta confermato non potrai più cambiare"
       )
     ) {
       this.setState({ loading: true });
@@ -146,7 +146,7 @@ class PayOutInfo extends Component {
     if (
       // eslint-disable-next-line no-restricted-globals
       confirm(
-        "Confermi di voler ricevere i pagamenti via bonifico? Una volta confermato non potrai piû cambiare"
+        "Confermi di voler ricevere i pagamenti via bonifico? Una volta confermato non potrai più cambiare"
       )
     ) {
       if (!this.state.payPalLoadig) {

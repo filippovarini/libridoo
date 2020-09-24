@@ -6,6 +6,7 @@
   box-sizing: border-box;
   padding: 10px;
   position: relative;
+  min-width: 250px;
 }
 
 #po-headers {

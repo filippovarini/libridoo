@@ -55,8 +55,7 @@ class HomeExplainer extends Component {
                   </p>
                   {this.state.nav === "earn" ? (
                     <p className="step-text">
-                      Fai iscrivere gli amici condividendgli il tuo link che
-                      trovi{" "}
+                      Fai iscrivere gli amici condividendo il link che trovi{" "}
                       <Link style={{ color: "white" }} to="/invite">
                         qui
                       </Link>
@@ -83,7 +82,7 @@ class HomeExplainer extends Component {
                       ? "Ti invieremo via email i contatti dei venditori per organizzare la consegna."
                       : this.state.nav === "sell"
                       ? "Ti notificheremo via email, mandandoti i contatti dei compratori per organizzarti per la consegna"
-                      : "Segui la nostra pagina Instagram @libridoo.it e l'omonima pagina Facebook"}
+                      : "Segui la nostra pagina @libridoo.it su Instagram e Facebook"}
                   </p>
                 </div>
               </div>
@@ -103,7 +102,7 @@ class HomeExplainer extends Component {
                       Condividi i post che trovi{" "}
                       <Link style={{ color: "white" }} to="/invite">
                         qui
-                      </Link>
+                      </Link>{" "}
                       su instagram per 24h, taggando @libridoo.it
                     </p>
                   ) : (

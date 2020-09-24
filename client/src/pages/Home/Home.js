@@ -31,7 +31,10 @@ class Home extends Component {
             alt="Libri di testo vari"
           />
         </div>
-        <HomeExplainer bookInfoDisplay={this.state.BookInfoDisplay} />
+        <HomeExplainer
+          bookInfoDisplay={this.state.BookInfoDisplay}
+          toggleBookInfoDisplay={this.props.toggleBookInfo}
+        />
         <BooksRandom />
       </div>
     );

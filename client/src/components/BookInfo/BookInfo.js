@@ -18,29 +18,19 @@ const initialState = {
   selectHeaderClass: "hiddenVisibility",
   successful: false,
   errorMessage: null
-  // emptyImageClass: null,
-  // headerClass: null,
-  // loading: false,
-  // titleClass: null,
-  // priceClass: null,
 };
 
 class BookInfo extends Component {
   state = {
     imgUrl: "",
     title: null,
-    quality: "",
+    quality: "title",
     price: null,
     decimal: "00",
     actualPrice: 0,
-    emptyImageClass: null,
-    headerClass: null,
     imageClass: "normal",
     submitting: true,
-    loading: false,
     selectHeaderClass: "hiddenVisibility",
-    titleClass: null,
-    priceClass: null,
     generalLoading: false,
     successful: false,
     errorMessage: null
@@ -48,7 +38,9 @@ class BookInfo extends Component {
 
   handleInputChange = e => {
     if (e.target.id === "bookInfo-decimal")
-      this.setState({ decimal: e.target.value });
+      this.setState({
+        decimal: e.target.value
+      });
     else this.setState({ [e.target.id]: e.target.value });
     if (this.state.errorMessage) this.setState({ errorMessage: null });
   };
@@ -124,15 +116,21 @@ class BookInfo extends Component {
         this.setState({ actualPrice: e.target.value });
       }
     }
+    if (e.target.id === "bookInfo-decimal" && e.target.value) {
+      this.setState({
+        actualPrice:
+          Number(this.state.actualPrice) + Number(e.target.value) / 100
+      });
+    }
   };
 
   handleToggle = () => {
     this.setState(initialState);
-    document.getElementById("bookInfo-form").reset();
     this.props.toggleDisplay();
   };
 
   handleSubmit = e => {
+    console.log("submitting");
     e.preventDefault();
     if (!this.state.title || !this.state.quality || !this.state.price) {
       this.setState({ errorMessage: "Compila tutti i campi" });
@@ -179,6 +177,7 @@ class BookInfo extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
+            console.log(jsonRes);
             if (jsonRes.code === 1) {
               // error
               this.props.dispatch({
@@ -453,12 +452,12 @@ class BookInfo extends Component {
           </div>
           <input type="submit" className="hidden" />
           {this.state.actualPrice ? (
-            <p id="bookInfo-price-suggestion">
+            <p id="bookInfo-price-suggestion" className="actualPrice">
               Libridoo vive chiedendo il 10%. Incasserai{" "}
               {Math.round(
                 (this.state.actualPrice - this.state.actualPrice / 10) * 100
               ) / 100}{" "}
-              € più i centesimi
+              €
             </p>
           ) : (
             <p id="bookInfo-price-suggestion">
