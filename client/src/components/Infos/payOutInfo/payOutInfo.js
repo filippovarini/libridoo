@@ -163,6 +163,7 @@ class PayOutInfo extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
+            console.log(jsonRes);
             if (jsonRes.code === 0) {
               // success
               window.location = jsonRes.url;
@@ -176,7 +177,7 @@ class PayOutInfo extends Component {
               setTimeout(() => this.setState({ stripeError: "" }), 6000);
             }
           })
-          .catch(error => console.log(error));
+          .catch(error => console.log("error"));
       }
     }
   };

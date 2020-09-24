@@ -314,16 +314,23 @@ router.post("/connect", async (req, res) => {
       ? `https://www.libridoo.it/${req.body.pathname}/confirmed/${account.id}`
       : `http://localhost:3000/${req.body.pathname}/confirmed/${account.id}`;
 
-  const accountLinks = await stripe.accountLinks.create({
-    account: account.id,
-    refresh_url,
-    return_url,
-    type: "account_onboarding"
-  });
-
-  if (!accountLinks.url)
-    res.json({ code: 1, message: "no account link", place: "/paymentApi:153" });
-  else res.json({ code: 0, url: accountLinks.url });
+  stripe.accountLinks
+    .create({
+      account: account.id,
+      refresh_url,
+      return_url,
+      type: "account_onboarding"
+    })
+    .then(accountLinks => {
+      if (!accountLinks.url)
+        res.json({
+          code: 1,
+          message: "no account link",
+          place: "/paymentApi:153"
+        });
+      else res.json({ code: 0, url: accountLinks.url });
+    })
+    .catch(error => res.json({ code: 1, error }));
 });
 
 router.post("/transfer", async (req, res) => {
