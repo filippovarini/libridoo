@@ -151,6 +151,7 @@ class PayOutInfo extends Component {
     ) {
       if (!this.state.payPalLoadig) {
         this.setState({ stripeLoading: true });
+        console.log("sending");
         fetch("/api/payment/connect", {
           method: "POST",
           headers: {
@@ -177,7 +178,7 @@ class PayOutInfo extends Component {
               setTimeout(() => this.setState({ stripeError: "" }), 6000);
             }
           })
-          .catch(error => console.log("error"));
+          .catch(error => console.log(error));
       }
     }
   };

@@ -480,8 +480,61 @@ router.post("/insert", (req, res) => {
   const newBook = new Book(req.body);
   newBook
     .save()
-    .then(book => {
-      res.json({ code: 0, book });
+    .then(async book => {
+      // send mail to everyone who requested
+      const TitleRegExp = new RegExp(req.body.title, "i");
+      const notFounds = await Book.find({ title: TitleRegExp });
+      console.log(notFounds);
+      if (notFounds.length !== 0) {
+        const options = {
+          service: "Godaddy",
+          auth: {
+            user: "info@libridoo.it",
+            pass: EMAIL_PASS
+          },
+          tls: {
+            ciphers: "SSLv3",
+            rejectUnauthorized: false
+          }
+        };
+        notFounds.forEach(nFd => {
+          // found books
+          const transporter = nodemailer.createTransport(options);
+
+          // send mail with defined transport object
+          transporter.sendMail(
+            {
+              from: '"Libridoo" <noReply@libridoo.it>',
+              to: nFd.email,
+              subject: `${nFd.title} disponibile`,
+              text: "Ciao!",
+              html: `Il libro da te cercato,
+            <br /><br />
+            <b>${nFd.title}</b>
+            è appena diventato disponibile. Compralo subito prima che qualcuno te lo rubi!
+            <br /><br /><br />
+            Saluti,
+            <br />
+            <i>Il team di Libridoo</i>`
+            },
+            async (error, info) => {
+              if (error) {
+                console.log(error);
+                const newError = new Error({
+                  error: { message: "EMAIL NOT SENT, recover", error }
+                });
+                await newError.save();
+              } else {
+                console.log("emailsent", info);
+              }
+            }
+          );
+          if (notFounds.indexOf(nFd) === notFounds.length - 1) {
+            // completed
+            res.json({ code: 0, book });
+          }
+        });
+      } else res.json({ code: 0, book });
     })
     .catch(error => {
       res.json({

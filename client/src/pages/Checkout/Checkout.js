@@ -102,6 +102,7 @@ class Checkout extends Component {
     })
       .then(res => res.json())
       .then(jsonRes => {
+        console.log(jsonRes);
         if (jsonRes.code === 0) {
           // success
           this.setState({
