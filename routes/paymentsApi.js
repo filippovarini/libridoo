@@ -120,7 +120,6 @@ router.post("/paymentIntent", (req, res) => {
   stripe.paymentIntents
     .create({
       amount,
-      // amount: 500000,
       currency: "EUR",
       payment_method_types: ["card"],
       transfer_group: Date.now()
@@ -287,50 +286,61 @@ router.post("/buy", (req, res) => {
 
 // create connected account
 // {_id}
-router.post("/connect", async (req, res) => {
-  const account = await stripe.accounts.create({
-    type: "express",
-    business_type: "individual",
-    country: "IT",
-    default_currency: "EUR",
-    business_profile: {
-      product_description: "libri usati",
-      mcc: 5192,
-      url: null
-    }
-  });
-
-  if (!account.id) {
-    res.json({ code: 1, message: "no account id", place: "/paymentApi:133" });
-  }
-
-  const refresh_url =
-    process.env.NODE_ENV === "production"
-      ? `https://www.libridoo.it/${req.body.pathname}/refreshed`
-      : `http://localhost:3000/${req.body.pathname}/refreshed`;
-
-  const return_url =
-    process.env.NODE_ENV === "production"
-      ? `https://www.libridoo.it/${req.body.pathname}/confirmed/${account.id}`
-      : `http://localhost:3000/${req.body.pathname}/confirmed/${account.id}`;
-
-  stripe.accountLinks
+router.post("/connect", (req, res) => {
+  stripe.accounts
     .create({
-      account: account.id,
-      refresh_url,
-      return_url,
-      type: "account_onboarding"
+      type: "express",
+      business_type: "individual",
+      country: "IT",
+      default_currency: "EUR",
+      business_profile: {
+        product_description: "libri usati",
+        mcc: 5192,
+        url: null
+      }
     })
-    .then(accountLinks => {
-      if (!accountLinks.url)
+    .then(account => {
+      // successful
+      if (!account.id) {
         res.json({
           code: 1,
-          message: "no account link",
-          place: "/paymentApi:153"
+          message: "no account id",
+          place: "/paymentApi:133"
         });
-      else res.json({ code: 0, url: accountLinks.url });
+      } else {
+        const refresh_url =
+          process.env.NODE_ENV === "production"
+            ? `https://www.libridoo.it/${req.body.pathname}/refreshed`
+            : `http://localhost:3000/${req.body.pathname}/refreshed`;
+
+        const return_url =
+          process.env.NODE_ENV === "production"
+            ? `https://www.libridoo.it/${req.body.pathname}/confirmed/${account.id}`
+            : `http://localhost:3000/${req.body.pathname}/confirmed/${account.id}`;
+
+        stripe.accountLinks
+          .create({
+            account: account.id,
+            refresh_url,
+            return_url,
+            type: "account_onboarding"
+          })
+          .then(accountLinks => {
+            if (!accountLinks.url)
+              res.json({
+                code: 1,
+                message: "no account link",
+                place: "/paymentApi:153"
+              });
+            else res.json({ code: 0, url: accountLinks.url });
+          })
+          .catch(error => res.json({ code: 1, error }));
+      }
     })
-    .catch(error => res.json({ code: 1, error }));
+    .catch(error => {
+      // error in account
+      res.json({ code: 1, place: "stripe.accounts.create/catch", error });
+    });
 });
 
 router.post("/transfer", async (req, res) => {

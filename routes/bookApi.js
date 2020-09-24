@@ -534,7 +534,10 @@ router.post("/insert", (req, res) => {
             res.json({ code: 0, book });
           }
         });
-      } else res.json({ code: 0, book });
+      } else {
+        console.log("notfound");
+        res.json({ code: 0, book });
+      }
     })
     .catch(error => {
       res.json({
