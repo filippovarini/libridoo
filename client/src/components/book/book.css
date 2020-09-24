@@ -293,6 +293,10 @@
   right: -15px;
 }
 
+#book #result-lower-icon-bought {
+  background: rgb(32, 165, 32);
+}
+
 #book #result-lower-icon-bought:hover {
   cursor: default;
   font-size: 1.2rem;
