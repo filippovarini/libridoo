@@ -602,7 +602,8 @@ router.delete("/success", (req, res) => {
   SoldBooksClusters.find({ dealId: req.body.dealId })
     .then(clusters => {
       console.log(clusters);
-      clusters.forEach(cluster => {
+      clusters.forEach(async cluster => {
+        console.log(clusters.indexOf(cluster));
         // send email
         // calculate total price
         let clusterPrice = 0;
@@ -736,12 +737,13 @@ router.delete("/success", (req, res) => {
         });
 
         // end
-        if (clusters.indexOf(cluster) === cluster.length - 1) {
+        if (clusters.indexOf(cluster) === clusters.length - 1) {
           // finish, just send email to seller
+          console.log("end");
           const transporter = nodemailer.createTransport(options);
 
           // // send mail with defined transport object
-          transporter.sendMail(
+          await transporter.sendMail(
             {
               from: '"Libridoo" <sales@libridoo.it>',
               to: req.body.buyerInfo.email,

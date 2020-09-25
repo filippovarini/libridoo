@@ -56,6 +56,7 @@ class PaymentConfirm extends Component {
       } else {
         // success
         // delete books
+        console.log("sending");
         this.setState({ dealId: locationArr[2], loading: true });
         fetch("/api/payment/success", {
           method: "DELETE",
@@ -66,8 +67,10 @@ class PaymentConfirm extends Component {
         })
           .then(res => res.json())
           .then(jsonRes => {
+            console.log(jsonRes);
             if (jsonRes.code === 0) {
               // success
+              console.log("code0");
               this.setState({ loading: false });
             } else {
               // faliure
