@@ -275,6 +275,7 @@ class Checkout extends Component {
       dealId,
       total
     };
+    console.log("saving purchase");
     fetch("/api/payment/paypal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -282,6 +283,7 @@ class Checkout extends Component {
     })
       .then(res => res.json())
       .then(jsonRes => {
+        console.log(jsonRes);
         if (jsonRes.code === 0) {
           // success
           window.location = jsonRes.approval_url;

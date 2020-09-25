@@ -208,12 +208,28 @@ class ClusterBooks extends Component {
                 </div>
 
                 {text ? (
-                  <p className="box click-box" onClick={this.deliveryClicked}>
-                    {this.state.choosen
-                      ? `CANCELLA (-${this.props.deliveryInfo.cost} €)`
-                      : `SPEDISCIMELO (+${this.props.deliveryInfo.cost} €)`}
-                  </p>
-                ) : null}
+                  <div id="click-box-container">
+                    {this.state.choosen ? (
+                      <p
+                        className="box click-box single inactive"
+                        onClick={this.deliveryClicked}
+                      >
+                        {`CANCELLA (-${this.props.deliveryInfo.cost} €)`}
+                      </p>
+                    ) : (
+                      <p
+                        className="box click-box single"
+                        onClick={this.deliveryClicked}
+                      >
+                        {`SPEDISCIMELO (+${this.props.deliveryInfo.cost} €)`}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div id="click-box-container">
+                    <p className="box click-box no-delivery">NON SPEDISCE</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
