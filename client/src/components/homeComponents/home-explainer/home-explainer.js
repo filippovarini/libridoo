@@ -109,7 +109,7 @@ class HomeExplainer extends Component {
                     <p className="step-text">
                       {this.state.nav === "buy"
                         ? "Organizzati con il venditore per l'incontro o la spedizione, qualora l'avessi selezionata"
-                        : "Contatta il cliente per incontrarti o spedire l'ordine. Ricorda, il cliente giá ha pagato per i libri"}
+                        : "Contatta il cliente per incontrarti o spedire l'ordine. Ricorda, il cliente già ha pagato per i libri"}
                     </p>
                   )}
                 </div>
@@ -126,7 +126,7 @@ class HomeExplainer extends Component {
                     {this.state.nav === "buy"
                       ? "Ricevuto l'ordine, confermalo, per far sì che il venditore venga pagato"
                       : this.state.nav === "sell"
-                      ? "Ricorda all'compratore di confermare l'ordine, per poter ricevere il pagamento"
+                      ? "Ricorda al compratore di confermare l'ordine, per poter ricevere il pagamento"
                       : "Guadagni 1 punto per ogni azione. 10 punti equivalgono ad uno sconto del 10%"}
                   </p>
                 </div>

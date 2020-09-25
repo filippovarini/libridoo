@@ -21,7 +21,8 @@ class Deals extends Component {
     noBooksSold: false,
     bookInfoHidden: true,
     bookInfoBookEditing: false,
-    BookInfoId: null
+    BookInfoId: null,
+    display: "hidden"
   };
 
   //   !!! UPDATES AUTOMATICALLY ?!?!?! WHY
@@ -34,6 +35,16 @@ class Deals extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
+    console.log(this.props.display, this.state.display);
+    if (this.state.display !== this.props.display) {
+      console.log("inside");
+      if (this.props.display === "hidden") {
+        // from null to hidden
+        console.log("refresh");
+        window.location = "/deals";
+        this.setState({ display: "hidden" });
+      } else this.setState({ display: null });
+    }
     if (
       this.state.ready &&
       (!this.state.updated || prevState.navigator !== this.state.navigator)
@@ -240,12 +251,6 @@ class Deals extends Component {
 
     return (
       <div id="deals">
-        {/* <BookInfo
-          display={this.state.bookInfoHidden ? "hidden" : null}
-          toggleDisplay={this.toggleBookInfo}
-          editing={this.state.bookInfoBookEditing}
-          id={this.state.BookInfoId}
-        /> */}
         <HeaderPart title="AFFARI" />
         <div id="deals-problem-container">
           <Link id="deals-problem-link" to="/FAQs">

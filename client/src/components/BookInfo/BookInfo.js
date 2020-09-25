@@ -17,7 +17,9 @@ const initialState = {
   imageClass: "normal",
   selectHeaderClass: "hiddenVisibility",
   successful: false,
-  errorMessage: null
+  errorMessage: null,
+  imageDone: false,
+  editSet: false
 };
 
 class BookInfo extends Component {
@@ -33,7 +35,27 @@ class BookInfo extends Component {
     selectHeaderClass: "hiddenVisibility",
     generalLoading: false,
     successful: false,
-    errorMessage: null
+    errorMessage: null,
+    imageDone: false,
+    editSet: false
+  };
+
+  componentDidUpdate = () => {
+    console.log(this.state.imgUrl, this.state.submitting);
+    if (this.props.book && !this.state.editSet) {
+      console.log(Object.keys(this.props.book).length > 10);
+      const book = this.props.book;
+      this.setState({
+        imgUrl: book.imageURL,
+        title: book.title,
+        quality: book.quality,
+        price: Number(String(book.price).split(".")[0]),
+        // decimal: String(book.price).split(".")[1],
+        submitting: false,
+        imageDone: true,
+        editSet: true
+      });
+    }
   };
 
   handleInputChange = e => {
@@ -46,6 +68,7 @@ class BookInfo extends Component {
   };
 
   handleImageDelete = () => {
+    console.log("deliting");
     this.setState({ imgUrl: "", submitting: true, imageDone: false });
   };
 
@@ -130,7 +153,6 @@ class BookInfo extends Component {
   };
 
   handleSubmit = e => {
-    console.log("submitting");
     e.preventDefault();
     if (!this.state.title || !this.state.quality || !this.state.price) {
       this.setState({ errorMessage: "Compila tutti i campi" });
@@ -233,6 +255,7 @@ class BookInfo extends Component {
 
   handleEdit = e => {
     e.preventDefault();
+
     if (
       (this.state.price && this.state.price <= 0) ||
       this.state.decimal.length > 2 ||
@@ -297,6 +320,7 @@ class BookInfo extends Component {
   };
 
   render() {
+    console.log(this.state.submitting);
     const notSubmitted = (
       <div className="ig-container">
         <div
@@ -453,7 +477,7 @@ class BookInfo extends Component {
           <input type="submit" className="hidden" />
           {this.state.actualPrice ? (
             <p id="bookInfo-price-suggestion" className="actualPrice">
-              Libridoo vive chiedendo il 10%. Incasserai{" "}
+              Per poter crescere, Libridoo chiede il 10%. Incasserai{" "}
               {Math.round(
                 (this.state.actualPrice - this.state.actualPrice / 10) * 100
               ) / 100}{" "}

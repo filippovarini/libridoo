@@ -379,6 +379,7 @@ router.post("/transfer", async (req, res) => {
       });
     })
     .catch(error => {
+      console.log(error);
       if (error.raw.code === "balance_insufficient") {
         const date = new Date();
         console.log(error);
@@ -659,7 +660,7 @@ router.delete("/success", (req, res) => {
                       ${
                         cluster.sellerInfo.payOut.type === "stripe"
                           ? `Hai scelto di ricevere i soldi via bonifico. Quando il venditore conferma la consegna, ti arrivarà una email da stripe.com con un link per ricevere i soldi. Per trasferirli sul tuo conto in banca, <b>verifica il tuo conto stripe</b> direttamente su www.stripe.com oppure accedendo da Libridoo e cliccando su "PAGAMENTI".<br/>L'oridne viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato due euro in meno, per coprire i costi di pagamento via bonifico.`
-                          : `Hai scelto di ricevere i soldi su PayPal. Quando il venditore conferma la consegna, ti arriverà una email da PayPal.com con il link per riceverli. <b>Assicurati di controllare la tua casella email connessa all'account Libridoo.</b><br/>L'ordnie viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato un euro in meno, per coprire i costi di PayPal.`
+                          : `Hai scelto di ricevere i soldi su PayPal. Quando il venditore conferma la consegna, ti arriverà una email da PayPal.com con il link per riceverli. <b>Assicurati di controllare la tua casella email connessa all'account Libridoo.</b><br/>L'ordine viene confermato quando il compratore conferma la consegna. Se questo è il primo ordine confermato del mese, verrai accreditato un euro in meno, per coprire i costi di PayPal.`
                       }
                         Ecco le informazioni di ${
                           cluster.buyerInfo.name
@@ -761,9 +762,8 @@ router.delete("/success", (req, res) => {
             <br />
             Il codice del tuo ordine è <b>${req.body.dealId}</b>.
             <br /><br />
-            Per ricevere i libri, adesso, contatta i venditori per farti consegnare i
-            libri.
-            Non ti preoccupare, i venditori sono stati informati e seguiranno le
+            Per ricevere i libri, adesso, contatta i venditori.
+            Non ti preoccupare, sono stati informati e seguiranno le
             istruzioni fino a quando il libro sarà nelle tue mani.
             <br />
             Una volta ricevuti i libri da un venditore, ricordati di <b>confermare la

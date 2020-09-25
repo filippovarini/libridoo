@@ -128,9 +128,11 @@ class App extends React.Component {
         this.setState({ BookInfoDisplay: "hidden" });
       }
     }
-    if (book) {
+    if (book && Object.keys(book).length < 10) {
       // editing
       this.setState({ book });
+    } else {
+      this.setState({ book: null });
     }
   };
 
@@ -146,6 +148,7 @@ class App extends React.Component {
   };
 
   render() {
+    console.log(this.state.book);
     return (
       <BrowserRouter>
         <div className="App">
@@ -184,7 +187,12 @@ class App extends React.Component {
             <Route path="/orders" component={Orders} />
             <Route
               path="/deals"
-              render={() => <Deals toggleBookInfo={this.toggleBookInfo} />}
+              render={() => (
+                <Deals
+                  toggleBookInfo={this.toggleBookInfo}
+                  display={this.state.BookInfoDisplay}
+                />
+              )}
             />
             <Route path="/invite" component={Invite} />
             <Route path="/feedback" component={Feedback} />

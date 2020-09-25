@@ -139,9 +139,9 @@ class PaymentConfirm extends Component {
             </p>
           </div>
         </div>
-        <a href="./" id="home-link">
+        <p id="home-link" onClick={() => (window.location = "/")}>
           HOME
-        </a>
+        </p>
       </div>
     );
     const bodyComponent = this.state.loading ? loading : loaded;

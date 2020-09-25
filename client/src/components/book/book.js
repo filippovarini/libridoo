@@ -38,9 +38,10 @@ class book extends Component {
   };
 
   imageBigger = e => {
+    console.log("ok");
     this.setState({ imageClass: "result-bigger" });
     if (window.innerWidth < 1000) {
-      setInterval(() => {
+      setTimeout(() => {
         this.setState({ imageClass: null });
       }, 2500);
     }
