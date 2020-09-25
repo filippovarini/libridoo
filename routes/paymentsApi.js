@@ -342,6 +342,7 @@ router.post("/connect", (req, res) => {
 });
 
 router.post("/transfer", async (req, res) => {
+  console.log("trainsfer");
   // hold 10% commission
   // set total
   let amount = req.body.total * 100 - req.body.total * 10;
@@ -358,7 +359,7 @@ router.post("/transfer", async (req, res) => {
 
   if (clusters.length === 0) {
     // no transaction in that month, hold 1euro
-
+    console.log("-2");
     amount -= 200;
   }
 
@@ -731,10 +732,14 @@ router.delete("/success", (req, res) => {
           }
         );
 
+        console.log("deleting");
         // delete books
         cluster.Books.forEach(async book => {
+          console.log(cluster.Books.indexOf(book));
           await Book.findByIdAndDelete(book._id);
         });
+
+        console.log("done", clusters.indexOf(cluster), clusters.length);
 
         // end
         if (clusters.indexOf(cluster) === clusters.length - 1) {
@@ -743,13 +748,13 @@ router.delete("/success", (req, res) => {
           const transporter = nodemailer.createTransport(options);
 
           // // send mail with defined transport object
-          await transporter.sendMail(
+          transporter.sendMail(
             {
               from: '"Libridoo" <sales@libridoo.it>',
-              to: req.body.buyerInfo.email,
+              to: cluster.buyerInfo.email,
               subject: "Ordine completato!",
               // text: "Ciao!", OK WITHOUT TEXT??
-              html: `Caro ${req.body.buyerInfo.name.split(" ")[0] || "utente"},
+              html: `Caro ${cluster.buyerInfo.name.split(" ")[0] || "utente"},
             <br /><br />
             Ti ringraziamo per aver scelto <i>Libridoo</i> per comprare i libri di cui
             avevi bisogno, speriamo ti sia trovato bene con noi.
@@ -769,7 +774,7 @@ router.delete("/success", (req, res) => {
             <p style="font-size: 1.2rem">
               Ecco i contatti dei venditori:
             </p>
-            ${req.body.soldBooksClusters.map(cluster => {
+            ${clusters.map(cluster => {
               return `<div style="margin-top: 30px" key=${cluster.sellerId}>
               <p
                 style="margin: 0px; margin-left: 10px; margin-bottom: 5px; font-size: 1.4rem;"
