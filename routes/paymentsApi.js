@@ -443,6 +443,7 @@ router.post("/transfer", async (req, res) => {
 // send transfer
 // {email, total sellerId}
 router.post("/paypalTransfer", async (req, res) => {
+  console.log("transfer");
   const date = new Date();
   const month = `${date.getMonth() + 1}/${date.getFullYear()}`;
 
@@ -488,6 +489,7 @@ router.post("/paypalTransfer", async (req, res) => {
 
   paypal.payout.create(create_payout_json, function(error, payout) {
     if (error) {
+      console.log("error", error);
       if (error.response.name === "INSUFFICIENT_FUNDS") {
         const date = new Date();
         // balance insufficient
@@ -544,6 +546,7 @@ router.post("/paypalTransfer", async (req, res) => {
         });
       // throw error;
     } else {
+      console.log(payout);
       // success
       res.json({
         code: 0,
