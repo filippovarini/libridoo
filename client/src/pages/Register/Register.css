@@ -1,173 +1,12 @@
-#register-loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -150px;
-  margin-left: -150px;
-  width: 300px;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#register-general-container #register-avatarImgs {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 10px;
-}
-
-#register-general-container #agatarImg-prompt {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-  /* text-align: center; */
-  color: rgb(99, 99, 99);
-  font-size: 1rem;
-}
-
-#images-container {
-  background: #ebebeb;
-  border-radius: 3px;
-  padding: 20px;
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(6, 13%);
-  justify-content: center;
-  grid-gap: 15px;
-  margin: 0 auto;
-}
-
-.image-register-container {
+#register-box {
   text-align: center;
-}
-
-.image-register-header {
-  margin: 0px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: gray;
-}
-
-.register-avatarImage {
-  /* border: 2px solid black; */
-  box-shadow: 0px 0px 3px black;
-  border-radius: 3px;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-
-.register-avatarImage:hover {
-  box-shadow: 0px 0px 5px;
-}
-
-#ai-general-container {
-  width: 250px;
-  margin: 0 auto;
-  margin-bottom: 0px;
-  margin-top: 30px;
-  text-align: center;
-}
-
-#ai-description {
-  margin: 0px;
-  margin-top: 10px;
-  font-weight: bold;
-  color: rgb(99, 99, 99);
-  font-size: 1.3rem;
-}
-
-#avatar-image-container {
-  border: 1px solid black;
-  box-shadow: 0px 0px 3px gray;
-  border-radius: 3px;
-  width: 250px;
-  height: 250px;
-  margin: 0 auto;
-  /* margin-top: 30px; */
-  position: relative;
-}
-
-#register-avatar-image {
-  width: 100%;
-  height: 100%;
-}
-
-#image-delete {
-  position: absolute;
-  color: rgb(99, 99, 99);
-  top: -15px;
-  right: -15px;
-  font-size: 0.8rem;
-}
-
-#image-delete:hover {
-  cursor: pointer;
-  color: black;
-}
-
-#avatar-image {
-  /* border: 1px solid black; */
-  width: 100%;
-}
-
-#register-actions {
-  text-align: center;
-}
-
-#register-form {
-  background: #ebebeb;
-  background: linear-gradient(
-    to bottom right,
-    rgba(105, 142, 245),
-    rgba(108, 232, 162)
-  );
-  display: inline-block;
-  margin: 40px 0px;
-  margin-top: 30px;
-  width: 280px;
-}
-
-.text-input {
-  display: block;
-  text-align: center;
-  margin: 0 auto;
-  height: 20px;
-  width: 200px;
-  margin-top: 20px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: black;
-}
-
-.password {
-  width: 200px;
-  height: 18px;
-}
-
-.checkbox-container {
-  margin-top: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#tcp-container {
-  font-size: 0.8rem;
-}
-
-#register-submit {
-  margin: 30px;
-}
-
-#register-confirm {
-  font-size: 2rem;
-  margin: 30px;
 }
 
 #login-prompt-container {
   margin-bottom: 80px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.3rem;
 }
 
 #login-prompt-link {
@@ -184,33 +23,6 @@
 
 #login-btn:hover {
   text-decoration: underline;
-}
-
-.reg-link {
-  color: blue;
-}
-
-#register-confirm-btn {
-  width: 200px;
-  height: 30px;
-  background: black;
-  margin: 0 auto;
-  color: white;
-  font-weight: bold;
-  margin-bottom: 30px;
-  border-radius: 2px;
-  line-height: 30px;
-  margin-top: 30px;
-}
-
-#rememberMe {
-  font-weight: bold;
-  color: white;
-}
-
-#register-confirm-btn:hover {
-  cursor: pointer;
-  box-shadow: 0px 0px 5px black;
 }
 
 .onoffswitch {
@@ -296,34 +108,4 @@
   font-weight: bold;
   margin-right: 10px;
   color: rgb(99, 99, 99);
-}
-
-@media only screen and (max-width: 650px) {
-  #images-container {
-    grid-gap: 10px;
-    grid-template-columns: repeat(4, 20%);
-  }
-  .image-register-header {
-    font-size: 0.6rem;
-  }
-  #register-fake-header {
-    font-size: 3.5rem;
-    letter-spacing: 0.4rem;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  #register-fake-header {
-    letter-spacing: 0.2rem;
-  }
-  #register-libridoo-logo-image {
-    width: 120px;
-  }
-}
-
-@media only screen and (max-width: 450px) {
-  #register-fake-header {
-    font-size: 3rem;
-    letter-spacing: 0.1rem;
-  }
 }

@@ -771,6 +771,7 @@ router.delete("/clusters", (req, res) => {
     .catch(erorr => res.json({ code: 1, error }));
 });
 
+// delete all contacts for books not found
 router.delete("/notFound", (req, res) => {
   notFound
     .deleteMany()

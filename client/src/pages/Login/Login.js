@@ -4,142 +4,56 @@ import { connect } from "react-redux";
 import HeaderPart from "../../components/headerPart";
 import "./Login.css";
 
-import LoadingM from "../../components/Loading/loading_m";
+// components
+import SignInBox from "../../components/signBox/sign";
 
 class Login extends Component {
   state = {
-    email: null,
+    phone: null,
     password: null,
     rememberMe: true,
-    emailFeedbackClass: null,
-    passwordFeedbackClass: null,
-    emailPlaceholder: "email",
-    passwordPlaceholder: "password",
-    emailLabelMessage: null,
-    passwordLabelMessage: null,
-    incorrect: null,
-    generalLabelHidden: true,
+    errorMessage: "",
     loading: false
   };
 
-  emailValidation = email => {
-    var re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+  // permissions
+  componentDidMount = () => {
+    if (sessionStorage.getItem("JWT") || localStorage.getItem("JWT")) {
+      this.props.history.push("/");
+    }
   };
 
-  toggleRememberMe = () => {
+  handleCheckboxClick = () => {
     this.setState({
+      errorMessage: "",
       rememberMe: !this.state.rememberMe
     });
   };
 
-  handleLoginChange = e => {
-    if (!e.target.value) {
-      // invalid if empty
-      if (e.target.id === "email") {
-        this.setState({
-          emailPlaceholder: "*email*",
-          emailFeedbackClass: "invalid-input"
-        });
-      } else if (e.target.id === "password") {
-        this.setState({
-          passwordPlaceholder: "*pasword*",
-          passwordFeedbackClass: "invalid-input"
-        });
-      }
-    } else {
-      if (e.target.id === "email") {
-        if (this.emailValidation(e.target.value)) {
-          this.setState({
-            emailPlaceholder: "email",
-            emailFeedbackClass: "correct-input"
-          });
-        } else {
-          this.setState({
-            emailPlaceholder: "email",
-            emailFeedbackClass: null
-          });
-        }
-      } else if (e.target.id === "password") {
-        const feedBackClass =
-          e.target.value.length > 8 && e.target.value.length < 15
-            ? "correct-input"
-            : null;
-        this.setState({
-          passwordPlaceholder: "password",
-          passwordFeedbackClass: feedBackClass
-        });
-      }
-    }
+  handleChange = e => {
     this.setState({
+      errorMessage: "",
       [e.target.id]: e.target.value
     });
-    if (this.state.emailLabelMessage) {
-      this.setState({ emailLabelMessage: null });
-    }
-    if (this.state.passwordLabelMessage) {
-      this.setState({ passwordLabelMessage: null });
-    }
-    if (!this.state.generalLabelHidden) {
-      this.setState({ generalLabelHidden: true });
-    }
-  };
-
-  handleBlur = e => {
-    if (!this.state[e.target.id]) {
-      if (e.target.id === "email") {
-        this.setState({
-          emailPlaceholder: "*email*",
-          emailFeedbackClass: "invalid-input"
-        });
-      } else if (e.target.id === "password") {
-        this.setState({
-          passwordPlaceholder: "*password*",
-          passwordFeedbackClass: "invalid-input"
-        });
-      }
-    } else {
-      if (e.target.id === "email") {
-        if (this.emailValidation(e.target.value)) {
-          this.setState({
-            emailFeedbackClass: "correct-input"
-          });
-        } else {
-          this.setState({
-            emailFeedbackClass: "invalid-input"
-          });
-        }
-      }
-    }
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.email || !this.state.password) {
-      this.setState({ generalLabelHidden: false });
-      if (!this.state.email) {
-        this.setState({
-          emailPlaceholder: "*email*",
-          emailFeedbackClass: "invalid-input"
-        });
-      }
-      if (!this.state.password) {
-        this.setState({
-          passwordPlaceholder: "*password*",
-          passwordFeedbackClass: "invalid-input"
-        });
-      }
-    } else if (!this.emailValidation(this.state.email)) {
-      this.setState({ emailLabelMessage: "email non valida" });
+    if (!this.state.phone || !this.state.password) {
+      this.setState({ errorMessage: "Compila tutti i campi" });
+    } else if (isNaN(this.state.phone.replace(/\s+/g, ""))) {
+      console.log(this.state.phone.replace(/\s+/g, ""));
+      this.setState({ errorMessage: "cellulare non valido" });
     } else if (
       this.state.password.length < 8 ||
       this.state.password.length > 15
     ) {
       this.setState({
-        passwordLabelMessage:
+        errorMessage:
           "La password deve essere lunga minimo 8, massimo 15 caratteri"
       });
     } else {
+      // everything correct
       this.setState({ loading: true });
       fetch("/api/user/login", {
         method: "POST",
@@ -148,12 +62,13 @@ class Login extends Component {
           Accept: "application/json"
         },
         body: JSON.stringify({
-          email: this.state.email.toLowerCase(),
+          phone: this.state.phone.replace(/\s+/g, ""),
           password: this.state.password
         })
       })
         .then(res => res.json())
         .then(jsonRes => {
+          console.log(jsonRes);
           if (jsonRes.code === 1) {
             // software error
             // set error and redirect
@@ -165,21 +80,15 @@ class Login extends Component {
           }
           if (jsonRes.code === 2) {
             // wrong credentials
-            if (jsonRes.incorrect === "email") {
+            if (jsonRes.incorrect === "phone") {
               this.setState({
-                emailLabelMessage: "email errata",
-                incorrect: "email",
-                emailFeedbackClass: "invalid-input",
-                loading: false,
-                passwordFeedbackClass: null
+                errorMessage: "cellulare errato",
+                loading: false
               });
             } else {
               this.setState({
-                passwordLabelMessage: "password errata",
-                incorrect: "password",
-                passwordFeedbackClass: "invalid-input",
-                loading: false,
-                emailFeedbackClass: null
+                errorMessage: "password errata",
+                loading: false
               });
             }
           } else if (jsonRes.code === 0) {
@@ -212,97 +121,40 @@ class Login extends Component {
     }
   };
 
-  // permissions
-  componentDidMount = () => {
-    if (sessionStorage.getItem("JWT") || localStorage.getItem("JWT")) {
-      this.props.history.push("/");
-    }
-  };
-
   render() {
-    const body = this.state.loading ? (
-      <div id="login-form" className="height-set">
-        <LoadingM />
-      </div>
-    ) : (
-      <div>
-        <p
-          id="buying"
-          className={
-            this.props.match.params.action === "buying" ? "" : "hidden"
+    const body = (
+      <SignInBox
+        handleInputChange={this.handleChange}
+        toggleCheckbox={this.handleCheckboxClick}
+        handleSubmit={this.handleSubmit}
+        confirm="CONFERMA"
+        loading={this.state.loading}
+        errorMessage={this.state.errorMessage}
+        prompt={
+          this.props.match.params.action === "buying"
+            ? "Effettua il login per completare l'ordine"
+            : "LOGIN"
+        }
+        textInputs={[
+          { id: "phone", placeholder: "cellulare", type: "text" },
+          { id: "password", placeholder: "password", type: "password" }
+        ]}
+        checkboxInputs={[
+          {
+            id: "rememberMe",
+            defaultChecked: true,
+            text: (
+              <label
+                htmlFor="rememberMe"
+                id="checbox-label"
+                className="sign-checkBox"
+              >
+                Resta Collegato
+              </label>
+            )
           }
-        >
-          Effettua il login per completare l'ordine
-        </p>
-        <form id="login-form" onSubmit={this.handleSubmit}>
-          <span id="login-prompt">LOGIN</span>
-          <p
-            id="login-generalLabel"
-            className={`incorrect-input-label ${
-              this.state.generalLabelHidden ? "hidden" : ""
-            }`}
-          >
-            Compila tutti i campi obbligatori
-          </p>
-          <div className="text">
-            <label
-              htmlFor="email"
-              className={`incorrect-input-label ${
-                this.state.emailLabelMessage ? "" : "hidden"
-              }`}
-            >
-              {this.state.emailLabelMessage}
-            </label>
-            <input
-              id="email"
-              maxLength="320"
-              placeholder={this.state.emailPlaceholder}
-              type="text"
-              onChange={this.handleLoginChange}
-              className={`login-input input-text ${this.state.emailFeedbackClass}`}
-              onBlur={this.handleBlur}
-            />
-          </div>
-          <div className="text">
-            <label
-              htmlFor="password"
-              className={`incorrect-input-label ${
-                this.state.passwordLabelMessage ? "" : "hidden"
-              }`}
-            >
-              {this.state.passwordLabelMessage}
-            </label>
-            <input
-              id="password"
-              placeholder={this.state.passwordPlaceholder}
-              type="password"
-              onChange={this.handleLoginChange}
-              className={`login-input input-text ${this.state.passwordFeedbackClass}`}
-              onBlur={this.handleBlur}
-            />
-          </div>
-          <div id="checkbox" className="login-input">
-            <input
-              type="checkbox"
-              id="remember-me"
-              onChange={this.toggleRememberMe}
-              defaultChecked={true}
-              className="login-input"
-            />
-            <label
-              htmlFor="remember-me"
-              id="checbox-label"
-              className="login-rememberMe"
-            >
-              Resta Collegato
-            </label>
-          </div>
-          <input type="submit" value="LOGIN" className="hidden" />
-          <p id="login-submit-btn" onClick={this.handleSubmit}>
-            LOGIN
-          </p>
-        </form>
-      </div>
+        ]}
+      />
     );
     return (
       <div id="login">
@@ -314,7 +166,11 @@ class Login extends Component {
         />
         <div id="login-actions">
           {body}
-          <Link to="/recover" id="recover-prompt">
+          <Link
+            className={this.state.loading ? "hidden" : null}
+            to="/recover"
+            id="recover-prompt"
+          >
             Credenziali dimenticate?
           </Link>
           <div

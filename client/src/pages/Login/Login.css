@@ -2,83 +2,6 @@
   text-align: center;
 }
 
-#login-prompt {
-  display: block;
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: black;
-  margin: 20px;
-  margin-bottom: 30px;
-}
-
-#login #buying {
-  font-weight: bold;
-  color: rgb(99, 99, 99);
-  margin-bottom: -50px;
-  margin-top: 40px;
-  font-size: 1.2rem;
-}
-
-#login-form {
-  background: #ebebeb;
-  background: linear-gradient(
-    to bottom right,
-    rgba(105, 142, 245),
-    rgba(108, 232, 162)
-  );
-  display: inline-block;
-  margin-top: 60px;
-}
-
-#login-form.height-set {
-  width: 246px;
-  height: 203px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  margin-top: 60px;
-  background: transparent;
-}
-
-#login .text {
-  margin: 20px;
-}
-
-.input-text {
-  display: block;
-  height: 20px;
-  width: 200px;
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: black;
-}
-
-#checkbox {
-  width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-
-#checbox-label {
-  margin-left: 5px;
-}
-
-.login-rememberMe {
-  font-weight: bold;
-  color: white;
-}
-
-#submit-btn {
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-
 #recover-prompt {
   display: block;
   text-decoration: none;
@@ -89,31 +12,12 @@
   color: rgb(108, 232, 162);
 }
 
+#recover-prompt.hidden {
+  display: none;
+}
+
 #recover-prompt:hover {
   text-decoration: underline;
-}
-
-#login .incorrect-input-label {
-  width: 200px;
-  margin: 0 auto;
-  margin-bottom: 10px;
-}
-
-#login-generalLabel.incorrect-input-label {
-  margin-top: 20px;
-}
-
-#login-submit-btn {
-  width: 200px;
-  height: 30px;
-  background: black;
-  margin: 0 auto;
-  color: white;
-  font-weight: bold;
-  margin-bottom: 30px;
-  border-radius: 2px;
-  line-height: 30px;
-  font-size: 1.3rem;
 }
 
 #login #register-btn {
@@ -134,9 +38,4 @@
 
 #login #register-btn:hover {
   text-decoration: underline;
-}
-
-#login-submit-btn:hover {
-  box-shadow: 0px 0px 5px black;
-  cursor: pointer;
 }

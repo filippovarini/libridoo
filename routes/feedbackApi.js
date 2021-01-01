@@ -151,7 +151,7 @@ router.delete("/rating", (req, res) => {
     });
 });
 
-// delete all rating
+// delete all spam insertions
 router.delete("/spam", (req, res) => {
   Spam.deleteMany({})
     .then(() => {
