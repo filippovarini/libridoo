@@ -41,7 +41,6 @@ class BookInfo extends Component {
   };
 
   componentDidUpdate = () => {
-    console.log(this.state.imgUrl, this.state.submitting);
     if (this.props.book && !this.state.editSet) {
       console.log(Object.keys(this.props.book).length > 10);
       const book = this.props.book;
@@ -58,12 +57,35 @@ class BookInfo extends Component {
     }
   };
 
+  // sets total Price
+  setActualPrice = (price, decimal) => {
+    console.log(price, decimal);
+    const decimalPrice = decimal
+      ? decimal.length === 1
+        ? Number(decimal) / 10
+        : Number(decimal) / 100
+      : this.state.decimal
+      ? this.state.decimal.length === 1
+        ? Number(this.state.decimal) / 10
+        : Number(this.state.decimal) / 100
+      : 0;
+    const subPrice = price
+      ? price
+      : this.state.price
+      ? Number(this.state.price)
+      : 0;
+    console.log(subPrice, decimalPrice);
+    this.setState({ actualPrice: Number(subPrice) + Number(decimalPrice) });
+  };
+
   handleInputChange = e => {
-    if (e.target.id === "bookInfo-decimal")
+    if (e.target.id === "bookInfo-decimal") {
       this.setState({
         decimal: e.target.value
       });
-    else this.setState({ [e.target.id]: e.target.value });
+      this.setActualPrice(null, e.target.value);
+    } else this.setState({ [e.target.id]: e.target.value });
+    if (e.target.id === "price") this.setActualPrice(e.target.value, null);
     if (this.state.errorMessage) this.setState({ errorMessage: null });
   };
 
@@ -131,13 +153,6 @@ class BookInfo extends Component {
   handleBlur = e => {
     if (e.target.id === "quality") {
       this.setState({ selectHeaderClass: "hiddenVisibility" });
-    }
-    if (e.target.id === "price" && e.target.value) {
-      if (e.target.value <= 0) {
-        this.setState({ priceClass: "invalid-input", actualPrice: 0 });
-      } else {
-        this.setState({ actualPrice: e.target.value });
-      }
     }
     if (e.target.id === "bookInfo-decimal" && e.target.value) {
       this.setState({
@@ -320,7 +335,6 @@ class BookInfo extends Component {
   };
 
   render() {
-    console.log(this.state.submitting);
     const notSubmitted = (
       <div className="ig-container">
         <div

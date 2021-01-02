@@ -7,7 +7,7 @@ import Book from "../../components/book/book";
 import LoadingM from "../../components/Loading/loading_m";
 
 // modules
-import AL1 from "./AL1";
+import sortResults from "../../helperFunctions/sortResults";
 
 class Results extends Component {
   state = {
@@ -45,7 +45,7 @@ class Results extends Component {
     // );
     // console.log(sellerUser);
     // USELESS BASED ON BOUGHT BECAUSE DON't HAVE SELLER USER ON MOUNTING
-    const sortedResult = AL1(this.props.booksResult);
+    const sortedResult = sortResults(this.props.booksResult);
     this.props.dispatch({ type: "R-SET", results: sortedResult });
     this.setState({
       loading: false
@@ -83,7 +83,7 @@ class Results extends Component {
                 jsonRes.results.forEach(result => {
                   delete result.index;
                 });
-                const sortedResult = AL1(jsonRes.results);
+                const sortedResult = sortResults(jsonRes.results);
                 this.props.dispatch({ type: "R-SET", results: sortedResult });
                 this.setState({
                   loading: false,
@@ -165,7 +165,7 @@ class Results extends Component {
       const sellerUser = this.props.selectedBooks.map(
         cluster => cluster.sellerId
       );
-      const sortedResult = AL1(this.props.booksResult, sellerUser);
+      const sortedResult = sortResults(this.props.booksResult, sellerUser);
       this.props.dispatch({ type: "R-SET", results: sortedResult });
     }
   };
@@ -252,7 +252,7 @@ class Results extends Component {
             message: jsonRes.code === 2.5 ? jsonRes.message : null
           };
           // sort them
-          const sortedResult = AL1(resultsArray);
+          const sortedResult = sortResults(resultsArray);
           // store sorted in redux
           this.props.dispatch({ type: "R-SET", results: sortedResult });
           this.setState({

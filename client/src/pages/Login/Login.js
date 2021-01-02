@@ -9,7 +9,7 @@ import SignInBox from "../../components/signBox/sign";
 
 class Login extends Component {
   state = {
-    phone: null,
+    email: null,
     password: null,
     rememberMe: true,
     errorMessage: "",
@@ -39,11 +39,8 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.phone || !this.state.password) {
+    if (!this.state.email || !this.state.password) {
       this.setState({ errorMessage: "Compila tutti i campi" });
-    } else if (isNaN(this.state.phone.replace(/\s+/g, ""))) {
-      console.log(this.state.phone.replace(/\s+/g, ""));
-      this.setState({ errorMessage: "cellulare non valido" });
     } else if (
       this.state.password.length < 8 ||
       this.state.password.length > 15
@@ -62,7 +59,7 @@ class Login extends Component {
           Accept: "application/json"
         },
         body: JSON.stringify({
-          phone: this.state.phone.replace(/\s+/g, ""),
+          email: this.state.email.toLowerCase(),
           password: this.state.password
         })
       })
@@ -80,9 +77,9 @@ class Login extends Component {
           }
           if (jsonRes.code === 2) {
             // wrong credentials
-            if (jsonRes.incorrect === "phone") {
+            if (jsonRes.incorrect === "email") {
               this.setState({
-                errorMessage: "cellulare errato",
+                errorMessage: "email errata",
                 loading: false
               });
             } else {
@@ -136,7 +133,7 @@ class Login extends Component {
             : "LOGIN"
         }
         textInputs={[
-          { id: "phone", placeholder: "cellulare", type: "text" },
+          { id: "email", placeholder: "email", type: "email" },
           { id: "password", placeholder: "password", type: "password" }
         ]}
         checkboxInputs={[

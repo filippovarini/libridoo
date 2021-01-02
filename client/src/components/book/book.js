@@ -477,9 +477,9 @@ class book extends Component {
                   : insertion.getDate()}
               </p>
               <p className="even-box">
-                {insertion.getMonth() < 10
-                  ? `0${insertion.getMonth()}`
-                  : insertion.getMonth()}
+                {insertion.getMonth() < 9
+                  ? `0${insertion.getMonth() + 1}`
+                  : insertion.getMonth() + 1}
               </p>
               <p className="even-box">
                 {insertion

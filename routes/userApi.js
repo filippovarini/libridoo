@@ -25,7 +25,7 @@ router.get("/rating/:_id", (req, res) => {
         res.json({
           code: 1.5,
           message: "Nessun utente trovato con questo id",
-          place: ".findById(), userApi:16"
+          place: ".findById(), userApi.get(/rating/:_id)"
         });
       } else {
         res.json({ code: 0, rating: user.rating });
@@ -35,88 +35,17 @@ router.get("/rating/:_id", (req, res) => {
       console.log(error);
       res.json({
         code: 1,
-        place: ".findById(), userApi:16",
+        place: ".findById(), userApi.get(/rating/:_id)",
         message: "Qualcosa è andato storto nel download del tuo rating",
         error
       });
     });
 });
 
-// !! NOT USING
-// send email to user with emailConfirm code
-// router.get("/emailConfirm/:email", (req, res) => {
-//   let confirmCode = Math.floor(Math.random() * 1000000);
-//   confirmCode = confirmCode.toString();
-
-//   const options = {
-//     service: "Godaddy",
-//     auth: {
-//       user: "info@libridoo.it",
-//       pass: EMAIL_PASS
-//     },
-//     tls: {
-//       ciphers: "SSLv3",
-//       rejectUnauthorized: false
-//     }
-//   };
-//   const transporter = nodemailer.createTransport(options);
-//   // verify connection configuration
-
-//   transporter.sendMail(
-//     {
-//       from: '"Libridoo" <noReply@libridoo.it>',
-//       to: req.params.email,
-//       subject: "Conferma la tua Email",
-//       text: "Ciao!",
-//       html: `Gentile Utente,
-//     <br /><br />
-//     Il suo codice per confermare l'email è ${confirmCode}
-//     <br /><br /><br />
-//     Saluti,
-//     <br />
-//     <i>Il team di Libridoo</i>`
-//     },
-//     async (error, info) => {
-//       if (error) {
-//         console.log("error", error);
-//         const newError = new Error({
-//           error: { message: "EMAIL NOT SENT, confirmEmail", error }
-//         });
-//         await newError.save();
-//       } else {
-//         console.log("emailsent", info);
-//       }
-//     }
-//   );
-//   bcrypt
-//     .hash(confirmCode, 10)
-//     .then(confirmCode => {
-//       res.json({ code: 0, hashedCode: confirmCode });
-//     })
-//     .catch(error => {
-//       res.json({
-//         code: 1,
-//         place: ".hash(), userApi:70",
-//         message:
-//           "Qualcosa è andato storto nella creazione di una nuova password",
-//         error
-//       });
-//     });
-// });
-
-// check hashed code
-// hashed / code
-router.post("/emailConfirm/check", (req, res) => {
-  bcrypt
-    .compare(req.body.code, req.body.hashed)
-    .then(response => res.json({ response }))
-    .catch(error => {
-      res.json({ code: 1, place: ".compeare(), userApi:89", error });
-    });
-});
-
-// get user from JWT refresh
-// token
+// - already created a session
+// - get jwt from user
+// - return user and new jwt (new user)
+// - req.body = {token}
 router.post("/refresh", (req, res) => {
   const token = req.body.token;
   let user = {};
@@ -126,7 +55,7 @@ router.post("/refresh", (req, res) => {
     res.json({
       code: 4,
       message: "La sessione di login è scaduta",
-      place: ".verify(), userApi:102"
+      place: ".verify(), userApi.post(/refresh)"
     });
   }
 
@@ -142,7 +71,7 @@ router.post("/refresh", (req, res) => {
           code: 1.5,
           message: "Nessun account registrato nella sessione fornita",
           devMessage: "No account in this jwt",
-          place: ".findById(), userApi:111"
+          place: ".findById(), userApi.post(/refresh)"
         });
       }
     })
@@ -151,16 +80,14 @@ router.post("/refresh", (req, res) => {
       res.json({
         code: 1,
         message: "Qualcosa è andato storto nella ricarica della pagina",
-        place: ".findById(), userApi:111",
+        place: ".findById(), userApi.post(/refresh)",
         error
       });
     });
 });
 
-// !!! always PASS EMAIL.toLowerCase() in REQ.BODY
-
 // login
-// email / password
+// req.body = {email, password}
 router.post("/login", (req, res) => {
   console.log(req.body.email);
   User.findOne({ email: req.body.email })
@@ -202,8 +129,8 @@ router.post("/login", (req, res) => {
     });
 });
 
-// check email
-// email
+// - check email is unique
+// - req.body = {email}
 router.post("/register/check", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
@@ -226,9 +153,9 @@ router.post("/register/check", (req, res) => {
     });
 });
 
-// register
-// bonus update in here
-// email / password / name / avatarImgURL / invitingUserId /
+// - register
+// - if invited, update bonus points of inviting user
+// - req.body = {email,  password,  name,  avatarImgURL,  invitingUserId}
 router.post("/register", (req, res) => {
   // User.findOne({ email: req.body.email })
   //   .then(user => {
@@ -302,8 +229,9 @@ router.post("/register", (req, res) => {
   // });
 });
 
-// update bodyInfo
-// _id / defaultEmail / newBodyInfo : { email  / phone / school / schoolLogoUrl } (even if you don't have it, pass default)
+// - update bodyInfo
+// - even if you don't have it, pass default
+// - req.body  = {_id, defaultEmail, newBodyInfo : { email  / phone / school / schoolLogoUrl }
 router.put("/bodyInfo", (req, res) => {
   if (req.body.defaultEmail !== req.body.newBodyInfo.email) {
     User.find({ email: req.body.newBodyInfo.email })
@@ -360,8 +288,8 @@ router.put("/bodyInfo", (req, res) => {
   }
 });
 
-// update place
-// _id / placeUpdate: {place: {country / region / city}}
+// - update place
+// - req.body = {_id, placeUpdate: {place: {country / region / city}}
 router.put("/place", (req, res) => {
   User.findByIdAndUpdate(req.body._id, req.body.placeUpdate, { new: true })
     .then(user => {
@@ -380,8 +308,8 @@ router.put("/place", (req, res) => {
     });
 });
 
-// update delivery
-// _id / deliveryUpdate : {DeliveryInfo: {range / cost / timeToMeet}}
+// - update delivery
+// - req.body = {_id, deliveryUpdate : {DeliveryInfo: {range / cost / timeToMeet}}
 router.put("/delivery", (req, res) => {
   User.findByIdAndUpdate(req.body._id, req.body.deliveryUpdate, { new: true })
     .then(user => {
@@ -401,9 +329,9 @@ router.put("/delivery", (req, res) => {
     });
 });
 
-// update rating
-// _id (the seller's one)/ qualityRating / deliveryRating
-// if one not given, just pass it
+// - update rating
+// - req.body = {_id (the seller's one)/ qualityRating / deliveryRating}
+// - if one not given, just pass it
 router.put("/ratingUpdate", (req, res) => {
   console.log(req.body);
   User.findById(req.body._id)
@@ -495,8 +423,8 @@ router.put("/ratingUpdate", (req, res) => {
     });
 });
 
-// update password
-// _id / oldPassword / newPassword
+// - update password
+// - req.body = {_id / oldPassword / newPassword}
 router.put("/passwordUpdate", (req, res) => {
   User.findById(req.body._id)
     .then(user => {
@@ -576,8 +504,8 @@ router.put("/passwordUpdate", (req, res) => {
     });
 });
 
-// reset password
-// email
+// - reset password
+// - req.bdoy = {email}
 router.put("/recover", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
@@ -685,7 +613,8 @@ router.put("/recover", (req, res) => {
     });
 });
 
-// _id
+// - saves the user has seen comunication pop up in home.js
+// - req.body = {_id}
 router.put("/seen", (req, res) => {
   User.findByIdAndUpdate(req.body._id, { popUpSeen: true }, { new: true })
     .then(user => {
@@ -704,8 +633,8 @@ router.put("/seen", (req, res) => {
     });
 });
 
-// update stripe id
-// _id, payOut: {type / accountId}
+// - update stripe id
+// - req.bdoy = {_id, payOut: {type / accountId}}
 router.put("/connectedAccount", (req, res) => {
   const user = jwt.verify(req.body.JWT, JWT_SECRET);
 

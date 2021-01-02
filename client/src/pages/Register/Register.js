@@ -17,7 +17,7 @@ class Register extends Component {
     imageDescription: null,
     male: true,
     name: null,
-    phone: null,
+    email: null,
     password: null,
     termsConditions: false,
     rememberMe: true,
@@ -67,7 +67,7 @@ class Register extends Component {
   // check phone is correct before it!!
   handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.name || !this.state.phone || !this.state.password) {
+    if (!this.state.name || !this.state.email || !this.state.password) {
       this.setState({ errorMessage: "Inserisci tutti i campi obbligatori" });
     } else if (
       this.state.password.length < 8 ||
@@ -85,14 +85,14 @@ class Register extends Component {
       // all conditions met
       this.setState({ loading: true });
 
-      // check the phone number is new
+      // check email is new
       fetch("/api/user/register/check", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json"
         },
-        body: JSON.stringify({ phone: this.state.phone })
+        body: JSON.stringify({ phone: this.state.email })
       })
         .then(res => res.json())
         .then(jsonRes => {
@@ -103,8 +103,9 @@ class Register extends Component {
             });
             this.props.history.push("/error");
           } else if (jsonRes.code === 2) {
+            // email not new
             this.setState({
-              errorMessage: "Cellulare già registrato con un altro account",
+              errorMessage: "Email già registrata con un altro account",
               loading: false
             });
           } else {
@@ -123,7 +124,7 @@ class Register extends Component {
             const body = {
               avatarImgURL,
               name: this.state.name,
-              phone: this.state.phone.replace(/\s+/g, ""),
+              email: this.state.email.toLowerCase(),
               password: this.state.password,
               invitingUserId
             };
@@ -165,7 +166,6 @@ class Register extends Component {
                     this.props.match.params.invitingId === "buying"
                       ? "/orderReview"
                       : "/";
-                  sessionStorage.setItem("insertPopUpToSee", true);
                   this.props.history.push(redirection);
                 }
               })
@@ -233,7 +233,7 @@ class Register extends Component {
             errorMessage={this.state.errorMessage}
             textInputs={[
               { id: "name", placeholder: "nome e cognome", type: "text" },
-              { id: "phone", placeholder: "cellulare", type: "number" },
+              { id: "email", placeholder: "email", type: "email" },
               { id: "password", placeholder: "password", type: "password" }
             ]}
             checkboxInputs={[

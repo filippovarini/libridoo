@@ -136,7 +136,7 @@ class App extends React.Component {
     }
   };
 
-  // bring back to false
+  // bring back to false headerWinning (for double header)
   resetSlideBarHidden = () => {
     this.setState({ hideSlidebar: false });
   };
