@@ -103,8 +103,8 @@ class Invite extends Component {
           <i className="fas earn-ico fa-user-plus"></i>
           <p className="earn-title">Seguici su Insta</p>
           <p className="earn-description">
-            <span className="earn-highlight"> 1 punto</span>: seguici e scrivici
-            in direct l'email associata con libridoo.
+            <span className="earn-highlight"> 1 punto</span> se segui* la nostra
+            pagina instagram <b>Libridoo.it</b>
           </p>
           <p id="earn-insta-warning">punto eliminato se unfollowi</p>
           <a

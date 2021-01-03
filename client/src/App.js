@@ -18,7 +18,6 @@ import CheckoutReview from "./pages/CheckoutReview/CheckoutReview";
 import Checkout from "./pages/Checkout/CheckoutRenderer";
 import PaymentConfirm from "./pages/PaymentConfirm/PaymentConfirm";
 import sellReview from "./pages/InfoReview/sell/sellReview";
-import buyReview from "./pages/InfoReview/buy/buyReview";
 import Account from "./pages/Account//Account";
 import Orders from "./pages/Orders/Orders";
 import Deals from "./pages/Deals/Deals";
@@ -182,7 +181,6 @@ class App extends React.Component {
             <Route exact path="/checkout" component={Checkout} />
             <Route path="/paymentConfirm" component={PaymentConfirm} />
             <Route path="/infoReviewSell" component={sellReview} />
-            <Route path="/infoReviewBuy" component={buyReview} />
             <Route path="/account" component={Account} />
             <Route path="/orders" component={Orders} />
             <Route

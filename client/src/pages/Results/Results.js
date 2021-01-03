@@ -492,7 +492,7 @@ class Results extends Component {
                     list="universities"
                     value={
                       this.state.school === "__disabled"
-                        ? "scuola/università"
+                        ? "università"
                         : this.state.school
                     }
                   />
